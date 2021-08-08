@@ -32,6 +32,13 @@ declare class PersonBuff {
      */
     checkEnChant(targetEnChant: EnChants): boolean;
     /**
+     * 是否有技能套装
+     *
+     * @return {*}
+     * @memberof PersonBuff
+     */
+    hasSkillSetBonuese(): boolean;
+    /**
      * 打印套装详情
      *
      * @memberof PersonBuff

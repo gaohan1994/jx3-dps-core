@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 16:55:04 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-08 19:03:28
+ * @Last Modified time: 2021-08-08 21:35:25
  */
 import chalk = require('chalk');
 import { EnChants, Weapon, SetBonuse } from '../types'
@@ -71,6 +71,16 @@ class PersonBuff {
    */
   public checkEnChant(targetEnChant: EnChants) {
     return this.enChants.some((ec) => ec === targetEnChant);
+  }
+
+  /**
+   * 是否有技能套装
+   *
+   * @return {*} 
+   * @memberof PersonBuff
+   */
+  public hasSkillSetBonuese() {
+    return this.setBonuses.some((sb) => sb === SetBonuse.SkillSetBonuse);
   }
 
   /**

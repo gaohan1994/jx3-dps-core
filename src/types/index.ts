@@ -1,3 +1,6 @@
+import DpsCore from "../core/core";
+import Support from "../support/support";
+
 /**
  * 辅助类类别 
  * 
@@ -182,44 +185,91 @@ export enum GroupSkillBuff {
   MeiHuaDun = 'MeiHuaDun'
 }
 
-/**
- * 技能类型
- *
- * @export
- * @interface Skill
- */
-export interface Skill {
+export interface SkillMiddleware {
+  (ctx: SkillContext, next: any): any;
+}
+
+export enum SkillMiddleSteps {
+  step1 = 'step1',
+  step2 = 'step2',
+  step3 = 'step3',
+  step4 = 'step4'
+}
+
+
+export interface SkillContext {
+  core: DpsCore;
+
+  support: Support;
+
+  skillName?: string;
+
   /**
-   * 基础伤害
+   * 经过 step1 CalculatorSkillDamage 计算之后的值
    *
    * @type {number}
    * @memberof Skill
    */
-  basicDamage: number;
+  step1SkillDamage?: number;
   /**
-   * 技能系数
+   * 计算 step1 时的系数
+   *
+   * @type {number}
+   * @memberof SkillContext
+   */
+  step1Coefficient?: number;
+
+  /**
+   * 经过 step2 CalculatorSkillDamageWithQiXueAndMiJi 计算之后的值
+   *
+   * @memberof Skill
+   */
+  step2SkillDamage?: number;
+
+  /**
+   * 计算 step2 时的系数
+   *
+   * @type {number}
+   * @memberof SkillContext
+   */
+  step2Coefficient?: number;
+
+  /**
+   * 经过 step3 CalculatorSkillDamageWithPoFangAndWuShuang 计算之后的值
    *
    * @type {number}
    * @memberof Skill
    */
-  coefficient: number;
+  step3SkillDamage?: number;
+
   /**
-   * 计算技能伤害
-   * 
-   * 技能伤害 = basicDamage + (ZongGongJi * coefficient)
+   * 计算 step3 时的系数
    *
-   * @param {number} ZongGongJi
-   * @return {*}  {number}
+   * @type {number}
+   * @memberof SkillContext
+   */
+  step3Coefficient?: number;
+
+  /**
+   * 经过 step4 CalculatorSkillDamageWithHuiXinAndHuiXiao 计算之后的值
+   *
+   * @type {number}
    * @memberof Skill
    */
-  calculatorSkillDamage(ZongGongJi: number): number;
+  step4SkillDamage?: number;
+
   /**
-   * 计算奇穴、秘籍、加成之后的伤害
-   * 
-   * 技能伤害 = 
+   * 计算 step4 时的系数
    *
-   * @return {*}  {number}
-   * @memberof Skill
+   * @type {number}
+   * @memberof SkillContext
    */
-  calculatorSkillDamageWithQiXueAndMiJi(QiXueAndMiJiCoefficient: number): number;
+  step4Coefficient?: number;
+
+  skillTimes?: number;
+
+  basicDamage?: number;
+
+  coefficient?: number;
+
 }

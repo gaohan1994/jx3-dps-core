@@ -7,6 +7,11 @@
   resolved "https://registry.nlark.com/@types/invariant/download/@types/invariant-2.2.34.tgz?cache=0&sync_timestamp=1621241403208&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Finvariant%2Fdownload%2F%40types%2Finvariant-2.2.34.tgz#05e4f79f465c2007884374d4795452f995720bbe"
   integrity sha1-BeT3n0ZcIAeIQ3TUeVRS+ZVyC74=
 
+"@types/numeral@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.nlark.com/@types/numeral/download/@types/numeral-2.0.1.tgz#f7270a16c643d5796199b2a03d1f28595d38f687"
+  integrity sha1-9ycKFsZD1XlhmbKgPR8oWV049oc=
+
 ansi-styles@^4.1.0:
   version "4.3.0"
   resolved "https://registry.nlark.com/ansi-styles/download/ansi-styles-4.3.0.tgz#edd803628ae71c04c85ae7a0906edad34b648937"
@@ -57,6 +62,11 @@ loose-envify@^1.0.0:
   integrity sha1-ce5R+nvkyuwaY4OffmgtgTLTDK8=
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
+
+numeral@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.npm.taobao.org/numeral/download/numeral-2.0.6.tgz#4ad080936d443c2561aed9f2197efffe25f4e506"
+  integrity sha1-StCAk21EPCVhrtnyGX7//iX05QY=
 
 supports-color@^7.1.0:
   version "7.2.0"

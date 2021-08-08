@@ -18,9 +18,13 @@ function Demo() {
   const support = new Support({ mode: 'NeiGong' });
 
   const yjj = new YiJinJing({ core: dpsCore, support });
-  yjj.showCalculatorValue();
-  yjj.showCoreValue();
-  yjj.showSupportValue();
+  // yjj.showCalculatorValue();
+  // yjj.showCoreValue();
+  // yjj.showSupportValue();
+
+  yjj.calculatorSkills();
+
+  // yjj.show
 }
 
 Demo();

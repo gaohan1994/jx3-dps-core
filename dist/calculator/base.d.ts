@@ -1,7 +1,15 @@
 import Core from '../core/core';
 import Support from '../support/support';
+import Skill from '../core/skill';
 declare class CalculatorBase {
     options: any;
+    /**
+     * 技能列表
+     *
+     * @type {Array<Skill>}
+     * @memberof CalculatorBase
+     */
+    skills: Array<Skill>;
     /**
      * 核心类
      *
@@ -32,6 +40,7 @@ declare class CalculatorBase {
     className: string;
     constructor(options?: any);
     showCalculatorValue(): void;
+    showSkills(): void;
     showCoreValue(): void;
     showSupportValue(): void;
 }

@@ -4,16 +4,25 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-08 19:27:15
+ * @Last Modified time: 2021-08-08 21:23:23
  */
 import invariant = require('invariant');
 import chalk = require('chalk');
 import Core from '../core/core';
 import Support from '../support/support';
+import Skill from '../core/skill';
 
 class CalculatorBase {
 
   public options: any;
+
+  /**
+   * 技能列表
+   *
+   * @type {Array<Skill>}
+   * @memberof CalculatorBase
+   */
+  public skills: Array<Skill> = [];
 
   /**
    * 核心类
@@ -65,6 +74,14 @@ class CalculatorBase {
       心法:${this.className}
     `));
     console.log(chalk.white(`---- calculator end ----`));
+  }
+
+  public showSkills() {
+    console.log(chalk.white(`---- showSkills start ----`));
+    this.skills.forEach((skill) => {
+      console.log(chalk.white(skill.skillName));
+    })
+    console.log(chalk.white(`---- showSkills end ----`));
   }
 
   public showCoreValue() {

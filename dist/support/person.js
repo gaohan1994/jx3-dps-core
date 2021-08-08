@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @Author: centerm.gaohan
  * @Date: 2021-08-08 16:55:04
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-08 19:03:28
+ * @Last Modified time: 2021-08-08 21:35:25
  */
 var chalk = require("chalk");
 var types_1 = require("../types");
@@ -49,6 +49,15 @@ var PersonBuff = /** @class */ (function () {
      */
     PersonBuff.prototype.checkEnChant = function (targetEnChant) {
         return this.enChants.some(function (ec) { return ec === targetEnChant; });
+    };
+    /**
+     * 是否有技能套装
+     *
+     * @return {*}
+     * @memberof PersonBuff
+     */
+    PersonBuff.prototype.hasSkillSetBonuese = function () {
+        return this.setBonuses.some(function (sb) { return sb === types_1.SetBonuse.SkillSetBonuse; });
     };
     /**
      * 打印套装详情

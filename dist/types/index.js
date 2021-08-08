@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GroupSkillBuff = exports.TeamSkillBuffWaiGong = exports.TeamSkillBuffNeiGong = exports.SetBonuse = exports.Weapon = exports.EnChants = exports.Formations = exports.FormationName = exports.FormationValue = exports.TargetMuZhuangList = exports.TargetBossList = exports.TargetMode = exports.CharacterTypes = exports.SupportMode = void 0;
+exports.SkillMiddleSteps = exports.GroupSkillBuff = exports.TeamSkillBuffWaiGong = exports.TeamSkillBuffNeiGong = exports.SetBonuse = exports.Weapon = exports.EnChants = exports.Formations = exports.FormationName = exports.FormationValue = exports.TargetMuZhuangList = exports.TargetBossList = exports.TargetMode = exports.CharacterTypes = exports.SupportMode = void 0;
 /**
  * 辅助类类别
  *
@@ -172,4 +172,11 @@ var GroupSkillBuff;
     GroupSkillBuff["HaoLingSanJun"] = "HaoLingSanJun";
     GroupSkillBuff["MeiHuaDun"] = "MeiHuaDun";
 })(GroupSkillBuff = exports.GroupSkillBuff || (exports.GroupSkillBuff = {}));
+var SkillMiddleSteps;
+(function (SkillMiddleSteps) {
+    SkillMiddleSteps["step1"] = "step1";
+    SkillMiddleSteps["step2"] = "step2";
+    SkillMiddleSteps["step3"] = "step3";
+    SkillMiddleSteps["step4"] = "step4";
+})(SkillMiddleSteps = exports.SkillMiddleSteps || (exports.SkillMiddleSteps = {}));
 //# sourceMappingURL=index.js.map
