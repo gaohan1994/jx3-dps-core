@@ -1,0 +1,19 @@
+{
+  "name": "jx3-dps-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "tsc -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/invariant": "^2.2.34",
+    "chalk": "^4.1.2",
+    "invariant": "^2.2.4",
+    "typescript": "^4.3.5"
+  }
+}
