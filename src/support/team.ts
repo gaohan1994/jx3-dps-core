@@ -3,12 +3,14 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 17:18:52 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-08 19:10:49
+ * @Last Modified time: 2021-08-09 15:30:28
  */
 import chalk = require('chalk');
-import { Formation, SupportMode, GroupSkillBuff, TeamSkillBuffNeiGong, TeamSkillBuffWaiGong } from "../types";
+import { Formation, SupportMode, Gain, GroupSkillBuffList } from "../types";
+import { TeamSkillBuffNeiGong, TeamSkillBuffWaiGong, GroupSkills } from '../config/config';
+import SupportBase from './base';
 
-class TeamBuff {
+class TeamBuff extends SupportBase {
   /**
    * 辅助类类型
    *
@@ -31,7 +33,7 @@ class TeamBuff {
    * @type {(Array<TeamSkillBuffNeiGong | TeamSkillBuffWaiGong>)}
    * @memberof TeamBuff
    */
-  public teamSkillBuff: Array<TeamSkillBuffNeiGong | TeamSkillBuffWaiGong>;
+  public teamSkillBuff: Array<Gain>;
 
   /**
    * 团队技能增益
@@ -39,9 +41,10 @@ class TeamBuff {
    * @type {Array<GroupSkillBuff>}
    * @memberof TeamBuff
    */
-  public groupSkillBuff: Array<GroupSkillBuff>;
+  public groupSkillBuff: Array<Gain>;
 
   constructor(options: any = {}) {
+    super();
     this.options = options;
 
     /**
@@ -61,16 +64,18 @@ class TeamBuff {
      */
     this.teamSkillBuff = options.teamSkillBuff
       ? options.teamSkillBuff
-      : options.mode === SupportMode.NeiGong
-        ? [TeamSkillBuffNeiGong.PoCangQiong, TeamSkillBuffNeiGong.QingJuan, TeamSkillBuffNeiGong.XiuQi]
-        : [TeamSkillBuffWaiGong.JiLei, TeamSkillBuffWaiGong.Jiu, TeamSkillBuffWaiGong.SuiXingChen, TeamSkillBuffWaiGong.YinMeiXiang];
+      : [];
+
+    this.gainList.push(...this.teamSkillBuff);
 
     /**
      * 初始化团队技能增益
      * 
      * 默认 朝圣言 + 弘法
      */
-    this.groupSkillBuff = options.groupSkillBuff || [GroupSkillBuff.ChaoShengYan, GroupSkillBuff.HongFa];
+    this.groupSkillBuff = options.groupSkillBuff || [];
+
+    this.gainList.push(...this.groupSkillBuff);
   }
 
   /**

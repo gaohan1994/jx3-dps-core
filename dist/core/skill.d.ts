@@ -39,6 +39,16 @@ declare class Skill {
      */
     step2Coefficient: number;
     /**
+     * 计算step6的基础系数
+     *
+     * @type {number}
+     * @memberof Skill
+     */
+    step6Coefficient: number;
+    step3Coefficient: number;
+    step4Coefficient: number;
+    step5Coefficient: number;
+    /**
      * 中间件
      *
      * @memberof Skill
@@ -47,6 +57,7 @@ declare class Skill {
         [name: string]: SkillMiddleware;
     };
     constructor(options: any);
+    use(stepName: string, middleware: any): void;
     /**
      * 计算技能伤害
      *
@@ -80,8 +91,6 @@ declare class Skill {
     /**
      * 计算双会加成之后的技能伤害
      *
-     *
-     *
      * @param {number} HuiXin
      * @param {number} HuiXiao
      * @param {Step4Config} [config={}]
@@ -89,7 +98,25 @@ declare class Skill {
      * @memberof Skill
      */
     step4(ctx: SkillContext, next: any): any;
+    /**
+     * 计算目标防御之后的技能伤害
+     *
+     * @param {SkillContext} ctx
+     * @param {*} next
+     * @return {*}
+     * @memberof Skill
+     */
+    step5(ctx: SkillContext, next: any): any;
+    /**
+     * 计算易伤之后的技能伤害
+     *
+     * @param {SkillContext} ctx
+     * @param {*} next
+     * @return {*}
+     * @memberof Skill
+     */
+    step6(ctx: SkillContext, next: any): any;
     checkMiddleware(middleware: any): boolean;
-    calculator(ctx: SkillContext): Promise<unknown>;
+    calculator(ctx: SkillContext): Promise<SkillContext>;
 }
 export default Skill;

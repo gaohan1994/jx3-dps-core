@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 18:41:58 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-08 19:04:57
+ * @Last Modified time: 2021-08-09 16:10:28
  */
 import chalk = require('chalk');
 import { TargetMode, TargetBossList, TargetMuZhuangList } from "../types";
@@ -15,7 +15,6 @@ class Target {
       [TargetBossList.DaMoDong]: {
         name: TargetBossList.DaMoDong,
         defenseCoefficient: 23265.87,
-        damageCoefficient: 0.65,
         neiFang: 12528,
         level: 113,
       }
@@ -24,7 +23,6 @@ class Target {
       [TargetMuZhuangList.MuZhuang111]: {
         name: TargetMuZhuangList.MuZhuang111,
         defenseCoefficient: 20134.905,
-        damageCoefficient: 0.8,
         neiFang: 5034,
         level: 111
       },
@@ -75,9 +73,9 @@ class Target {
 
     this.name = currentTarget.name;
     this.level = currentTarget.level;
-    this.damageCoefficient = currentTarget.damageCoefficient;
     this.defenseCoefficient = currentTarget.defenseCoefficient;
     this.neiFang = currentTarget.neiFang;
+    this.damageCoefficient = currentTarget.defenseCoefficient / (currentTarget.neiFang + currentTarget.defenseCoefficient);
   }
 
   public showTargetValue() {

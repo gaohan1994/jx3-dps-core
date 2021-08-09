@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SkillMiddleSteps = exports.GroupSkillBuff = exports.TeamSkillBuffWaiGong = exports.TeamSkillBuffNeiGong = exports.SetBonuse = exports.Weapon = exports.EnChants = exports.Formations = exports.FormationName = exports.FormationValue = exports.TargetMuZhuangList = exports.TargetBossList = exports.TargetMode = exports.CharacterTypes = exports.SupportMode = void 0;
+exports.SupportContextKeys = exports.SkillMiddleSteps = exports.GroupSkillBuffList = exports.TeamSkillBuffNeiGongList = exports.TeamSkillBuffWaiGongList = exports.SetBonuse = exports.Weapon = exports.EnChants = exports.FormationValue = exports.TargetMuZhuangList = exports.TargetBossList = exports.TargetMode = exports.CharacterTypes = exports.SupportMode = void 0;
 /**
  * 辅助类类别
  *
@@ -69,17 +69,10 @@ var TargetMuZhuangList;
 var FormationValue;
 (function (FormationValue) {
     FormationValue["TianGuLeiYinZhen"] = "TianGuLeiYinZhen";
+    FormationValue["DuJingZhen"] = "DuJingZhen";
+    FormationValue["TianLuoZhen"] = "TianLuoZhen";
+    FormationValue["QiChunZhen"] = "QiChunZhen";
 })(FormationValue = exports.FormationValue || (exports.FormationValue = {}));
-var FormationName;
-(function (FormationName) {
-    FormationName["TianGuLeiYinZhen"] = "\u5929\u9F13\u96F7\u97F3\u9635";
-})(FormationName = exports.FormationName || (exports.FormationName = {}));
-exports.Formations = [
-    {
-        name: FormationName.TianGuLeiYinZhen,
-        value: FormationValue.TianGuLeiYinZhen,
-    }
-];
 var EnChants;
 (function (EnChants) {
     // 附魔头
@@ -133,45 +126,39 @@ var SetBonuse;
     SetBonuse["ValueSetBonuse"] = "ValueSetBonuse";
 })(SetBonuse = exports.SetBonuse || (exports.SetBonuse = {}));
 /**
- * 内功小队技能增益
- *
- * @export
- * @enum {number}
- */
-var TeamSkillBuffNeiGong;
-(function (TeamSkillBuffNeiGong) {
-    TeamSkillBuffNeiGong["PoCangQiong"] = "PoCangQiong";
-    TeamSkillBuffNeiGong["XiuQi"] = "XiuQi";
-    TeamSkillBuffNeiGong["QingJuan"] = "QingJuan";
-})(TeamSkillBuffNeiGong = exports.TeamSkillBuffNeiGong || (exports.TeamSkillBuffNeiGong = {}));
-/**
  * 外功小队技能增益
  *
  * @export
  * @enum {number}
  */
-var TeamSkillBuffWaiGong;
-(function (TeamSkillBuffWaiGong) {
-    TeamSkillBuffWaiGong["SuiXingChen"] = "SuiXingChen";
-    TeamSkillBuffWaiGong["YinMeiXiang"] = "YinMeiXiang";
-    TeamSkillBuffWaiGong["JiLei"] = "JiLei";
-    TeamSkillBuffWaiGong["Jiu"] = "Jiu";
-})(TeamSkillBuffWaiGong = exports.TeamSkillBuffWaiGong || (exports.TeamSkillBuffWaiGong = {}));
+var TeamSkillBuffWaiGongList;
+(function (TeamSkillBuffWaiGongList) {
+    TeamSkillBuffWaiGongList["SuiXingChen"] = "SuiXingChen";
+    TeamSkillBuffWaiGongList["YinMeiXiang"] = "YinMeiXiang";
+    TeamSkillBuffWaiGongList["JiLei"] = "JiLei";
+    TeamSkillBuffWaiGongList["Jiu"] = "Jiu";
+})(TeamSkillBuffWaiGongList = exports.TeamSkillBuffWaiGongList || (exports.TeamSkillBuffWaiGongList = {}));
+var TeamSkillBuffNeiGongList;
+(function (TeamSkillBuffNeiGongList) {
+    TeamSkillBuffNeiGongList["XiuQi"] = "XiuQi";
+    TeamSkillBuffNeiGongList["PoCangQiong"] = "PoCangQiong";
+})(TeamSkillBuffNeiGongList = exports.TeamSkillBuffNeiGongList || (exports.TeamSkillBuffNeiGongList = {}));
 /**
  * 团队技能增益
  *
  * @export
  * @enum {number}
  */
-var GroupSkillBuff;
-(function (GroupSkillBuff) {
-    GroupSkillBuff["HongFa"] = "HongFa";
-    GroupSkillBuff["LiDiChengFo"] = "LiDiChengFo";
-    GroupSkillBuff["ChaoShengYan"] = "ChaoShengYan";
-    GroupSkillBuff["JieHuoZhan"] = "JieHuoZhan";
-    GroupSkillBuff["HaoLingSanJun"] = "HaoLingSanJun";
-    GroupSkillBuff["MeiHuaDun"] = "MeiHuaDun";
-})(GroupSkillBuff = exports.GroupSkillBuff || (exports.GroupSkillBuff = {}));
+var GroupSkillBuffList;
+(function (GroupSkillBuffList) {
+    GroupSkillBuffList["HongFa"] = "HongFa";
+    GroupSkillBuffList["LiDiChengFo"] = "LiDiChengFo";
+    GroupSkillBuffList["ChaoShengYan"] = "ChaoShengYan";
+    GroupSkillBuffList["JieHuoZhan"] = "JieHuoZhan";
+    GroupSkillBuffList["LieRiZhan"] = "LieRiZhan";
+    GroupSkillBuffList["HaoLingSanJun"] = "HaoLingSanJun";
+    GroupSkillBuffList["MeiHuaDun"] = "MeiHuaDun";
+})(GroupSkillBuffList = exports.GroupSkillBuffList || (exports.GroupSkillBuffList = {}));
 var SkillMiddleSteps;
 (function (SkillMiddleSteps) {
     SkillMiddleSteps["step1"] = "step1";
@@ -179,4 +166,26 @@ var SkillMiddleSteps;
     SkillMiddleSteps["step3"] = "step3";
     SkillMiddleSteps["step4"] = "step4";
 })(SkillMiddleSteps = exports.SkillMiddleSteps || (exports.SkillMiddleSteps = {}));
+var SupportContextKeys;
+(function (SupportContextKeys) {
+    SupportContextKeys["mainAttribute"] = "mainAttribute";
+    SupportContextKeys["YuanQi"] = "YuanQi";
+    SupportContextKeys["GenGu"] = "GenGu";
+    SupportContextKeys["LiDao"] = "LiDao";
+    SupportContextKeys["ShenFa"] = "ShenFa";
+    SupportContextKeys["damageBonus"] = "damageBonus";
+    SupportContextKeys["PoFangPercent"] = "PoFangPercent";
+    SupportContextKeys["PoFangLevel"] = "PoFangLevel";
+    SupportContextKeys["JiChuGongJi"] = "JiChuGongJi";
+    SupportContextKeys["JiChuGongJiPercent"] = "JiChuGongJiPercent";
+    SupportContextKeys["HuiXin"] = "HuiXin";
+    SupportContextKeys["HuiXinLevel"] = "HuiXinLevel";
+    SupportContextKeys["HuiXiao"] = "HuiXiao";
+    SupportContextKeys["HuiXiaoLevel"] = "HuiXiaoLevel";
+    SupportContextKeys["MingZhong"] = "MingZhong";
+    SupportContextKeys["MingZhongLevel"] = "MingZhongLevel";
+    SupportContextKeys["WuShuang"] = "WuShuang";
+    SupportContextKeys["WuShuangLevel"] = "WuShuangLevel";
+    SupportContextKeys["PoZhao"] = "PoZhao";
+})(SupportContextKeys = exports.SupportContextKeys || (exports.SupportContextKeys = {}));
 //# sourceMappingURL=index.js.map

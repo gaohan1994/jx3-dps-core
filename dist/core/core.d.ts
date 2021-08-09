@@ -34,7 +34,14 @@ declare class DpsCore {
      * @type {number}
      * @memberof DpsCore
      */
-    ZongGongji: number;
+    ZongGongJi: number;
+    /**
+     * 计算面板攻击的系数
+     *
+     * @type {number}
+     * @memberof DpsCore
+     */
+    GongJiCoefficient: number;
     /**
      * 武器伤害
      *
@@ -127,6 +134,7 @@ declare class DpsCore {
      */
     ShenFa?: number;
     options: any;
+    mainCoeffiecient: any;
     constructor(options: any);
     /**
      * 打印属性
@@ -134,11 +142,5 @@ declare class DpsCore {
      * @memberof DpsCore
      */
     showAttributes(): void;
-    /**
-     * 获取角色类型
-     *
-     * @memberof DpsCore
-     */
-    getCharacterType: () => "根骨" | "力道" | "身法" | "元气";
 }
 export default DpsCore;

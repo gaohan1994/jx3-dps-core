@@ -1,8 +1,7 @@
-import { SupportMode } from "../types";
-import PersonBuff from './person';
-import TeamBuff from './team';
+import { SupportMode, SupportContext } from "../types";
 import Target from './target';
-declare class Support {
+import SupportBase from './base';
+declare class Support extends SupportBase {
     /**
      * 辅助类类型
      *
@@ -22,14 +21,12 @@ declare class Support {
      * @type {PersonBuff}
      * @memberof Support
      */
-    personBuff: PersonBuff;
     /**
      * 团队增益模块
      *
      * @type {TeamBuff}
      * @memberof Support
      */
-    teamBuff: TeamBuff;
     /**
      * 目标
      *
@@ -38,6 +35,32 @@ declare class Support {
      */
     target: Target;
     constructor(options?: any);
+    /**
+     * 获得辅助总增益
+     *
+     * @return {*}  {Promise<SupportContext>}
+     * @memberof Support
+     */
+    getSupportAttribute(): Promise<SupportContext>;
+    /**
+     * 打印属性
+     *
+     * @memberof Support
+     */
     showSupportValue(): void;
+    /**
+     * 是否有技能套装
+     *
+     * @return {*}
+     * @memberof PersonBuff
+     */
+    hasSkillSetBonuese(): boolean;
+    /**
+     * 是否由属性套装
+     *
+     * @return {*}
+     * @memberof PersonBuff
+     */
+    hasValueSetBonuese(): boolean;
 }
 export default Support;

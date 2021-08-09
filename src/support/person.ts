@@ -4,12 +4,14 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 16:55:04 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-08 21:35:25
+ * @Last Modified time: 2021-08-09 15:30:54
  */
 import chalk = require('chalk');
 import { EnChants, Weapon, SetBonuse } from '../types'
+import SupportBase from './base';
+import { SetBonusesGain } from '../config/config'
 
-class PersonBuff {
+class PersonBuff extends SupportBase {
 
   public options: any;
 
@@ -38,6 +40,7 @@ class PersonBuff {
   public setBonuses: SetBonuse[] = [];
 
   constructor(options: any = {}) {
+    super();
     this.options = options;
 
     /**
@@ -59,7 +62,11 @@ class PersonBuff {
      * 
      * 默认四件套
      */
-    this.setBonuses = options.setBonuses || [SetBonuse.SkillSetBonuse, SetBonuse.ValueSetBonuse];
+    this.setBonuses = options.setBonuses || [];
+
+    if (this.hasValueSetBonuese()) {
+      this.gainList.push(SetBonusesGain.ValueSetBonuse);
+    }
   }
 
   /**
@@ -81,6 +88,16 @@ class PersonBuff {
    */
   public hasSkillSetBonuese() {
     return this.setBonuses.some((sb) => sb === SetBonuse.SkillSetBonuse);
+  }
+
+  /**
+   * 是否由属性套装
+   *
+   * @return {*} 
+   * @memberof PersonBuff
+   */
+  public hasValueSetBonuese() {
+    return this.setBonuses.some((sb) => sb === SetBonuse.ValueSetBonuse);
   }
 
   /**

@@ -16,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @Author: centerm.gaohan
  * @Date: 2021-08-08 19:45:42
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-08 21:41:37
+ * @Last Modified time: 2021-08-09 18:20:46
  */
 var invariant = require("invariant");
 var numeral = require("numeral");
@@ -32,7 +32,9 @@ var Skill = /** @class */ (function () {
             step1: undefined,
             step2: undefined,
             step3: undefined,
-            step4: undefined
+            step4: undefined,
+            step5: undefined,
+            step6: undefined
         };
         this.options = options;
         this.middleware = new middleware_1.default([]);
@@ -45,10 +47,17 @@ var Skill = /** @class */ (function () {
         invariant(typeof options.skillTimes === 'number', '技能次数不能为空');
         this.skillTimes = options.skillTimes;
         this.step2Coefficient = options.step2Coefficient;
+        this.step6Coefficient = options.step6Coefficient || 1;
+        this.step3Coefficient = options.step3Coefficient;
+        this.step4Coefficient = options.step4Coefficient;
+        this.step5Coefficient = options.step5Coefficient;
         if (!!options.middlewares) {
             this.middlewares = options.middlewares;
         }
     }
+    Skill.prototype.use = function (stepName, middleware) {
+        this.middlewares[stepName] = middleware.bind(this);
+    };
     /**
      * 计算技能伤害
      *
@@ -62,7 +71,7 @@ var Skill = /** @class */ (function () {
         if (!ctx) {
             return next();
         }
-        ctx.step1SkillDamage = formatNumber(ctx.basicDamage + (ctx.core.ZongGongji * ctx.coefficient));
+        ctx.step1SkillDamage = formatNumber(ctx.basicDamage + (ctx.core.ZongGongJi * ctx.coefficient));
         return next();
     };
     /**
@@ -94,13 +103,12 @@ var Skill = /** @class */ (function () {
         if (!ctx) {
             return next();
         }
-        ctx.step3SkillDamage = formatNumber(ctx.step2SkillDamage * (1 + ctx.core.PoFang / 100) * (1 + ctx.core.WuShuang / 100));
+        ctx.step3SkillDamage = formatNumber(ctx.step2SkillDamage *
+            getCurrentCoefficient(ctx.step3Coefficient, (1 + ctx.core.PoFang / 100) * (1 + ctx.core.WuShuang / 100)));
         return next();
     };
     /**
      * 计算双会加成之后的技能伤害
-     *
-     *
      *
      * @param {number} HuiXin
      * @param {number} HuiXiao
@@ -112,8 +120,42 @@ var Skill = /** @class */ (function () {
         if (!ctx) {
             return next();
         }
-        ctx.step4SkillDamage = formatNumber(ctx.step3SkillDamage * ((ctx.core.HuiXin / 100) * (ctx.core.HuiXiao / 100) + 1 - (ctx.core.HuiXin / 100)));
-        return this;
+        ctx.step4SkillDamage = formatNumber(ctx.step3SkillDamage *
+            getCurrentCoefficient(ctx.step4Coefficient, (ctx.core.HuiXin / 100) * (ctx.core.HuiXiao / 100) + 1 - (ctx.core.HuiXin / 100)));
+        return next();
+    };
+    /**
+     * 计算目标防御之后的技能伤害
+     *
+     * @param {SkillContext} ctx
+     * @param {*} next
+     * @return {*}
+     * @memberof Skill
+     */
+    Skill.prototype.step5 = function (ctx, next) {
+        if (!ctx) {
+            return next();
+        }
+        ctx.step5SkillDamage = formatNumber(ctx.step4SkillDamage *
+            getCurrentCoefficient(ctx.step5Coefficient, ctx.target.damageCoefficient));
+        return next();
+    };
+    /**
+     * 计算易伤之后的技能伤害
+     *
+     * @param {SkillContext} ctx
+     * @param {*} next
+     * @return {*}
+     * @memberof Skill
+     */
+    Skill.prototype.step6 = function (ctx, next) {
+        if (!ctx) {
+            return next();
+        }
+        ctx.step6SkillDamage = formatNumber(ctx.step5SkillDamage *
+            ctx.step6Coefficient + ctx.supportContext.damageBonus || 0);
+        ctx.subTotal = ctx.step6SkillDamage * ctx.skillTimes;
+        return next();
     };
     Skill.prototype.checkMiddleware = function (middleware) {
         return middleware !== undefined && typeof middleware === 'function';
@@ -125,22 +167,30 @@ var Skill = /** @class */ (function () {
          *
          * @param ctx
          */
-        ctx = __assign(__assign({}, ctx), { skillName: this.skillName, basicDamage: this.basicDamage, coefficient: this.coefficient, skillTimes: this.skillTimes, step2Coefficient: this.step2Coefficient });
-        this.middleware.use(this.step1);
+        ctx = __assign(__assign({}, ctx), { skillName: this.skillName, basicDamage: this.basicDamage, coefficient: this.coefficient, skillTimes: this.skillTimes, step2Coefficient: this.step2Coefficient, step3Coefficient: this.step3Coefficient, step4Coefficient: this.step4Coefficient, step5Coefficient: this.step5Coefficient, step6Coefficient: this.step6Coefficient });
+        this.middleware.use(this.step1.bind(this));
         if (this.checkMiddleware(this.middlewares.step1)) {
             this.middleware.use(this.middlewares.step1);
         }
-        this.middleware.use(this.step2);
+        this.middleware.use(this.step2.bind(this));
         if (this.checkMiddleware(this.middlewares.step2)) {
             this.middleware.use(this.middlewares.step2);
         }
-        this.middleware.use(this.step3);
+        this.middleware.use(this.step3.bind(this));
         if (this.checkMiddleware(this.middlewares.step3)) {
             this.middleware.use(this.middlewares.step3);
         }
-        this.middleware.use(this.step4);
+        this.middleware.use(this.step4.bind(this));
         if (this.checkMiddleware(this.middlewares.step4)) {
             this.middleware.use(this.middlewares.step4);
+        }
+        this.middleware.use(this.step5.bind(this));
+        if (this.checkMiddleware(this.middlewares.step5)) {
+            this.middleware.use(this.middlewares.step5);
+        }
+        this.middleware.use(this.step6.bind(this));
+        if (this.checkMiddleware(this.middlewares.step6)) {
+            this.middleware.use(this.middlewares.step6);
         }
         return new Promise(function (resolve, reject) {
             _this.middleware
@@ -158,5 +208,8 @@ var Skill = /** @class */ (function () {
 exports.default = Skill;
 function formatNumber(value) {
     return numeral(numeral(value).format('0.00')).value();
+}
+function getCurrentCoefficient(coefficient1, coefficient2) {
+    return coefficient1 || coefficient2 || 0;
 }
 //# sourceMappingURL=skill.js.map

@@ -1,5 +1,22 @@
 import DpsCore from "../core/core";
 import Support from "../support/support";
+import Target from '../support/target';
+import Skill from '../core/skill';
+/**
+ * 技能增益核心类
+ *
+ * @export
+ * @enum {number}
+ */
+export interface GainAttribute {
+  gainTarget: SupportContextKeys;
+  value: number;
+}
+
+export type Gain = {
+  name: string;
+  data: Array<GainAttribute>;
+};
 
 /**
  * 辅助类类别 
@@ -72,25 +89,15 @@ export enum TargetMuZhuangList {
 }
 
 export enum FormationValue {
-  TianGuLeiYinZhen = 'TianGuLeiYinZhen'
+  TianGuLeiYinZhen = 'TianGuLeiYinZhen',
+  DuJingZhen = 'DuJingZhen',
+  TianLuoZhen = 'TianLuoZhen',
+  QiChunZhen = 'QiChunZhen',
 }
 
-export enum FormationName {
-  TianGuLeiYinZhen = '天鼓雷音阵'
+export type Formation = {
+  [key in FormationValue]: Gain;
 }
-
-export interface Formation {
-  name: FormationName;
-  value: FormationValue;
-}
-
-export const Formations: Array<Formation> = [
-  {
-    name: FormationName.TianGuLeiYinZhen,
-    value: FormationValue.TianGuLeiYinZhen,
-  }
-];
-
 
 export enum EnChants {
   // 附魔头
@@ -146,28 +153,25 @@ export enum SetBonuse {
 }
 
 /**
- * 内功小队技能增益
- *
- * @export
- * @enum {number}
- */
-export enum TeamSkillBuffNeiGong {
-  PoCangQiong = 'PoCangQiong',
-  XiuQi = 'XiuQi',
-  QingJuan = 'QingJuan'
-}
-
-/**
  * 外功小队技能增益
  *
  * @export
  * @enum {number}
  */
-export enum TeamSkillBuffWaiGong {
+export enum TeamSkillBuffWaiGongList {
   SuiXingChen = 'SuiXingChen',
   YinMeiXiang = 'YinMeiXiang',
   JiLei = 'JiLei',
   Jiu = 'Jiu'
+}
+
+export enum TeamSkillBuffNeiGongList {
+  XiuQi = 'XiuQi',
+  PoCangQiong = 'PoCangQiong',
+}
+
+export type TeamSkill = {
+  [key in TeamSkillBuffWaiGongList | TeamSkillBuffNeiGongList]: Gain;
 }
 
 /**
@@ -176,14 +180,23 @@ export enum TeamSkillBuffWaiGong {
  * @export
  * @enum {number}
  */
-export enum GroupSkillBuff {
+export enum GroupSkillBuffList {
   HongFa = 'HongFa',
   LiDiChengFo = 'LiDiChengFo',
   ChaoShengYan = 'ChaoShengYan',
   JieHuoZhan = 'JieHuoZhan',
+  LieRiZhan = 'LieRiZhan',
   HaoLingSanJun = 'HaoLingSanJun',
   MeiHuaDun = 'MeiHuaDun'
 }
+
+type Partical<T> = {
+  [P in keyof T]?: T[P];
+}
+
+export type GroupSkillType = Partical<{
+  [key in GroupSkillBuffList]: Gain;
+}>
 
 export interface SkillMiddleware {
   (ctx: SkillContext, next: any): any;
@@ -202,7 +215,19 @@ export interface SkillContext {
 
   support: Support;
 
+  target?: Target;
+
   skillName?: string;
+
+  supportContext?: SupportContext;
+
+  /**
+   * 当前技能的dps期望
+   *
+   * @type {number}
+   * @memberof SkillContext
+   */
+  subTotal?: number;
 
   /**
    * 经过 step1 CalculatorSkillDamage 计算之后的值
@@ -266,10 +291,92 @@ export interface SkillContext {
    */
   step4Coefficient?: number;
 
+  /**
+   * step5 计算结果
+   *
+   * @type {number}
+   * @memberof SkillContext
+   */
+  step5SkillDamage?: number;
+
+  /**
+   * step5 计算系数
+   *
+   * @type {number}
+   * @memberof SkillContext
+   */
+  step5Coefficient?: number;
+
+  step6SkillDamage?: number;
+  step6Coefficient?: number;
+
   skillTimes?: number;
 
   basicDamage?: number;
 
   coefficient?: number;
 
+}
+
+export enum SupportContextKeys {
+  mainAttribute = 'mainAttribute',
+  YuanQi = 'YuanQi',
+  GenGu = 'GenGu',
+  LiDao = 'LiDao',
+  ShenFa = 'ShenFa',
+  damageBonus = 'damageBonus',
+  PoFangPercent = 'PoFangPercent',
+  PoFangLevel = 'PoFangLevel',
+  JiChuGongJi = 'JiChuGongJi',
+  JiChuGongJiPercent = 'JiChuGongJiPercent',
+  HuiXin = 'HuiXin',
+  HuiXinLevel = 'HuiXinLevel',
+  HuiXiao = 'HuiXiao',
+  HuiXiaoLevel = 'HuiXiaoLevel',
+  MingZhong = 'MingZhong',
+  MingZhongLevel = 'MingZhongLevel',
+  WuShuang = 'WuShuang',
+  WuShuangLevel = 'WuShuangLevel',
+  PoZhao = 'PoZhao',
+}
+
+export interface SupportContext {
+  /**
+   * 主属性 
+   *
+   * @type {number}
+   * @memberof SupportContext
+   */
+  mainAttribute: number;
+  YuanQi?: number;
+  GenGu?: number;
+  LiDao?: number;
+  ShenFa?: number;
+
+  PoZhao: number;
+  /**
+   * 易伤
+   *
+   * @type {number}
+   * @memberof SupportContext
+   */
+  damageBonus: number;
+
+  PoFangLevel: number;
+  PoFangPercent: number;
+
+  JiChuGongJi: number;
+  JiChuGongJiPercent: number;
+
+  HuiXin: number;
+  HuiXinLevel: number;
+
+  HuiXiao: number;
+  HuiXiaoLevel: number;
+
+  MingZhong: number;
+  MingZhongLevel: number;
+
+  WuShuang: number;
+  WuShuangLevel: number;
 }

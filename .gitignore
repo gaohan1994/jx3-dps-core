@@ -26,3 +26,7 @@ dist/
 client/
 
 .vscode
+
+/src/**/*.js
+
+/dist

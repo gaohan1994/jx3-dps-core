@@ -1,5 +1,6 @@
 import { EnChants, Weapon, SetBonuse } from '../types';
-declare class PersonBuff {
+import SupportBase from './base';
+declare class PersonBuff extends SupportBase {
     options: any;
     /**
      * 附魔情况
@@ -38,6 +39,13 @@ declare class PersonBuff {
      * @memberof PersonBuff
      */
     hasSkillSetBonuese(): boolean;
+    /**
+     * 是否由属性套装
+     *
+     * @return {*}
+     * @memberof PersonBuff
+     */
+    hasValueSetBonuese(): boolean;
     /**
      * 打印套装详情
      *

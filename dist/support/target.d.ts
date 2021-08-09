@@ -5,7 +5,6 @@ declare class Target {
             DaMoDong: {
                 name: TargetBossList;
                 defenseCoefficient: number;
-                damageCoefficient: number;
                 neiFang: number;
                 level: number;
             };
@@ -14,7 +13,6 @@ declare class Target {
             MuZhuang111: {
                 name: TargetMuZhuangList;
                 defenseCoefficient: number;
-                damageCoefficient: number;
                 neiFang: number;
                 level: number;
             };

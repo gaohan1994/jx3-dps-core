@@ -3,13 +3,13 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:45:42 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-08 21:41:37
+ * @Last Modified time: 2021-08-09 18:20:46
  */
 import invariant = require('invariant');
 import numeral = require('numeral');
 import chalk = require('chalk');
 import Middleware from '../onion/middleware';
-import { SkillContext, SkillMiddleware, SkillMiddleSteps } from '../types';
+import { SkillContext, SkillMiddleware, SkillMiddleSteps, SupportMode } from '../types';
 
 
 class Skill {
@@ -57,6 +57,18 @@ class Skill {
   public step2Coefficient: number;
 
   /**
+   * 计算step6的基础系数
+   *
+   * @type {number}
+   * @memberof Skill
+   */
+  public step6Coefficient: number;
+
+  public step3Coefficient: number;
+  public step4Coefficient: number;
+  public step5Coefficient: number;
+
+  /**
    * 中间件
    *
    * @memberof Skill
@@ -67,7 +79,9 @@ class Skill {
       step1: undefined,
       step2: undefined,
       step3: undefined,
-      step4: undefined
+      step4: undefined,
+      step5: undefined,
+      step6: undefined
     }
 
   constructor(options: any) {
@@ -89,9 +103,19 @@ class Skill {
 
     this.step2Coefficient = options.step2Coefficient;
 
+    this.step6Coefficient = options.step6Coefficient || 1;
+
+    this.step3Coefficient = options.step3Coefficient;
+    this.step4Coefficient = options.step4Coefficient;
+    this.step5Coefficient = options.step5Coefficient;
+
     if (!!options.middlewares) {
       this.middlewares = options.middlewares;
     }
+  }
+
+  use(stepName: string, middleware: any) {
+    this.middlewares[stepName] = middleware.bind(this);
   }
 
   /**
@@ -107,7 +131,7 @@ class Skill {
     if (!ctx) {
       return next();
     }
-    ctx.step1SkillDamage = formatNumber(ctx.basicDamage + (ctx.core.ZongGongji * ctx.coefficient));
+    ctx.step1SkillDamage = formatNumber(ctx.basicDamage + (ctx.core.ZongGongJi * ctx.coefficient));
     return next();
   }
   /**
@@ -140,15 +164,16 @@ class Skill {
     if (!ctx) {
       return next();
     }
-    ctx.step3SkillDamage = formatNumber(ctx.step2SkillDamage * (1 + ctx.core.PoFang / 100) * (1 + ctx.core.WuShuang / 100));
+    ctx.step3SkillDamage = formatNumber(
+      ctx.step2SkillDamage *
+      getCurrentCoefficient(ctx.step3Coefficient, (1 + ctx.core.PoFang / 100) * (1 + ctx.core.WuShuang / 100))
+    );
     return next();
   }
 
   /**
    * 计算双会加成之后的技能伤害
    * 
-   * 
-   *
    * @param {number} HuiXin
    * @param {number} HuiXiao
    * @param {Step4Config} [config={}]
@@ -160,18 +185,59 @@ class Skill {
       return next();
     }
     ctx.step4SkillDamage = formatNumber(
-      ctx.step3SkillDamage * (
-        (ctx.core.HuiXin / 100) * (ctx.core.HuiXiao / 100) + 1 - (ctx.core.HuiXin / 100)
-      )
+      ctx.step3SkillDamage *
+      getCurrentCoefficient(ctx.step4Coefficient, (ctx.core.HuiXin / 100) * (ctx.core.HuiXiao / 100) + 1 - (ctx.core.HuiXin / 100))
     );
-    return this;
+    return next();
+  }
+
+  /**
+   * 计算目标防御之后的技能伤害
+   *
+   * @param {SkillContext} ctx
+   * @param {*} next
+   * @return {*} 
+   * @memberof Skill
+   */
+  public step5(ctx: SkillContext, next: any) {
+    if (!ctx) {
+      return next();
+    }
+    ctx.step5SkillDamage = formatNumber(
+      ctx.step4SkillDamage *
+      getCurrentCoefficient(ctx.step5Coefficient, ctx.target.damageCoefficient)
+    );
+    return next();
+  }
+
+  /**
+   * 计算易伤之后的技能伤害
+   *
+   * @param {SkillContext} ctx
+   * @param {*} next
+   * @return {*} 
+   * @memberof Skill
+   */
+  public step6(ctx: SkillContext, next: any) {
+    if (!ctx) {
+      return next();
+    }
+
+    ctx.step6SkillDamage = formatNumber(
+      ctx.step5SkillDamage *
+      ctx.step6Coefficient + ctx.supportContext.damageBonus || 0
+    );
+
+    ctx.subTotal = ctx.step6SkillDamage * ctx.skillTimes;
+
+    return next();
   }
 
   public checkMiddleware(middleware: any): boolean {
     return middleware !== undefined && typeof middleware === 'function';
   }
 
-  public calculator(ctx: SkillContext) {
+  public calculator(ctx: SkillContext): Promise<SkillContext> {
 
     /**
      * 补充完整 SkillContext
@@ -185,23 +251,35 @@ class Skill {
       coefficient: this.coefficient,
       skillTimes: this.skillTimes,
       step2Coefficient: this.step2Coefficient,
+      step3Coefficient: this.step3Coefficient,
+      step4Coefficient: this.step4Coefficient,
+      step5Coefficient: this.step5Coefficient,
+      step6Coefficient: this.step6Coefficient,
     }
 
-    this.middleware.use(this.step1);
+    this.middleware.use(this.step1.bind(this));
     if (this.checkMiddleware(this.middlewares.step1)) {
       this.middleware.use(this.middlewares.step1);
     }
-    this.middleware.use(this.step2);
+    this.middleware.use(this.step2.bind(this));
     if (this.checkMiddleware(this.middlewares.step2)) {
       this.middleware.use(this.middlewares.step2);
     }
-    this.middleware.use(this.step3);
+    this.middleware.use(this.step3.bind(this));
     if (this.checkMiddleware(this.middlewares.step3)) {
       this.middleware.use(this.middlewares.step3);
     }
-    this.middleware.use(this.step4);
+    this.middleware.use(this.step4.bind(this));
     if (this.checkMiddleware(this.middlewares.step4)) {
       this.middleware.use(this.middlewares.step4);
+    }
+    this.middleware.use(this.step5.bind(this));
+    if (this.checkMiddleware(this.middlewares.step5)) {
+      this.middleware.use(this.middlewares.step5);
+    }
+    this.middleware.use(this.step6.bind(this));
+    if (this.checkMiddleware(this.middlewares.step6)) {
+      this.middleware.use(this.middlewares.step6);
     }
 
     return new Promise((resolve, reject) => {
@@ -222,4 +300,8 @@ export default Skill;
 
 function formatNumber(value: number): number {
   return numeral(numeral(value).format('0.00')).value();
+}
+
+function getCurrentCoefficient(coefficient1?: number, coefficient2?: number): number {
+  return coefficient1 || coefficient2 || 0;
 }

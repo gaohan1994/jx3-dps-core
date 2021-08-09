@@ -4,11 +4,11 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-07 20:43:49 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-08 19:27:35
+ * @Last Modified time: 2021-08-09 17:47:14
  */
 import invariant = require('invariant');
 import chalk = require('chalk');
-import { CharacterTypes } from '../types';
+import { CharacterTypes, SupportContext } from '../types';
 
 class DpsCore {
 
@@ -50,7 +50,15 @@ class DpsCore {
    * @type {number}
    * @memberof DpsCore
    */
-  public ZongGongji: number;
+  public ZongGongJi: number;
+
+  /**
+   * 计算面板攻击的系数
+   *
+   * @type {number}
+   * @memberof DpsCore
+   */
+  public GongJiCoefficient: number;
 
   /**
    * 武器伤害
@@ -158,11 +166,10 @@ class DpsCore {
 
   public options: any;
 
+  public mainCoeffiecient: any;
+
   constructor(options: any) {
     this.options = options;
-
-    invariant(typeof options.ZongGongji === 'number', '总攻击不能为空');
-    this.ZongGongji = options.ZongGongji;
 
     invariant(typeof options.JiChuGongJi === 'number', '攻击不能为空');
     this.JiChuGongJi = options.JiChuGongJi;
@@ -182,6 +189,9 @@ class DpsCore {
     invariant(typeof options.WuQiShangHai === 'number', '武器伤害不能为空');
     this.WuQiShangHai = options.WuQiShangHai;
 
+    invariant(typeof options.mainCoeffiecient === 'function', '主属性设置不能为空');
+    this.mainCoeffiecient = options.mainCoeffiecient;
+
     invariant(
       typeof options.YuanQi === 'number' ||
       typeof options.GenGu === 'number' ||
@@ -189,13 +199,40 @@ class DpsCore {
       typeof options.ShenFa === 'number',
       '主属性不能为空'
     );
-    this.YuanQi = options.YuanQi;
-    this.GenGu = options.GenGu;
-    this.LiDao = options.LiDao;
-    this.ShenFa = options.ShenFa;
+
+    if (options.YuanQi !== undefined) {
+      this.YuanQi = options.YuanQi;
+      this.type = CharacterTypes.YuanQi;
+    }
+    if (options.GenGu !== undefined) {
+      this.GenGu = options.GenGu;
+      this.type = CharacterTypes.GenGu;
+    }
+    if (options.LiDao !== undefined) {
+      this.LiDao = options.LiDao;
+      this.type = CharacterTypes.LiDao;
+    }
+    if (options.ShenFa !== undefined) {
+      this.ShenFa = options.ShenFa;
+      this.type = CharacterTypes.ShenFa;
+    }
+    this.type = options.type;
+
+    if (options.ZongGongJi) {
+      /**
+       * 如果传入的总攻击则使用传入的
+       */
+      this.ZongGongJi = options.ZongGongJi;
+    } else {
+      /**
+       * 如果没传入总攻击则计算，需要传入攻击系数
+       */
+      this.GongJiCoefficient = options.GongJiCoefficient || 1;
+      const ZGJ = options.mainCoeffiecient(this[this.type]).ZongGongJi + this.JiChuGongJi * this.GongJiCoefficient;
+      this.ZongGongJi = ZGJ;
+    }
 
     this.score = options.score;
-    this.type = options.type;
 
     this.HuiXin = options.HuiXin;
     this.HuiXiao = options.HuiXiao;
@@ -209,38 +246,18 @@ class DpsCore {
   public showAttributes() {
     console.log(chalk.yellow(`---- core start ----`));
     console.log(chalk.yellow(`
-      主属性 ${this.getCharacterType()} ${this.YuanQi || this.LiDao || this.GenGu || this.ShenFa}
-      武器伤害 ${this.WuQiShangHai}
-      基础攻击 ${this.JiChuGongJi}
-      总攻击 ${this.ZongGongji}
-      会心 ${this.HuiXin}
-      会心效果 ${this.HuiXiao}
-      破防 ${this.PoFang}
-      破招 ${this.PoZhao}
-      加速 ${this.JiaSu}
-      无双 ${this.WuShuang} 
+      主属性 ${this.YuanQi || this.LiDao || this.GenGu || this.ShenFa}
+      武器伤害 ${ this.WuQiShangHai}
+      基础攻击 ${ this.JiChuGongJi}
+      总攻击 ${ this.ZongGongJi}
+      会心 ${ this.HuiXin}
+      会心效果 ${ this.HuiXiao}
+      破防 ${ this.PoFang}
+      破招 ${ this.PoZhao}
+      加速 ${ this.JiaSu}
+      无双 ${ this.WuShuang}
     `));
-    console.log(chalk.yellow(`---- core end ----`));
-  }
-
-  /**
-   * 获取角色类型
-   *
-   * @memberof DpsCore
-   */
-  public getCharacterType = () => {
-    switch (this.type) {
-      case CharacterTypes.GenGu:
-        return '根骨';
-      case CharacterTypes.LiDao:
-        return '力道';
-      case CharacterTypes.ShenFa:
-        return '身法';
-      case CharacterTypes.YuanQi:
-        return '元气';
-      default:
-        return;
-    }
+    console.log(chalk.yellow(`----core end----`));
   }
 }
 

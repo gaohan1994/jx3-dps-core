@@ -1,55 +1,75 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 团队 和 小队增益
  * @Author: centerm.gaohan
  * @Date: 2021-08-08 17:18:52
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-08 19:10:49
+ * @Last Modified time: 2021-08-09 15:30:28
  */
 var chalk = require("chalk");
 var types_1 = require("../types");
-var TeamBuff = /** @class */ (function () {
+var base_1 = require("./base");
+var TeamBuff = /** @class */ (function (_super) {
+    __extends(TeamBuff, _super);
     function TeamBuff(options) {
+        var _a, _b;
         if (options === void 0) { options = {}; }
+        var _this = _super.call(this) || this;
         /**
          * 辅助类类型
          *
          * @memberof TeamBuff
          */
-        this.mode = types_1.SupportMode;
+        _this.mode = types_1.SupportMode;
         /**
          * 阵法
          *
          * @type {Formation}
          * @memberof Support
          */
-        this.formation = undefined;
-        this.options = options;
+        _this.formation = undefined;
+        _this.options = options;
         /**
          * 初始化阵法
          */
-        this.formation = options.formation;
+        _this.formation = options.formation;
         /**
          * 初始化类型
          */
-        this.mode = options.mode;
+        _this.mode = options.mode;
         /**
          * 初始化小队技能增益
          *
          * 如果传入则使用传入的技能增益，如果没有传入根据内外功划分
          */
-        this.teamSkillBuff = options.teamSkillBuff
+        _this.teamSkillBuff = options.teamSkillBuff
             ? options.teamSkillBuff
-            : options.mode === types_1.SupportMode.NeiGong
-                ? [types_1.TeamSkillBuffNeiGong.PoCangQiong, types_1.TeamSkillBuffNeiGong.QingJuan, types_1.TeamSkillBuffNeiGong.XiuQi]
-                : [types_1.TeamSkillBuffWaiGong.JiLei, types_1.TeamSkillBuffWaiGong.Jiu, types_1.TeamSkillBuffWaiGong.SuiXingChen, types_1.TeamSkillBuffWaiGong.YinMeiXiang];
+            : [];
+        (_a = _this.gainList).push.apply(_a, _this.teamSkillBuff);
         /**
          * 初始化团队技能增益
          *
          * 默认 朝圣言 + 弘法
          */
-        this.groupSkillBuff = options.groupSkillBuff || [types_1.GroupSkillBuff.ChaoShengYan, types_1.GroupSkillBuff.HongFa];
+        _this.groupSkillBuff = options.groupSkillBuff || [];
+        (_b = _this.gainList).push.apply(_b, _this.groupSkillBuff);
+        return _this;
     }
     /**
      * 打印团队增益
@@ -60,6 +80,6 @@ var TeamBuff = /** @class */ (function () {
         console.log(chalk.green("\u56E2\u961F\u589E\u76CA\uFF1A\n      \u9635\u6CD5\uFF1A\n      " + (this.formation || '无') + "\n      \u5C0F\u961F\u6280\u80FD\u589E\u76CA\uFF1A\n      " + this.teamSkillBuff.join(', ') + "\n      \u56E2\u961F\u6280\u80FD\u589E\u76CA\uFF1A\n      " + this.groupSkillBuff.join(', ') + "\n    "));
     };
     return TeamBuff;
-}());
+}(base_1.default));
 exports.default = TeamBuff;
 //# sourceMappingURL=team.js.map
