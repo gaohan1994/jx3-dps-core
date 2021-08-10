@@ -1,26 +1,40 @@
 ## 剑网三计算器核心库
 
+## Why
+
+把剑三核心计算抽离出来，全门派都可以使用，目前只配置了少林门派，后续待完善
+
 ## Usage
 
 ```js
-const dpsCore = new DpsCore({
-  type: 'YuanQi',
-  ZongGongji: 26583,
-  JiChuGongJi: 15064,
-  WuQiShangHai: 1998,
-  HuiXin: 20.62,
-  HuiXiao: 175.99,
-  PoFang: 51.62,
-  PoZhao: 4117,
-  JiaSu: 4.4,
-  WuShuang: 41.88,
-  YuanQi: 2562,
+import Calculator, {
+  YiJinJing,
+  DpsCore,
+  Support,
+  YiJinJing,
+} from 'jx3-dps-core';
+
+// 创建计算器方法1
+const YJJ = new Calculator.YiJinJing({
+  core: {...},
+  support: {...},
 });
 
-const support = new Support({ mode: 'NeiGong' });
+YJJ.total().then((result) => {
+  console.log('result', result);
+  console.log('result', result.totalExpectation);
+  console.log('result', result.dps);
+});
 
-const yjj = new YiJinJing({ core: dpsCore, support });
-yjj.showCalculatorValue();
-yjj.showCoreValue();
-yjj.showSupportValue();
+// 创建计算器方法2
+
+const YJJ = new YiJinJing({
+  core: {...},
+  support: {...},
+});
+YJJ.total().then((result) => {
+  console.log('result', result);
+  console.log('result', result.totalExpectation);
+  console.log('result', result.dps);
+});
 ```

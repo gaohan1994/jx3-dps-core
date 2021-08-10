@@ -2,6 +2,12 @@ import DpsCore from './core/core';
 import Support from './support/support';
 import { YiJinJing } from './calculator';
 
+class Calculator {
+  static YiJinJing = YiJinJing;
+}
+
+export default Calculator;
+
 /**
  * 导出工具类
  * 

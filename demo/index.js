@@ -1,7 +1,8 @@
 const { YiJinJing } = require('../dist');
+const Calculator = require('../dist');
 
 function Demo() {
-  const yjj = new YiJinJing({
+  const yjj = new Calculator.YiJinJing({
     core: {
       type: 'YuanQi',
       ZongGongJi: 26583,
