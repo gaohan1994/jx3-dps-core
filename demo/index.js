@@ -5,7 +5,7 @@ function Demo() {
     core: {
       type: 'YuanQi',
       ZongGongJi: 26583,
-      JiChuGongJi: 15064,
+      JiChuGongJi: 14707,
       WuQiShangHai: 1998,
       HuiXin: 20.62,
       HuiXiao: 175.99,
@@ -20,7 +20,10 @@ function Demo() {
     },
   });
 
-  yjj.total();
+  yjj.total().then((res) => {
+    console.log('res', res.totalExpectation);
+    console.log('res', res.dps);
+  });
 }
 
 Demo();

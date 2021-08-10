@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 16:29:54 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-09 16:06:10
+ * @Last Modified time: 2021-08-10 17:51:10
  */
 import chalk = require('chalk');
 import invariant = require('invariant');
@@ -127,8 +127,6 @@ class Support extends SupportBase {
    */
   public showSupportValue() {
     console.log(chalk.blue(`---- support start ----`));
-    // this.personBuff.showPersonBuffValue();
-    // this.teamBuff.showTeamBuffValue();
     this.target.showTargetValue();
     console.log(chalk.blue(`---- support end ----`));
   }
@@ -141,6 +139,10 @@ class Support extends SupportBase {
    */
   public hasSkillSetBonuese() {
     return this.gainList.some((g) => g.name === SetBonuse.SkillSetBonuse);
+  }
+
+  public hasCw() {
+    return this.gainList.some((g) => g.name === 'CW');
   }
 
   /**

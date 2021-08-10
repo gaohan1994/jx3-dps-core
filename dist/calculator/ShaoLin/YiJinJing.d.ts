@@ -8,11 +8,16 @@
  * @Author: centerm.gaohan
  * @Date: 2021-08-08 18:35:26
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-09 18:23:25
+ * @Last Modified time: 2021-08-10 18:09:48
  */
 import CalculatorBase from "../base";
 declare class YiJinJing extends CalculatorBase {
     constructor(options: any);
+    /**
+     * 添加技能
+     *
+     * @memberof YiJinJing
+     */
     addSkills(): Promise<void>;
 }
 export default YiJinJing;

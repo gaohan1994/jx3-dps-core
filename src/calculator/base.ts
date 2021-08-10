@@ -4,14 +4,15 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-09 18:25:28
+ * @Last Modified time: 2021-08-10 18:04:25
  */
 import invariant = require('invariant');
 import chalk = require('chalk');
 import Core from '../core/core';
 import Support from '../support/support';
-import Skill from '../core/skill';
+import Target from '../support/target';
 import { SupportContext, SkillContext } from '../types';
+import Skill from '../core/skill'
 
 
 class CalculatorBase {
@@ -42,6 +43,14 @@ class CalculatorBase {
    */
   public support: Support;
 
+  /**
+   * 目标类
+   *
+   * @type {Target}
+   * @memberof CalculatorBase
+   */
+  public target: Target;
+
   public supportContext: SupportContext;
 
   /**
@@ -60,20 +69,11 @@ class CalculatorBase {
    */
   public className: string;
 
-  /**
-   * 是否有技能套装
-   *
-   * @type {boolean}
-   * @memberof CalculatorBase
-   */
-  public skillSetBonueseToken: boolean;
+
   /**
    * 技能套装系数
-   *
-   * @type {number}
-   * @memberof CalculatorBase
    */
-  public skillCoefficient: number;
+  public skillSetBonuseCoefficient: number;
 
   /**
    * 战斗时间 单位：秒 
@@ -83,6 +83,21 @@ class CalculatorBase {
    * @memberof CalculatorBase
    */
   public seconds: number;
+  /**
+   * 总期望
+   *
+   * @type {number}
+   * @memberof CalculatorBase
+   */
+  public totalExpectation: number;
+
+  /**
+   * dps
+   *
+   * @type {number}
+   * @memberof CalculatorBase
+   */
+  public dps: number;
 
   /**
    * 技能次数库，由子类填充
@@ -94,32 +109,19 @@ class CalculatorBase {
    */
   public skillTimesLib: {
     [name: string]: number;
-  }
-
-  // addSkills(): void;
+  } = {}
 
   constructor(options: any = {}) {
     this.options = options;
 
-    // invariant(!!options.core, '核心类不能为空');
-    // this.core = new Core(options.core);
-
     invariant(!!options.support, '辅助类不能为空');
     this.support = new Support(options.support);
 
-    /**
-     * 首先得到辅助类的所有增益
-     */
-    // const supportAttribute = this.support.getSupportAttribute();
-    // console.log('supportAttribute', supportAttribute);
-
-    /**
-     * 是否有技能套装特效
-     * 
-     * @param hasSkillSetBonuese
-     */
-    this.skillSetBonueseToken = this.support.hasSkillSetBonuese();
-    this.skillCoefficient = options.skillCoefficient || 0.0996;
+    if (this.support.hasSkillSetBonuese()) {
+      this.skillSetBonuseCoefficient = 0.0996;
+    } else {
+      this.skillSetBonuseCoefficient = 0;
+    }
 
     this.seconds = options.seconds || (5 * 60);
   }
@@ -134,46 +136,56 @@ class CalculatorBase {
     return this.skillTimesLib[skillName];
   }
 
-  public async initContructor(initCore: Core) {
-    const supportContext = await this.support.getSupportAttribute();
-    this.supportContext = supportContext;
-
-    const core = this.generateUltimate(initCore, supportContext);
-    this.core = core;
+  /**
+   * 获得core类
+   *
+   * @return {*}  {Core}
+   * @memberof CalculatorBase
+   */
+  public getCore(): Core {
+    return this.core;
   }
 
   /**
-   * 基类 method 计算所有技能伤害
+   * 获得辅助类
    *
+   * @return {*}  {SupportContext}
    * @memberof CalculatorBase
    */
-  public async executeCalculator() {
-
-    let promises: any[] = [];
-    for (let i = 0; i < this.skills.length; i++) {
-
-      promises.push(
-        this.skills[i].calculator({
-          core: this.core,
-          support: this.support,
-          target: this.support.target,
-          supportContext: this.supportContext,
-        })
-      );
-    }
-
-    const responses = await Promise.all(promises);
-    console.log('responses', responses);
+  public getSupportContext(): SupportContext {
+    return this.supportContext;
   }
 
+  public getSupport() {
+    return this.support;
+  }
+
+  /**
+   * 获得目标类
+   *
+   * @return {*}  {Target}
+   * @memberof CalculatorBase
+   */
+  public getTarget(): Target {
+    return this.target;
+  }
+
+  /**
+   * 添加技能
+   *
+   * @param {Skill[]} [skills=[]]
+   * @memberof CalculatorBase
+   */
   public addSkills(skills: Skill[] = []) {
     this.skills.push(...skills);
   }
 
-  public async total() {
-    /**
-     * 生成最终面板
-     */
+  /**
+   * 生成最终核心类
+   *
+   * @memberof CalculatorBase
+   */
+  public async initUltimate() {
     const initCore = new Core({
       ...this.options.core,
       mainCoeffiecient: (YuanQi: number) => {
@@ -183,28 +195,60 @@ class CalculatorBase {
         };
       },
     });
+    const supportContext = await this.support.getSupportAttribute();
+    this.supportContext = supportContext;
 
-    await this.initContructor(initCore);
+    const core = this.generateUltimate(initCore, supportContext);
+    this.core = core;
 
-    await this.addSkills();
-
-    this.executeCalculator();
+    this.target = this.support.target;
   }
 
   /**
-   * 执行单个技能任务
+   * 基类 method 计算所有技能伤害
    *
-   * @param {Skill} skill
    * @memberof CalculatorBase
    */
-  public async execute(skill: Skill): Promise<SkillContext> {
-    const result = await skill.calculator({
-      core: this.core,
-      support: this.support,
-      target: this.support.target,
-      supportContext: this.supportContext
+  public async executeCalculator() {
+    let skillsArray: Skill[] = [];
+    for (let i = 0; i < this.skills.length; i++) {
+
+      skillsArray.push(
+        this.skills[i].calculator()
+      );
+    }
+    // this.core.showAttributes();
+    let total = 0;
+
+    skillsArray.forEach((skill) => {
+      // skill.showSkillInfo();
+      total += skill.subTotal;
     });
-    return result;
+    this.totalExpectation = total;
+    this.dps = total / this.seconds;
+
+    return {
+      totalExpectation: this.totalExpectation,
+      seconds: this.seconds,
+      dps: this.dps,
+      skills: skillsArray
+    };
+  }
+
+  /**
+   * 计算
+   *
+   * @memberof CalculatorBase
+   */
+  public async total() {
+    /**
+     * 生成最终面板
+     */
+    await this.initUltimate();
+
+    await this.addSkills();
+
+    return this.executeCalculator();
   }
 
   /**

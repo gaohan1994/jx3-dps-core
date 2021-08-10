@@ -53,14 +53,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @Author: centerm.gaohan
  * @Date: 2021-08-08 19:12:37
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-09 18:25:28
+ * @Last Modified time: 2021-08-10 18:04:25
  */
 var invariant = require("invariant");
 var chalk = require("chalk");
 var core_1 = require("../core/core");
 var support_1 = require("../support/support");
 var CalculatorBase = /** @class */ (function () {
-    // addSkills(): void;
     function CalculatorBase(options) {
         if (options === void 0) { options = {}; }
         /**
@@ -70,23 +69,24 @@ var CalculatorBase = /** @class */ (function () {
          * @memberof CalculatorBase
          */
         this.skills = [];
+        /**
+         * 技能次数库，由子类填充
+         *
+         * @type {{
+         *     [name: string]: number;
+         *   }}
+         * @memberof CalculatorBase
+         */
+        this.skillTimesLib = {};
         this.options = options;
-        // invariant(!!options.core, '核心类不能为空');
-        // this.core = new Core(options.core);
         invariant(!!options.support, '辅助类不能为空');
         this.support = new support_1.default(options.support);
-        /**
-         * 首先得到辅助类的所有增益
-         */
-        // const supportAttribute = this.support.getSupportAttribute();
-        // console.log('supportAttribute', supportAttribute);
-        /**
-         * 是否有技能套装特效
-         *
-         * @param hasSkillSetBonuese
-         */
-        this.skillSetBonueseToken = this.support.hasSkillSetBonuese();
-        this.skillCoefficient = options.skillCoefficient || 0.0996;
+        if (this.support.hasSkillSetBonuese()) {
+            this.skillSetBonuseCoefficient = 0.0996;
+        }
+        else {
+            this.skillSetBonuseCoefficient = 0;
+        }
         this.seconds = options.seconds || (5 * 60);
     }
     /**
@@ -98,17 +98,71 @@ var CalculatorBase = /** @class */ (function () {
     CalculatorBase.prototype.getSkillTimes = function (skillName) {
         return this.skillTimesLib[skillName];
     };
-    CalculatorBase.prototype.initContructor = function (initCore) {
+    /**
+     * 获得core类
+     *
+     * @return {*}  {Core}
+     * @memberof CalculatorBase
+     */
+    CalculatorBase.prototype.getCore = function () {
+        return this.core;
+    };
+    /**
+     * 获得辅助类
+     *
+     * @return {*}  {SupportContext}
+     * @memberof CalculatorBase
+     */
+    CalculatorBase.prototype.getSupportContext = function () {
+        return this.supportContext;
+    };
+    CalculatorBase.prototype.getSupport = function () {
+        return this.support;
+    };
+    /**
+     * 获得目标类
+     *
+     * @return {*}  {Target}
+     * @memberof CalculatorBase
+     */
+    CalculatorBase.prototype.getTarget = function () {
+        return this.target;
+    };
+    /**
+     * 添加技能
+     *
+     * @param {Skill[]} [skills=[]]
+     * @memberof CalculatorBase
+     */
+    CalculatorBase.prototype.addSkills = function (skills) {
+        var _a;
+        if (skills === void 0) { skills = []; }
+        (_a = this.skills).push.apply(_a, skills);
+    };
+    /**
+     * 生成最终核心类
+     *
+     * @memberof CalculatorBase
+     */
+    CalculatorBase.prototype.initUltimate = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var supportContext, core;
+            var initCore, supportContext, core;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.support.getSupportAttribute()];
+                    case 0:
+                        initCore = new core_1.default(__assign(__assign({}, this.options.core), { mainCoeffiecient: function (YuanQi) {
+                                return {
+                                    JiChuGongJi: YuanQi * 0.18,
+                                    ZongGongJi: YuanQi * 1.85,
+                                };
+                            } }));
+                        return [4 /*yield*/, this.support.getSupportAttribute()];
                     case 1:
                         supportContext = _a.sent();
                         this.supportContext = supportContext;
                         core = this.generateUltimate(initCore, supportContext);
                         this.core = core;
+                        this.target = this.support.target;
                         return [2 /*return*/];
                 }
             });
@@ -121,77 +175,51 @@ var CalculatorBase = /** @class */ (function () {
      */
     CalculatorBase.prototype.executeCalculator = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var promises, i, responses;
+            var skillsArray, i, total;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        promises = [];
-                        for (i = 0; i < this.skills.length; i++) {
-                            promises.push(this.skills[i].calculator({
-                                core: this.core,
-                                support: this.support,
-                                target: this.support.target,
-                                supportContext: this.supportContext,
-                            }));
-                        }
-                        return [4 /*yield*/, Promise.all(promises)];
-                    case 1:
-                        responses = _a.sent();
-                        console.log('responses', responses);
-                        return [2 /*return*/];
+                skillsArray = [];
+                for (i = 0; i < this.skills.length; i++) {
+                    skillsArray.push(this.skills[i].calculator());
                 }
-            });
-        });
-    };
-    CalculatorBase.prototype.addSkills = function (skills) {
-        var _a;
-        if (skills === void 0) { skills = []; }
-        (_a = this.skills).push.apply(_a, skills);
-    };
-    CalculatorBase.prototype.total = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var initCore;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        initCore = new core_1.default(__assign(__assign({}, this.options.core), { mainCoeffiecient: function (YuanQi) {
-                                return {
-                                    JiChuGongJi: YuanQi * 0.18,
-                                    ZongGongJi: YuanQi * 1.85,
-                                };
-                            } }));
-                        return [4 /*yield*/, this.initContructor(initCore)];
-                    case 1:
-                        _a.sent();
-                        return [4 /*yield*/, this.addSkills()];
-                    case 2:
-                        _a.sent();
-                        this.executeCalculator();
-                        return [2 /*return*/];
-                }
+                total = 0;
+                skillsArray.forEach(function (skill) {
+                    // skill.showSkillInfo();
+                    total += skill.subTotal;
+                });
+                this.totalExpectation = total;
+                this.dps = total / this.seconds;
+                return [2 /*return*/, {
+                        totalExpectation: this.totalExpectation,
+                        seconds: this.seconds,
+                        dps: this.dps,
+                        skills: skillsArray
+                    }];
             });
         });
     };
     /**
-     * 执行单个技能任务
+     * 计算
      *
-     * @param {Skill} skill
      * @memberof CalculatorBase
      */
-    CalculatorBase.prototype.execute = function (skill) {
+    CalculatorBase.prototype.total = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, skill.calculator({
-                            core: this.core,
-                            support: this.support,
-                            target: this.support.target,
-                            supportContext: this.supportContext
-                        })];
+                    case 0: 
+                    /**
+                     * 生成最终面板
+                     */
+                    return [4 /*yield*/, this.initUltimate()];
                     case 1:
-                        result = _a.sent();
-                        return [2 /*return*/, result];
+                        /**
+                         * 生成最终面板
+                         */
+                        _a.sent();
+                        return [4 /*yield*/, this.addSkills()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/, this.executeCalculator()];
                 }
             });
         });

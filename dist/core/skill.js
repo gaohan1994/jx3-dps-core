@@ -1,207 +1,100 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 技能类
  * @Author: centerm.gaohan
  * @Date: 2021-08-08 19:45:42
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-09 18:20:46
+ * @Last Modified time: 2021-08-10 18:03:21
  */
 var invariant = require("invariant");
 var numeral = require("numeral");
-var middleware_1 = require("../onion/middleware");
+var chalk = require("chalk");
 var Skill = /** @class */ (function () {
     function Skill(options) {
-        /**
-         * 中间件
-         *
-         * @memberof Skill
-         */
-        this.middlewares = {
-            step1: undefined,
-            step2: undefined,
-            step3: undefined,
-            step4: undefined,
-            step5: undefined,
-            step6: undefined
-        };
         this.options = options;
-        this.middleware = new middleware_1.default([]);
-        invariant(!!options.skillName, '技能名称不能为空');
-        this.skillName = options.skillName;
-        invariant(typeof options.basicDamage === 'number', '基础伤害不能为空');
-        this.basicDamage = options.basicDamage;
-        invariant(typeof options.coefficient === 'number', '伤害系数不能为空');
-        this.coefficient = options.coefficient;
         invariant(typeof options.skillTimes === 'number', '技能次数不能为空');
         this.skillTimes = options.skillTimes;
-        this.step2Coefficient = options.step2Coefficient;
-        this.step6Coefficient = options.step6Coefficient || 1;
-        this.step3Coefficient = options.step3Coefficient;
-        this.step4Coefficient = options.step4Coefficient;
-        this.step5Coefficient = options.step5Coefficient;
-        if (!!options.middlewares) {
-            this.middlewares = options.middlewares;
-        }
+        invariant(!!options.skillName, '技能名称不能为空');
+        this.skillName = options.skillName;
+        invariant(!!options.core, '请设置核心类');
+        this.core = options.core;
+        invariant(!!options.target, '请设置目标类');
+        this.target = options.target;
+        invariant(!!options.supportContext, '请设置辅助类');
+        this.supportContext = options.supportContext;
+        this.skillBasicNumber = options.skillBasicNumber || 0;
+        this.basicDamage = currySkill(getCurrentCoefficient(options.basicDamage, this.core.ZongGongJi))();
+        this.basicDamageCoefficient = currySkill(getCurrentCoefficient(options.basicDamageCoefficient, 1))();
+        this.poFangCoefficient = currySkill(getCurrentCoefficient(options.poFangCoefficient, 1 + this.core.PoFang / 100))();
+        this.wuShuangCoefficient = currySkill(getCurrentCoefficient(options.wuShuangCoefficient, 1 + this.core.WuShuang / 100))();
+        this.huiXinHuiXiaoCoefficient = currySkill(getCurrentCoefficient(options.huiXinHuiXiaoCoefficient, (this.core.HuiXin / 100) * (this.core.HuiXiao / 100) + 1 - (this.core.HuiXin / 100)))();
+        this.targetDamageCoefficient = currySkill(getCurrentCoefficient(options.targetDamageCoefficient, this.target.damageCoefficient))();
+        this.damageBonuesCoefficient = currySkill(getCurrentCoefficient(options.damageBonuesCoefficient, 1))();
+        this.extra = currySkill(getCurrentCoefficient(options.extra, 0))();
     }
-    Skill.prototype.use = function (stepName, middleware) {
-        this.middlewares[stepName] = middleware.bind(this);
-    };
     /**
-     * 计算技能伤害
-     *
-     * step1SkillDamage = basicDamage + (ZongGongJi * coefficient)
-     *
-     * @param {number} ZongGongJi
-     * @return {*}  {number}
-     * @memberof Skill
-     */
-    Skill.prototype.step1 = function (ctx, next) {
-        if (!ctx) {
-            return next();
-        }
-        ctx.step1SkillDamage = formatNumber(ctx.basicDamage + (ctx.core.ZongGongJi * ctx.coefficient));
-        return next();
-    };
-    /**
-     * 计算奇穴、秘籍、加成之后的伤害
-     *
-     * step2SkillDamage = step1SkillDamage * QiXueAndMiJiCoefficient
+     * 计算技能小计
      *
      * @return {*}  {number}
-     * @memberof Skill
+     * @memberof Skill2
      */
-    Skill.prototype.step2 = function (ctx, next) {
-        if (!ctx) {
-            return next();
-        }
-        ctx.step2SkillDamage = formatNumber(ctx.step1SkillDamage * ctx.step2Coefficient);
-        return next();
-    };
-    /**
-     * 计算经过破防无双加成之后的值
-     *
-     * step3SkillDamage = this.step2SkillDamage * (1 + PoFang) * (1 + WuShuang)
-     *
-     * @param {number} PoFang
-     * @param {number} WuShuang
-     * @return {*}  {this}
-     * @memberof Skill
-     */
-    Skill.prototype.step3 = function (ctx, next) {
-        if (!ctx) {
-            return next();
-        }
-        ctx.step3SkillDamage = formatNumber(ctx.step2SkillDamage *
-            getCurrentCoefficient(ctx.step3Coefficient, (1 + ctx.core.PoFang / 100) * (1 + ctx.core.WuShuang / 100)));
-        return next();
-    };
-    /**
-     * 计算双会加成之后的技能伤害
-     *
-     * @param {number} HuiXin
-     * @param {number} HuiXiao
-     * @param {Step4Config} [config={}]
-     * @return {*}  {this}
-     * @memberof Skill
-     */
-    Skill.prototype.step4 = function (ctx, next) {
-        if (!ctx) {
-            return next();
-        }
-        ctx.step4SkillDamage = formatNumber(ctx.step3SkillDamage *
-            getCurrentCoefficient(ctx.step4Coefficient, (ctx.core.HuiXin / 100) * (ctx.core.HuiXiao / 100) + 1 - (ctx.core.HuiXin / 100)));
-        return next();
-    };
-    /**
-     * 计算目标防御之后的技能伤害
-     *
-     * @param {SkillContext} ctx
-     * @param {*} next
-     * @return {*}
-     * @memberof Skill
-     */
-    Skill.prototype.step5 = function (ctx, next) {
-        if (!ctx) {
-            return next();
-        }
-        ctx.step5SkillDamage = formatNumber(ctx.step4SkillDamage *
-            getCurrentCoefficient(ctx.step5Coefficient, ctx.target.damageCoefficient));
-        return next();
-    };
-    /**
-     * 计算易伤之后的技能伤害
-     *
-     * @param {SkillContext} ctx
-     * @param {*} next
-     * @return {*}
-     * @memberof Skill
-     */
-    Skill.prototype.step6 = function (ctx, next) {
-        if (!ctx) {
-            return next();
-        }
-        ctx.step6SkillDamage = formatNumber(ctx.step5SkillDamage *
-            ctx.step6Coefficient + ctx.supportContext.damageBonus || 0);
-        ctx.subTotal = ctx.step6SkillDamage * ctx.skillTimes;
-        return next();
-    };
-    Skill.prototype.checkMiddleware = function (middleware) {
-        return middleware !== undefined && typeof middleware === 'function';
-    };
-    Skill.prototype.calculator = function (ctx) {
-        var _this = this;
+    Skill.prototype.calculator = function () {
         /**
-         * 补充完整 SkillContext
-         *
-         * @param ctx
+         * 当前技能小计
          */
-        ctx = __assign(__assign({}, ctx), { skillName: this.skillName, basicDamage: this.basicDamage, coefficient: this.coefficient, skillTimes: this.skillTimes, step2Coefficient: this.step2Coefficient, step3Coefficient: this.step3Coefficient, step4Coefficient: this.step4Coefficient, step5Coefficient: this.step5Coefficient, step6Coefficient: this.step6Coefficient });
-        this.middleware.use(this.step1.bind(this));
-        if (this.checkMiddleware(this.middlewares.step1)) {
-            this.middleware.use(this.middlewares.step1);
-        }
-        this.middleware.use(this.step2.bind(this));
-        if (this.checkMiddleware(this.middlewares.step2)) {
-            this.middleware.use(this.middlewares.step2);
-        }
-        this.middleware.use(this.step3.bind(this));
-        if (this.checkMiddleware(this.middlewares.step3)) {
-            this.middleware.use(this.middlewares.step3);
-        }
-        this.middleware.use(this.step4.bind(this));
-        if (this.checkMiddleware(this.middlewares.step4)) {
-            this.middleware.use(this.middlewares.step4);
-        }
-        this.middleware.use(this.step5.bind(this));
-        if (this.checkMiddleware(this.middlewares.step5)) {
-            this.middleware.use(this.middlewares.step5);
-        }
-        this.middleware.use(this.step6.bind(this));
-        if (this.checkMiddleware(this.middlewares.step6)) {
-            this.middleware.use(this.middlewares.step6);
-        }
-        return new Promise(function (resolve, reject) {
-            _this.middleware
-                .execute(ctx)
-                .then(function () {
-                resolve(ctx);
-            })
-                .catch(function (error) {
-                reject(error);
-            });
-        });
+        var subTotal = 
+        /**
+         * 计算技能伤害 整个公式的基础系数
+         */
+        (this.skillBasicNumber + (this.basicDamage * this.basicDamageCoefficient))
+            /**
+             * 乘破防系数
+             */
+            * this.poFangCoefficient
+            /**
+             * 乘无双系数
+             */
+            * this.wuShuangCoefficient
+            /**
+             * 乘会心会笑系数
+             */
+            * this.huiXinHuiXiaoCoefficient
+            /**
+             * 乘目标伤害系数
+             */
+            * this.targetDamageCoefficient
+            /**
+             * 乘目标易伤系数
+             */
+            * this.damageBonuesCoefficient
+            /**
+             * 乘技能次数
+             */
+            * this.skillTimes
+            /**
+             * 是否有额外伤害有则添加
+             */
+            + this.extra;
+        this.subTotal = formatNumber(subTotal);
+        return this;
+    };
+    Skill.prototype.showSkillInfo = function () {
+        // const skillBasic = this.skillBasicNumber + (this.basicDamage * this.basicDamageCoefficient);
+        // const afterPoFang = skillBasic * this.poFangCoefficient;
+        // const afterWuShuang = afterPoFang * this.wuShuangCoefficient;
+        // const afterHuiXin = afterWuShuang * this.huiXinHuiXiaoCoefficient;
+        // const afterTarget = afterHuiXin * this.targetDamageCoefficient;
+        // const afterBonues = afterTarget * this.damageBonuesCoefficient;
+        // const t = afterBonues * this.skillTimes;
+        // skillBasic: ${formatNumber(skillBasic)}
+        // afterPoFang: ${formatNumber(afterPoFang)}
+        // afterWuShuang: ${formatNumber(afterWuShuang)}
+        // afterHuiXin ${this.huiXinHuiXiaoCoefficient}: ${formatNumber(afterHuiXin)}
+        // afterTarget: ${formatNumber(afterTarget)}
+        // afterBonues: ${formatNumber(afterBonues)}
+        // t:${formatNumber(t)}
+        console.log(chalk.cyan("\n      \u6280\u80FD\u540D\u79F0\uFF1A" + this.skillName + "\n      \u6280\u80FD\u6B21\u6570:" + this.skillTimes + "\n      \u5C0F\u8BA1:" + this.subTotal + " \n    "));
     };
     return Skill;
 }());
@@ -210,6 +103,19 @@ function formatNumber(value) {
     return numeral(numeral(value).format('0.00')).value();
 }
 function getCurrentCoefficient(coefficient1, coefficient2) {
-    return coefficient1 || coefficient2 || 0;
+    return coefficient1 !== undefined
+        ? coefficient1
+        : coefficient2 !== undefined
+            ? coefficient2
+            : 0;
+}
+function currySkill(callback, params) {
+    if (params === void 0) { params = {}; }
+    return function () {
+        if (typeof callback !== 'function') {
+            return callback;
+        }
+        return callback(params);
+    };
 }
 //# sourceMappingURL=skill.js.map

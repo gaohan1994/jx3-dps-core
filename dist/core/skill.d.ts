@@ -1,14 +1,28 @@
-import Middleware from '../onion/middleware';
-import { SkillContext, SkillMiddleware } from '../types';
+import { SkillContext, SupportContext } from '../types';
+import DpsCore from './core';
+import Target from '../support/target';
+interface SkillParamFunction {
+    (ctx: SkillContext): number;
+}
+declare type SkillParam = number | SkillParamFunction;
+interface Options {
+    skillName: string;
+    skillTimes: number;
+    core: DpsCore;
+    target: Target;
+    supportContext: SupportContext;
+    skillBasicNumber?: number;
+    basicDamage?: SkillParam;
+    basicDamageCoefficient?: SkillParam;
+    poFangCoefficient?: SkillParam;
+    wuShuangCoefficient?: SkillParam;
+    huiXinHuiXiaoCoefficient?: SkillParam;
+    targetDamageCoefficient?: SkillParam;
+    damageBonuesCoefficient?: SkillParam;
+    extra?: SkillParam;
+}
 declare class Skill {
-    options: any;
-    /**
-     * 洋葱模型中间件
-     *
-     * @type {Middleware}
-     * @memberof Skill
-     */
-    middleware: Middleware;
+    options: Options;
     skillName: string;
     /**
      * 技能次数
@@ -18,6 +32,27 @@ declare class Skill {
      */
     skillTimes: number;
     /**
+     * 核心类 core
+     * @type {DpsCore}
+     *
+     * 辅助类 supportContext
+     * @type {Target}
+     *
+     * 目标 target
+     * @type {SupportContext}
+     * @memberof Skill2
+     */
+    core: DpsCore;
+    target: Target;
+    supportContext: SupportContext;
+    /**
+     * 技能基础数值很小的那个
+     *
+     * @type {number}
+     * @memberof Skill2
+     */
+    skillBasicNumber: number;
+    /**
       * 基础伤害
       *
       * @type {number}
@@ -25,98 +60,69 @@ declare class Skill {
       */
     basicDamage: number;
     /**
-     * 技能系数
+     * 基础攻击系数
+     *
+     * @type {SkillParam}
+     * @memberof Skill2
+     */
+    basicDamageCoefficient: number;
+    /**
+     * 破防系数
+     *
+     * @type {SkillParam}
+     * @memberof Skill2
+     */
+    poFangCoefficient: number;
+    /**
+     * 无双系数
+     *
+     * @type {SkillParam}
+     * @memberof Skill2
+     */
+    wuShuangCoefficient: number;
+    /**
+     * 会心会笑计算系数
+     *
+     * @type {SkillParam}
+     * @memberof Skill2
+     */
+    huiXinHuiXiaoCoefficient: number;
+    /**
+     * 目标伤害系数
+     *
+     * @type {SkillParam}
+     * @memberof Skill2
+     */
+    targetDamageCoefficient: number;
+    /**
+     * 易伤系数
+     *
+     * @type {SkillParam}
+     * @memberof Skill2
+     */
+    damageBonuesCoefficient: number;
+    /**
+     * 额外伤害
      *
      * @type {number}
-     * @memberof Skill
+     * @memberof Skill2
      */
-    coefficient: number;
+    extra: number;
     /**
-     * 计算step2的系数
+     * 本技能小计
      *
      * @type {number}
-     * @memberof Skill
+     * @memberof Skill2
      */
-    step2Coefficient: number;
+    subTotal: number;
+    constructor(options: Options);
     /**
-     * 计算step6的基础系数
+     * 计算技能小计
      *
-     * @type {number}
-     * @memberof Skill
-     */
-    step6Coefficient: number;
-    step3Coefficient: number;
-    step4Coefficient: number;
-    step5Coefficient: number;
-    /**
-     * 中间件
-     *
-     * @memberof Skill
-     */
-    middlewares: {
-        [name: string]: SkillMiddleware;
-    };
-    constructor(options: any);
-    use(stepName: string, middleware: any): void;
-    /**
-     * 计算技能伤害
-     *
-     * step1SkillDamage = basicDamage + (ZongGongJi * coefficient)
-     *
-     * @param {number} ZongGongJi
      * @return {*}  {number}
-     * @memberof Skill
+     * @memberof Skill2
      */
-    step1(ctx: SkillContext, next: any): any;
-    /**
-     * 计算奇穴、秘籍、加成之后的伤害
-     *
-     * step2SkillDamage = step1SkillDamage * QiXueAndMiJiCoefficient
-     *
-     * @return {*}  {number}
-     * @memberof Skill
-     */
-    step2(ctx: SkillContext, next: any): any;
-    /**
-     * 计算经过破防无双加成之后的值
-     *
-     * step3SkillDamage = this.step2SkillDamage * (1 + PoFang) * (1 + WuShuang)
-     *
-     * @param {number} PoFang
-     * @param {number} WuShuang
-     * @return {*}  {this}
-     * @memberof Skill
-     */
-    step3(ctx: SkillContext, next: any): this;
-    /**
-     * 计算双会加成之后的技能伤害
-     *
-     * @param {number} HuiXin
-     * @param {number} HuiXiao
-     * @param {Step4Config} [config={}]
-     * @return {*}  {this}
-     * @memberof Skill
-     */
-    step4(ctx: SkillContext, next: any): any;
-    /**
-     * 计算目标防御之后的技能伤害
-     *
-     * @param {SkillContext} ctx
-     * @param {*} next
-     * @return {*}
-     * @memberof Skill
-     */
-    step5(ctx: SkillContext, next: any): any;
-    /**
-     * 计算易伤之后的技能伤害
-     *
-     * @param {SkillContext} ctx
-     * @param {*} next
-     * @return {*}
-     * @memberof Skill
-     */
-    step6(ctx: SkillContext, next: any): any;
-    checkMiddleware(middleware: any): boolean;
-    calculator(ctx: SkillContext): Promise<SkillContext>;
+    calculator(): this;
+    showSkillInfo(): void;
 }
 export default Skill;

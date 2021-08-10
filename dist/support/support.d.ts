@@ -55,6 +55,7 @@ declare class Support extends SupportBase {
      * @memberof PersonBuff
      */
     hasSkillSetBonuese(): boolean;
+    hasCw(): boolean;
     /**
      * 是否由属性套装
      *

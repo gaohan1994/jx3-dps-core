@@ -3,25 +3,41 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:45:42 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-09 18:20:46
+ * @Last Modified time: 2021-08-10 18:03:21
  */
 import invariant = require('invariant');
 import numeral = require('numeral');
 import chalk = require('chalk');
 import Middleware from '../onion/middleware';
-import { SkillContext, SkillMiddleware, SkillMiddleSteps, SupportMode } from '../types';
+import { SkillContext, SkillMiddleware, SkillMiddleSteps, SupportMode, SupportContext } from '../types';
+import DpsCore from './core';
+import Target from '../support/target';
 
+interface SkillParamFunction {
+  (ctx: SkillContext): number;
+}
+
+type SkillParam = number | SkillParamFunction;
+
+interface Options {
+  skillName: string;
+  skillTimes: number;
+  core: DpsCore;
+  target: Target;
+  supportContext: SupportContext;
+  skillBasicNumber?: number;
+  basicDamage?: SkillParam;
+  basicDamageCoefficient?: SkillParam;
+  poFangCoefficient?: SkillParam;
+  wuShuangCoefficient?: SkillParam;
+  huiXinHuiXiaoCoefficient?: SkillParam;
+  targetDamageCoefficient?: SkillParam;
+  damageBonuesCoefficient?: SkillParam;
+  extra?: SkillParam;
+}
 
 class Skill {
-  public options: any;
-
-  /**
-   * 洋葱模型中间件
-   *
-   * @type {Middleware}
-   * @memberof Skill
-   */
-  public middleware: Middleware;
+  public options: Options;
 
   public skillName: string;
 
@@ -34,6 +50,28 @@ class Skill {
   public skillTimes: number;
 
   /**
+   * 核心类 core
+   * @type {DpsCore}
+   * 
+   * 辅助类 supportContext
+   * @type {Target}
+   * 
+   * 目标 target
+   * @type {SupportContext}
+   * @memberof Skill2
+   */
+  public core: DpsCore;
+  public target: Target;
+  public supportContext: SupportContext;
+
+  /**
+   * 技能基础数值很小的那个
+   *
+   * @type {number}
+   * @memberof Skill2
+   */
+  public skillBasicNumber: number;
+  /**
     * 基础伤害
     *
     * @type {number}
@@ -41,257 +79,178 @@ class Skill {
     */
   public basicDamage: number;
   /**
-   * 技能系数
+   * 基础攻击系数
    *
-   * @type {number}
-   * @memberof Skill
+   * @type {SkillParam}
+   * @memberof Skill2
    */
-  public coefficient: number;
+  public basicDamageCoefficient: number;
 
   /**
-   * 计算step2的系数
+   * 破防系数
    *
-   * @type {number}
-   * @memberof Skill
+   * @type {SkillParam}
+   * @memberof Skill2
    */
-  public step2Coefficient: number;
+  public poFangCoefficient: number;
 
   /**
-   * 计算step6的基础系数
+   * 无双系数
    *
-   * @type {number}
-   * @memberof Skill
+   * @type {SkillParam}
+   * @memberof Skill2
    */
-  public step6Coefficient: number;
-
-  public step3Coefficient: number;
-  public step4Coefficient: number;
-  public step5Coefficient: number;
+  public wuShuangCoefficient: number;
 
   /**
-   * 中间件
+   * 会心会笑计算系数
    *
-   * @memberof Skill
+   * @type {SkillParam}
+   * @memberof Skill2
    */
-  public middlewares: {
-    [name: string]: SkillMiddleware
-  } = {
-      step1: undefined,
-      step2: undefined,
-      step3: undefined,
-      step4: undefined,
-      step5: undefined,
-      step6: undefined
-    }
+  public huiXinHuiXiaoCoefficient: number;
 
-  constructor(options: any) {
+  /**
+   * 目标伤害系数
+   *
+   * @type {SkillParam}
+   * @memberof Skill2
+   */
+  public targetDamageCoefficient: number;
+
+  /**
+   * 易伤系数
+   *
+   * @type {SkillParam}
+   * @memberof Skill2
+   */
+  public damageBonuesCoefficient: number;
+
+  /**
+   * 额外伤害
+   *
+   * @type {number}
+   * @memberof Skill2
+   */
+  public extra: number;
+
+  /**
+   * 本技能小计
+   *
+   * @type {number}
+   * @memberof Skill2
+   */
+  public subTotal: number;
+
+  constructor(options: Options) {
     this.options = options;
-
-    this.middleware = new Middleware([]);
+    invariant(typeof options.skillTimes === 'number', '技能次数不能为空');
+    this.skillTimes = options.skillTimes;
 
     invariant(!!options.skillName, '技能名称不能为空')
     this.skillName = options.skillName;
 
-    invariant(typeof options.basicDamage === 'number', '基础伤害不能为空');
-    this.basicDamage = options.basicDamage;
+    invariant(!!options.core, '请设置核心类');
+    this.core = options.core;
 
-    invariant(typeof options.coefficient === 'number', '伤害系数不能为空');
-    this.coefficient = options.coefficient;
+    invariant(!!options.target, '请设置目标类');
+    this.target = options.target;
 
-    invariant(typeof options.skillTimes === 'number', '技能次数不能为空');
-    this.skillTimes = options.skillTimes;
+    invariant(!!options.supportContext, '请设置辅助类');
+    this.supportContext = options.supportContext;
 
-    this.step2Coefficient = options.step2Coefficient;
+    this.skillBasicNumber = options.skillBasicNumber || 0;
 
-    this.step6Coefficient = options.step6Coefficient || 1;
+    this.basicDamage = currySkill(getCurrentCoefficient(options.basicDamage, this.core.ZongGongJi))();
 
-    this.step3Coefficient = options.step3Coefficient;
-    this.step4Coefficient = options.step4Coefficient;
-    this.step5Coefficient = options.step5Coefficient;
+    this.basicDamageCoefficient = currySkill(getCurrentCoefficient(options.basicDamageCoefficient, 1))();
 
-    if (!!options.middlewares) {
-      this.middlewares = options.middlewares;
-    }
-  }
+    this.poFangCoefficient = currySkill(getCurrentCoefficient(options.poFangCoefficient, 1 + this.core.PoFang / 100))();
 
-  use(stepName: string, middleware: any) {
-    this.middlewares[stepName] = middleware.bind(this);
+    this.wuShuangCoefficient = currySkill(getCurrentCoefficient(options.wuShuangCoefficient, 1 + this.core.WuShuang / 100))();
+
+    this.huiXinHuiXiaoCoefficient = currySkill(getCurrentCoefficient(options.huiXinHuiXiaoCoefficient, (this.core.HuiXin / 100) * (this.core.HuiXiao / 100) + 1 - (this.core.HuiXin / 100)))();
+
+    this.targetDamageCoefficient = currySkill(getCurrentCoefficient(options.targetDamageCoefficient, this.target.damageCoefficient))();
+
+    this.damageBonuesCoefficient = currySkill(getCurrentCoefficient(options.damageBonuesCoefficient, 1))();
+
+    this.extra = currySkill(getCurrentCoefficient(options.extra, 0))();
   }
 
   /**
-   * 计算技能伤害
-   * 
-   * step1SkillDamage = basicDamage + (ZongGongJi * coefficient)
-   *
-   * @param {number} ZongGongJi
-   * @return {*}  {number}
-   * @memberof Skill
-   */
-  public step1(ctx: SkillContext, next: any): any {
-    if (!ctx) {
-      return next();
-    }
-    ctx.step1SkillDamage = formatNumber(ctx.basicDamage + (ctx.core.ZongGongJi * ctx.coefficient));
-    return next();
-  }
-  /**
-   * 计算奇穴、秘籍、加成之后的伤害
-   * 
-   * step2SkillDamage = step1SkillDamage * QiXueAndMiJiCoefficient
+   * 计算技能小计
    *
    * @return {*}  {number}
-   * @memberof Skill
+   * @memberof Skill2
    */
-  public step2(ctx: SkillContext, next: any): any {
-    if (!ctx) {
-      return next();
-    }
-    ctx.step2SkillDamage = formatNumber(ctx.step1SkillDamage * ctx.step2Coefficient);
-    return next();
-  }
-
-  /**
-   * 计算经过破防无双加成之后的值
-   * 
-   * step3SkillDamage = this.step2SkillDamage * (1 + PoFang) * (1 + WuShuang)
-   *
-   * @param {number} PoFang
-   * @param {number} WuShuang
-   * @return {*}  {this}
-   * @memberof Skill
-   */
-  public step3(ctx: SkillContext, next: any): this {
-    if (!ctx) {
-      return next();
-    }
-    ctx.step3SkillDamage = formatNumber(
-      ctx.step2SkillDamage *
-      getCurrentCoefficient(ctx.step3Coefficient, (1 + ctx.core.PoFang / 100) * (1 + ctx.core.WuShuang / 100))
-    );
-    return next();
-  }
-
-  /**
-   * 计算双会加成之后的技能伤害
-   * 
-   * @param {number} HuiXin
-   * @param {number} HuiXiao
-   * @param {Step4Config} [config={}]
-   * @return {*}  {this}
-   * @memberof Skill
-   */
-  public step4(ctx: SkillContext, next: any): any {
-    if (!ctx) {
-      return next();
-    }
-    ctx.step4SkillDamage = formatNumber(
-      ctx.step3SkillDamage *
-      getCurrentCoefficient(ctx.step4Coefficient, (ctx.core.HuiXin / 100) * (ctx.core.HuiXiao / 100) + 1 - (ctx.core.HuiXin / 100))
-    );
-    return next();
-  }
-
-  /**
-   * 计算目标防御之后的技能伤害
-   *
-   * @param {SkillContext} ctx
-   * @param {*} next
-   * @return {*} 
-   * @memberof Skill
-   */
-  public step5(ctx: SkillContext, next: any) {
-    if (!ctx) {
-      return next();
-    }
-    ctx.step5SkillDamage = formatNumber(
-      ctx.step4SkillDamage *
-      getCurrentCoefficient(ctx.step5Coefficient, ctx.target.damageCoefficient)
-    );
-    return next();
-  }
-
-  /**
-   * 计算易伤之后的技能伤害
-   *
-   * @param {SkillContext} ctx
-   * @param {*} next
-   * @return {*} 
-   * @memberof Skill
-   */
-  public step6(ctx: SkillContext, next: any) {
-    if (!ctx) {
-      return next();
-    }
-
-    ctx.step6SkillDamage = formatNumber(
-      ctx.step5SkillDamage *
-      ctx.step6Coefficient + ctx.supportContext.damageBonus || 0
-    );
-
-    ctx.subTotal = ctx.step6SkillDamage * ctx.skillTimes;
-
-    return next();
-  }
-
-  public checkMiddleware(middleware: any): boolean {
-    return middleware !== undefined && typeof middleware === 'function';
-  }
-
-  public calculator(ctx: SkillContext): Promise<SkillContext> {
-
+  public calculator(): this {
     /**
-     * 补充完整 SkillContext
-     * 
-     * @param ctx
+     * 当前技能小计
      */
-    ctx = {
-      ...ctx,
-      skillName: this.skillName,
-      basicDamage: this.basicDamage,
-      coefficient: this.coefficient,
-      skillTimes: this.skillTimes,
-      step2Coefficient: this.step2Coefficient,
-      step3Coefficient: this.step3Coefficient,
-      step4Coefficient: this.step4Coefficient,
-      step5Coefficient: this.step5Coefficient,
-      step6Coefficient: this.step6Coefficient,
-    }
+    const subTotal =
+      /**
+       * 计算技能伤害 整个公式的基础系数
+       */
+      (this.skillBasicNumber + (this.basicDamage * this.basicDamageCoefficient))
+      /**
+       * 乘破防系数
+       */
+      * this.poFangCoefficient
+      /**
+       * 乘无双系数
+       */
+      * this.wuShuangCoefficient
+      /**
+       * 乘会心会笑系数
+       */
+      * this.huiXinHuiXiaoCoefficient
+      /**
+       * 乘目标伤害系数
+       */
+      * this.targetDamageCoefficient
+      /**
+       * 乘目标易伤系数
+       */
+      * this.damageBonuesCoefficient
+      /**
+       * 乘技能次数
+       */
+      * this.skillTimes
+      /**
+       * 是否有额外伤害有则添加
+       */
+      + this.extra;
 
-    this.middleware.use(this.step1.bind(this));
-    if (this.checkMiddleware(this.middlewares.step1)) {
-      this.middleware.use(this.middlewares.step1);
-    }
-    this.middleware.use(this.step2.bind(this));
-    if (this.checkMiddleware(this.middlewares.step2)) {
-      this.middleware.use(this.middlewares.step2);
-    }
-    this.middleware.use(this.step3.bind(this));
-    if (this.checkMiddleware(this.middlewares.step3)) {
-      this.middleware.use(this.middlewares.step3);
-    }
-    this.middleware.use(this.step4.bind(this));
-    if (this.checkMiddleware(this.middlewares.step4)) {
-      this.middleware.use(this.middlewares.step4);
-    }
-    this.middleware.use(this.step5.bind(this));
-    if (this.checkMiddleware(this.middlewares.step5)) {
-      this.middleware.use(this.middlewares.step5);
-    }
-    this.middleware.use(this.step6.bind(this));
-    if (this.checkMiddleware(this.middlewares.step6)) {
-      this.middleware.use(this.middlewares.step6);
-    }
+    this.subTotal = formatNumber(subTotal);
 
-    return new Promise((resolve, reject) => {
-      this.middleware
-        .execute(ctx)
-        .then(() => {
-          resolve(ctx);
-        })
-        .catch((error) => {
-          reject(error);
-        })
-    })
+    return this;
+  }
+
+  public showSkillInfo() {
+
+    // const skillBasic = this.skillBasicNumber + (this.basicDamage * this.basicDamageCoefficient);
+    // const afterPoFang = skillBasic * this.poFangCoefficient;
+    // const afterWuShuang = afterPoFang * this.wuShuangCoefficient;
+    // const afterHuiXin = afterWuShuang * this.huiXinHuiXiaoCoefficient;
+    // const afterTarget = afterHuiXin * this.targetDamageCoefficient;
+    // const afterBonues = afterTarget * this.damageBonuesCoefficient;
+    // const t = afterBonues * this.skillTimes;
+
+
+    // skillBasic: ${formatNumber(skillBasic)}
+    // afterPoFang: ${formatNumber(afterPoFang)}
+    // afterWuShuang: ${formatNumber(afterWuShuang)}
+    // afterHuiXin ${this.huiXinHuiXiaoCoefficient}: ${formatNumber(afterHuiXin)}
+    // afterTarget: ${formatNumber(afterTarget)}
+    // afterBonues: ${formatNumber(afterBonues)}
+    // t:${formatNumber(t)}
+
+    console.log(chalk.cyan(`
+      技能名称：${this.skillName}
+      技能次数:${this.skillTimes}
+      小计:${this.subTotal} 
+    `));
   }
 }
 
@@ -302,6 +261,20 @@ function formatNumber(value: number): number {
   return numeral(numeral(value).format('0.00')).value();
 }
 
-function getCurrentCoefficient(coefficient1?: number, coefficient2?: number): number {
-  return coefficient1 || coefficient2 || 0;
+function getCurrentCoefficient(coefficient1?: SkillParam, coefficient2?: SkillParam): SkillParam {
+  return coefficient1 !== undefined
+    ? coefficient1
+    : coefficient2 !== undefined
+      ? coefficient2
+      : 0;
+}
+
+function currySkill(callback: SkillParam, params: any = {}) {
+  return function (): number {
+    if (typeof callback !== 'function') {
+      return callback;
+    }
+
+    return callback(params);
+  }
 }

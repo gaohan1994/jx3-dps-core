@@ -21,7 +21,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @Author: centerm.gaohan
  * @Date: 2021-08-08 16:29:54
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-09 16:06:10
+ * @Last Modified time: 2021-08-10 17:51:10
  */
 var chalk = require("chalk");
 var invariant = require("invariant");
@@ -118,8 +118,6 @@ var Support = /** @class */ (function (_super) {
      */
     Support.prototype.showSupportValue = function () {
         console.log(chalk.blue("---- support start ----"));
-        // this.personBuff.showPersonBuffValue();
-        // this.teamBuff.showTeamBuffValue();
         this.target.showTargetValue();
         console.log(chalk.blue("---- support end ----"));
     };
@@ -131,6 +129,9 @@ var Support = /** @class */ (function (_super) {
      */
     Support.prototype.hasSkillSetBonuese = function () {
         return this.gainList.some(function (g) { return g.name === types_1.SetBonuse.SkillSetBonuse; });
+    };
+    Support.prototype.hasCw = function () {
+        return this.gainList.some(function (g) { return g.name === 'CW'; });
     };
     /**
      * 是否由属性套装
