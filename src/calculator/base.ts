@@ -4,16 +4,13 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-10 18:04:25
+ * @Last Modified time: 2021-08-11 15:21:12
  */
-import invariant = require('invariant');
-import chalk = require('chalk');
-import Core from '../core/core';
-import Support from '../support/support';
-import Target from '../support/target';
-import { SupportContext, SkillContext } from '../types';
-import Skill from '../core/skill'
-
+import invariant from 'invariant';
+import chalk from 'chalk';
+import { DpsCore, Skill, formatNumber } from '../core'
+import { Support, Target } from '../support';
+import { SupportContext, CalculatorResult, CalculatorResultSkillItem } from '../types';
 
 class CalculatorBase {
 
@@ -33,7 +30,7 @@ class CalculatorBase {
    * @type {Core}
    * @memberof CalculatorBase
    */
-  public core: Core;
+  public core: DpsCore;
 
   /**
    * 辅助类
@@ -115,6 +112,7 @@ class CalculatorBase {
     this.options = options;
 
     invariant(!!options.support, '辅助类不能为空');
+    console.log('Support', Support);
     this.support = new Support(options.support);
 
     if (this.support.hasSkillSetBonuese()) {
@@ -124,6 +122,15 @@ class CalculatorBase {
     }
 
     this.seconds = options.seconds || (5 * 60);
+  }
+
+  /**
+   * 使用增益
+   *
+   * @memberof CalculatorBase
+   */
+  public use() {
+
   }
 
   /**
@@ -142,7 +149,7 @@ class CalculatorBase {
    * @return {*}  {Core}
    * @memberof CalculatorBase
    */
-  public getCore(): Core {
+  public getCore(): DpsCore {
     return this.core;
   }
 
@@ -186,7 +193,7 @@ class CalculatorBase {
    * @memberof CalculatorBase
    */
   public async initUltimate() {
-    const initCore = new Core({
+    const initCore = new DpsCore({
       ...this.options.core,
       mainCoeffiecient: (YuanQi: number) => {
         return {
@@ -209,29 +216,52 @@ class CalculatorBase {
    *
    * @memberof CalculatorBase
    */
-  public async executeCalculator() {
+  public executeCalculator(): CalculatorResult {
     let skillsArray: Skill[] = [];
     for (let i = 0; i < this.skills.length; i++) {
-
       skillsArray.push(
         this.skills[i].calculator()
       );
     }
-    // this.core.showAttributes();
-    let total = 0;
 
+    /**
+     * 计算总输出
+     */
+    let total = 0;
     skillsArray.forEach((skill) => {
-      // skill.showSkillInfo();
       total += skill.subTotal;
     });
     this.totalExpectation = total;
+    /**
+     * 计算dps
+     */
     this.dps = total / this.seconds;
+
+    /**
+     * 总输出计算完成之后才能计算percent
+     */
+    const percentArray: CalculatorResultSkillItem[] = [];
+
+    skillsArray.forEach((skill) => {
+      const currentPercent = formatNumber(skill.subTotal / this.totalExpectation);
+      skill.percent = currentPercent;
+      percentArray.push({
+        skillName: skill.skillName,
+        subTotal: skill.subTotal,
+        percent: skill.percent,
+      });
+    });
+
+    /**
+     * 计算完成之后覆盖掉当前的skills
+     */
+    this.skills = skillsArray;
 
     return {
       totalExpectation: this.totalExpectation,
       seconds: this.seconds,
       dps: this.dps,
-      skills: skillsArray
+      skills: percentArray,
     };
   }
 
@@ -256,7 +286,7 @@ class CalculatorBase {
    *
    * @memberof DpsCore
    */
-  public generateUltimate(core: Core, ctx: SupportContext): Core {
+  public generateUltimate(core: DpsCore, ctx: SupportContext): DpsCore {
     // console.log('ctx', ctx)
     /**
      * 最终core类
@@ -301,7 +331,7 @@ class CalculatorBase {
      */
     const GongJiCoefficient = 1 + ctx.JiChuGongJiPercent;
 
-    const ultimate = new Core({
+    const ultimate = new DpsCore({
       mainCoeffiecient: core.mainCoeffiecient,
       /**
        * 设置主属性

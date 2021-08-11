@@ -1,5 +1,9 @@
 import { Gain, SupportContext } from "../types";
-import chalk = require('chalk');
+import chalk from 'chalk';
+
+export interface SupportBaseOptions {
+  defaultGainList?: Gain[];
+}
 
 class SupportBase {
   /**
@@ -9,6 +13,10 @@ class SupportBase {
    * @memberof SupportBase
    */
   public gainList: Gain[] = [];
+
+  constructor(options: SupportBaseOptions) {
+    this.gainList = options.defaultGainList || [];
+  }
 
   /**
    * 计算所有增益中间件

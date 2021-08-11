@@ -4,9 +4,10 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 16:55:04 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-09 15:30:54
+ * @Last Modified time: 2021-08-11 15:21:36
  */
-import chalk = require('chalk');
+
+import chalk from 'chalk';
 import { EnChants, Weapon, SetBonuse } from '../types'
 import SupportBase from './base';
 import { SetBonusesGain } from '../config/config'
@@ -40,7 +41,7 @@ class PersonBuff extends SupportBase {
   public setBonuses: SetBonuse[] = [];
 
   constructor(options: any = {}) {
-    super();
+    super(options);
     this.options = options;
 
     /**

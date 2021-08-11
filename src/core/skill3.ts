@@ -3,11 +3,11 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:45:42 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-10 15:46:03
+ * @Last Modified time: 2021-08-11 15:36:19
  */
-import invariant = require('invariant');
-import numeral = require('numeral');
-import chalk = require('chalk');
+
+import invariant from 'invariant';
+import numeral from 'numeral';
 import Middleware from '../onion/middleware';
 import { SkillContext, SkillMiddleware, SkillMiddleSteps, SupportMode } from '../types';
 

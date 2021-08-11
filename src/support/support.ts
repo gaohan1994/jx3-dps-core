@@ -4,18 +4,22 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 16:29:54 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-10 17:51:10
+ * @Last Modified time: 2021-08-11 15:21:44
  */
-import chalk = require('chalk');
-import invariant = require('invariant');
+
+import invariant from 'invariant';
+import chalk from 'chalk';
 import { SupportMode, SupportContext, SetBonuse } from "../types";
-import PersonBuff from './person';
-import TeamBuff from './team';
-import Target from './target';
-import CoreMiddleware from '../onion/middleware';
-import SupportBase from './base';
+import { CoreMiddleware } from '../onion';
+import { Target, TargetOptions, SupportBase, SupportBaseOptions } from './index';
+
+export interface SupportOptions extends SupportBaseOptions {
+  mode: SupportMode;
+  target?: TargetOptions
+}
 
 class Support extends SupportBase {
+  static Mode = SupportMode;
   /**
    * 辅助类类型
    *
@@ -55,8 +59,8 @@ class Support extends SupportBase {
    */
   public target: Target = undefined;
 
-  constructor(options: any = {}) {
-    super();
+  constructor(options: SupportOptions) {
+    super(options);
     this.options = options;
 
     invariant(!!options.mode, '辅助类类型不能为空');
@@ -105,8 +109,6 @@ class Support extends SupportBase {
 
     const middleware = new CoreMiddleware([]);
     middleware.use(this.countCurrentSupportGain.bind(this));
-    // middleware.use(this.teamBuff.countCurrentSupportGain.bind(this.teamBuff));
-    // middleware.use(this.personBuff.countCurrentSupportGain.bind(this.personBuff));
 
     return new Promise((resolve, reject) => {
       middleware

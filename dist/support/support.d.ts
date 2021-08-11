@@ -1,7 +1,19 @@
+/**
+ * 辅助类
+ *
+ * @Author: centerm.gaohan
+ * @Date: 2021-08-08 16:29:54
+ * @Last Modified by: centerm.gaohan
+ * @Last Modified time: 2021-08-11 15:21:44
+ */
 import { SupportMode, SupportContext } from "../types";
-import Target from './target';
-import SupportBase from './base';
+import { Target, TargetOptions, SupportBase, SupportBaseOptions } from './index';
+export interface SupportOptions extends SupportBaseOptions {
+    mode: SupportMode;
+    target?: TargetOptions;
+}
 declare class Support extends SupportBase {
+    static Mode: any;
     /**
      * 辅助类类型
      *
@@ -34,7 +46,7 @@ declare class Support extends SupportBase {
      * @memberof Support
      */
     target: Target;
-    constructor(options?: any);
+    constructor(options: SupportOptions);
     /**
      * 获得辅助总增益
      *

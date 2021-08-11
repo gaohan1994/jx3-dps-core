@@ -1,4 +1,11 @@
-"use strict";
+/**
+ * 辅助类
+ *
+ * @Author: centerm.gaohan
+ * @Date: 2021-08-08 16:29:54
+ * @Last Modified by: centerm.gaohan
+ * @Last Modified time: 2021-08-11 15:21:44
+ */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -14,26 +21,15 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * 辅助类
- *
- * @Author: centerm.gaohan
- * @Date: 2021-08-08 16:29:54
- * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-10 17:51:10
- */
-var chalk = require("chalk");
-var invariant = require("invariant");
-var types_1 = require("../types");
-var target_1 = require("./target");
-var middleware_1 = require("../onion/middleware");
-var base_1 = require("./base");
+import invariant from 'invariant';
+import chalk from 'chalk';
+import { SupportMode, SetBonuse } from "../types";
+import { CoreMiddleware } from '../onion';
+import { Target, SupportBase } from './index';
 var Support = /** @class */ (function (_super) {
     __extends(Support, _super);
     function Support(options) {
-        if (options === void 0) { options = {}; }
-        var _this = _super.call(this) || this;
+        var _this = _super.call(this, options) || this;
         /**
          * 个人增益模块
          *
@@ -69,7 +65,7 @@ var Support = /** @class */ (function (_super) {
         /**
          * 初始化目标
          */
-        _this.target = new target_1.default(options.target);
+        _this.target = new Target(options.target);
         return _this;
     }
     /**
@@ -96,10 +92,8 @@ var Support = /** @class */ (function (_super) {
             WuShuangLevel: 0,
             PoZhao: 0,
         };
-        var middleware = new middleware_1.default([]);
+        var middleware = new CoreMiddleware([]);
         middleware.use(this.countCurrentSupportGain.bind(this));
-        // middleware.use(this.teamBuff.countCurrentSupportGain.bind(this.teamBuff));
-        // middleware.use(this.personBuff.countCurrentSupportGain.bind(this.personBuff));
         return new Promise(function (resolve, reject) {
             middleware
                 .execute(ctx)
@@ -128,7 +122,7 @@ var Support = /** @class */ (function (_super) {
      * @memberof PersonBuff
      */
     Support.prototype.hasSkillSetBonuese = function () {
-        return this.gainList.some(function (g) { return g.name === types_1.SetBonuse.SkillSetBonuse; });
+        return this.gainList.some(function (g) { return g.name === SetBonuse.SkillSetBonuse; });
     };
     Support.prototype.hasCw = function () {
         return this.gainList.some(function (g) { return g.name === 'CW'; });
@@ -140,9 +134,10 @@ var Support = /** @class */ (function (_super) {
      * @memberof PersonBuff
      */
     Support.prototype.hasValueSetBonuese = function () {
-        return this.gainList.some(function (g) { return g.name === types_1.SetBonuse.ValueSetBonuse; });
+        return this.gainList.some(function (g) { return g.name === SetBonuse.ValueSetBonuse; });
     };
+    Support.Mode = SupportMode;
     return Support;
-}(base_1.default));
-exports.default = Support;
+}(SupportBase));
+export default Support;
 //# sourceMappingURL=support.js.map

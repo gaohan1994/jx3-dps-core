@@ -1,0 +1,12 @@
+node_modules/
+config/
+/.git/
+/.vscode/
+demo/
+.gitignore
+.npmignore
+tslint.json
+tsconfig.json
+*.log
+# src/
+dist/

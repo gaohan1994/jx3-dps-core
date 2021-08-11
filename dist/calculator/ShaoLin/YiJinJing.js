@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -50,7 +49,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 易筋经计算器
  *
@@ -61,14 +59,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @Author: centerm.gaohan
  * @Date: 2021-08-08 18:35:26
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-10 18:09:48
+ * @Last Modified time: 2021-08-11 14:48:26
  */
-var base_1 = require("../base");
-var skill_1 = require("../../core/skill");
-var config_1 = require("../../config/config");
-var types_1 = require("../../types");
-var config_2 = require("./config");
-var skill_2 = require("../../core/skill");
+import CalculatorBase from "../base";
+import Skill from "../../core/skill";
+import { TeamSkills, SetBonusesGain } from '../../config/config';
+import { EnChants } from "../../types";
+import { shaoLinSkills, SkillNames } from './config';
+import Skill2 from "../../core/skill";
 var YiJinJing = /** @class */ (function (_super) {
     __extends(YiJinJing, _super);
     function YiJinJing(options) {
@@ -77,35 +75,35 @@ var YiJinJing = /** @class */ (function (_super) {
         _this.professtion = '少林';
         _this.className = '易筋经';
         _this.skillTimesLib = (_a = {},
-            _a[config_2.SkillNames.WeiTuoXianChu] = 25,
-            _a[config_2.SkillNames.PoZhao] = 30,
-            _a[config_2.SkillNames.NaYunShi] = 39,
-            _a[config_2.SkillNames.HengSaoLiuHe] = 32,
-            _a[config_2.SkillNames.HengSaoLiuHeDot] = 155,
-            _a[config_2.SkillNames.ShouQueShi] = 45,
-            _a[config_2.SkillNames.PuDuSiFang] = 44,
-            _a[config_2.SkillNames.XiangMo] = 64,
-            _a[config_2.SkillNames.SuoDi] = 39,
-            _a[config_2.SkillNames.TiHuGuanDing] = 22,
-            _a[config_2.SkillNames.FoGuo] = 55,
-            _a[config_2.SkillNames.LiuHeGun] = 172,
-            _a[config_2.SkillNames.FeiJian] = 50,
-            _a[types_1.EnChants.EnChantHand] = 30,
-            _a[types_1.EnChants.EnChantShoe] = 15,
+            _a[SkillNames.WeiTuoXianChu] = 25,
+            _a[SkillNames.PoZhao] = 30,
+            _a[SkillNames.NaYunShi] = 39,
+            _a[SkillNames.HengSaoLiuHe] = 32,
+            _a[SkillNames.HengSaoLiuHeDot] = 155,
+            _a[SkillNames.ShouQueShi] = 45,
+            _a[SkillNames.PuDuSiFang] = 44,
+            _a[SkillNames.XiangMo] = 64,
+            _a[SkillNames.SuoDi] = 39,
+            _a[SkillNames.TiHuGuanDing] = 22,
+            _a[SkillNames.FoGuo] = 55,
+            _a[SkillNames.LiuHeGun] = 172,
+            _a[SkillNames.FeiJian] = 50,
+            _a[EnChants.EnChantHand] = 30,
+            _a[EnChants.EnChantShoe] = 15,
             _a);
         /**
          * 技能增益列表
          */
-        _this.support.use(config_2.shaoLinSkills.JinGangNuMu);
-        _this.support.use(config_2.shaoLinSkills.QinLongJue);
-        _this.support.use(config_1.TeamSkills.FenLan);
-        _this.support.use(config_1.TeamSkills.PoCangQiong);
-        _this.support.use(config_1.TeamSkills.XiuQi);
+        _this.support.use(shaoLinSkills.JinGangNuMu);
+        _this.support.use(shaoLinSkills.QinLongJue);
+        _this.support.use(TeamSkills.FenLan);
+        _this.support.use(TeamSkills.PoCangQiong);
+        _this.support.use(TeamSkills.XiuQi);
         /**
          * 套装
          */
-        _this.support.use(config_1.SetBonusesGain.ValueSetBonuse);
-        _this.support.use(config_1.SetBonusesGain.SkillSetBonuse);
+        _this.support.use(SetBonusesGain.ValueSetBonuse);
+        _this.support.use(SetBonusesGain.SkillSetBonuse);
         _this.support.showGain();
         return _this;
     }
@@ -139,36 +137,36 @@ var YiJinJing = /** @class */ (function (_super) {
                             var coefficient = target.defenseCoefficient / (target.defenseCoefficient + ingoreDefense);
                             return coefficient;
                         };
-                        liuHe = new skill_2.default({
+                        liuHe = new Skill2({
                             core: core,
                             target: target,
                             supportContext: supportContext,
-                            skillName: config_2.SkillNames.LiuHeGun,
-                            skillTimes: this.getSkillTimes(config_2.SkillNames.LiuHeGun),
+                            skillName: SkillNames.LiuHeGun,
+                            skillTimes: this.getSkillTimes(SkillNames.LiuHeGun),
                             skillBasicNumber: core.WuQiShangHai,
                             basicDamage: 0,
                             basicDamageCoefficient: 0,
                             poFangCoefficient: 1,
                         });
                         skills.push(liuHe);
-                        liuHeWithWeiTuo = new skill_2.default({
+                        liuHeWithWeiTuo = new Skill2({
                             core: core,
                             target: target,
                             supportContext: supportContext,
                             skillName: '韦陀触发六合棍',
-                            skillTimes: this.getSkillTimes(config_2.SkillNames.WeiTuoXianChu) * 2,
+                            skillTimes: this.getSkillTimes(SkillNames.WeiTuoXianChu) * 2,
                             skillBasicNumber: core.WuQiShangHai,
                             basicDamage: 0,
                             basicDamageCoefficient: 0,
                             poFangCoefficient: 1,
                         });
                         liuHeWithWeiTuoSubTotal = liuHeWithWeiTuo.calculator();
-                        weiTuo = new skill_2.default({
+                        weiTuo = new Skill2({
                             core: core,
                             target: target,
                             supportContext: supportContext,
-                            skillName: config_2.SkillNames.WeiTuoXianChu,
-                            skillTimes: this.getSkillTimes(config_2.SkillNames.WeiTuoXianChu),
+                            skillName: SkillNames.WeiTuoXianChu,
+                            skillTimes: this.getSkillTimes(SkillNames.WeiTuoXianChu),
                             skillBasicNumber: 179,
                             basicDamageCoefficient: 1.66,
                             targetDamageCoefficient: ingoreTargetDefenceCoefficient,
@@ -178,24 +176,24 @@ var YiJinJing = /** @class */ (function (_super) {
                             extra: liuHeWithWeiTuoSubTotal.subTotal
                         });
                         skills.push(weiTuo);
-                        poZhao = new skill_1.default({
+                        poZhao = new Skill({
                             core: core,
                             target: target,
                             supportContext: supportContext,
-                            skillName: config_2.SkillNames.PoZhao,
-                            skillTimes: this.getSkillTimes(config_2.SkillNames.PoZhao),
+                            skillName: SkillNames.PoZhao,
+                            skillTimes: this.getSkillTimes(SkillNames.PoZhao),
                             skillBasicNumber: 0,
                             basicDamage: core.PoZhao,
                             basicDamageCoefficient: 15.2288,
                             damageBonuesCoefficient: BaseCoefficient + ErYeYiYuanCoefficient,
                         });
                         skills.push(poZhao);
-                        naYunShi = new skill_1.default({
+                        naYunShi = new Skill({
                             core: core,
                             target: target,
                             supportContext: supportContext,
-                            skillName: config_2.SkillNames.NaYunShi,
-                            skillTimes: this.getSkillTimes(config_2.SkillNames.NaYunShi),
+                            skillName: SkillNames.NaYunShi,
+                            skillTimes: this.getSkillTimes(SkillNames.NaYunShi),
                             skillBasicNumber: 258.5,
                             basicDamageCoefficient: 2,
                             targetDamageCoefficient: ingoreTargetDefenceCoefficient,
@@ -204,12 +202,12 @@ var YiJinJing = /** @class */ (function (_super) {
                             },
                         });
                         skills.push(naYunShi);
-                        hengSaoLiuHe = new skill_1.default({
+                        hengSaoLiuHe = new Skill({
                             core: core,
                             target: target,
                             supportContext: supportContext,
-                            skillName: config_2.SkillNames.HengSaoLiuHe,
-                            skillTimes: this.getSkillTimes(config_2.SkillNames.HengSaoLiuHe),
+                            skillName: SkillNames.HengSaoLiuHe,
+                            skillTimes: this.getSkillTimes(SkillNames.HengSaoLiuHe),
                             skillBasicNumber: 75,
                             basicDamageCoefficient: 0.58,
                             damageBonuesCoefficient: function () {
@@ -220,12 +218,12 @@ var YiJinJing = /** @class */ (function (_super) {
                             }
                         });
                         skills.push(hengSaoLiuHe);
-                        shouQueShi = new skill_1.default({
+                        shouQueShi = new Skill({
                             core: core,
                             target: target,
                             supportContext: supportContext,
-                            skillName: config_2.SkillNames.ShouQueShi,
-                            skillTimes: this.getSkillTimes(config_2.SkillNames.ShouQueShi),
+                            skillName: SkillNames.ShouQueShi,
+                            skillTimes: this.getSkillTimes(SkillNames.ShouQueShi),
                             skillBasicNumber: 144.5,
                             basicDamageCoefficient: 1.36,
                             damageBonuesCoefficient: function () {
@@ -238,12 +236,12 @@ var YiJinJing = /** @class */ (function (_super) {
                             targetDamageCoefficient: ingoreTargetDefenceCoefficient
                         });
                         skills.push(shouQueShi);
-                        hengSaoLiuHeDot = new skill_1.default({
+                        hengSaoLiuHeDot = new Skill({
                             core: core,
                             target: target,
                             supportContext: supportContext,
-                            skillName: config_2.SkillNames.HengSaoLiuHeDot,
-                            skillTimes: this.getSkillTimes(config_2.SkillNames.HengSaoLiuHeDot),
+                            skillName: SkillNames.HengSaoLiuHeDot,
+                            skillTimes: this.getSkillTimes(SkillNames.HengSaoLiuHeDot),
                             skillBasicNumber: 45,
                             basicDamageCoefficient: 0.083,
                             damageBonuesCoefficient: function () {
@@ -254,12 +252,12 @@ var YiJinJing = /** @class */ (function (_super) {
                             }
                         });
                         skills.push(hengSaoLiuHeDot);
-                        puDuSiFang = new skill_1.default({
+                        puDuSiFang = new Skill({
                             core: core,
                             target: target,
                             supportContext: supportContext,
-                            skillName: config_2.SkillNames.PuDuSiFang,
-                            skillTimes: this.getSkillTimes(config_2.SkillNames.PuDuSiFang),
+                            skillName: SkillNames.PuDuSiFang,
+                            skillTimes: this.getSkillTimes(SkillNames.PuDuSiFang),
                             skillBasicNumber: 163.5,
                             basicDamageCoefficient: 0.92,
                             damageBonuesCoefficient: function () {
@@ -268,56 +266,56 @@ var YiJinJing = /** @class */ (function (_super) {
                             }
                         });
                         skills.push(puDuSiFang);
-                        suoDi = new skill_1.default({
+                        suoDi = new Skill({
                             core: core,
                             target: target,
                             supportContext: supportContext,
-                            skillName: config_2.SkillNames.SuoDi,
-                            skillTimes: this.getSkillTimes(config_2.SkillNames.SuoDi),
+                            skillName: SkillNames.SuoDi,
+                            skillTimes: this.getSkillTimes(SkillNames.SuoDi),
                             skillBasicNumber: 407.5,
                             basicDamageCoefficient: 1.25,
                             damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient) * MingFaCoefficient,
                         });
                         skills.push(suoDi);
-                        tiHuGuanDing = new skill_1.default({
+                        tiHuGuanDing = new Skill({
                             core: core,
                             target: target,
                             supportContext: supportContext,
-                            skillName: config_2.SkillNames.TiHuGuanDing,
-                            skillTimes: this.getSkillTimes(config_2.SkillNames.TiHuGuanDing),
+                            skillName: SkillNames.TiHuGuanDing,
+                            skillTimes: this.getSkillTimes(SkillNames.TiHuGuanDing),
                             skillBasicNumber: 407.5,
                             basicDamageCoefficient: 1.92185,
                             damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient),
                         });
                         skills.push(tiHuGuanDing);
-                        foGuo = new skill_1.default({
+                        foGuo = new Skill({
                             core: core,
                             target: target,
                             supportContext: supportContext,
-                            skillName: config_2.SkillNames.FoGuo,
-                            skillTimes: this.getSkillTimes(config_2.SkillNames.FoGuo),
+                            skillName: SkillNames.FoGuo,
+                            skillTimes: this.getSkillTimes(SkillNames.FoGuo),
                             skillBasicNumber: 127.5,
                             basicDamageCoefficient: 0.697922,
                             damageBonuesCoefficient: BaseCoefficient + 0.3 + ErYeYiYuanCoefficient
                         });
                         skills.push(foGuo);
-                        FMHand = new skill_1.default({
+                        FMHand = new Skill({
                             core: core,
                             target: target,
                             supportContext: supportContext,
-                            skillName: types_1.EnChants.EnChantHand,
-                            skillTimes: this.getSkillTimes(types_1.EnChants.EnChantHand),
+                            skillName: EnChants.EnChantHand,
+                            skillTimes: this.getSkillTimes(EnChants.EnChantHand),
                             skillBasicNumber: 0,
                             basicDamageCoefficient: 0.95,
                             damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient) * 0.4,
                         });
                         skills.push(FMHand);
-                        FMFeet = new skill_1.default({
+                        FMFeet = new Skill({
                             core: core,
                             target: target,
                             supportContext: supportContext,
-                            skillName: types_1.EnChants.EnChantShoe,
-                            skillTimes: this.getSkillTimes(types_1.EnChants.EnChantShoe),
+                            skillName: EnChants.EnChantShoe,
+                            skillTimes: this.getSkillTimes(EnChants.EnChantShoe),
                             skillBasicNumber: 0,
                             basicDamageCoefficient: 0.38125,
                             damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient)
@@ -329,11 +327,11 @@ var YiJinJing = /** @class */ (function (_super) {
                         return [4 /*yield*/, naYunShi.calculator().subTotal];
                     case 2:
                         nayunTotal = _a.sent();
-                        xiangMo = new skill_1.default({
+                        xiangMo = new Skill({
                             core: core,
                             target: target,
                             supportContext: supportContext,
-                            skillName: config_2.SkillNames.XiangMo,
+                            skillName: SkillNames.XiangMo,
                             skillTimes: 1,
                             skillBasicNumber: 0,
                             basicDamage: function () {
@@ -352,6 +350,6 @@ var YiJinJing = /** @class */ (function (_super) {
         });
     };
     return YiJinJing;
-}(base_1.default));
-exports.default = YiJinJing;
+}(CalculatorBase));
+export default YiJinJing;
 //# sourceMappingURL=YiJinJing.js.map

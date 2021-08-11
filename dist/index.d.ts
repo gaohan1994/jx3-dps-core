@@ -2,7 +2,7 @@ import DpsCore from './core/core';
 import Support from './support/support';
 import { YiJinJing } from './calculator';
 declare class Calculator {
-    static YiJinJing: typeof YiJinJing;
+    static YiJinJing: any;
 }
 export default Calculator;
 /**

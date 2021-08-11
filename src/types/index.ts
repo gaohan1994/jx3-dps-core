@@ -380,3 +380,16 @@ export interface SupportContext {
   WuShuang: number;
   WuShuangLevel: number;
 }
+
+export interface CalculatorResultSkillItem {
+  skillName: string;
+  subTotal: number;
+  percent: number;
+}
+
+export interface CalculatorResult {
+  totalExpectation: number;
+  seconds: number;
+  dps: number;
+  skills: CalculatorResultSkillItem[];
+}

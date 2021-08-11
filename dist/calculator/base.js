@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -46,19 +45,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 计算器基类
  *
  * @Author: centerm.gaohan
  * @Date: 2021-08-08 19:12:37
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-10 18:04:25
+ * @Last Modified time: 2021-08-11 15:21:12
  */
-var invariant = require("invariant");
-var chalk = require("chalk");
-var core_1 = require("../core/core");
-var support_1 = require("../support/support");
+import invariant from 'invariant';
+import chalk from 'chalk';
+import { DpsCore, formatNumber } from '../core';
+import { Support } from '../support';
 var CalculatorBase = /** @class */ (function () {
     function CalculatorBase(options) {
         if (options === void 0) { options = {}; }
@@ -80,7 +78,8 @@ var CalculatorBase = /** @class */ (function () {
         this.skillTimesLib = {};
         this.options = options;
         invariant(!!options.support, '辅助类不能为空');
-        this.support = new support_1.default(options.support);
+        console.log('Support', Support);
+        this.support = new Support(options.support);
         if (this.support.hasSkillSetBonuese()) {
             this.skillSetBonuseCoefficient = 0.0996;
         }
@@ -89,6 +88,13 @@ var CalculatorBase = /** @class */ (function () {
         }
         this.seconds = options.seconds || (5 * 60);
     }
+    /**
+     * 使用增益
+     *
+     * @memberof CalculatorBase
+     */
+    CalculatorBase.prototype.use = function () {
+    };
     /**
      * 传入技能名称返回战斗时间内该技能次数
      *
@@ -150,7 +156,7 @@ var CalculatorBase = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        initCore = new core_1.default(__assign(__assign({}, this.options.core), { mainCoeffiecient: function (YuanQi) {
+                        initCore = new DpsCore(__assign(__assign({}, this.options.core), { mainCoeffiecient: function (YuanQi) {
                                 return {
                                     JiChuGongJi: YuanQi * 0.18,
                                     ZongGongJi: YuanQi * 1.85,
@@ -174,28 +180,46 @@ var CalculatorBase = /** @class */ (function () {
      * @memberof CalculatorBase
      */
     CalculatorBase.prototype.executeCalculator = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var skillsArray, i, total;
-            return __generator(this, function (_a) {
-                skillsArray = [];
-                for (i = 0; i < this.skills.length; i++) {
-                    skillsArray.push(this.skills[i].calculator());
-                }
-                total = 0;
-                skillsArray.forEach(function (skill) {
-                    // skill.showSkillInfo();
-                    total += skill.subTotal;
-                });
-                this.totalExpectation = total;
-                this.dps = total / this.seconds;
-                return [2 /*return*/, {
-                        totalExpectation: this.totalExpectation,
-                        seconds: this.seconds,
-                        dps: this.dps,
-                        skills: skillsArray
-                    }];
+        var _this = this;
+        var skillsArray = [];
+        for (var i = 0; i < this.skills.length; i++) {
+            skillsArray.push(this.skills[i].calculator());
+        }
+        /**
+         * 计算总输出
+         */
+        var total = 0;
+        skillsArray.forEach(function (skill) {
+            total += skill.subTotal;
+        });
+        this.totalExpectation = total;
+        /**
+         * 计算dps
+         */
+        this.dps = total / this.seconds;
+        /**
+         * 总输出计算完成之后才能计算percent
+         */
+        var percentArray = [];
+        skillsArray.forEach(function (skill) {
+            var currentPercent = formatNumber(skill.subTotal / _this.totalExpectation);
+            skill.percent = currentPercent;
+            percentArray.push({
+                skillName: skill.skillName,
+                subTotal: skill.subTotal,
+                percent: skill.percent,
             });
         });
+        /**
+         * 计算完成之后覆盖掉当前的skills
+         */
+        this.skills = skillsArray;
+        return {
+            totalExpectation: this.totalExpectation,
+            seconds: this.seconds,
+            dps: this.dps,
+            skills: percentArray,
+        };
     };
     /**
      * 计算
@@ -268,7 +292,7 @@ var CalculatorBase = /** @class */ (function () {
          * 计算基础攻击系数
          */
         var GongJiCoefficient = 1 + ctx.JiChuGongJiPercent;
-        var ultimate = new core_1.default((_a = {
+        var ultimate = new DpsCore((_a = {
                 mainCoeffiecient: core.mainCoeffiecient,
                 /**
                  * 设置主属性
@@ -323,5 +347,5 @@ var CalculatorBase = /** @class */ (function () {
     };
     return CalculatorBase;
 }());
-exports.default = CalculatorBase;
+export default CalculatorBase;
 //# sourceMappingURL=base.js.map

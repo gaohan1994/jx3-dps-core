@@ -4,11 +4,11 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-07 20:43:49 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-09 17:47:14
+ * @Last Modified time: 2021-08-11 15:23:05
  */
-import invariant = require('invariant');
-import chalk = require('chalk');
-import { CharacterTypes, SupportContext } from '../types';
+import invariant from 'invariant';
+import chalk from 'chalk';
+import { CharacterTypes } from '../types';
 
 class DpsCore {
 

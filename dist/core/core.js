@@ -1,16 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 计算器核心类
  *
  * @Author: centerm.gaohan
  * @Date: 2021-08-07 20:43:49
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-09 17:47:14
+ * @Last Modified time: 2021-08-11 15:23:05
  */
-var invariant = require("invariant");
-var chalk = require("chalk");
-var types_1 = require("../types");
+import invariant from 'invariant';
+import chalk from 'chalk';
+import { CharacterTypes } from '../types';
 var DpsCore = /** @class */ (function () {
     function DpsCore(options) {
         this.options = options;
@@ -34,19 +32,19 @@ var DpsCore = /** @class */ (function () {
             typeof options.ShenFa === 'number', '主属性不能为空');
         if (options.YuanQi !== undefined) {
             this.YuanQi = options.YuanQi;
-            this.type = types_1.CharacterTypes.YuanQi;
+            this.type = CharacterTypes.YuanQi;
         }
         if (options.GenGu !== undefined) {
             this.GenGu = options.GenGu;
-            this.type = types_1.CharacterTypes.GenGu;
+            this.type = CharacterTypes.GenGu;
         }
         if (options.LiDao !== undefined) {
             this.LiDao = options.LiDao;
-            this.type = types_1.CharacterTypes.LiDao;
+            this.type = CharacterTypes.LiDao;
         }
         if (options.ShenFa !== undefined) {
             this.ShenFa = options.ShenFa;
-            this.type = types_1.CharacterTypes.ShenFa;
+            this.type = CharacterTypes.ShenFa;
         }
         this.type = options.type;
         if (options.ZongGongJi) {
@@ -79,5 +77,5 @@ var DpsCore = /** @class */ (function () {
     };
     return DpsCore;
 }());
-exports.default = DpsCore;
+export default DpsCore;
 //# sourceMappingURL=core.js.map

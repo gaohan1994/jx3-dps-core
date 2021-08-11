@@ -1,2 +1,3 @@
+import CalculatorBase from './base';
 import YiJinJing from './ShaoLin/YiJinJing';
-export { YiJinJing };
+export { CalculatorBase, YiJinJing };

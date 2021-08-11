@@ -1,5 +1,6 @@
-const { YiJinJing } = require('../dist');
-const Calculator = require('../dist');
+// const { YiJinJing } = require('../build');
+// const Calculator = require('../build');
+const Calculator = require('../build');
 
 function Demo() {
   const yjj = new Calculator.YiJinJing({
@@ -22,8 +23,13 @@ function Demo() {
   });
 
   yjj.total().then((res) => {
-    console.log('res', res.totalExpectation);
-    console.log('res', res.dps);
+    console.log('res', res);
+    let total = 0;
+
+    res.skills.forEach((element) => {
+      total += element.percent;
+    });
+    console.log('total', total);
   });
 }
 

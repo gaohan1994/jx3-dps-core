@@ -1,5 +1,5 @@
 
-import compose from './compose';
+import { compose } from './index';
 
 /**
  * 中间件类

@@ -3,15 +3,14 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:45:42 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-10 18:03:21
+ * @Last Modified time: 2021-08-11 15:21:23
  */
-import invariant = require('invariant');
-import numeral = require('numeral');
-import chalk = require('chalk');
-import Middleware from '../onion/middleware';
-import { SkillContext, SkillMiddleware, SkillMiddleSteps, SupportMode, SupportContext } from '../types';
+import invariant from 'invariant';
+import chalk from 'chalk';
+import numeral from 'numeral';
+import { SkillContext, SupportContext } from '../types';
 import DpsCore from './core';
-import Target from '../support/target';
+import { Target } from '../support';
 
 interface SkillParamFunction {
   (ctx: SkillContext): number;
@@ -142,6 +141,14 @@ class Skill {
    */
   public subTotal: number;
 
+  /**
+   * 占总输出百分比
+   *
+   * @type {number}
+   * @memberof Skill
+   */
+  public percent: number;
+
   constructor(options: Options) {
     this.options = options;
     invariant(typeof options.skillTimes === 'number', '技能次数不能为空');
@@ -257,7 +264,7 @@ class Skill {
 export default Skill;
 
 
-function formatNumber(value: number): number {
+export function formatNumber(value: number): number {
   return numeral(numeral(value).format('0.00')).value();
 }
 

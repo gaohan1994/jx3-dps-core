@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SupportContextKeys = exports.SkillMiddleSteps = exports.GroupSkillBuffList = exports.TeamSkillBuffNeiGongList = exports.TeamSkillBuffWaiGongList = exports.SetBonuse = exports.Weapon = exports.EnChants = exports.FormationValue = exports.TargetMuZhuangList = exports.TargetBossList = exports.TargetMode = exports.CharacterTypes = exports.SupportMode = void 0;
 /**
  * 辅助类类别
  *
@@ -9,12 +6,12 @@ exports.SupportContextKeys = exports.SkillMiddleSteps = exports.GroupSkillBuffLi
  * @export
  * @enum {number}
  */
-var SupportMode;
+export var SupportMode;
 (function (SupportMode) {
     SupportMode["NeiGong"] = "NeiGong";
     SupportMode["WaiGong"] = "WaiGong";
-})(SupportMode = exports.SupportMode || (exports.SupportMode = {}));
-var CharacterTypes;
+})(SupportMode || (SupportMode = {}));
+export var CharacterTypes;
 (function (CharacterTypes) {
     /**
      * 元气
@@ -32,8 +29,8 @@ var CharacterTypes;
      * 身法
      */
     CharacterTypes["ShenFa"] = "ShenFa";
-})(CharacterTypes = exports.CharacterTypes || (exports.CharacterTypes = {}));
-var TargetMode;
+})(CharacterTypes || (CharacterTypes = {}));
+export var TargetMode;
 (function (TargetMode) {
     /**
      * 目标类型 - 木桩
@@ -43,37 +40,37 @@ var TargetMode;
      * 目标类型 - boss
      */
     TargetMode["Boss"] = "Boss";
-})(TargetMode = exports.TargetMode || (exports.TargetMode = {}));
+})(TargetMode || (TargetMode = {}));
 /**
  * boss 列表
  *
  * @export
  * @enum {number}
  */
-var TargetBossList;
+export var TargetBossList;
 (function (TargetBossList) {
     TargetBossList["DaMoDong"] = "DaMoDong";
-})(TargetBossList = exports.TargetBossList || (exports.TargetBossList = {}));
+})(TargetBossList || (TargetBossList = {}));
 /**
  * 木桩列表
  *
  * @export
  * @enum {number}
  */
-var TargetMuZhuangList;
+export var TargetMuZhuangList;
 (function (TargetMuZhuangList) {
     TargetMuZhuangList["MuZhuang111"] = "MuZhuang111";
     TargetMuZhuangList["MuZhuang112"] = "MuZhuang111";
     TargetMuZhuangList["MuZhuang113"] = "MuZhuang111";
-})(TargetMuZhuangList = exports.TargetMuZhuangList || (exports.TargetMuZhuangList = {}));
-var FormationValue;
+})(TargetMuZhuangList || (TargetMuZhuangList = {}));
+export var FormationValue;
 (function (FormationValue) {
     FormationValue["TianGuLeiYinZhen"] = "TianGuLeiYinZhen";
     FormationValue["DuJingZhen"] = "DuJingZhen";
     FormationValue["TianLuoZhen"] = "TianLuoZhen";
     FormationValue["QiChunZhen"] = "QiChunZhen";
-})(FormationValue = exports.FormationValue || (exports.FormationValue = {}));
-var EnChants;
+})(FormationValue || (FormationValue = {}));
+export var EnChants;
 (function (EnChants) {
     // 附魔头
     EnChants["EnChantHead"] = "EnChantHead";
@@ -85,14 +82,14 @@ var EnChants;
     EnChants["EnChantHand"] = "EnChantHand";
     // 附魔鞋子
     EnChants["EnChantShoe"] = "EnChantShoe";
-})(EnChants = exports.EnChants || (exports.EnChants = {}));
+})(EnChants || (EnChants = {}));
 /**
  * 武器类型
  *
  * @export
  * @enum {number}
  */
-var Weapon;
+export var Weapon;
 (function (Weapon) {
     Weapon["Normal"] = "Normal";
     /**
@@ -107,14 +104,14 @@ var Weapon;
      * 水特效
      */
     Weapon["EffectWather"] = "EffectWather";
-})(Weapon = exports.Weapon || (exports.Weapon = {}));
+})(Weapon || (Weapon = {}));
 /**
  * 套装类型
  *
  * @export
  * @enum {number}
  */
-var SetBonuse;
+export var SetBonuse;
 (function (SetBonuse) {
     /**
      * 技能套装效果
@@ -124,32 +121,32 @@ var SetBonuse;
      * 数值套装效果
      */
     SetBonuse["ValueSetBonuse"] = "ValueSetBonuse";
-})(SetBonuse = exports.SetBonuse || (exports.SetBonuse = {}));
+})(SetBonuse || (SetBonuse = {}));
 /**
  * 外功小队技能增益
  *
  * @export
  * @enum {number}
  */
-var TeamSkillBuffWaiGongList;
+export var TeamSkillBuffWaiGongList;
 (function (TeamSkillBuffWaiGongList) {
     TeamSkillBuffWaiGongList["SuiXingChen"] = "SuiXingChen";
     TeamSkillBuffWaiGongList["YinMeiXiang"] = "YinMeiXiang";
     TeamSkillBuffWaiGongList["JiLei"] = "JiLei";
     TeamSkillBuffWaiGongList["Jiu"] = "Jiu";
-})(TeamSkillBuffWaiGongList = exports.TeamSkillBuffWaiGongList || (exports.TeamSkillBuffWaiGongList = {}));
-var TeamSkillBuffNeiGongList;
+})(TeamSkillBuffWaiGongList || (TeamSkillBuffWaiGongList = {}));
+export var TeamSkillBuffNeiGongList;
 (function (TeamSkillBuffNeiGongList) {
     TeamSkillBuffNeiGongList["XiuQi"] = "XiuQi";
     TeamSkillBuffNeiGongList["PoCangQiong"] = "PoCangQiong";
-})(TeamSkillBuffNeiGongList = exports.TeamSkillBuffNeiGongList || (exports.TeamSkillBuffNeiGongList = {}));
+})(TeamSkillBuffNeiGongList || (TeamSkillBuffNeiGongList = {}));
 /**
  * 团队技能增益
  *
  * @export
  * @enum {number}
  */
-var GroupSkillBuffList;
+export var GroupSkillBuffList;
 (function (GroupSkillBuffList) {
     GroupSkillBuffList["HongFa"] = "HongFa";
     GroupSkillBuffList["LiDiChengFo"] = "LiDiChengFo";
@@ -158,15 +155,15 @@ var GroupSkillBuffList;
     GroupSkillBuffList["LieRiZhan"] = "LieRiZhan";
     GroupSkillBuffList["HaoLingSanJun"] = "HaoLingSanJun";
     GroupSkillBuffList["MeiHuaDun"] = "MeiHuaDun";
-})(GroupSkillBuffList = exports.GroupSkillBuffList || (exports.GroupSkillBuffList = {}));
-var SkillMiddleSteps;
+})(GroupSkillBuffList || (GroupSkillBuffList = {}));
+export var SkillMiddleSteps;
 (function (SkillMiddleSteps) {
     SkillMiddleSteps["step1"] = "step1";
     SkillMiddleSteps["step2"] = "step2";
     SkillMiddleSteps["step3"] = "step3";
     SkillMiddleSteps["step4"] = "step4";
-})(SkillMiddleSteps = exports.SkillMiddleSteps || (exports.SkillMiddleSteps = {}));
-var SupportContextKeys;
+})(SkillMiddleSteps || (SkillMiddleSteps = {}));
+export var SupportContextKeys;
 (function (SupportContextKeys) {
     SupportContextKeys["mainAttribute"] = "mainAttribute";
     SupportContextKeys["YuanQi"] = "YuanQi";
@@ -187,5 +184,5 @@ var SupportContextKeys;
     SupportContextKeys["WuShuang"] = "WuShuang";
     SupportContextKeys["WuShuangLevel"] = "WuShuangLevel";
     SupportContextKeys["PoZhao"] = "PoZhao";
-})(SupportContextKeys = exports.SupportContextKeys || (exports.SupportContextKeys = {}));
+})(SupportContextKeys || (SupportContextKeys = {}));
 //# sourceMappingURL=index.js.map

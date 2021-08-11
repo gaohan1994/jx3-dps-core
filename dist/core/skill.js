@@ -1,15 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 技能类
  * @Author: centerm.gaohan
  * @Date: 2021-08-08 19:45:42
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-10 18:03:21
+ * @Last Modified time: 2021-08-11 15:21:23
  */
-var invariant = require("invariant");
-var numeral = require("numeral");
-var chalk = require("chalk");
+import invariant from 'invariant';
+import chalk from 'chalk';
+import numeral from 'numeral';
 var Skill = /** @class */ (function () {
     function Skill(options) {
         this.options = options;
@@ -98,8 +96,8 @@ var Skill = /** @class */ (function () {
     };
     return Skill;
 }());
-exports.default = Skill;
-function formatNumber(value) {
+export default Skill;
+export function formatNumber(value) {
     return numeral(numeral(value).format('0.00')).value();
 }
 function getCurrentCoefficient(coefficient1, coefficient2) {

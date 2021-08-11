@@ -1,6 +1,6 @@
 import { SkillContext, SupportContext } from '../types';
 import DpsCore from './core';
-import Target from '../support/target';
+import { Target } from '../support';
 interface SkillParamFunction {
     (ctx: SkillContext): number;
 }
@@ -115,6 +115,13 @@ declare class Skill {
      * @memberof Skill2
      */
     subTotal: number;
+    /**
+     * 占总输出百分比
+     *
+     * @type {number}
+     * @memberof Skill
+     */
+    percent: number;
     constructor(options: Options);
     /**
      * 计算技能小计
@@ -126,3 +133,4 @@ declare class Skill {
     showSkillInfo(): void;
 }
 export default Skill;
+export declare function formatNumber(value: number): number;

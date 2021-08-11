@@ -1,4 +1,10 @@
-"use strict";
+/**
+ * 团队 和 小队增益
+ * @Author: centerm.gaohan
+ * @Date: 2021-08-08 17:18:52
+ * @Last Modified by: centerm.gaohan
+ * @Last Modified time: 2021-08-11 15:21:55
+ */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -14,29 +20,21 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * 团队 和 小队增益
- * @Author: centerm.gaohan
- * @Date: 2021-08-08 17:18:52
- * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-09 15:30:28
- */
-var chalk = require("chalk");
-var types_1 = require("../types");
-var base_1 = require("./base");
+import chalk from 'chalk';
+import { SupportMode } from "../types";
+import SupportBase from './base';
 var TeamBuff = /** @class */ (function (_super) {
     __extends(TeamBuff, _super);
     function TeamBuff(options) {
         var _a, _b;
         if (options === void 0) { options = {}; }
-        var _this = _super.call(this) || this;
+        var _this = _super.call(this, options) || this;
         /**
          * 辅助类类型
          *
          * @memberof TeamBuff
          */
-        _this.mode = types_1.SupportMode;
+        _this.mode = SupportMode;
         /**
          * 阵法
          *
@@ -80,6 +78,6 @@ var TeamBuff = /** @class */ (function (_super) {
         console.log(chalk.green("\u56E2\u961F\u589E\u76CA\uFF1A\n      \u9635\u6CD5\uFF1A\n      " + (this.formation || '无') + "\n      \u5C0F\u961F\u6280\u80FD\u589E\u76CA\uFF1A\n      " + this.teamSkillBuff.join(', ') + "\n      \u56E2\u961F\u6280\u80FD\u589E\u76CA\uFF1A\n      " + this.groupSkillBuff.join(', ') + "\n    "));
     };
     return TeamBuff;
-}(base_1.default));
-exports.default = TeamBuff;
+}(SupportBase));
+export default TeamBuff;
 //# sourceMappingURL=team.js.map

@@ -1,3 +1,11 @@
+/**
+ * 个人增益 类
+ *
+ * @Author: centerm.gaohan
+ * @Date: 2021-08-08 16:55:04
+ * @Last Modified by: centerm.gaohan
+ * @Last Modified time: 2021-08-11 15:21:36
+ */
 import { EnChants, Weapon, SetBonuse } from '../types';
 import SupportBase from './base';
 declare class PersonBuff extends SupportBase {

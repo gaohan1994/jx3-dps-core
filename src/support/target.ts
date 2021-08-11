@@ -4,28 +4,27 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 18:41:58 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-09 16:10:28
+ * @Last Modified time: 2021-08-11 15:21:50
  */
-import chalk = require('chalk');
+
+import chalk from 'chalk';
 import { TargetMode, TargetBossList, TargetMuZhuangList } from "../types";
+
+export type TargetOptions = TargetBossList | TargetMuZhuangList;
 
 class Target {
   static TargetList = {
-    Boss: {
-      [TargetBossList.DaMoDong]: {
-        name: TargetBossList.DaMoDong,
-        defenseCoefficient: 23265.87,
-        neiFang: 12528,
-        level: 113,
-      }
+    [TargetBossList.DaMoDong]: {
+      name: TargetBossList.DaMoDong,
+      defenseCoefficient: 23265.87,
+      neiFang: 12528,
+      level: 113,
     },
-    MuZhuang: {
-      [TargetMuZhuangList.MuZhuang111]: {
-        name: TargetMuZhuangList.MuZhuang111,
-        defenseCoefficient: 20134.905,
-        neiFang: 5034,
-        level: 111
-      },
+    [TargetMuZhuangList.MuZhuang111]: {
+      name: TargetMuZhuangList.MuZhuang111,
+      defenseCoefficient: 20134.905,
+      neiFang: 5034,
+      level: 111
     }
   }
 
@@ -61,15 +60,15 @@ class Target {
    */
   public level: number;
 
-  constructor(options: any = {}) {
+  constructor(options: TargetOptions) {
     this.options = options;
 
     /**
      * 设置当前目标如果没传入默认 111 木桩
      */
-    const currentTarget = options !== undefined && typeof options.name === 'string'
-      ? options
-      : Target.TargetList.MuZhuang[TargetMuZhuangList.MuZhuang111];
+    const currentTarget = options !== undefined && typeof options === 'string'
+      ? Target.TargetList[options]
+      : Target.TargetList[TargetMuZhuangList.MuZhuang113];
 
     this.name = currentTarget.name;
     this.level = currentTarget.level;

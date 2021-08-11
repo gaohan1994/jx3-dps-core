@@ -1,8 +1,6 @@
-import Core from '../core/core';
-import Support from '../support/support';
-import Target from '../support/target';
-import { SupportContext } from '../types';
-import Skill from '../core/skill';
+import { DpsCore, Skill } from '../core';
+import { Support, Target } from '../support';
+import { SupportContext, CalculatorResult } from '../types';
 declare class CalculatorBase {
     options: any;
     /**
@@ -18,7 +16,7 @@ declare class CalculatorBase {
      * @type {Core}
      * @memberof CalculatorBase
      */
-    core: Core;
+    core: DpsCore;
     /**
      * 辅助类
      *
@@ -87,6 +85,12 @@ declare class CalculatorBase {
     };
     constructor(options?: any);
     /**
+     * 使用增益
+     *
+     * @memberof CalculatorBase
+     */
+    use(): void;
+    /**
      * 传入技能名称返回战斗时间内该技能次数
      *
      * @param {string} skillName
@@ -99,7 +103,7 @@ declare class CalculatorBase {
      * @return {*}  {Core}
      * @memberof CalculatorBase
      */
-    getCore(): Core;
+    getCore(): DpsCore;
     /**
      * 获得辅助类
      *
@@ -107,7 +111,7 @@ declare class CalculatorBase {
      * @memberof CalculatorBase
      */
     getSupportContext(): SupportContext;
-    getSupport(): Support;
+    getSupport(): any;
     /**
      * 获得目标类
      *
@@ -133,29 +137,19 @@ declare class CalculatorBase {
      *
      * @memberof CalculatorBase
      */
-    executeCalculator(): Promise<{
-        totalExpectation: number;
-        seconds: number;
-        dps: number;
-        skills: Skill[];
-    }>;
+    executeCalculator(): CalculatorResult;
     /**
      * 计算
      *
      * @memberof CalculatorBase
      */
-    total(): Promise<{
-        totalExpectation: number;
-        seconds: number;
-        dps: number;
-        skills: Skill[];
-    }>;
+    total(): Promise<any>;
     /**
      * 生成最终属性
      *
      * @memberof DpsCore
      */
-    generateUltimate(core: Core, ctx: SupportContext): Core;
+    generateUltimate(core: DpsCore, ctx: SupportContext): DpsCore;
     showCalculatorValue(): void;
     showSkills(): void;
     showCoreValue(): void;

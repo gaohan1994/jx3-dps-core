@@ -3,9 +3,10 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 17:18:52 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-09 15:30:28
+ * @Last Modified time: 2021-08-11 15:21:55
  */
-import chalk = require('chalk');
+
+import chalk from 'chalk';
 import { Formation, SupportMode, Gain, GroupSkillBuffList } from "../types";
 import { TeamSkillBuffNeiGong, TeamSkillBuffWaiGong, GroupSkills } from '../config/config';
 import SupportBase from './base';
@@ -44,7 +45,7 @@ class TeamBuff extends SupportBase {
   public groupSkillBuff: Array<Gain>;
 
   constructor(options: any = {}) {
-    super();
+    super(options);
     this.options = options;
 
     /**

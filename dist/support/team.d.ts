@@ -1,4 +1,11 @@
-import { Formation, SupportMode, Gain } from "../types";
+/**
+ * 团队 和 小队增益
+ * @Author: centerm.gaohan
+ * @Date: 2021-08-08 17:18:52
+ * @Last Modified by: centerm.gaohan
+ * @Last Modified time: 2021-08-11 15:21:55
+ */
+import { Formation, Gain } from "../types";
 import SupportBase from './base';
 declare class TeamBuff extends SupportBase {
     /**
@@ -6,7 +13,7 @@ declare class TeamBuff extends SupportBase {
      *
      * @memberof TeamBuff
      */
-    mode: typeof SupportMode;
+    mode: any;
     /**
      * 阵法
      *
