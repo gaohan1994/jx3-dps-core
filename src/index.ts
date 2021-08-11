@@ -1,6 +1,42 @@
 import DpsCore from './core/core';
 import Support from './support/support';
 import { YiJinJing } from './calculator';
+import { FormationValue, TeamSkillValue, GroupSkillBuffList, SetBonuse } from './types';
+
+
+const CoreHelper = {
+  /**
+   * 所有阵法
+   * @param Formations
+   */
+  Formations: {
+    ...FormationValue
+  },
+
+  /**
+   * 技能增益
+   * @param TeamSkills
+   */
+  TeamSkills: {
+    ...TeamSkillValue
+  },
+
+  /**
+   * 团队技能增益
+   * @param GroupSkills
+   */
+  GroupSkills: {
+    ...GroupSkillBuffList
+  },
+
+  /**
+   * 套装增益
+   * @parma SetBonusesGain
+   */
+  SetBonusesGain: {
+    ...SetBonuse
+  }
+}
 
 class Calculator {
   static YiJinJing = YiJinJing;
@@ -16,13 +52,13 @@ export default Calculator;
  * 
  * @param Support
  * 辅助计算类
- */
-export { DpsCore, Support };
-
-/**
+ * 
+ * 核心辅助类
+ * @param CoreHelper
+ * 
  * 导出计算器
  * 
  * @param YiJinJing
  * 易筋经计算器
  */
-export { YiJinJing }
+export { DpsCore, Support, CoreHelper, YiJinJing };

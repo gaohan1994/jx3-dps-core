@@ -4,13 +4,13 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 16:55:04 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-11 15:21:36
+ * @Last Modified time: 2021-08-11 16:32:15
  */
 
 import chalk from 'chalk';
 import { EnChants, Weapon, SetBonuse } from '../types'
 import SupportBase from './base';
-import { SetBonusesGain } from '../config/config'
+import { SetBonuseGains } from '../config/config'
 
 class PersonBuff extends SupportBase {
 
@@ -66,7 +66,7 @@ class PersonBuff extends SupportBase {
     this.setBonuses = options.setBonuses || [];
 
     if (this.hasValueSetBonuese()) {
-      this.gainList.push(SetBonusesGain.ValueSetBonuse);
+      this.gainList.push(SetBonuseGains.ValueSetBonuse);
     }
   }
 

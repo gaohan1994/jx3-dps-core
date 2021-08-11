@@ -4,13 +4,13 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-11 15:21:12
+ * @Last Modified time: 2021-08-11 16:53:34
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
 import { DpsCore, Skill, formatNumber } from '../core'
 import { Support, Target } from '../support';
-import { SupportContext, CalculatorResult, CalculatorResultSkillItem } from '../types';
+import { SupportContext, CalculatorResult, CalculatorResultSkillItem, Gain } from '../types';
 
 class CalculatorBase {
 
@@ -66,7 +66,6 @@ class CalculatorBase {
    */
   public className: string;
 
-
   /**
    * 技能套装系数
    */
@@ -112,7 +111,6 @@ class CalculatorBase {
     this.options = options;
 
     invariant(!!options.support, '辅助类不能为空');
-    console.log('Support', Support);
     this.support = new Support(options.support);
 
     if (this.support.hasSkillSetBonuese()) {
@@ -129,8 +127,14 @@ class CalculatorBase {
    *
    * @memberof CalculatorBase
    */
-  public use() {
-
+  public use(gainName: string | string[]) {
+    if (Array.isArray(gainName)) {
+      for (let i = 0; i < gainName.length; i++) {
+        this.support.use(gainName[i] as any);
+      }
+    } else {
+      this.support.use(gainName as any);
+    }
   }
 
   /**
@@ -195,12 +199,6 @@ class CalculatorBase {
   public async initUltimate() {
     const initCore = new DpsCore({
       ...this.options.core,
-      mainCoeffiecient: (YuanQi: number) => {
-        return {
-          JiChuGongJi: YuanQi * 0.18,
-          ZongGongJi: YuanQi * 1.85,
-        };
-      },
     });
     const supportContext = await this.support.getSupportAttribute();
     this.supportContext = supportContext;

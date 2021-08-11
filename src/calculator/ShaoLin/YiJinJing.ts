@@ -8,20 +8,28 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 18:35:26 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-11 14:48:26
+ * @Last Modified time: 2021-08-11 17:02:11
  */
 import CalculatorBase from "../base";
 import Skill from "../../core/skill";
-import { TeamSkills, SetBonusesGain } from '../../config/config';
-import Core from "../../core/core";
-import { SkillContext, EnChants } from "../../types";
-import { shaoLinSkills, SkillNames } from './config'
-import Skill2 from "../../core/skill";
+import { EnChants, TeamSkillValue } from "../../types";
+import { SkillNames } from './config'
 
 class YiJinJing extends CalculatorBase {
 
   constructor(options: any) {
-    super(options);
+    super({
+      ...options,
+      core: {
+        ...options.core,
+        mainCoeffiecient: (YuanQi: number) => {
+          return {
+            JiChuGongJi: YuanQi * 0.18,
+            ZongGongJi: YuanQi * 1.85,
+          };
+        }
+      }
+    });
 
     this.professtion = '少林';
 
@@ -46,22 +54,14 @@ class YiJinJing extends CalculatorBase {
     }
 
     /**
-     * 技能增益列表
+     * 默认技能增益列表
+     * 少林独有
+     * 
+     * @parma JinGangNuMu
+     * @parma QinLongJue
      */
-    this.support.use(shaoLinSkills.JinGangNuMu);
-    this.support.use(shaoLinSkills.QinLongJue);
-
-    this.support.use(TeamSkills.FenLan);
-    this.support.use(TeamSkills.PoCangQiong);
-    this.support.use(TeamSkills.XiuQi);
-
-    /**
-     * 套装
-     */
-    this.support.use(SetBonusesGain.ValueSetBonuse);
-    this.support.use(SetBonusesGain.SkillSetBonuse);
-
-    this.support.showGain();
+    this.support.use(TeamSkillValue.JinGangNuMu);
+    this.support.use(TeamSkillValue.QinLongJue);
   }
 
   /**
@@ -77,9 +77,10 @@ class YiJinJing extends CalculatorBase {
 
     const target = super.getTarget();
 
-    const supportContext = super.getSupportContext();
-
     const support = super.getSupport();
+
+    const supportContext = super.getSupportContext();
+    // console.log('supportContext', supportContext)
 
     const hasCw = support.hasCw();
 
@@ -143,7 +144,7 @@ class YiJinJing extends CalculatorBase {
     /**
      * 六合棍
      */
-    const liuHe = new Skill2({
+    const liuHe = new Skill({
       core,
       target,
       supportContext,
@@ -156,7 +157,7 @@ class YiJinJing extends CalculatorBase {
     });
     skills.push(liuHe);
 
-    const liuHeWithWeiTuo = new Skill2({
+    const liuHeWithWeiTuo = new Skill({
       core,
       target,
       supportContext,
@@ -169,7 +170,7 @@ class YiJinJing extends CalculatorBase {
     });
     const liuHeWithWeiTuoSubTotal = liuHeWithWeiTuo.calculator();
 
-    const weiTuo = new Skill2({
+    const weiTuo = new Skill({
       core,
       target,
       supportContext,

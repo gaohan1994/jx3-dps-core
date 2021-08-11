@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "module": "ES2015",
-    // "lib": ["es6", "DOM"],
+    "lib": ["es6", "DOM"],
     "target": "ES5",
     "allowJs": false,
     "noImplicitAny": true,
-    // "moduleResolution": "Node",
+    "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "declaration": true,
@@ -14,10 +14,8 @@
     // "rootDir": ".",
     "paths": {
       "*": ["node_modules/*", "src/types/*"]
-    },
-    "esModuleInterop": true,
-    "pretty": true
+    }
   },
-  "include": ["src/**/*"],
-  "compileOnSave": true
+  "include": ["src/**/*"]
+  // "compileOnSave": true
 }

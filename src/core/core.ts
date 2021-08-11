@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-07 20:43:49 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-11 15:23:05
+ * @Last Modified time: 2021-08-11 17:02:36
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -228,6 +228,7 @@ class DpsCore {
        * 如果没传入总攻击则计算，需要传入攻击系数
        */
       this.GongJiCoefficient = options.GongJiCoefficient || 1;
+
       const ZGJ = options.mainCoeffiecient(this[this.type]).ZongGongJi + this.JiChuGongJi * this.GongJiCoefficient;
       this.ZongGongJi = ZGJ;
     }
@@ -247,15 +248,15 @@ class DpsCore {
     console.log(chalk.yellow(`---- core start ----`));
     console.log(chalk.yellow(`
       主属性 ${this.YuanQi || this.LiDao || this.GenGu || this.ShenFa}
-      武器伤害 ${ this.WuQiShangHai}
-      基础攻击 ${ this.JiChuGongJi}
-      总攻击 ${ this.ZongGongJi}
-      会心 ${ this.HuiXin}
-      会心效果 ${ this.HuiXiao}
-      破防 ${ this.PoFang}
-      破招 ${ this.PoZhao}
-      加速 ${ this.JiaSu}
-      无双 ${ this.WuShuang}
+      武器伤害 ${this.WuQiShangHai}
+      基础攻击 ${this.JiChuGongJi}
+      总攻击 ${this.ZongGongJi}
+      会心 ${this.HuiXin}
+      会心效果 ${this.HuiXiao}
+      破防 ${this.PoFang}
+      破招 ${this.PoZhao}
+      加速 ${this.JiaSu}
+      无双 ${this.WuShuang}
     `));
     console.log(chalk.yellow(`----core end----`));
   }

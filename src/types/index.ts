@@ -1,7 +1,7 @@
 import DpsCore from "../core/core";
 import Support from "../support/support";
 import Target from '../support/target';
-import Skill from '../core/skill';
+
 /**
  * 技能增益核心类
  *
@@ -88,12 +88,68 @@ export enum TargetMuZhuangList {
   MuZhuang113 = 'MuZhuang111',
 }
 
+/**
+ * 阵法列表
+ *
+ * @export
+ * @enum {number}
+ */
 export enum FormationValue {
   TianGuLeiYinZhen = 'TianGuLeiYinZhen',
   DuJingZhen = 'DuJingZhen',
   TianLuoZhen = 'TianLuoZhen',
   QiChunZhen = 'QiChunZhen',
 }
+
+/**
+ * 技能增益列表
+ *
+ * @export
+ * @enum {number}
+ */
+export enum TeamSkillValue {
+  /**
+   * 
+   * 内功技能增益
+   */
+  JinGangNuMu = 'JinGangNuMu',
+  QinLongJue = 'QinLongJue',
+  PoCangQiong = 'PoCangQiong',
+  XiuQi = 'XiuQi',
+  FenLan = 'FenLan',
+
+  /**
+   * 外功小队技能增益
+   *
+   * @export
+   * @enum {number}
+   */
+  SuiXingChen = 'SuiXingChen',
+  YinMeiXiang = 'YinMeiXiang',
+  JiLei = 'JiLei',
+  Jiu = 'Jiu'
+}
+
+export enum GroupSkillList {
+
+}
+
+/**
+ * 团队技能增益
+ *
+ * @export
+ * @enum {number}
+ */
+export enum GroupSkillBuffList {
+  HongFa = 'HongFa',
+  LiDiChengFo = 'LiDiChengFo',
+  ChaoShengYan = 'ChaoShengYan',
+  JieHuoZhan = 'JieHuoZhan',
+  LieRiZhan = 'LieRiZhan',
+  HaoLingSanJun = 'HaoLingSanJun',
+  MeiHuaDun = 'MeiHuaDun'
+}
+
 
 export type Formation = {
   [key in FormationValue]: Gain;
@@ -150,44 +206,6 @@ export enum SetBonuse {
    * 数值套装效果
    */
   ValueSetBonuse = 'ValueSetBonuse',
-}
-
-/**
- * 外功小队技能增益
- *
- * @export
- * @enum {number}
- */
-export enum TeamSkillBuffWaiGongList {
-  SuiXingChen = 'SuiXingChen',
-  YinMeiXiang = 'YinMeiXiang',
-  JiLei = 'JiLei',
-  Jiu = 'Jiu'
-}
-
-export enum TeamSkillBuffNeiGongList {
-  XiuQi = 'XiuQi',
-  PoCangQiong = 'PoCangQiong',
-}
-
-export type TeamSkill = {
-  [key in TeamSkillBuffWaiGongList | TeamSkillBuffNeiGongList]: Gain;
-}
-
-/**
- * 团队技能增益
- *
- * @export
- * @enum {number}
- */
-export enum GroupSkillBuffList {
-  HongFa = 'HongFa',
-  LiDiChengFo = 'LiDiChengFo',
-  ChaoShengYan = 'ChaoShengYan',
-  JieHuoZhan = 'JieHuoZhan',
-  LieRiZhan = 'LieRiZhan',
-  HaoLingSanJun = 'HaoLingSanJun',
-  MeiHuaDun = 'MeiHuaDun'
 }
 
 type Partical<T> = {

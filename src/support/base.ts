@@ -1,5 +1,11 @@
-import { Gain, SupportContext } from "../types";
+import { Gain, SupportContext, FormationValue, TeamSkillValue, GroupSkillBuffList, SetBonuse } from "../types";
 import chalk from 'chalk';
+import { AllGainList } from '../config'
+
+type SupportName = FormationValue |
+  TeamSkillValue |
+  GroupSkillBuffList |
+  SetBonuse;
 
 export interface SupportBaseOptions {
   defaultGainList?: Gain[];
@@ -48,10 +54,15 @@ class SupportBase {
    * @param {Gain} gain
    * @memberof SupportBase
    */
-  public use(gain: Gain): void {
-    const index = this.gainList.findIndex(g => g.name === gain.name);
+  public use(gainName: SupportName): void {
+    const index = this.gainList.findIndex(g => g.name === gainName);
+
     if (index <= 0) {
-      this.gainList.push(gain);
+      const currentGain = AllGainList[gainName];
+      // console.log('currentGain', currentGain);
+      if (currentGain) {
+        this.gainList.push(currentGain);
+      }
     }
   }
 

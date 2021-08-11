@@ -3,12 +3,11 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 17:18:52 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-11 15:21:55
+ * @Last Modified time: 2021-08-11 16:26:01
  */
 
 import chalk from 'chalk';
 import { Formation, SupportMode, Gain, GroupSkillBuffList } from "../types";
-import { TeamSkillBuffNeiGong, TeamSkillBuffWaiGong, GroupSkills } from '../config/config';
 import SupportBase from './base';
 
 class TeamBuff extends SupportBase {

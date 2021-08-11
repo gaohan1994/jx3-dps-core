@@ -1,7 +1,6 @@
-import { Gain, Formation, FormationValue, SupportContextKeys, SetBonuse, GroupSkillType, GroupSkillBuffList } from "../types";
+import { Gain, Formation, FormationValue, SupportContextKeys, SetBonuse, GroupSkillType, GroupSkillBuffList, TeamSkillValue } from "../types";
 
-
-export const Formations: Formation = {
+export const FormationsGains: Formation = {
   [FormationValue.TianGuLeiYinZhen]: {
     name: FormationValue.TianGuLeiYinZhen,
     data: [
@@ -37,31 +36,38 @@ export const Formations: Formation = {
   },
 }
 
-export const TeamSkillBuffNeiGong: { [name: string]: Gain } = {
-  PoCangQiong: {
+export const TeamSkillGains: { [name in TeamSkillValue]?: Gain } = {
+  /**
+   * 少林技能
+   */
+  [TeamSkillValue.JinGangNuMu]: {
+    name: "JinGangNuMu",
+    data: [
+      { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.4 },
+    ]
+  },
+  [TeamSkillValue.QinLongJue]: {
+    name: 'QinLongJue',
+    data: [
+      // 擒龙诀 20%基础 25%覆盖
+      { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.2 * 0.25 },
+    ]
+  },
+
+  [TeamSkillValue.PoCangQiong]: {
     name: 'PoCangQiong',
     data: [
       { gainTarget: SupportContextKeys.HuiXiao, value: 0.1 }
     ]
   },
-  XiuQi: {
+  [TeamSkillValue.XiuQi]: {
     name: 'XiuQi',
     data: [
       { gainTarget: SupportContextKeys.mainAttribute, value: 111 },
       { gainTarget: SupportContextKeys.HuiXinLevel, value: 70 },
     ]
-  }
-}
-
-export const TeamSkillBuffWaiGong: { [name: string]: Gain } = {
-
-}
-
-
-export const TeamSkills: { [name: string]: Gain } = {
-  ...TeamSkillBuffNeiGong,
-  ...TeamSkillBuffWaiGong,
-  FenLan: {
+  },
+  [TeamSkillValue.FenLan]: {
     name: 'FenLan',
     data: [
       { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.07 }
@@ -69,8 +75,8 @@ export const TeamSkills: { [name: string]: Gain } = {
   },
 }
 
-export const SetBonusesGain: { [name: string]: Gain } = {
-  ValueSetBonuse: {
+export const SetBonuseGains: { [name in SetBonuse]: Gain } = {
+  [SetBonuse.ValueSetBonuse]: {
     name: SetBonuse.ValueSetBonuse,
     data: [
       // 套装 4%会心 覆盖率 40%
@@ -79,7 +85,7 @@ export const SetBonusesGain: { [name: string]: Gain } = {
       { gainTarget: SupportContextKeys.HuiXiao, value: 0.04 * 0.4 }
     ]
   },
-  SkillSetBonuse: {
+  [SetBonuse.SkillSetBonuse]: {
     name: SetBonuse.SkillSetBonuse,
     data: [
       // 套装 4%会心 覆盖率 40%
@@ -88,7 +94,7 @@ export const SetBonusesGain: { [name: string]: Gain } = {
   }
 }
 
-export const GroupSkills: GroupSkillType = {
+export const GroupSkillGains: GroupSkillType = {
   [GroupSkillBuffList.JieHuoZhan]: {
     name: GroupSkillBuffList.JieHuoZhan,
     data: [
