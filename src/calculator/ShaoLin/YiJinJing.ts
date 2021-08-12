@@ -8,12 +8,12 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 18:35:26 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-11 17:02:11
+ * @Last Modified time: 2021-08-12 12:39:58
  */
 import CalculatorBase from "../base";
 import Skill from "../../core/skill";
 import { EnChants, TeamSkillValue } from "../../types";
-import { SkillNames } from './config'
+import { SkillNames, YJJConfig } from './config'
 
 class YiJinJing extends CalculatorBase {
 
@@ -35,23 +35,7 @@ class YiJinJing extends CalculatorBase {
 
     this.className = '易筋经';
 
-    this.skillTimesLib = {
-      [SkillNames.WeiTuoXianChu]: 25,
-      [SkillNames.PoZhao]: 30,
-      [SkillNames.NaYunShi]: 39,
-      [SkillNames.HengSaoLiuHe]: 32,
-      [SkillNames.HengSaoLiuHeDot]: 155,
-      [SkillNames.ShouQueShi]: 45,
-      [SkillNames.PuDuSiFang]: 44,
-      [SkillNames.XiangMo]: 64,
-      [SkillNames.SuoDi]: 39,
-      [SkillNames.TiHuGuanDing]: 22,
-      [SkillNames.FoGuo]: 55,
-      [SkillNames.LiuHeGun]: 172,
-      [SkillNames.FeiJian]: 50,
-      [EnChants.EnChantHand]: 30,
-      [EnChants.EnChantShoe]: 15,
-    }
+    this.skillTimesLib = YJJConfig;
 
     /**
      * 默认技能增益列表
@@ -71,8 +55,6 @@ class YiJinJing extends CalculatorBase {
    */
   public async addSkills() {
 
-    var self = this;
-
     const core = super.getCore();
 
     const target = super.getTarget();
@@ -80,7 +62,6 @@ class YiJinJing extends CalculatorBase {
     const support = super.getSupport();
 
     const supportContext = super.getSupportContext();
-    // console.log('supportContext', supportContext)
 
     const hasCw = support.hasCw();
 
@@ -148,8 +129,8 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-      skillName: SkillNames.LiuHeGun,
-      skillTimes: this.getSkillTimes(SkillNames.LiuHeGun),
+
+      ...this.getSkillInfo(SkillNames.LiuHeGun),
       skillBasicNumber: core.WuQiShangHai,
       basicDamage: 0,
       basicDamageCoefficient: 0,
@@ -162,7 +143,8 @@ class YiJinJing extends CalculatorBase {
       target,
       supportContext,
       skillName: '韦陀触发六合棍',
-      skillTimes: this.getSkillTimes(SkillNames.WeiTuoXianChu) * 2,
+      skillTitle: '韦陀触发六合棍',
+      skillTimes: this.getSkillInfo(SkillNames.WeiTuoXianChu).skillTimes * 2,
       skillBasicNumber: core.WuQiShangHai,
       basicDamage: 0,
       basicDamageCoefficient: 0,
@@ -174,8 +156,7 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-      skillName: SkillNames.WeiTuoXianChu,
-      skillTimes: this.getSkillTimes(SkillNames.WeiTuoXianChu),
+      ...this.getSkillInfo(SkillNames.WeiTuoXianChu),
       skillBasicNumber: 179,
       basicDamageCoefficient: 1.66,
       targetDamageCoefficient: ingoreTargetDefenceCoefficient,
@@ -190,8 +171,7 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-      skillName: SkillNames.PoZhao,
-      skillTimes: this.getSkillTimes(SkillNames.PoZhao),
+      ...this.getSkillInfo(SkillNames.PoZhao),
       skillBasicNumber: 0,
       basicDamage: core.PoZhao,
       basicDamageCoefficient: 15.2288,
@@ -203,8 +183,7 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-      skillName: SkillNames.NaYunShi,
-      skillTimes: this.getSkillTimes(SkillNames.NaYunShi),
+      ...this.getSkillInfo(SkillNames.NaYunShi),
       skillBasicNumber: 258.5,
       basicDamageCoefficient: 2,
       targetDamageCoefficient: ingoreTargetDefenceCoefficient,
@@ -218,8 +197,7 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-      skillName: SkillNames.HengSaoLiuHe,
-      skillTimes: this.getSkillTimes(SkillNames.HengSaoLiuHe),
+      ...this.getSkillInfo(SkillNames.HengSaoLiuHe),
       skillBasicNumber: 75,
       basicDamageCoefficient: 0.58,
       damageBonuesCoefficient: () => {
@@ -235,8 +213,7 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-      skillName: SkillNames.ShouQueShi,
-      skillTimes: this.getSkillTimes(SkillNames.ShouQueShi),
+      ...this.getSkillInfo(SkillNames.ShouQueShi),
       skillBasicNumber: 144.5,
       basicDamageCoefficient: 1.36,
       damageBonuesCoefficient: () => {
@@ -254,8 +231,7 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-      skillName: SkillNames.HengSaoLiuHeDot,
-      skillTimes: this.getSkillTimes(SkillNames.HengSaoLiuHeDot),
+      ...this.getSkillInfo(SkillNames.HengSaoLiuHeDot),
       skillBasicNumber: 45,
       basicDamageCoefficient: 0.083,
       damageBonuesCoefficient: () => {
@@ -271,8 +247,7 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-      skillName: SkillNames.PuDuSiFang,
-      skillTimes: this.getSkillTimes(SkillNames.PuDuSiFang),
+      ...this.getSkillInfo(SkillNames.PuDuSiFang),
       skillBasicNumber: 163.5,
       basicDamageCoefficient: 0.92,
       damageBonuesCoefficient: () => {
@@ -286,8 +261,7 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-      skillName: SkillNames.SuoDi,
-      skillTimes: this.getSkillTimes(SkillNames.SuoDi),
+      ...this.getSkillInfo(SkillNames.SuoDi),
       skillBasicNumber: 407.5,
       basicDamageCoefficient: 1.25,
       damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient) * MingFaCoefficient,
@@ -298,8 +272,7 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-      skillName: SkillNames.TiHuGuanDing,
-      skillTimes: this.getSkillTimes(SkillNames.TiHuGuanDing),
+      ...this.getSkillInfo(SkillNames.TiHuGuanDing),
       skillBasicNumber: 407.5,
       basicDamageCoefficient: 1.92185,
       damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient),
@@ -310,8 +283,7 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-      skillName: SkillNames.FoGuo,
-      skillTimes: this.getSkillTimes(SkillNames.FoGuo),
+      ...this.getSkillInfo(SkillNames.FoGuo),
       skillBasicNumber: 127.5,
       basicDamageCoefficient: 0.697922,
       damageBonuesCoefficient: BaseCoefficient + 0.3 + ErYeYiYuanCoefficient
@@ -322,8 +294,7 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-      skillName: EnChants.EnChantHand,
-      skillTimes: this.getSkillTimes(EnChants.EnChantHand),
+      ...this.getSkillInfo(EnChants.EnChantHand),
       skillBasicNumber: 0,
       basicDamageCoefficient: 0.95,
       damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient) * 0.4,
@@ -334,8 +305,7 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-      skillName: EnChants.EnChantShoe,
-      skillTimes: this.getSkillTimes(EnChants.EnChantShoe),
+      ...this.getSkillInfo(EnChants.EnChantShoe),
       skillBasicNumber: 0,
       basicDamageCoefficient: 0.38125,
       damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient)
@@ -349,11 +319,10 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-      skillName: SkillNames.XiangMo,
-      skillTimes: 1,
+      ...this.getSkillInfo(SkillNames.XiangMo),
       skillBasicNumber: 0,
       basicDamage: () => {
-        return (weituoTotal + nayunTotal) / 4 / 1.2;
+        return (weituoTotal + nayunTotal) / 4 / 1.2 / this.getSkillInfo(SkillNames.XiangMo).skillTimes;
       },
       poFangCoefficient: 1,
       wuShuangCoefficient: 1,

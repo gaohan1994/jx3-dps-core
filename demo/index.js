@@ -27,7 +27,7 @@ function Demo() {
   yjj.use(Calculator.CoreHelper.SetBonusesGain.SkillSetBonuse);
 
   yjj.total().then((res) => {
-    // console.log('res', yjj.core);
+    // console.log('res', res.skills);
     console.log('dps: ', res.dps);
   });
 }

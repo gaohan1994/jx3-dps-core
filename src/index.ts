@@ -3,7 +3,6 @@ import Support from './support/support';
 import { YiJinJing } from './calculator';
 import { FormationValue, TeamSkillValue, GroupSkillBuffList, SetBonuse } from './types';
 
-
 const CoreHelper = {
   /**
    * 所有阵法
@@ -38,11 +37,18 @@ const CoreHelper = {
   }
 }
 
-class Calculator {
+/**
+ * 主类
+ *
+ * @class Jx3DpsCore
+ */
+class Jx3DpsCore {
   static YiJinJing = YiJinJing;
+
+  static CoreHelper = CoreHelper;
 }
 
-export default Calculator;
+export default Jx3DpsCore;
 
 /**
  * 导出工具类

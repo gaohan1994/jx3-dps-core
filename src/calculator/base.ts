@@ -4,13 +4,14 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-11 16:53:34
+ * @Last Modified time: 2021-08-12 12:42:46
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
 import { DpsCore, Skill, formatNumber } from '../core'
 import { Support, Target } from '../support';
-import { SupportContext, CalculatorResult, CalculatorResultSkillItem, Gain } from '../types';
+import { SupportContext, CalculatorResult, CalculatorResultSkillItem } from '../types';
+import { SkillInfo } from '../core/skill';
 
 class CalculatorBase {
 
@@ -96,16 +97,16 @@ class CalculatorBase {
   public dps: number;
 
   /**
-   * 技能次数库，由子类填充
+   * 技能列表库
    *
    * @type {{
-   *     [name: string]: number;
+   *     [name: string]: SkillInfo;
    *   }}
    * @memberof CalculatorBase
    */
   public skillTimesLib: {
-    [name: string]: number;
-  } = {}
+    [name: string]: SkillInfo;
+  }
 
   constructor(options: any = {}) {
     this.options = options;
@@ -138,12 +139,12 @@ class CalculatorBase {
   }
 
   /**
-   * 传入技能名称返回战斗时间内该技能次数
+   * 传入技能名称返回技能基本信息
    *
    * @param {string} skillName
    * @memberof CalculatorBase
    */
-  public getSkillTimes(skillName: string) {
+  public getSkillInfo(skillName: string): SkillInfo {
     return this.skillTimesLib[skillName];
   }
 
@@ -243,10 +244,13 @@ class CalculatorBase {
     skillsArray.forEach((skill) => {
       const currentPercent = formatNumber(skill.subTotal / this.totalExpectation);
       skill.percent = currentPercent;
+
       percentArray.push({
-        skillName: skill.skillName,
         subTotal: skill.subTotal,
         percent: skill.percent,
+        // skillName: skill.skillName,
+        // skillTimes: skill.skillTimes,
+        ...this.getSkillInfo(skill.skillName)
       });
     });
 

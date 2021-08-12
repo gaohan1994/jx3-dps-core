@@ -403,6 +403,7 @@ export interface CalculatorResultSkillItem {
   skillName: string;
   subTotal: number;
   percent: number;
+  skillTimes: number;
 }
 
 export interface CalculatorResult {

@@ -3,7 +3,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:45:42 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-11 15:21:23
+ * @Last Modified time: 2021-08-12 12:29:44
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -18,9 +18,28 @@ interface SkillParamFunction {
 
 type SkillParam = number | SkillParamFunction;
 
-interface Options {
+export type SkillInfo = {
+  /**
+   * 技能名称
+   *
+   * @type {string}
+   */
   skillName: string;
+  /**
+   * 技能中文名称
+   *
+   * @type {string}
+   */
+  skillTitle: string;
+  /**
+   * 技能次数
+   *
+   * @type {number}
+   */
   skillTimes: number;
+}
+
+interface Options extends SkillInfo {
   core: DpsCore;
   target: Target;
   supportContext: SupportContext;
@@ -38,7 +57,20 @@ interface Options {
 class Skill {
   public options: Options;
 
+  /**
+   * 技能名称 
+   *
+   * @type {string}
+   * @memberof Skill
+   */
   public skillName: string;
+  /**
+   * 技能中文名称
+   *
+   * @type {string}
+   * @memberof Skill
+   */
+  public skillTitle: string;
 
   /**
    * 技能次数
@@ -156,6 +188,8 @@ class Skill {
 
     invariant(!!options.skillName, '技能名称不能为空')
     this.skillName = options.skillName;
+
+    this.skillTitle = options.skillTitle;
 
     invariant(!!options.core, '请设置核心类');
     this.core = options.core;
