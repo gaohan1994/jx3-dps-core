@@ -12,6 +12,7 @@ import { DpsCore, Skill, formatNumber } from '../core'
 import { Support, Target } from '../support';
 import { SupportContext, CalculatorResult, CalculatorResultSkillItem } from '../types';
 import { SkillInfo } from '../core/skill';
+import numeral from 'numeral';
 
 class CalculatorBase {
 
@@ -242,14 +243,16 @@ class CalculatorBase {
     const percentArray: CalculatorResultSkillItem[] = [];
 
     skillsArray.forEach((skill) => {
-      const currentPercent = formatNumber(skill.subTotal / this.totalExpectation);
+      /**
+       * 修改成4位小数
+       */
+      const currentPercent = numeral(numeral(skill.subTotal / this.totalExpectation).format('0.0000')).value()
+
       skill.percent = currentPercent;
 
       percentArray.push({
         subTotal: skill.subTotal,
         percent: skill.percent,
-        // skillName: skill.skillName,
-        // skillTimes: skill.skillTimes,
         ...this.getSkillInfo(skill.skillName)
       });
     });
