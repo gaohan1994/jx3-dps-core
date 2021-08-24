@@ -24,6 +24,7 @@ export const FormationsGains: Formation = {
       { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.05 },
       { gainTarget: SupportContextKeys.HuiXin, value: 0.05 },
       { gainTarget: SupportContextKeys.HuiXiao, value: 0.15 },
+      { gainTarget: SupportContextKeys.ignoreDefense, value: 0.05 },
     ],
   },
   [FormationValue.QiChunZhen]: {
@@ -105,6 +106,12 @@ export const GroupSkillGains: GroupSkillType = {
     name: GroupSkillBuffList.LieRiZhan,
     data: [
       { gainTarget: SupportContextKeys.damageBonus, value: 0.05 }
+    ]
+  },
+  [GroupSkillBuffList.LiDiChengFo]: {
+    name: GroupSkillBuffList.LiDiChengFo,
+    data: [
+      { gainTarget: SupportContextKeys.ignoreDefense, value: 0.12 }
     ]
   },
 }

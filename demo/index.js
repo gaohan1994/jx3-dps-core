@@ -1,6 +1,12 @@
 // const { YiJinJing } = require('../build');
 const Calculator = require('../build');
 
+/**
+ * 08-24
+ * 1、无视目标防御
+ * 2、团队易伤
+ */
+
 function Demo() {
   const yjj = new Calculator.YiJinJing({
     core: {
@@ -17,6 +23,7 @@ function Demo() {
     },
     support: {
       mode: 'NeiGong',
+      target: 'MuZhuang113',
     },
   });
 
@@ -25,9 +32,12 @@ function Demo() {
   yjj.use(Calculator.CoreHelper.TeamSkills.XiuQi);
   yjj.use(Calculator.CoreHelper.SetBonusesGain.ValueSetBonuse);
   yjj.use(Calculator.CoreHelper.SetBonusesGain.SkillSetBonuse);
+  yjj.use(Calculator.CoreHelper.GroupSkills.JieHuoZhan);
+  yjj.use(Calculator.CoreHelper.GroupSkills.LieRiZhan);
+  yjj.use(Calculator.CoreHelper.GroupSkills.LiDiChengFo);
+  yjj.use(Calculator.CoreHelper.Formations.TianLuoZhen);
 
   yjj.total().then((res) => {
-    // console.log('res', res.skills);
     console.log('dps: ', res.dps);
   });
 }

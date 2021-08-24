@@ -7,9 +7,10 @@
   "types": "build/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "tsc -w",
+    "watch": "rollup -c config/rollup.config.js --watch",
     "build": "rollup -c config/rollup.config.js",
-    "demo": "node demo/index.js"
+    "demo": "node demo/index.js",
+    "pub": "npm publish --registry http://registry.npmjs.org"
   },
   "keywords": [],
   "author": "Ghan",

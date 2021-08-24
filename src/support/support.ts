@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 16:29:54 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-11 15:21:44
+ * @Last Modified time: 2021-08-24 20:35:32
  */
 
 import invariant from 'invariant';
@@ -67,16 +67,6 @@ class Support extends SupportBase {
     this.mode = options.mode;
 
     /**
-     * 初始化个人增益
-     */
-    // this.personBuff = new PersonBuff(options);
-
-    /**
-     * 初始化团队增益
-     */
-    // this.teamBuff = new TeamBuff(options);
-
-    /**
      * 初始化目标
      */
     this.target = new Target(options.target);
@@ -90,6 +80,10 @@ class Support extends SupportBase {
    */
   public getSupportAttribute(): Promise<SupportContext> {
     let ctx: SupportContext = {
+      YuanQi: 0,
+      GenGu: 0,
+      LiDao: 0,
+      ShenFa: 0,
       mainAttribute: 0,
       damageBonus: 0,
       JiChuGongJi: 0,
@@ -105,6 +99,7 @@ class Support extends SupportBase {
       WuShuang: 0,
       WuShuangLevel: 0,
       PoZhao: 0,
+      ignoreDefense: 0,
     };
 
     const middleware = new CoreMiddleware([]);

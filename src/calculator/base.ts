@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-12 12:42:46
+ * @Last Modified time: 2021-08-24 21:02:59
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -205,10 +205,11 @@ class CalculatorBase {
     const supportContext = await this.support.getSupportAttribute();
     this.supportContext = supportContext;
 
-    const core = this.generateUltimate(initCore, supportContext);
+    const core = this.generateUltimateCore(initCore, supportContext);
     this.core = core;
 
-    this.target = this.support.target;
+    const target = this.generateUltimateTarget(supportContext);
+    this.target = target;
   }
 
   /**
@@ -291,8 +292,7 @@ class CalculatorBase {
    *
    * @memberof DpsCore
    */
-  public generateUltimate(core: DpsCore, ctx: SupportContext): DpsCore {
-    // console.log('ctx', ctx)
+  public generateUltimateCore(core: DpsCore, ctx: SupportContext): DpsCore {
     /**
      * 最终core类
      * 
@@ -374,6 +374,47 @@ class CalculatorBase {
     });
 
     return ultimate;
+  }
+
+  /**
+   * 生成最终目标类
+   *
+   * @param {Target} target
+   * @param {SupportContext} ctx
+   * @return {*}  {Target}
+   * @memberof CalculatorBase
+   */
+  public generateUltimateTarget(ctx: SupportContext): Target {
+
+    /**
+     * 初始化目标参数
+     * @param targetOptions
+     */
+    const initTarget = this.support.target;
+
+    /**
+     * 无视内防等级
+     * @param ignoreDefense
+     */
+    const { ignoreDefense } = ctx;
+    // console.log('ctx', ctx);
+
+    /**
+     * 实际内防计算公式
+     * (内防 - 无视内防等级) * (1 - 无视内防系数)
+     * 
+     * @param currentTargetNeiFang
+     */
+    const currentTargetNeiFang = (initTarget.neiFang - 0) * (1 - ignoreDefense);
+
+    const _target = new Target({
+      name: initTarget.name,
+      level: initTarget.level,
+      defenseCoefficient: initTarget.defenseCoefficient,
+      neiFang: currentTargetNeiFang
+    });
+    console.log('_target', _target)
+    return _target;
   }
 
   public showCalculatorValue() {

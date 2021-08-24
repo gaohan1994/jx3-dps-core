@@ -3,7 +3,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:45:42 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-12 12:29:44
+ * @Last Modified time: 2021-08-24 20:57:20
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -214,7 +214,14 @@ class Skill {
 
     this.targetDamageCoefficient = currySkill(getCurrentCoefficient(options.targetDamageCoefficient, this.target.damageCoefficient))();
 
-    this.damageBonuesCoefficient = currySkill(getCurrentCoefficient(options.damageBonuesCoefficient, 1))();
+    /**
+     * 新增增伤系数，辅助类提供的全局增伤系数
+     * 
+     * @time 08-24
+     */
+    this.damageBonuesCoefficient =
+      currySkill(getCurrentCoefficient(options.damageBonuesCoefficient, 1))()
+      * (1 + this.supportContext.damageBonus);
 
     this.extra = currySkill(getCurrentCoefficient(options.extra, 0))();
   }

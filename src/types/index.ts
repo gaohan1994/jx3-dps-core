@@ -53,39 +53,24 @@ export enum CharacterTypes {
   ShenFa = 'ShenFa',
 }
 
-export enum TargetMode {
-
-  /**
-   * 目标类型 - 木桩
-   */
-  MuZhuang = 'MuZhuang',
-
-  /**
-   * 目标类型 - boss
-   */
-  Boss = 'Boss'
-}
-
 /**
- * boss 列表
+ * 目标列表
  *
  * @export
  * @enum {number}
  */
-export enum TargetBossList {
-  DaMoDong = 'DaMoDong'
-}
-
-/**
- * 木桩列表
- *
- * @export
- * @enum {number}
- */
-export enum TargetMuZhuangList {
+export enum TargetListKeys {
+  DaMoDong = 'DaMoDong',
   MuZhuang111 = 'MuZhuang111',
-  MuZhuang112 = 'MuZhuang111',
-  MuZhuang113 = 'MuZhuang111',
+  MuZhuang112 = 'MuZhuang112',
+  MuZhuang113 = 'MuZhuang113',
+}
+
+export type TargetParams = {
+  name: string;
+  defenseCoefficient: number;
+  neiFang: number;
+  level: number;
 }
 
 /**
@@ -247,93 +232,11 @@ export interface SkillContext {
    */
   subTotal?: number;
 
-  /**
-   * 经过 step1 CalculatorSkillDamage 计算之后的值
-   *
-   * @type {number}
-   * @memberof Skill
-   */
-  step1SkillDamage?: number;
-  /**
-   * 计算 step1 时的系数
-   *
-   * @type {number}
-   * @memberof SkillContext
-   */
-  step1Coefficient?: number;
-
-  /**
-   * 经过 step2 CalculatorSkillDamageWithQiXueAndMiJi 计算之后的值
-   *
-   * @memberof Skill
-   */
-  step2SkillDamage?: number;
-
-  /**
-   * 计算 step2 时的系数
-   *
-   * @type {number}
-   * @memberof SkillContext
-   */
-  step2Coefficient?: number;
-
-  /**
-   * 经过 step3 CalculatorSkillDamageWithPoFangAndWuShuang 计算之后的值
-   *
-   * @type {number}
-   * @memberof Skill
-   */
-  step3SkillDamage?: number;
-
-  /**
-   * 计算 step3 时的系数
-   *
-   * @type {number}
-   * @memberof SkillContext
-   */
-  step3Coefficient?: number;
-
-  /**
-   * 经过 step4 CalculatorSkillDamageWithHuiXinAndHuiXiao 计算之后的值
-   *
-   * @type {number}
-   * @memberof Skill
-   */
-  step4SkillDamage?: number;
-
-  /**
-   * 计算 step4 时的系数
-   *
-   * @type {number}
-   * @memberof SkillContext
-   */
-  step4Coefficient?: number;
-
-  /**
-   * step5 计算结果
-   *
-   * @type {number}
-   * @memberof SkillContext
-   */
-  step5SkillDamage?: number;
-
-  /**
-   * step5 计算系数
-   *
-   * @type {number}
-   * @memberof SkillContext
-   */
-  step5Coefficient?: number;
-
-  step6SkillDamage?: number;
-  step6Coefficient?: number;
-
   skillTimes?: number;
 
   basicDamage?: number;
 
   coefficient?: number;
-
 }
 
 export enum SupportContextKeys {
@@ -343,6 +246,13 @@ export enum SupportContextKeys {
   LiDao = 'LiDao',
   ShenFa = 'ShenFa',
   damageBonus = 'damageBonus',
+  /**
+   * 新增无视防御系数
+   * 
+   * @time 08-24
+   * @param ignoreDefense
+   */
+  ignoreDefense = 'ignoreDefense',
   PoFangPercent = 'PoFangPercent',
   PoFangLevel = 'PoFangLevel',
   JiChuGongJi = 'JiChuGongJi',
@@ -358,45 +268,8 @@ export enum SupportContextKeys {
   PoZhao = 'PoZhao',
 }
 
-export interface SupportContext {
-  /**
-   * 主属性 
-   *
-   * @type {number}
-   * @memberof SupportContext
-   */
-  mainAttribute: number;
-  YuanQi?: number;
-  GenGu?: number;
-  LiDao?: number;
-  ShenFa?: number;
-
-  PoZhao: number;
-  /**
-   * 易伤
-   *
-   * @type {number}
-   * @memberof SupportContext
-   */
-  damageBonus: number;
-
-  PoFangLevel: number;
-  PoFangPercent: number;
-
-  JiChuGongJi: number;
-  JiChuGongJiPercent: number;
-
-  HuiXin: number;
-  HuiXinLevel: number;
-
-  HuiXiao: number;
-  HuiXiaoLevel: number;
-
-  MingZhong: number;
-  MingZhongLevel: number;
-
-  WuShuang: number;
-  WuShuangLevel: number;
+export type SupportContext = {
+  [key in SupportContextKeys]: number;
 }
 
 export interface CalculatorResultSkillItem {

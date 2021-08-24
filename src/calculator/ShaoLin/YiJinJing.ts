@@ -8,7 +8,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 18:35:26 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-12 12:39:58
+ * @Last Modified time: 2021-08-24 20:58:33
  */
 import CalculatorBase from "../base";
 import Skill from "../../core/skill";
@@ -17,17 +17,19 @@ import { SkillNames, YJJConfig } from './config'
 
 class YiJinJing extends CalculatorBase {
 
+  static mainCoeffiecient = (YuanQi: number) => {
+    return {
+      JiChuGongJi: YuanQi * 0.18,
+      ZongGongJi: YuanQi * 1.85,
+    };
+  }
+
   constructor(options: any) {
     super({
       ...options,
       core: {
         ...options.core,
-        mainCoeffiecient: (YuanQi: number) => {
-          return {
-            JiChuGongJi: YuanQi * 0.18,
-            ZongGongJi: YuanQi * 1.85,
-          };
-        }
+        mainCoeffiecient: YiJinJing.mainCoeffiecient
       }
     });
 
@@ -129,7 +131,6 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-
       ...this.getSkillInfo(SkillNames.LiuHeGun),
       skillBasicNumber: core.WuQiShangHai,
       basicDamage: 0,
