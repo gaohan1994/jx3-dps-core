@@ -140,7 +140,7 @@ export type Formation = {
   [key in FormationValue]: Gain;
 }
 
-export enum EnChants {
+export enum EnChantsList {
   // 附魔头
   EnChantHead = 'EnChantHead',
   // 附魔衣服
@@ -153,26 +153,30 @@ export enum EnChants {
   EnChantShoe = 'EnChantShoe',
 }
 
+export type EnChants = {
+  [key in EnChantsList]: Gain
+}
+
 /**
  * 武器类型
  *
  * @export
  * @enum {number}
  */
-export enum Weapon {
+export enum WeaponValue {
   Normal = 'Normal',
   /**
    * 橙武
    */
   CW = 'CW',
   /**
-   * 雷特效
-   */
-  EffectThunder = 'EffectThunder',
-  /**
    * 水特效
    */
   EffectWather = 'EffectWather'
+}
+
+export type Weapon = {
+  [key in WeaponValue]: Gain;
 }
 
 /**

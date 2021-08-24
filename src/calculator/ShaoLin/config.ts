@@ -1,4 +1,4 @@
-import { EnChants } from "../../types";
+import { EnChants, EnChantsList } from "../../types";
 
 export enum SkillNames {
   PoZhao = 'PoZhao',
@@ -16,80 +16,137 @@ export enum SkillNames {
   FeiJian = 'FeiJian',
 }
 
+export function getSkillTimes(skillName: string, ctx?: any): number {
+  switch (skillName) {
+    case SkillNames.PoZhao: {
+      return 30;
+    }
+    case SkillNames.NaYunShi: {
+      return 49;
+    }
+    case SkillNames.WeiTuoXianChu: {
+      return 23;
+    }
+    case SkillNames.HengSaoLiuHe: {
+      return 31;
+    }
+    case SkillNames.ShouQueShi: {
+      return 45;
+    }
+    case SkillNames.HengSaoLiuHeDot: {
+      return 155;
+    }
+    case SkillNames.PuDuSiFang: {
+      return 45;
+    }
+    case SkillNames.LiuHeGun: {
+      return 172;
+    }
+    case SkillNames.TiHuGuanDing: {
+      return 22;
+    }
+    case EnChantsList.EnChantHand: {
+      return 30;
+    }
+    case EnChantsList.EnChantShoe: {
+      return 15;
+    }
+    case SkillNames.XiangMo: {
+      return Math.floor(getSkillTimes(SkillNames.NaYunShi, ctx) + getSkillTimes(SkillNames.WeiTuoXianChu, ctx));
+    }
+    case SkillNames.SuoDi: {
+      return Math.floor((getSkillTimes(SkillNames.NaYunShi, ctx) + getSkillTimes(SkillNames.WeiTuoXianChu, ctx) + 3 * 5) / 2);
+    }
+    case SkillNames.FoGuo: {
+      return Math.floor(
+        (
+          getSkillTimes(SkillNames.NaYunShi, ctx)
+          + getSkillTimes(SkillNames.WeiTuoXianChu, ctx)
+          + getSkillTimes(SkillNames.ShouQueShi, ctx)
+          + getSkillTimes(SkillNames.HengSaoLiuHe, ctx)
+          + getSkillTimes(SkillNames.PuDuSiFang, ctx)
+          + getSkillTimes(SkillNames.TiHuGuanDing, ctx)
+        ) * 0.3 * 0.9
+      )
+    }
+  }
+}
+
 export const YJJConfig = {
-  [SkillNames.WeiTuoXianChu]: {
-    skillTimes: 25,
-    skillName: SkillNames.WeiTuoXianChu,
-    skillTitle: '韦陀献杵',
-  },
   [SkillNames.PoZhao]: {
-    skillTimes: 30,
+    skillTimes: getSkillTimes(SkillNames.PoZhao),
     skillName: SkillNames.PoZhao,
     skillTitle: '破招',
   },
   [SkillNames.NaYunShi]: {
-    skillTimes: 39,
+    skillTimes: getSkillTimes(SkillNames.NaYunShi),
     skillName: SkillNames.NaYunShi,
     skillTitle: '拿云式',
   },
+  [SkillNames.WeiTuoXianChu]: {
+    skillTimes: getSkillTimes(SkillNames.WeiTuoXianChu),
+    skillName: SkillNames.WeiTuoXianChu,
+    skillTitle: '韦陀献杵',
+  },
   [SkillNames.HengSaoLiuHe]: {
-    skillTimes: 32,
+    skillTimes: getSkillTimes(SkillNames.HengSaoLiuHe),
     skillName: SkillNames.HengSaoLiuHe,
     skillTitle: '横扫六合',
   },
-  [SkillNames.HengSaoLiuHeDot]: {
-    skillTimes: 155,
-    skillName: SkillNames.HengSaoLiuHeDot,
-    skillTitle: '横扫六合DOT',
-  },
   [SkillNames.ShouQueShi]: {
-    skillTimes: 45,
+    skillTimes: getSkillTimes(SkillNames.ShouQueShi),
     skillName: SkillNames.ShouQueShi,
     skillTitle: '守缺式',
   },
+  [SkillNames.HengSaoLiuHeDot]: {
+    skillTimes: getSkillTimes(SkillNames.HengSaoLiuHeDot),
+    skillName: SkillNames.HengSaoLiuHeDot,
+    skillTitle: '横扫六合DOT',
+  },
   [SkillNames.PuDuSiFang]: {
-    skillTimes: 44,
+    skillTimes: getSkillTimes(SkillNames.PuDuSiFang),
     skillName: SkillNames.PuDuSiFang,
     skillTitle: '普渡四方',
   },
+  [SkillNames.LiuHeGun]: {
+    skillTimes: getSkillTimes(SkillNames.LiuHeGun),
+    skillName: SkillNames.LiuHeGun,
+    skillTitle: '六合棍',
+  },
   [SkillNames.XiangMo]: {
-    skillTimes: 64,
+    skillTimes: getSkillTimes(SkillNames.XiangMo),
     skillName: SkillNames.XiangMo,
     skillTitle: '降魔',
   },
   [SkillNames.SuoDi]: {
-    skillTimes: 39,
+    skillTimes: getSkillTimes(SkillNames.SuoDi),
     skillName: SkillNames.SuoDi,
     skillTitle: '缩地',
   },
   [SkillNames.TiHuGuanDing]: {
-    skillTimes: 22,
+    skillTimes: getSkillTimes(SkillNames.TiHuGuanDing),
     skillName: SkillNames.TiHuGuanDing,
     skillTitle: '醍醐灌顶',
   },
   [SkillNames.FoGuo]: {
-    skillTimes: 55,
+    skillTimes: getSkillTimes(SkillNames.FoGuo),
     skillName: SkillNames.FoGuo,
     skillTitle: '佛果',
   },
-  [SkillNames.LiuHeGun]: {
-    skillTimes: 172,
-    skillName: SkillNames.LiuHeGun,
-    skillTitle: '六合棍',
-  },
   [SkillNames.FeiJian]: {
-    skillTimes: 50,
+    skillTimes: getSkillTimes(SkillNames.FeiJian),
     skillName: SkillNames.FeiJian,
     skillTitle: '飞剑',
   },
-  [EnChants.EnChantHand]: {
-    skillTimes: 30,
-    skillName: EnChants.EnChantHand,
-    skillTitle: '附魔头',
+  [EnChantsList.EnChantHand]: {
+    skillTimes: getSkillTimes(EnChantsList.EnChantHand),
+    skillName: EnChantsList.EnChantHand,
+    skillTitle: '附魔手',
   },
-  [EnChants.EnChantShoe]: {
-    skillTimes: 15,
-    skillName: EnChants.EnChantShoe,
+  [EnChantsList.EnChantShoe]: {
+    skillTimes: getSkillTimes(EnChantsList.EnChantShoe),
+    skillName: EnChantsList.EnChantShoe,
     skillTitle: '附魔鞋',
   },
 }
+

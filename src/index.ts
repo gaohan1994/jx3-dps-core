@@ -1,7 +1,7 @@
 import DpsCore from './core/core';
 import Support from './support/support';
 import { YiJinJing } from './calculator';
-import { FormationValue, TeamSkillValue, GroupSkillBuffList, SetBonuse } from './types';
+import { FormationValue, TeamSkillValue, GroupSkillBuffList, SetBonuse, WeaponValue, EnChantsList } from './types';
 
 const CoreHelper = {
   /**
@@ -34,7 +34,24 @@ const CoreHelper = {
    */
   SetBonusesGain: {
     ...SetBonuse
-  }
+  },
+
+  /**
+   * 武器增益列表
+   * @param WeaponValue
+   */
+  Weapons: {
+    ...WeaponValue
+  },
+
+  /**
+   * @time 08-24
+   * 附魔增益列表
+   * @param Enchants
+   */
+  Enchants: {
+    ...EnChantsList
+  },
 }
 
 /**

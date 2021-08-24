@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-24 21:02:59
+ * @Last Modified time: 2021-08-24 22:50:23
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -69,11 +69,6 @@ class CalculatorBase {
   public className: string;
 
   /**
-   * 技能套装系数
-   */
-  public skillSetBonuseCoefficient: number;
-
-  /**
    * 战斗时间 单位：秒 
    * 默认 5分钟 300秒
    *
@@ -114,12 +109,6 @@ class CalculatorBase {
 
     invariant(!!options.support, '辅助类不能为空');
     this.support = new Support(options.support);
-
-    if (this.support.hasSkillSetBonuese()) {
-      this.skillSetBonuseCoefficient = 0.0996;
-    } else {
-      this.skillSetBonuseCoefficient = 0;
-    }
 
     this.seconds = options.seconds || (5 * 60);
   }
@@ -210,6 +199,7 @@ class CalculatorBase {
 
     const target = this.generateUltimateTarget(supportContext);
     this.target = target;
+    this.support.target = target;
   }
 
   /**
@@ -308,19 +298,31 @@ class CalculatorBase {
     const JiChuGongJi = core.JiChuGongJi + ctx.JiChuGongJi + (core.mainCoeffiecient(ctx.mainAttribute).JiChuGongJi || 0);
 
     /**
+     * @time 08-24
+     * 新增主属性增加的会心等级
      * 计算最终会心、会心效果
      * 
      * @param HuiXin
      */
-    const HuiXin = core.HuiXin + ctx.HuiXin + (ctx.HuiXinLevel / 357.375);
+    const HuiXin =
+      core.HuiXin
+      + ctx.HuiXin * 100 + (ctx.HuiXinLevel / 357.375)
+      + (core.mainCoeffiecient(ctx.mainAttribute).HuiXinLevel) / 357.375;
     const HuiXiao = core.HuiXiao + ctx.HuiXiao * 100;
 
     /**
+     * @time 08-24
+     * 新增主属性增加的破防等级
      * 计算最终破防
      * 
      * @param PoFang
      */
-    const PoFang = (core.PoFang + (ctx.PoFangLevel / 357.375)) * (1.15 + ctx.PoFangPercent);
+    const PoFang =
+      (
+        core.PoFang
+        + (ctx.PoFangLevel / 357.375)
+        + (core.mainCoeffiecient(ctx.mainAttribute).PoFangLevel) / 357.375
+      ) * (1.15 + ctx.PoFangPercent);
 
     /**
      * 计算最终无双
@@ -413,7 +415,6 @@ class CalculatorBase {
       defenseCoefficient: initTarget.defenseCoefficient,
       neiFang: currentTargetNeiFang
     });
-    console.log('_target', _target)
     return _target;
   }
 

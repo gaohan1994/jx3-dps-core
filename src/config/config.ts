@@ -1,4 +1,4 @@
-import { Gain, Formation, FormationValue, SupportContextKeys, SetBonuse, GroupSkillType, GroupSkillBuffList, TeamSkillValue } from "../types";
+import { Gain, Formation, FormationValue, SupportContextKeys, SetBonuse, GroupSkillType, GroupSkillBuffList, TeamSkillValue, Weapon, WeaponValue, EnChants, EnChantsList } from "../types";
 
 export const FormationsGains: Formation = {
   [FormationValue.TianGuLeiYinZhen]: {
@@ -64,7 +64,7 @@ export const TeamSkillGains: { [name in TeamSkillValue]?: Gain } = {
   [TeamSkillValue.XiuQi]: {
     name: 'XiuQi',
     data: [
-      { gainTarget: SupportContextKeys.mainAttribute, value: 111 },
+      { gainTarget: SupportContextKeys.YuanQi, value: 111 },
       { gainTarget: SupportContextKeys.HuiXinLevel, value: 70 },
     ]
   },
@@ -112,6 +112,70 @@ export const GroupSkillGains: GroupSkillType = {
     name: GroupSkillBuffList.LiDiChengFo,
     data: [
       { gainTarget: SupportContextKeys.ignoreDefense, value: 0.12 }
+    ]
+  },
+}
+
+/**
+ * @time 08-24
+ * 
+ * 新增 武器增益列表
+ */
+export const WeaponGains: Weapon = {
+  [WeaponValue.EffectWather]: {
+    name: WeaponValue.EffectWather,
+    data: [
+      { gainTarget: SupportContextKeys.JiChuGongJi, value: 490 }
+    ]
+  },
+  [WeaponValue.CW]: {
+    name: WeaponValue.CW,
+    data: [
+      { gainTarget: SupportContextKeys.JiChuGongJi, value: 0 }
+    ]
+  },
+  [WeaponValue.Normal]: {
+    name: WeaponValue.EffectWather,
+    data: [
+      { gainTarget: SupportContextKeys.JiChuGongJi, value: 0 }
+    ]
+  },
+}
+
+/**
+ * @time 08-24
+ * 
+ * 新增 附魔增益列表
+ */
+export const EnChantGains: EnChants = {
+  [EnChantsList.EnChantBelt]: {
+    name: EnChantsList.EnChantBelt,
+    data: [
+      { gainTarget: SupportContextKeys.damageBonus, value: 0.011 }
+    ]
+  },
+  [EnChantsList.EnChantBody]: {
+    name: EnChantsList.EnChantBody,
+    data: [
+      { gainTarget: SupportContextKeys.JiChuGongJi, value: 357 }
+    ]
+  },
+  [EnChantsList.EnChantHand]: {
+    name: EnChantsList.EnChantHand,
+    data: [
+      { gainTarget: SupportContextKeys.JiChuGongJi, value: 0 }
+    ]
+  },
+  [EnChantsList.EnChantHead]: {
+    name: EnChantsList.EnChantHead,
+    data: [
+      { gainTarget: SupportContextKeys.PoFangLevel, value: 496 }
+    ]
+  },
+  [EnChantsList.EnChantShoe]: {
+    name: EnChantsList.EnChantShoe,
+    data: [
+      { gainTarget: SupportContextKeys.JiChuGongJi, value: 0 }
     ]
   },
 }

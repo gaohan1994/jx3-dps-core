@@ -1,5 +1,12 @@
 
-import { FormationsGains, TeamSkillGains, GroupSkillGains, SetBonuseGains } from './config'
+import {
+  FormationsGains,
+  TeamSkillGains,
+  GroupSkillGains,
+  SetBonuseGains,
+  WeaponGains,
+  EnChantGains
+} from './config'
 
 /**
  * 全部增益列表
@@ -9,6 +16,8 @@ const AllGainList = {
   ...TeamSkillGains,
   ...GroupSkillGains,
   ...SetBonuseGains,
+  ...WeaponGains,
+  ...EnChantGains,
 }
 
 export {
@@ -18,4 +27,6 @@ export {
   TeamSkillGains,
   GroupSkillGains,
   SetBonuseGains,
+  WeaponGains,
+  EnChantGains,
 }

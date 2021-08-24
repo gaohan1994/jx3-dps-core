@@ -8,11 +8,11 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 18:35:26 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-24 20:58:33
+ * @Last Modified time: 2021-08-24 22:54:55
  */
 import CalculatorBase from "../base";
 import Skill from "../../core/skill";
-import { EnChants, TeamSkillValue } from "../../types";
+import { EnChants, EnChantsList, TeamSkillValue } from "../../types";
 import { SkillNames, YJJConfig } from './config'
 
 class YiJinJing extends CalculatorBase {
@@ -21,6 +21,23 @@ class YiJinJing extends CalculatorBase {
     return {
       JiChuGongJi: YuanQi * 0.18,
       ZongGongJi: YuanQi * 1.85,
+
+      /**
+       * @time 08-24
+       * 
+       * 每点元气增加破防等级 0.3
+       * 
+       * @param PoFangLevel
+       */
+      PoFangLevel: YuanQi * 0.3,
+      /**
+       * @time 08-24
+       * 
+       * 每点元气增加会心等级
+       * 
+       * @param HuiXinLevel 0.38
+       */
+      HuiXinLevel: YuanQi * 0.38
     };
   }
 
@@ -295,7 +312,7 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-      ...this.getSkillInfo(EnChants.EnChantHand),
+      ...this.getSkillInfo(EnChantsList.EnChantHand),
       skillBasicNumber: 0,
       basicDamageCoefficient: 0.95,
       damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient) * 0.4,
@@ -306,7 +323,7 @@ class YiJinJing extends CalculatorBase {
       core,
       target,
       supportContext,
-      ...this.getSkillInfo(EnChants.EnChantShoe),
+      ...this.getSkillInfo(EnChantsList.EnChantShoe),
       skillBasicNumber: 0,
       basicDamageCoefficient: 0.38125,
       damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient)
