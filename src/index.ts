@@ -1,7 +1,21 @@
 import DpsCore from './core/core';
 import Support from './support/support';
 import { YiJinJing } from './calculator';
-import { FormationValue, TeamSkillValue, GroupSkillBuffList, SetBonuse, WeaponValue, EnChantsList } from './types';
+import {
+  FormationValue,
+  TeamSkillValue,
+  GroupSkillBuffList,
+  SetBonuse,
+  WeaponValue,
+  EnChantsList,
+  EffectSpineList,
+  BanquetList,
+  FoodEnhanceList,
+  DrugEnhanceList,
+  FoodSupportList,
+  DrugSupportList,
+  TargetListKeys,
+} from './types';
 
 const CoreHelper = {
   /**
@@ -52,6 +66,53 @@ const CoreHelper = {
   Enchants: {
     ...EnChantsList
   },
+
+  /**
+   * @time 08-24
+   * 新增特效腰椎增益列表
+   * @param EffectSpines
+   */
+  EffectSpines: {
+    ...EffectSpineList
+  },
+
+  /**
+   * @time 08-24
+   * 新增 宴席增益列表
+   * @param Banquet
+   */
+  Banquet: {
+    ...BanquetList
+  },
+
+  /**
+   * @time 08-24
+   * 新增 小吃增益列表
+   * @param Food
+   */
+  Food: {
+    FoodEnhance: {
+      ...FoodEnhanceList
+    },
+    DrugEnhance: {
+      ...DrugEnhanceList
+    },
+    FoodSupport: {
+      ...FoodSupportList
+    },
+    DrugSupport: {
+      ...DrugSupportList
+    },
+  },
+
+  /**
+   * @time 08-25
+   * 新增 木桩列表
+   * @param Target
+   */
+  Target: {
+    ...TargetListKeys
+  }
 }
 
 /**

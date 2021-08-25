@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-24 22:50:23
+ * @Last Modified time: 2021-08-25 16:15:35
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -283,19 +283,25 @@ class CalculatorBase {
    * @memberof DpsCore
    */
   public generateUltimateCore(core: DpsCore, ctx: SupportContext): DpsCore {
+
     /**
-     * 最终core类
+     * 增加的主属性
+     * @param gainMainAttribute
+     */
+    const gainMainAttribute = ctx[core.type];
+    /**
+     * 最终主属性
      * 
      * @parma mainAttribute
      */
-    const mainAttribute = core[core.type] + ctx.mainAttribute;
+    const mainAttribute = core[core.type] + gainMainAttribute;
 
     /**
      * 计算基础攻击
      * 
      * @param JiChuGongJi
      */
-    const JiChuGongJi = core.JiChuGongJi + ctx.JiChuGongJi + (core.mainCoeffiecient(ctx.mainAttribute).JiChuGongJi || 0);
+    const JiChuGongJi = core.JiChuGongJi + ctx.JiChuGongJi + (core.mainCoeffiecient(gainMainAttribute).JiChuGongJi || 0);
 
     /**
      * @time 08-24
@@ -307,7 +313,7 @@ class CalculatorBase {
     const HuiXin =
       core.HuiXin
       + ctx.HuiXin * 100 + (ctx.HuiXinLevel / 357.375)
-      + (core.mainCoeffiecient(ctx.mainAttribute).HuiXinLevel) / 357.375;
+      + (core.mainCoeffiecient(gainMainAttribute).HuiXinLevel) / 357.375;
     const HuiXiao = core.HuiXiao + ctx.HuiXiao * 100;
 
     /**
@@ -321,7 +327,7 @@ class CalculatorBase {
       (
         core.PoFang
         + (ctx.PoFangLevel / 357.375)
-        + (core.mainCoeffiecient(ctx.mainAttribute).PoFangLevel) / 357.375
+        + (core.mainCoeffiecient(gainMainAttribute).PoFangLevel) / 357.375
       ) * (1.15 + ctx.PoFangPercent);
 
     /**

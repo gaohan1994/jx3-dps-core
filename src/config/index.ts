@@ -5,7 +5,10 @@ import {
   GroupSkillGains,
   SetBonuseGains,
   WeaponGains,
-  EnChantGains
+  EnChantGains,
+  EffectSpineGains,
+  BanquetGains,
+  FoodGains,
 } from './config'
 
 /**
@@ -18,6 +21,13 @@ const AllGainList = {
   ...SetBonuseGains,
   ...WeaponGains,
   ...EnChantGains,
+  ...EffectSpineGains,
+  ...BanquetGains,
+
+  ...FoodGains.DrugEnhance,
+  ...FoodGains.DrugSupport,
+  ...FoodGains.FoodEnhance,
+  ...FoodGains.FoodSupport,
 }
 
 export {
@@ -29,4 +39,7 @@ export {
   SetBonuseGains,
   WeaponGains,
   EnChantGains,
+  EffectSpineGains,
+  BanquetGains,
+  FoodGains,
 }

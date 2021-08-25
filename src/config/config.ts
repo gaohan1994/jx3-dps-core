@@ -1,4 +1,4 @@
-import { Gain, Formation, FormationValue, SupportContextKeys, SetBonuse, GroupSkillType, GroupSkillBuffList, TeamSkillValue, Weapon, WeaponValue, EnChants, EnChantsList } from "../types";
+import { Gain, Formation, FormationValue, SupportContextKeys, SetBonuse, GroupSkillType, GroupSkillBuffList, TeamSkillValue, Weapon, WeaponValue, EnChants, EnChantsList, EffectSpine, EffectSpineList, Banquet, BanquetList, Food, FoodEnhanceList, FoodSupportList, DrugEnhanceList, DrugSupportList } from "../types";
 
 export const FormationsGains: Formation = {
   [FormationValue.TianGuLeiYinZhen]: {
@@ -114,6 +114,12 @@ export const GroupSkillGains: GroupSkillType = {
       { gainTarget: SupportContextKeys.ignoreDefense, value: 0.12 }
     ]
   },
+  [GroupSkillBuffList.HanXiaoQianJun]: {
+    name: GroupSkillBuffList.HanXiaoQianJun,
+    data: [
+      { gainTarget: SupportContextKeys.PoFangPercent, value: 0.1 }
+    ]
+  },
 }
 
 /**
@@ -178,4 +184,119 @@ export const EnChantGains: EnChants = {
       { gainTarget: SupportContextKeys.JiChuGongJi, value: 0 }
     ]
   },
+}
+
+/**
+ * 特效腰椎增益
+ */
+export const EffectSpineGains: EffectSpine = {
+  [EffectSpineList.XiangMeng]: {
+    name: EffectSpineList.XiangMeng,
+    data: [
+      { gainTarget: SupportContextKeys.PoFangLevel, value: 3845 * 15 / 180 }
+    ]
+  }
+}
+
+/**
+ * 宴席增益
+ */
+export const BanquetGains: Banquet = {
+  [BanquetList.ShuiZhuYu]: {
+    name: BanquetList.ShuiZhuYu,
+    data: [
+      { gainTarget: SupportContextKeys.WuShuangLevel, value: 100 }
+    ]
+  },
+  [BanquetList.ErShiSiQiaoMingYueYe]: {
+    name: BanquetList.ErShiSiQiaoMingYueYe,
+    data: [
+      { gainTarget: SupportContextKeys.JiChuGongJi, value: 214 },
+      { gainTarget: SupportContextKeys.HuiXinLevel, value: 397 },
+      { gainTarget: SupportContextKeys.PoZhao, value: 397 },
+    ]
+  },
+  [BanquetList.TongZeYan]: {
+    name: BanquetList.TongZeYan,
+    data: [
+      { gainTarget: SupportContextKeys.WuShuangLevel, value: 130 }
+    ]
+  },
+  [BanquetList.ZhengYuCaiPan]: {
+    name: BanquetList.ZhengYuCaiPan,
+    data: [
+      { gainTarget: SupportContextKeys.WuShuangLevel, value: 517 }
+    ]
+  },
+}
+
+export const FoodGains: Food = {
+  FoodEnhance: {
+    [FoodEnhanceList.BaiRouXueChang]: {
+      name: FoodEnhanceList.BaiRouXueChang,
+      data: [
+        { gainTarget: SupportContextKeys.PoZhao, value: 695 }
+      ]
+    },
+    [FoodEnhanceList.GuanTangBao]: {
+      name: FoodEnhanceList.GuanTangBao,
+      data: [
+        { gainTarget: SupportContextKeys.JiChuGongJi, value: 374 }
+      ]
+    },
+    [FoodEnhanceList.HongShaoPaiGu]: {
+      name: FoodEnhanceList.HongShaoPaiGu,
+      data: [
+        { gainTarget: SupportContextKeys.PoFangLevel, value: 695 }
+      ]
+    },
+    [FoodEnhanceList.SuanCaiYu]: {
+      name: FoodEnhanceList.SuanCaiYu,
+      data: [
+        { gainTarget: SupportContextKeys.HuiXinLevel, value: 695 }
+      ]
+    },
+  },
+  FoodSupport: {
+    [FoodSupportList.YuPianShaGuoZhou]: {
+      name: FoodSupportList.YuPianShaGuoZhou,
+      data: [
+        { gainTarget: SupportContextKeys.YuanQi, value: 156 }
+      ]
+    },
+  },
+  DrugEnhance: {
+    [DrugEnhanceList.ShangPinNingShenSan]: {
+      name: DrugEnhanceList.ShangPinNingShenSan,
+      data: [
+        { gainTarget: SupportContextKeys.PoZhao, value: 894 }
+      ]
+    },
+    [DrugEnhanceList.ShangPinPoHuiSan]: {
+      name: DrugEnhanceList.ShangPinPoHuiSan,
+      data: [
+        { gainTarget: SupportContextKeys.PoFangLevel, value: 894 }
+      ]
+    },
+    [DrugEnhanceList.ShangPinYuLiSan]: {
+      name: DrugEnhanceList.ShangPinYuLiSan,
+      data: [
+        { gainTarget: SupportContextKeys.HuiXinLevel, value: 894 }
+      ]
+    },
+    [DrugEnhanceList.ShangPinZhanFengDan]: {
+      name: DrugEnhanceList.ShangPinZhanFengDan,
+      data: [
+        { gainTarget: SupportContextKeys.JiChuGongJi, value: 481 }
+      ]
+    },
+  },
+  DrugSupport: {
+    [DrugSupportList.ShangPinJuHunWan]: {
+      name: DrugSupportList.ShangPinJuHunWan,
+      data: [
+        { gainTarget: SupportContextKeys.YuanQi, value: 200 }
+      ]
+    },
+  }
 }

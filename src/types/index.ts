@@ -132,7 +132,8 @@ export enum GroupSkillBuffList {
   JieHuoZhan = 'JieHuoZhan',
   LieRiZhan = 'LieRiZhan',
   HaoLingSanJun = 'HaoLingSanJun',
-  MeiHuaDun = 'MeiHuaDun'
+  MeiHuaDun = 'MeiHuaDun',
+  HanXiaoQianJun = 'HanXiaoQianJun',
 }
 
 
@@ -155,6 +156,14 @@ export enum EnChantsList {
 
 export type EnChants = {
   [key in EnChantsList]: Gain
+}
+
+export enum EffectSpineList {
+  XiangMeng = 'XiangMeng'
+}
+
+export type EffectSpine = {
+  [key in EffectSpineList]: Gain
 }
 
 /**
@@ -197,6 +206,69 @@ export enum SetBonuse {
   ValueSetBonuse = 'ValueSetBonuse',
 }
 
+export enum BanquetList {
+  ShuiZhuYu = 'ShuiZhuYu',
+  ErShiSiQiaoMingYueYe = 'ErShiSiQiaoMingYueYe',
+  TongZeYan = 'TongZeYan',
+  ZhengYuCaiPan = 'ZhengYuCaiPan',
+}
+
+export type Banquet = {
+  [key in BanquetList]: Gain
+}
+
+/**
+ * 增强食品
+ */
+export enum FoodEnhanceList {
+  SuanCaiYu = 'SuanCaiYu',
+  HongShaoPaiGu = 'HongShaoPaiGu',
+  BaiRouXueChang = 'BaiRouXueChang',
+  GuanTangBao = 'GuanTangBao',
+}
+
+/**
+ * 增强药品
+ */
+export enum DrugEnhanceList {
+  ShangPinYuLiSan = 'ShangPinYuLiSan',
+  ShangPinPoHuiSan = 'ShangPinPoHuiSan',
+  ShangPinNingShenSan = 'ShangPinNingShenSan',
+  ShangPinZhanFengDan = 'ShangPinZhanFengDan',
+}
+
+/**
+ * 辅助食品
+ */
+export enum FoodSupportList {
+  YuPianShaGuoZhou = 'YuPianShaGuoZhou',
+}
+
+/**
+ * 辅助药品
+ */
+export enum DrugSupportList {
+  ShangPinJuHunWan = 'ShangPinJuHunWan',
+}
+
+/**
+ * 小吃增益
+ */
+export type Food = {
+  FoodEnhance: {
+    [key in FoodEnhanceList]: Gain;
+  },
+  DrugEnhance: {
+    [key in DrugEnhanceList]: Gain;
+  },
+  FoodSupport: {
+    [key in FoodSupportList]: Gain;
+  }
+  DrugSupport: {
+    [key in DrugSupportList]: Gain;
+  }
+}
+
 type Partical<T> = {
   [P in keyof T]?: T[P];
 }
@@ -204,17 +276,6 @@ type Partical<T> = {
 export type GroupSkillType = Partical<{
   [key in GroupSkillBuffList]: Gain;
 }>
-
-export interface SkillMiddleware {
-  (ctx: SkillContext, next: any): any;
-}
-
-export enum SkillMiddleSteps {
-  step1 = 'step1',
-  step2 = 'step2',
-  step3 = 'step3',
-  step4 = 'step4'
-}
 
 
 export interface SkillContext {
@@ -244,7 +305,6 @@ export interface SkillContext {
 }
 
 export enum SupportContextKeys {
-  mainAttribute = 'mainAttribute',
   YuanQi = 'YuanQi',
   GenGu = 'GenGu',
   LiDao = 'LiDao',

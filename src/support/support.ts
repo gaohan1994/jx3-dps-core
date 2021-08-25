@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 16:29:54 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-24 20:35:32
+ * @Last Modified time: 2021-08-25 16:08:06
  */
 
 import invariant from 'invariant';
@@ -84,7 +84,6 @@ class Support extends SupportBase {
       GenGu: 0,
       LiDao: 0,
       ShenFa: 0,
-      mainAttribute: 0,
       damageBonus: 0,
       JiChuGongJi: 0,
       JiChuGongJiPercent: 0,
