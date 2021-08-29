@@ -66,7 +66,7 @@ function Demo() {
   yjj.total().then((res) => {
     const skills = res.skills.map((item) => {
       // item.showSkillInfo();
-      return `${item.skillTitle} ${item.skillTimes}`;
+      return `${item.skillTitle} ${item.skillTimes} ${item.subTotal}`;
       // console.log('item', item);
     });
     // res.skills.showSkillInfo();

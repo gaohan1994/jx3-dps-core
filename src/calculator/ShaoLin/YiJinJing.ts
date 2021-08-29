@@ -8,7 +8,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 18:35:26 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-29 17:26:18
+ * @Last Modified time: 2021-08-29 17:46:40
  */
 import CalculatorBase from "../base";
 import Skill from "../../core/skill";
@@ -316,8 +316,8 @@ class YiJinJing extends CalculatorBase {
       ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.XiangMo),
       skillBasicNumber: 0,
-      basicDamage: () => {
-        return (weituoTotal + nayunTotal) / 4 / 1.2 / this.getSkillInfo(SkillNames.XiangMo).skillTimes;
+      basicDamage: (ctx) => {
+        return (weituoTotal + nayunTotal) / 4 / 1.2 / ctx.skillTimes;
       },
       poFangCoefficient: 1,
       wuShuangCoefficient: 1,
