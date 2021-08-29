@@ -1,4 +1,7 @@
-import { EnChants, EnChantsList } from "../../types";
+
+import numeral from "numeral";
+import { DpsCore } from "../../core";
+import { EnChantsList, SkillContext } from "../../types";
 
 export enum SkillNames {
   PoZhao = 'PoZhao',
@@ -16,16 +19,34 @@ export enum SkillNames {
   FeiJian = 'FeiJian',
 }
 
-export function getSkillTimes(skillName: string, ctx?: any): number {
+export function getSkillTimes(skillName: string): any {
   switch (skillName) {
     case SkillNames.PoZhao: {
-      return 30;
+      return ({ core }: SkillContext) => {
+        const isErDuanJiaSu = core.JiaSu === DpsCore.JiaSuList.ErDuanJiaSu;
+        if (!isErDuanJiaSu) {
+          return 30;
+        }
+        return 31;
+      }
     }
     case SkillNames.NaYunShi: {
-      return 49;
+      return ({ core }: SkillContext) => {
+        const isErDuanJiaSu = core.JiaSu === DpsCore.JiaSuList.ErDuanJiaSu;
+        if (!isErDuanJiaSu) {
+          return Math.round(33 * 1.5);
+        }
+        return Math.round(33 * 1.5 + 1.5);
+      }
     }
     case SkillNames.WeiTuoXianChu: {
-      return 23;
+      return ({ core }: SkillContext) => {
+        const isErDuanJiaSu = core.JiaSu === DpsCore.JiaSuList.ErDuanJiaSu;
+        if (!isErDuanJiaSu) {
+          return Math.round(39 - (33 * 0.5));
+        }
+        return Math.round(39 - (33 * 0.5) + 1.5);
+      }
     }
     case SkillNames.HengSaoLiuHe: {
       return 31;
@@ -34,10 +55,22 @@ export function getSkillTimes(skillName: string, ctx?: any): number {
       return 45;
     }
     case SkillNames.HengSaoLiuHeDot: {
-      return 155;
+      return ({ core }: SkillContext) => {
+        const isErDuanJiaSu = core.JiaSu === DpsCore.JiaSuList.ErDuanJiaSu;
+        if (!isErDuanJiaSu) {
+          return 155;
+        }
+        return 160;
+      }
     }
     case SkillNames.PuDuSiFang: {
-      return 45;
+      return ({ core }: SkillContext) => {
+        const isErDuanJiaSu = core.JiaSu === DpsCore.JiaSuList.ErDuanJiaSu;
+        if (!isErDuanJiaSu) {
+          return 45;
+        }
+        return 49;
+      }
     }
     case SkillNames.LiuHeGun: {
       return 172;
@@ -52,22 +85,28 @@ export function getSkillTimes(skillName: string, ctx?: any): number {
       return 15;
     }
     case SkillNames.XiangMo: {
-      return Math.floor(getSkillTimes(SkillNames.NaYunShi, ctx) + getSkillTimes(SkillNames.WeiTuoXianChu, ctx));
+      return (...rest: any) => {
+        return getSkillTimes(SkillNames.NaYunShi)(...rest) + getSkillTimes(SkillNames.WeiTuoXianChu)(...rest);
+      }
     }
     case SkillNames.SuoDi: {
-      return Math.floor((getSkillTimes(SkillNames.NaYunShi, ctx) + getSkillTimes(SkillNames.WeiTuoXianChu, ctx) + 3 * 5) / 2);
+      return (...rest: any) => {
+        return (getSkillTimes(SkillNames.NaYunShi)(...rest) + getSkillTimes(SkillNames.WeiTuoXianChu)(...rest) + 3 * 5) / 2;
+      }
     }
     case SkillNames.FoGuo: {
-      return Math.floor(
-        (
-          getSkillTimes(SkillNames.NaYunShi, ctx)
-          + getSkillTimes(SkillNames.WeiTuoXianChu, ctx)
-          + getSkillTimes(SkillNames.ShouQueShi, ctx)
-          + getSkillTimes(SkillNames.HengSaoLiuHe, ctx)
-          + getSkillTimes(SkillNames.PuDuSiFang, ctx)
-          + getSkillTimes(SkillNames.TiHuGuanDing, ctx)
-        ) * 0.3 * 0.9
-      )
+      return (...rest: any) => {
+        return Math.floor(
+          (
+            getSkillTimes(SkillNames.NaYunShi)(...rest)
+            + getSkillTimes(SkillNames.WeiTuoXianChu)(...rest)
+            + getSkillTimes(SkillNames.PuDuSiFang)(...rest)
+            + getSkillTimes(SkillNames.ShouQueShi)
+            + getSkillTimes(SkillNames.HengSaoLiuHe)
+            + getSkillTimes(SkillNames.TiHuGuanDing)
+          ) * 0.3 * 0.9
+        );
+      }
     }
   }
 }

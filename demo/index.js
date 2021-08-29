@@ -21,6 +21,7 @@ function Demo() {
       JiaSu: 4.4,
       WuShuang: 43.62,
       YuanQi: 2623,
+      JiaSu: Calculator.CoreHelper.JiaSuList.ErDuanJiaSu,
     },
     support: {
       mode: 'NeiGong',
@@ -64,12 +65,15 @@ function Demo() {
 
   yjj.total().then((res) => {
     const skills = res.skills.map((item) => {
-      return `${item.skillTitle}: 次数 ${item.skillTimes}, 总 ${item.subTotal}, 占比: ${item.percent}`;
+      // item.showSkillInfo();
+      return `${item.skillTitle} ${item.skillTimes}`;
+      // console.log('item', item);
     });
-    // console.log('skills', skills);
+    // res.skills.showSkillInfo();
+    console.log('skills', skills);
     console.log('dps: ', res.dps);
     // console.log('yjj.getSupportContext()', yjj.getSupportContext());
-    yjj.getCore().showAttributes();
+    // yjj.getCore().showAttributes();
     // yjj.getTarget().showTargetValue();
     // yjj.getSupport().showGain();
   });

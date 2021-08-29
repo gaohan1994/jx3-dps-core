@@ -15,9 +15,17 @@ import {
   FoodSupportList,
   DrugSupportList,
   TargetListKeys,
+  JiaSuValue,
 } from './types';
 
 const CoreHelper = {
+  /**
+   * 加速列表
+   * @param JiaSuList
+   */
+  JiaSuList: {
+    ...JiaSuValue
+  },
   /**
    * 所有阵法
    * @param Formations

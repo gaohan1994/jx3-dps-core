@@ -4,13 +4,17 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-07 20:43:49 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-24 20:29:20
+ * @Last Modified time: 2021-08-29 16:49:42
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
-import { CharacterTypes } from '../types';
+import { CharacterTypes, JiaSuValue } from '../types';
 
 class DpsCore {
+
+  static JiaSuList = {
+    ...JiaSuValue
+  }
 
   /**
    * 装分
@@ -119,10 +123,10 @@ class DpsCore {
   /**
    * 加速
    *
-   * @type {number}
+   * @type {JiaSuValue}
    * @memberof DpsCore
    */
-  public JiaSu: number;
+  public JiaSu: JiaSuValue;
 
   /**
    * 无双
@@ -180,8 +184,14 @@ class DpsCore {
     invariant(typeof options.PoZhao === 'number', '破招不能为空');
     this.PoZhao = options.PoZhao;
 
-    invariant(typeof options.JiaSu === 'number', '加速不能为空');
-    this.JiaSu = options.JiaSu;
+    /**
+     * @time 08-29
+     * @param JiaSu
+     * 
+     * 加速默认是一段加速修改为直接设置段数
+     */
+    invariant(options.JiaSu !== undefined, '加速不能为空');
+    this.JiaSu = options.JiaSu || DpsCore.JiaSuList.YiDuanJiaSu;
 
     invariant(typeof options.WuShuang === 'number', '无双不能为空');
     this.WuShuang = options.WuShuang;

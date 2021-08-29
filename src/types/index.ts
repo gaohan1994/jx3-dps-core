@@ -2,6 +2,11 @@ import DpsCore from "../core/core";
 import Support from "../support/support";
 import Target from '../support/target';
 
+export enum JiaSuValue {
+  YiDuanJiaSu = 'YiDuanJiaSu',
+  ErDuanJiaSu = 'ErDuanJiaSu',
+}
+
 /**
  * 技能增益核心类
  *

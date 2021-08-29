@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-25 16:15:35
+ * @Last Modified time: 2021-08-29 16:45:50
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -241,10 +241,17 @@ class CalculatorBase {
 
       skill.percent = currentPercent;
 
+      /**
+       * 
+       * @time 08-29
+       * 修改加入加速，skilltimes返回值为skill.skillTimes
+       * 否则返回的skilltimes 可能为function类型
+       */
       percentArray.push({
         subTotal: skill.subTotal,
         percent: skill.percent,
-        ...this.getSkillInfo(skill.skillName)
+        ...this.getSkillInfo(skill.skillName),
+        skillTimes: skill.skillTimes
       });
     });
 
@@ -405,7 +412,6 @@ class CalculatorBase {
      * @param ignoreDefense
      */
     const { ignoreDefense } = ctx;
-    // console.log('ctx', ctx);
 
     /**
      * 实际内防计算公式

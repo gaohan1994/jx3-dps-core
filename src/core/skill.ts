@@ -3,7 +3,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:45:42 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-24 21:52:42
+ * @Last Modified time: 2021-08-29 16:20:03
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -12,11 +12,11 @@ import { SkillContext, SupportContext } from '../types';
 import DpsCore from './core';
 import { Target } from '../support';
 
-interface SkillParamFunction {
+export interface SkillParamFunction {
   (ctx: SkillContext): number;
 }
 
-type SkillParam = number | SkillParamFunction;
+export type SkillParam = number | SkillParamFunction;
 
 export type SkillInfo = {
   /**
@@ -183,8 +183,6 @@ class Skill {
 
   constructor(options: Options) {
     this.options = options;
-    invariant(typeof options.skillTimes === 'number', '技能次数不能为空');
-    this.skillTimes = options.skillTimes;
 
     invariant(!!options.skillName, '技能名称不能为空')
     this.skillName = options.skillName;
@@ -201,6 +199,9 @@ class Skill {
     this.supportContext = options.supportContext;
 
     this.skillBasicNumber = options.skillBasicNumber || 0;
+
+    invariant(options.skillTimes !== undefined, '技能次数不能为空');
+    this.skillTimes = currySkill(getCurrentCoefficient(options.skillTimes, 1), { core: this.core })();
 
     this.basicDamage = currySkill(getCurrentCoefficient(options.basicDamage, this.core.ZongGongJi))();
 
@@ -275,25 +276,12 @@ class Skill {
     return this;
   }
 
+  /**
+   * 打印技能日志
+   *
+   * @memberof Skill
+   */
   public showSkillInfo() {
-
-    // const skillBasic = this.skillBasicNumber + (this.basicDamage * this.basicDamageCoefficient);
-    // const afterPoFang = skillBasic * this.poFangCoefficient;
-    // const afterWuShuang = afterPoFang * this.wuShuangCoefficient;
-    // const afterHuiXin = afterWuShuang * this.huiXinHuiXiaoCoefficient;
-    // const afterTarget = afterHuiXin * this.targetDamageCoefficient;
-    // const afterBonues = afterTarget * this.damageBonuesCoefficient;
-    // const t = afterBonues * this.skillTimes;
-
-
-    // skillBasic: ${formatNumber(skillBasic)}
-    // afterPoFang: ${formatNumber(afterPoFang)}
-    // afterWuShuang: ${formatNumber(afterWuShuang)}
-    // afterHuiXin ${this.huiXinHuiXiaoCoefficient}: ${formatNumber(afterHuiXin)}
-    // afterTarget: ${formatNumber(afterTarget)}
-    // afterBonues: ${formatNumber(afterBonues)}
-    // t:${formatNumber(t)}
-
     console.log(chalk.cyan(`
       技能名称：${this.skillName}
       技能次数:${this.skillTimes}
