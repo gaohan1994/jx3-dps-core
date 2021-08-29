@@ -19,6 +19,29 @@ export enum SkillNames {
   FeiJian = 'FeiJian',
 }
 
+export function getCWSkillTimes(skillName: string, times: number, CWTimes: number): number {
+  switch (skillName) {
+    // CW每触发一次 韦陀次数+2.5
+    case SkillNames.WeiTuoXianChu: {
+      return times + CWTimes * 2.5;
+    }
+
+    // CW触发一次 守缺次数+1.5
+    case SkillNames.ShouQueShi: {
+      return times + CWTimes * 0.5;
+    }
+
+    // CW触发一次 普度次数-3
+    case SkillNames.PuDuSiFang: {
+      return times - CWTimes * 3;
+    }
+
+    default: {
+      return times;
+    }
+  }
+}
+
 export function getSkillTimes(skillName: string): any {
   switch (skillName) {
     case SkillNames.PoZhao: {
@@ -40,19 +63,35 @@ export function getSkillTimes(skillName: string): any {
       }
     }
     case SkillNames.WeiTuoXianChu: {
-      return ({ core }: SkillContext) => {
+      return ({ core, support }: SkillContext) => {
+        // console.log('core', core);
+        // console.log('support', support);
         const isErDuanJiaSu = core.JiaSu === DpsCore.JiaSuList.ErDuanJiaSu;
+        // 技能次数
+        let times = 0;
         if (!isErDuanJiaSu) {
-          return Math.round(39 - (33 * 0.5));
+          times = Math.round(39 - (33 * 0.5));
         }
-        return Math.round(39 - (33 * 0.5) + 1.5);
+        times = Math.round(39 - (33 * 0.5) + 1.5);
+        const hasCw = support.hasCw();
+        if (hasCw) {
+          return getCWSkillTimes(SkillNames.WeiTuoXianChu, times, support.CWTimes);
+        }
+        return times;
       }
     }
     case SkillNames.HengSaoLiuHe: {
       return 31;
     }
     case SkillNames.ShouQueShi: {
-      return 45;
+      return ({ support }: SkillContext) => {
+        let times = 45;
+        const hasCw = support.hasCw();
+        if (hasCw) {
+          return getCWSkillTimes(SkillNames.ShouQueShi, times, support.CWTimes);
+        }
+        return times;
+      }
     }
     case SkillNames.HengSaoLiuHeDot: {
       return ({ core }: SkillContext) => {
@@ -64,12 +103,19 @@ export function getSkillTimes(skillName: string): any {
       }
     }
     case SkillNames.PuDuSiFang: {
-      return ({ core }: SkillContext) => {
+      return ({ core, support }: SkillContext) => {
         const isErDuanJiaSu = core.JiaSu === DpsCore.JiaSuList.ErDuanJiaSu;
+        let times = 0;
         if (!isErDuanJiaSu) {
-          return 45;
+          times = 45;
         }
-        return 49;
+        times = 49;
+
+        const hasCw = support.hasCw();
+        if (hasCw) {
+          return getCWSkillTimes(SkillNames.PuDuSiFang, times, support.CWTimes);
+        }
+        return times;
       }
     }
     case SkillNames.LiuHeGun: {
@@ -101,7 +147,7 @@ export function getSkillTimes(skillName: string): any {
             getSkillTimes(SkillNames.NaYunShi)(...rest)
             + getSkillTimes(SkillNames.WeiTuoXianChu)(...rest)
             + getSkillTimes(SkillNames.PuDuSiFang)(...rest)
-            + getSkillTimes(SkillNames.ShouQueShi)
+            + getSkillTimes(SkillNames.ShouQueShi)(...rest)
             + getSkillTimes(SkillNames.HengSaoLiuHe)
             + getSkillTimes(SkillNames.TiHuGuanDing)
           ) * 0.3 * 0.9

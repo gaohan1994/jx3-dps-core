@@ -59,7 +59,6 @@ class SupportBase {
 
     if (index <= 0) {
       const currentGain = AllGainList[gainName];
-      // console.log('currentGain', currentGain);
       if (currentGain) {
         this.gainList.push(currentGain);
       }

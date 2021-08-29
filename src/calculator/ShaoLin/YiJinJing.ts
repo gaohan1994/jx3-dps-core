@@ -8,7 +8,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 18:35:26 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-29 16:57:27
+ * @Last Modified time: 2021-08-29 17:26:18
  */
 import CalculatorBase from "../base";
 import Skill from "../../core/skill";
@@ -141,13 +141,18 @@ class YiJinJing extends CalculatorBase {
       return coefficient;
     }
 
+    const baseSkillContext = {
+      core,
+      target,
+      support,
+      supportContext,
+    }
+
     /**
      * 六合棍
      */
     const liuHe = new Skill({
-      core,
-      target,
-      supportContext,
+      ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.LiuHeGun),
       skillBasicNumber: core.WuQiShangHai,
       basicDamage: 0,
@@ -157,9 +162,7 @@ class YiJinJing extends CalculatorBase {
     skills.push(liuHe);
 
     const liuHeWithWeiTuo = new Skill({
-      core,
-      target,
-      supportContext,
+      ...baseSkillContext,
       skillName: '韦陀触发六合棍',
       skillTitle: '韦陀触发六合棍',
       skillTimes: this.getSkillInfo(SkillNames.WeiTuoXianChu).skillTimes * 2,
@@ -171,9 +174,7 @@ class YiJinJing extends CalculatorBase {
     const liuHeWithWeiTuoSubTotal = liuHeWithWeiTuo.calculator();
 
     const weiTuo = new Skill({
-      core,
-      target,
-      supportContext,
+      ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.WeiTuoXianChu),
       skillBasicNumber: 179,
       basicDamageCoefficient: 1.66,
@@ -186,9 +187,7 @@ class YiJinJing extends CalculatorBase {
     skills.push(weiTuo as any);
 
     const poZhao = new Skill({
-      core,
-      target,
-      supportContext,
+      ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.PoZhao),
       skillBasicNumber: 0,
       basicDamage: core.PoZhao,
@@ -198,9 +197,7 @@ class YiJinJing extends CalculatorBase {
     skills.push(poZhao);
 
     const naYunShi = new Skill({
-      core,
-      target,
-      supportContext,
+      ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.NaYunShi),
       skillBasicNumber: 258.5,
       basicDamageCoefficient: 2,
@@ -212,9 +209,7 @@ class YiJinJing extends CalculatorBase {
     skills.push(naYunShi);
 
     const hengSaoLiuHe = new Skill({
-      core,
-      target,
-      supportContext,
+      ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.HengSaoLiuHe),
       skillBasicNumber: 75,
       basicDamageCoefficient: 0.58,
@@ -228,9 +223,7 @@ class YiJinJing extends CalculatorBase {
     skills.push(hengSaoLiuHe);
 
     const shouQueShi = new Skill({
-      core,
-      target,
-      supportContext,
+      ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.ShouQueShi),
       skillBasicNumber: 144.5,
       basicDamageCoefficient: 1.36,
@@ -246,9 +239,7 @@ class YiJinJing extends CalculatorBase {
     skills.push(shouQueShi);
 
     const hengSaoLiuHeDot = new Skill({
-      core,
-      target,
-      supportContext,
+      ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.HengSaoLiuHeDot),
       skillBasicNumber: 45,
       basicDamageCoefficient: 0.083,
@@ -262,9 +253,7 @@ class YiJinJing extends CalculatorBase {
     skills.push(hengSaoLiuHeDot);
 
     const puDuSiFang = new Skill({
-      core,
-      target,
-      supportContext,
+      ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.PuDuSiFang),
       skillBasicNumber: 163.5,
       basicDamageCoefficient: 0.92,
@@ -276,9 +265,7 @@ class YiJinJing extends CalculatorBase {
     skills.push(puDuSiFang);
 
     const suoDi = new Skill({
-      core,
-      target,
-      supportContext,
+      ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.SuoDi),
       skillBasicNumber: 407.5,
       basicDamageCoefficient: 1.25,
@@ -287,9 +274,7 @@ class YiJinJing extends CalculatorBase {
     skills.push(suoDi);
 
     const tiHuGuanDing = new Skill({
-      core,
-      target,
-      supportContext,
+      ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.TiHuGuanDing),
       skillBasicNumber: 407.5,
       basicDamageCoefficient: 1.92185,
@@ -298,9 +283,7 @@ class YiJinJing extends CalculatorBase {
     skills.push(tiHuGuanDing);
 
     const foGuo = new Skill({
-      core,
-      target,
-      supportContext,
+      ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.FoGuo),
       skillBasicNumber: 127.5,
       basicDamageCoefficient: 0.697922,
@@ -309,9 +292,7 @@ class YiJinJing extends CalculatorBase {
     skills.push(foGuo);
 
     const FMHand = new Skill({
-      core,
-      target,
-      supportContext,
+      ...baseSkillContext,
       ...this.getSkillInfo(EnChantsList.EnChantHand),
       skillBasicNumber: 0,
       basicDamageCoefficient: 0.95,
@@ -320,9 +301,7 @@ class YiJinJing extends CalculatorBase {
     skills.push(FMHand);
 
     const FMFeet = new Skill({
-      core,
-      target,
-      supportContext,
+      ...baseSkillContext,
       ...this.getSkillInfo(EnChantsList.EnChantShoe),
       skillBasicNumber: 0,
       basicDamageCoefficient: 0.38125,
@@ -334,9 +313,7 @@ class YiJinJing extends CalculatorBase {
     const nayunTotal = await naYunShi.calculator().subTotal;
 
     const xiangMo = new Skill({
-      core,
-      target,
-      supportContext,
+      ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.XiangMo),
       skillBasicNumber: 0,
       basicDamage: () => {

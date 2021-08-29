@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 16:29:54 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-25 16:08:06
+ * @Last Modified time: 2021-08-29 17:12:54
  */
 
 import invariant from 'invariant';
@@ -15,7 +15,9 @@ import { Target, TargetOptions, SupportBase, SupportBaseOptions } from './index'
 
 export interface SupportOptions extends SupportBaseOptions {
   mode: SupportMode;
-  target?: TargetOptions
+  target?: TargetOptions;
+
+  CWTimes?: number;
 }
 
 class Support extends SupportBase {
@@ -33,6 +35,14 @@ class Support extends SupportBase {
    * @memberof Target
    */
   public options: any;
+
+  /**
+   * 橙武触发次数默认3次
+   *
+   * @type {number}
+   * @memberof Support
+   */
+  public CWTimes: number;
 
 
   /**
@@ -70,6 +80,8 @@ class Support extends SupportBase {
      * 初始化目标
      */
     this.target = new Target(options.target);
+
+    this.CWTimes = options.CWTimes || 3;
   }
 
   /**
@@ -137,12 +149,18 @@ class Support extends SupportBase {
     return this.gainList.some((g) => g.name === SetBonuse.SkillSetBonuse);
   }
 
+  /**
+   * 判断是否有橙武
+   *
+   * @return {*} 
+   * @memberof Support
+   */
   public hasCw() {
     return this.gainList.some((g) => g.name === 'CW');
   }
 
   /**
-   * 是否由属性套装
+   * 是否有属性套装
    *
    * @return {*} 
    * @memberof PersonBuff

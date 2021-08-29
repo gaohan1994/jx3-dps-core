@@ -39,7 +39,7 @@ function Demo() {
   // yjj.use(Calculator.CoreHelper.GroupSkills.LiDiChengFo);
   // yjj.use(Calculator.CoreHelper.Formations.TianLuoZhen);
 
-  yjj.use(Calculator.CoreHelper.Weapons.EffectWather);
+  yjj.use(Calculator.CoreHelper.Weapons.CW);
 
   yjj.use(Calculator.CoreHelper.Enchants.EnChantBelt);
   yjj.use(Calculator.CoreHelper.Enchants.EnChantBody);

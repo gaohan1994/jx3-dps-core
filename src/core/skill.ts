@@ -3,7 +3,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:45:42 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-29 16:20:03
+ * @Last Modified time: 2021-08-29 17:28:25
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -201,7 +201,7 @@ class Skill {
     this.skillBasicNumber = options.skillBasicNumber || 0;
 
     invariant(options.skillTimes !== undefined, '技能次数不能为空');
-    this.skillTimes = currySkill(getCurrentCoefficient(options.skillTimes, 1), { core: this.core })();
+    this.skillTimes = currySkill(getCurrentCoefficient(options.skillTimes, 1), options)();
 
     this.basicDamage = currySkill(getCurrentCoefficient(options.basicDamage, this.core.ZongGongJi))();
 
