@@ -54,11 +54,11 @@ class SupportBase {
    * @param {Gain} gain
    * @memberof SupportBase
    */
-  public use(gainName: SupportName): void {
+  public use(gainName: SupportName, gain: Gain = null): void {
     const index = this.gainList.findIndex(g => g.name === gainName);
 
     if (index <= 0) {
-      const currentGain = AllGainList[gainName];
+      const currentGain = gain || AllGainList[gainName];
       if (currentGain) {
         this.gainList.push(currentGain);
       }

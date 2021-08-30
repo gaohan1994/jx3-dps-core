@@ -8,11 +8,11 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 18:35:26 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-29 17:46:40
+ * @Last Modified time: 2021-08-30 18:42:20
  */
 import CalculatorBase from "../base";
 import Skill from "../../core/skill";
-import { EnChants, EnChantsList, TeamSkillValue } from "../../types";
+import { EnChants, EnChantsList, SupportContextKeys, TeamSkillValue } from "../../types";
 import { SkillNames, YJJConfig } from './config'
 
 class YiJinJing extends CalculatorBase {
@@ -65,6 +65,17 @@ class YiJinJing extends CalculatorBase {
      */
     this.support.use(TeamSkillValue.JinGangNuMu);
     this.support.use(TeamSkillValue.QinLongJue);
+
+    /**
+     * @time 08-30
+     * 更新 少林新增3%易伤
+     */
+    this.support.use('UPDATE08-30' as any, {
+      name: 'UPDATE08-30',
+      data: [
+        { gainTarget: SupportContextKeys.damageBonus, value: 0.03 }
+      ]
+    });
   }
 
   /**
@@ -328,7 +339,6 @@ class YiJinJing extends CalculatorBase {
 
     super.addSkills(skills);
   }
-
 }
 
 export default YiJinJing;
