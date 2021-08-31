@@ -61,7 +61,9 @@ function Demo() {
   // yjj.use(Calculator.CoreHelper.Food.DrugEnhance.ShangPinYuLiSan);
   // yjj.use(Calculator.CoreHelper.Food.DrugEnhance.ShangPinPoHuiSan);
   // yjj.use(Calculator.CoreHelper.Food.DrugEnhance.ShangPinNingShenSan);
-  yjj.use(Calculator.CoreHelper.Food.DrugEnhance.ShangPinZhanFengDan);
+  // yjj.use(Calculator.CoreHelper.Food.DrugEnhance.ShangPinZhanFengDan);
+
+  yjj.use(Calculator.CoreHelper.GroupSkills.HongFa, { coverage: 0.4 });
 
   yjj.total().then((res) => {
     const skills = res.skills.map((item) => {

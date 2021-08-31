@@ -4,13 +4,13 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-29 16:45:50
+ * @Last Modified time: 2021-08-31 17:11:07
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
 import { DpsCore, Skill, formatNumber } from '../core'
 import { Support, Target } from '../support';
-import { SupportContext, CalculatorResult, CalculatorResultSkillItem } from '../types';
+import { SupportContext, CalculatorResult, CalculatorResultSkillItem, Gain, GainOptions } from '../types';
 import { SkillInfo } from '../core/skill';
 import numeral from 'numeral';
 
@@ -118,14 +118,8 @@ class CalculatorBase {
    *
    * @memberof CalculatorBase
    */
-  public use(gainName: string | string[]) {
-    if (Array.isArray(gainName)) {
-      for (let i = 0; i < gainName.length; i++) {
-        this.support.use(gainName[i] as any);
-      }
-    } else {
-      this.support.use(gainName as any);
-    }
+  public use(gain: string | Gain, rest: GainOptions) {
+    this.support.use(gain as any, rest);
   }
 
   /**

@@ -120,6 +120,16 @@ export const GroupSkillGains: GroupSkillType = {
       { gainTarget: SupportContextKeys.PoFangPercent, value: 0.1, coverage: 1 }
     ]
   },
+  /**
+   * @todo 新增团队技能宏法，默认覆盖率10%
+   * @time 08-31
+   */
+  [GroupSkillBuffList.HongFa]: {
+    name: GroupSkillBuffList.HongFa,
+    data: [
+      { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.3, coverage: 0.1 }
+    ]
+  },
 }
 
 /**

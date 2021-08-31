@@ -1,5 +1,6 @@
 import { Gain, SupportContext, FormationValue, TeamSkillValue, GroupSkillBuffList, SetBonuse, GainOptions } from "../types";
 import chalk from 'chalk';
+import { AllGainList } from "../config";
 
 type SupportName = FormationValue |
   TeamSkillValue |
@@ -76,16 +77,20 @@ class SupportBase {
       index <= 0 && (currentGain = gain);
     } else {
       const index = this.gainList.findIndex(g => g.name === gain);
-      index <= 0 && (currentGain = this.gainList[index]);
+      index <= 0 && (currentGain = AllGainList[gain]);
     }
 
+    // console.log('currentGain', currentGain)
     /**
      * 如果设置了覆盖率则覆盖
      */
     const { coverage } = options;
-    currentGain.data.forEach((item) => {
-      item.coverage = coverage;
-    });
+
+    if (coverage !== undefined) {
+      currentGain.data.forEach((item) => {
+        item.coverage = coverage;
+      });
+    }
 
     /**
      * @todo 判断是否重复添加
