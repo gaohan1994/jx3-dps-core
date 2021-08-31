@@ -8,7 +8,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 18:35:26 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-30 18:42:20
+ * @Last Modified time: 2021-08-31 11:20:09
  */
 import CalculatorBase from "../base";
 import Skill from "../../core/skill";
@@ -70,10 +70,10 @@ class YiJinJing extends CalculatorBase {
      * @time 08-30
      * 更新 少林新增3%易伤
      */
-    this.support.use('UPDATE08-30' as any, {
+    this.support.use({
       name: 'UPDATE08-30',
       data: [
-        { gainTarget: SupportContextKeys.damageBonus, value: 0.03 }
+        { gainTarget: SupportContextKeys.damageBonus, value: 0.03, coverage: 1 }
       ]
     });
   }

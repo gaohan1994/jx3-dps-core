@@ -9,6 +9,10 @@ export enum JiaSuValue {
 
 /**
  * 技能增益核心类
+ * 
+ * @todo 新增覆盖率
+ * @time 08-31 
+ * @param coverage
  *
  * @export
  * @enum {number}
@@ -16,12 +20,17 @@ export enum JiaSuValue {
 export interface GainAttribute {
   gainTarget: SupportContextKeys;
   value: number;
+  coverage: number;
 }
 
 export type Gain = {
   name: string;
   data: Array<GainAttribute>;
 };
+
+export type GainOptions = {
+  coverage?: number;
+}
 
 /**
  * 辅助类类别 

@@ -1,6 +1,5 @@
-import { Gain, SupportContext, FormationValue, TeamSkillValue, GroupSkillBuffList, SetBonuse } from "../types";
+import { Gain, SupportContext, FormationValue, TeamSkillValue, GroupSkillBuffList, SetBonuse, GainOptions } from "../types";
 import chalk from 'chalk';
-import { AllGainList } from '../config'
 
 type SupportName = FormationValue |
   TeamSkillValue |
@@ -9,6 +8,16 @@ type SupportName = FormationValue |
 
 export interface SupportBaseOptions {
   defaultGainList?: Gain[];
+}
+
+/**
+ * 判断Gain类型 是增益库里的增益还是自定义增益
+ *
+ * @param {(SupportName | Gain)} value
+ * @return {*}  {value is Gain}
+ */
+function isGain(value: SupportName | Gain): value is Gain {
+  return typeof value !== 'string' && Array.isArray(value.data);
 }
 
 class SupportBase {
@@ -40,7 +49,7 @@ class SupportBase {
     if (this.gainList.length > 0) {
       this.gainList.forEach((gain) => {
         gain.data.forEach((gainAttribute) => {
-          ctx[gainAttribute.gainTarget] += gainAttribute.value;
+          ctx[gainAttribute.gainTarget] += (gainAttribute.value * gainAttribute.coverage);
         });
       })
     }
@@ -54,15 +63,39 @@ class SupportBase {
    * @param {Gain} gain
    * @memberof SupportBase
    */
-  public use(gainName: SupportName, gain: Gain = null): void {
-    const index = this.gainList.findIndex(g => g.name === gainName);
+  public use(gain: SupportName | Gain, options: GainOptions = {}): void {
 
-    if (index <= 0) {
-      const currentGain = gain || AllGainList[gainName];
-      if (currentGain) {
-        this.gainList.push(currentGain);
-      }
+    /**
+     * @todo 判断增益的类型，是否是自定义增益，拿到当前增益
+     * @param isGain
+     */
+    let currentGain: Gain = undefined;
+
+    if (isGain(gain)) {
+      const index = this.gainList.findIndex(g => g.name === gain.name);
+      index <= 0 && (currentGain = gain);
+    } else {
+      const index = this.gainList.findIndex(g => g.name === gain);
+      index <= 0 && (currentGain = this.gainList[index]);
     }
+
+    /**
+     * 如果设置了覆盖率则覆盖
+     */
+    const { coverage } = options;
+    currentGain.data.forEach((item) => {
+      item.coverage = coverage;
+    });
+
+    /**
+     * @todo 判断是否重复添加
+     */
+    if (currentGain === undefined) {
+      console.warn('请勿重复添加增益');
+      return;
+    }
+
+    this.gainList.push(currentGain);
   }
 
   /**
