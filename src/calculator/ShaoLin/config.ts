@@ -1,6 +1,6 @@
 
-import { DpsCore } from "../../core";
-import { EnChantsList, SkillContext } from "../../../types";
+import { DpsCore } from "../../packages/core";
+import { EnChantsList, SkillContext } from "../../types";
 
 export enum SkillNames {
   PoZhao = 'PoZhao',

@@ -8,10 +8,10 @@
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
-import { DpsCore, Skill } from '../core'
-import { Support, Target } from '../support';
-import { SupportContext, CalculatorResult, CalculatorResultSkillItem, Gain, GainOptions } from '../../types';
-import { SkillInfo } from '../core/skill';
+import { DpsCore, Skill } from '../packages/core'
+import { Support, Target } from '../packages/support';
+import { SupportContext, CalculatorResult, CalculatorResultSkillItem, Gain, GainOptions } from '../types';
+import { SkillInfo } from '../packages/core/skill';
 import numeral from 'numeral';
 
 class CalculatorBase {

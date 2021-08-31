@@ -1,6 +1,6 @@
 import DpsCore from './packages/core/core';
 import Support from './packages/support/support';
-import { YiJinJing } from './packages/calculator';
+import { YiJinJing } from './calculator';
 import {
   FormationValue,
   TeamSkillValue,
