@@ -4,11 +4,11 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 18:41:58 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-24 21:03:28
+ * @Last Modified time: 2021-08-31 17:22:24
  */
 
 import chalk from 'chalk';
-import { TargetListKeys, TargetParams } from "../types";
+import { TargetListKeys, TargetParams } from "../../types";
 
 export type TargetOptions = string | TargetParams;
 

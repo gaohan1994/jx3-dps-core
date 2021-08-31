@@ -4,13 +4,13 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 16:29:54 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-29 17:12:54
+ * @Last Modified time: 2021-08-31 17:22:24
  */
 
 import invariant from 'invariant';
 import chalk from 'chalk';
-import { SupportMode, SupportContext, SetBonuse } from "../types";
-import { CoreMiddleware } from '../onion';
+import { SupportMode, SupportContext, SetBonuse } from "../../types";
+import { CoreMiddleware } from '../../componet';
 import { Target, TargetOptions, SupportBase, SupportBaseOptions } from './index';
 
 export interface SupportOptions extends SupportBaseOptions {
@@ -43,23 +43,6 @@ class Support extends SupportBase {
    * @memberof Support
    */
   public CWTimes: number;
-
-
-  /**
-   * 个人增益模块
-   *
-   * @type {PersonBuff}
-   * @memberof Support
-   */
-  // public personBuff: PersonBuff = undefined;
-
-  /**
-   * 团队增益模块
-   *
-   * @type {TeamBuff}
-   * @memberof Support
-   */
-  // public teamBuff: TeamBuff = undefined;
 
   /**
    * 目标

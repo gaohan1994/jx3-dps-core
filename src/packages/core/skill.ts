@@ -8,7 +8,7 @@
 import invariant from 'invariant';
 import chalk from 'chalk';
 import numeral from 'numeral';
-import { SkillContext, SupportContext } from '../types';
+import { SkillContext, SupportContext } from '../../types';
 import DpsCore from './core';
 import { Target } from '../support';
 

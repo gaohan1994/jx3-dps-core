@@ -1,6 +1,6 @@
-import { Gain, SupportContext, FormationValue, TeamSkillValue, GroupSkillBuffList, SetBonuse, GainOptions } from "../types";
+import { Gain, SupportContext, FormationValue, TeamSkillValue, GroupSkillBuffList, SetBonuse, GainOptions } from "../../types";
 import chalk from 'chalk';
-import { AllGainList } from "../config";
+import { AllGainList } from "../../lib";
 
 type SupportName = FormationValue |
   TeamSkillValue |

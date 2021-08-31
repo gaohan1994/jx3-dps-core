@@ -1,7 +1,6 @@
 
-import numeral from "numeral";
 import { DpsCore } from "../../core";
-import { EnChantsList, SkillContext } from "../../types";
+import { EnChantsList, SkillContext } from "../../../types";
 
 export enum SkillNames {
   PoZhao = 'PoZhao',

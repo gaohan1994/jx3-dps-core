@@ -1,6 +1,6 @@
-import DpsCore from "../core/core";
-import Support from "../support/support";
-import Target from '../support/target';
+import DpsCore from "../packages/core/core";
+import Support from "../packages/support/support";
+import Target from '../packages/support/target';
 
 export enum JiaSuValue {
   YiDuanJiaSu = 'YiDuanJiaSu',

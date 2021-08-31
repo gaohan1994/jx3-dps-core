@@ -4,11 +4,11 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-07 20:43:49 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-29 16:49:42
+ * @Last Modified time: 2021-08-31 17:30:48
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
-import { CharacterTypes, JiaSuValue } from '../types';
+import { CharacterTypes, JiaSuValue } from '../../types';
 
 class DpsCore {
 

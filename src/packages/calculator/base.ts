@@ -4,13 +4,13 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-31 17:11:07
+ * @Last Modified time: 2021-08-31 17:24:29
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
-import { DpsCore, Skill, formatNumber } from '../core'
+import { DpsCore, Skill } from '../core'
 import { Support, Target } from '../support';
-import { SupportContext, CalculatorResult, CalculatorResultSkillItem, Gain, GainOptions } from '../types';
+import { SupportContext, CalculatorResult, CalculatorResultSkillItem, Gain, GainOptions } from '../../types';
 import { SkillInfo } from '../core/skill';
 import numeral from 'numeral';
 

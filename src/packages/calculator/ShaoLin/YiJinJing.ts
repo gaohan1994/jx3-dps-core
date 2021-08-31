@@ -12,7 +12,7 @@
  */
 import CalculatorBase from "../base";
 import Skill from "../../core/skill";
-import { EnChants, EnChantsList, SupportContextKeys, TeamSkillValue } from "../../types";
+import { EnChants, EnChantsList, SupportContextKeys, TeamSkillValue } from "../../../types";
 import { SkillNames, YJJConfig } from './config'
 
 class YiJinJing extends CalculatorBase {
