@@ -324,6 +324,15 @@ export enum SupportContextKeys {
   LiDao = 'LiDao',
   ShenFa = 'ShenFa',
   damageBonus = 'damageBonus',
+
+  /**
+   * 新增全局无视防御系数
+   * 包含2个技能 梅花盾 和 田螺阵
+   * 
+   * @time 09-01
+   * @param globalIgnoreDefense
+   */
+  globalIgnoreDefense = 'globalIgnoreDefense',
   /**
    * 新增无视防御系数
    * 

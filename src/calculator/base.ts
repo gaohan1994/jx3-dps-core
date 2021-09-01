@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-01 16:20:14
+ * @Last Modified time: 2021-09-01 16:41:23
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -402,18 +402,23 @@ class CalculatorBase {
     const initTarget = this.support.target;
 
     /**
+     * 全局无视内防系数
+     * @oaram globalIgnoreDefense
+     * 
      * 无视内防等级
      * @param ignoreDefense
      */
-    const { ignoreDefense } = ctx;
+    const { globalIgnoreDefense, ignoreDefense } = ctx;
 
     /**
-     * 实际内防计算公式
-     * (内防 - 无视内防等级) * (1 - 无视内防系数)
-     * 
+     * @time 09-01
+     * 修改内防计算公式
+     * 游戏里有两种类型的无视防御机制，称为A类和B类，其中同类无视防御相加，不同类无视防御相乘。
+     * https://www.jx3box.com/bps/7609
+     * 实际内防 = 内防 *（1 - 全局无视内防等级）* （1 - 无视内防等级）
      * @param currentTargetNeiFang
      */
-    const currentTargetNeiFang = (initTarget.neiFang - 0) * (1 - ignoreDefense);
+    const currentTargetNeiFang = (initTarget.neiFang - 0) * (1 - globalIgnoreDefense) * (1 - ignoreDefense);
 
     const _target = new Target({
       name: initTarget.name,

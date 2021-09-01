@@ -3,7 +3,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-31 17:33:35 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-31 17:36:01
+ * @Last Modified time: 2021-09-01 16:39:36
  */
 import { Gain, SupportContextKeys, SetBonuse, GroupSkillType, GroupSkillBuffList, TeamSkillValue, Weapon, WeaponValue, EnChants, EnChantsList, EffectSpine, EffectSpineList, Banquet, BanquetList, Food, FoodEnhanceList, FoodSupportList, DrugEnhanceList, DrugSupportList } from "../types";
 
@@ -81,4 +81,10 @@ export const GroupSkillGains: GroupSkillType = {
       { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.3, coverage: 0.1 }
     ]
   },
+  [GroupSkillBuffList.MeiHuaDun]: {
+    name: GroupSkillBuffList.MeiHuaDun,
+    data: [
+      { gainTarget: SupportContextKeys.globalIgnoreDefense, value: 0.15, coverage: 0.2 }
+    ]
+  }
 }

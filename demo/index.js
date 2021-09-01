@@ -35,8 +35,9 @@ function Demo() {
   yjj.use(Calculator.CoreHelper.SetBonusesGain.SkillSetBonuse);
   // yjj.use(Calculator.CoreHelper.GroupSkills.JieHuoZhan);
   // yjj.use(Calculator.CoreHelper.GroupSkills.LieRiZhan);
-  // yjj.use(Calculator.CoreHelper.GroupSkills.LiDiChengFo);
-  // yjj.use(Calculator.CoreHelper.Formations.TianLuoZhen);
+  yjj.use(Calculator.CoreHelper.GroupSkills.LiDiChengFo);
+  yjj.use(Calculator.CoreHelper.Formations.TianLuoZhen);
+  yjj.use(Calculator.CoreHelper.GroupSkills.MeiHuaDun);
 
   yjj.use(Calculator.CoreHelper.Weapons.EffectWather);
 

@@ -2,8 +2,8 @@
  * 阵法增益配置文件
  * @Author: centerm.gaohan 
  * @Date: 2021-08-31 17:33:22 
- * @Last Modified by:   centerm.gaohan 
- * @Last Modified time: 2021-08-31 17:33:22 
+ * @Last Modified by: centerm.gaohan
+ * @Last Modified time: 2021-09-01 16:32:44
  */
 import { Formation, FormationValue, SupportContextKeys } from "../types";
 
@@ -31,7 +31,7 @@ export const FormationsGains: Formation = {
       { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.05, coverage: 1 },
       { gainTarget: SupportContextKeys.HuiXin, value: 0.05, coverage: 1 },
       { gainTarget: SupportContextKeys.HuiXiao, value: 0.15, coverage: 1 },
-      { gainTarget: SupportContextKeys.ignoreDefense, value: 0.05, coverage: 1 },
+      { gainTarget: SupportContextKeys.globalIgnoreDefense, value: 0.05, coverage: 1 },
     ],
   },
   [FormationValue.QiChunZhen]: {

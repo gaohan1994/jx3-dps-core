@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 16:29:54 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-31 17:22:24
+ * @Last Modified time: 2021-09-01 16:34:15
  */
 
 import invariant from 'invariant';
@@ -94,6 +94,7 @@ class Support extends SupportBase {
       WuShuangLevel: 0,
       PoZhao: 0,
       ignoreDefense: 0,
+      globalIgnoreDefense: 0,
     };
 
     const middleware = new CoreMiddleware([]);
