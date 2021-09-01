@@ -3,7 +3,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-31 17:33:22 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-01 16:32:44
+ * @Last Modified time: 2021-09-01 16:44:42
  */
 import { Formation, FormationValue, SupportContextKeys } from "../types";
 
@@ -42,4 +42,12 @@ export const FormationsGains: Formation = {
       { gainTarget: SupportContextKeys.WuShuang, value: 0.0195, coverage: 1 },
     ],
   },
+  [FormationValue.MoWenZhen]: {
+    name: FormationValue.MoWenZhen,
+    data: [
+      { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.1, coverage: 1 },
+      { gainTarget: SupportContextKeys.HuiXin, value: 0.08, coverage: 1 },
+      { gainTarget: SupportContextKeys.WuShuang, value: 0.0195, coverage: 1 },
+    ]
+  }
 }

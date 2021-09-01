@@ -98,6 +98,7 @@ export enum FormationValue {
   DuJingZhen = 'DuJingZhen',
   TianLuoZhen = 'TianLuoZhen',
   QiChunZhen = 'QiChunZhen',
+  MoWenZhen = 'MoWenZhen',
 }
 
 /**

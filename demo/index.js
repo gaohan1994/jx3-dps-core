@@ -35,9 +35,11 @@ function Demo() {
   yjj.use(Calculator.CoreHelper.SetBonusesGain.SkillSetBonuse);
   // yjj.use(Calculator.CoreHelper.GroupSkills.JieHuoZhan);
   // yjj.use(Calculator.CoreHelper.GroupSkills.LieRiZhan);
-  yjj.use(Calculator.CoreHelper.GroupSkills.LiDiChengFo);
+  // yjj.use(Calculator.CoreHelper.GroupSkills.LiDiChengFo);
   yjj.use(Calculator.CoreHelper.Formations.TianLuoZhen);
-  yjj.use(Calculator.CoreHelper.GroupSkills.MeiHuaDun);
+  // yjj.use(Calculator.CoreHelper.Formations.MoWenZhen);
+  // yjj.use(Calculator.CoreHelper.Formations.TianGuLeiYinZhen);
+  // yjj.use(Calculator.CoreHelper.GroupSkills.MeiHuaDun);
 
   yjj.use(Calculator.CoreHelper.Weapons.EffectWather);
 
@@ -72,12 +74,12 @@ function Demo() {
       // console.log('item', item);
     });
     // res.skills.showSkillInfo();
-    console.log('skills', skills);
+    // console.log('skills', skills);
     console.log('dps: ', res.dps);
     // console.log('yjj.getSupportContext()', yjj.getSupportContext());
     // yjj.getCore().showAttributes();
     // yjj.getTarget().showTargetValue();
-    // yjj.getSupport().showGain();
+    yjj.getSupport().showGain();
 
     // yjj.support.showGain();
     // console.log(yjj.supportContext);
