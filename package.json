@@ -1,6 +1,6 @@
 {
   "name": "jx3-dps-core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "homepage": "https://github.com/gaohan1994/jx3-dps-core",
   "main": "build/index.js",
