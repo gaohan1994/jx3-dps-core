@@ -18,14 +18,13 @@ function Demo() {
       HuiXiao: 176.98,
       PoFang: 39,
       PoZhao: 4117,
-      JiaSu: 4.4,
       WuShuang: 43.62,
       YuanQi: 2623,
       JiaSu: Calculator.CoreHelper.JiaSuList.ErDuanJiaSu,
     },
     support: {
       mode: 'NeiGong',
-      target: Calculator.CoreHelper.Target.MuZhuang111,
+      target: Calculator.CoreHelper.Target.MuZhuang113,
     },
   });
 
@@ -34,12 +33,12 @@ function Demo() {
   // yjj.use(Calculator.CoreHelper.TeamSkills.XiuQi);
   yjj.use(Calculator.CoreHelper.SetBonusesGain.ValueSetBonuse);
   yjj.use(Calculator.CoreHelper.SetBonusesGain.SkillSetBonuse);
-  yjj.use(Calculator.CoreHelper.GroupSkills.JieHuoZhan);
+  // yjj.use(Calculator.CoreHelper.GroupSkills.JieHuoZhan);
   // yjj.use(Calculator.CoreHelper.GroupSkills.LieRiZhan);
   // yjj.use(Calculator.CoreHelper.GroupSkills.LiDiChengFo);
   // yjj.use(Calculator.CoreHelper.Formations.TianLuoZhen);
 
-  yjj.use(Calculator.CoreHelper.Weapons.CW);
+  yjj.use(Calculator.CoreHelper.Weapons.EffectWather);
 
   yjj.use(Calculator.CoreHelper.Enchants.EnChantBelt);
   yjj.use(Calculator.CoreHelper.Enchants.EnChantBody);
@@ -63,7 +62,7 @@ function Demo() {
   // yjj.use(Calculator.CoreHelper.Food.DrugEnhance.ShangPinNingShenSan);
   // yjj.use(Calculator.CoreHelper.Food.DrugEnhance.ShangPinZhanFengDan);
 
-  yjj.use(Calculator.CoreHelper.GroupSkills.HongFa, { coverage: 0.4 });
+  // yjj.use(Calculator.CoreHelper.GroupSkills.HongFa, { coverage: 0.4 });
 
   yjj.total().then((res) => {
     const skills = res.skills.map((item) => {
@@ -78,6 +77,9 @@ function Demo() {
     // yjj.getCore().showAttributes();
     // yjj.getTarget().showTargetValue();
     // yjj.getSupport().showGain();
+
+    // yjj.support.showGain();
+    // console.log(yjj.supportContext);
   });
 }
 

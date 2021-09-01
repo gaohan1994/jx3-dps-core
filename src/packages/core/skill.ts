@@ -3,14 +3,14 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:45:42 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-30 18:34:02
+ * @Last Modified time: 2021-09-01 16:27:36
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
 import numeral from 'numeral';
-import { SkillContext, SupportContext } from '../../types';
+import { JiaSuValue, SkillContext, SupportContext } from '../../types';
 import DpsCore from './core';
-import { Target } from '../support';
+import { Support, Target } from '../support';
 
 export interface SkillParamFunction {
   (ctx: SkillContext): number;
@@ -31,17 +31,28 @@ export type SkillInfo = {
    * @type {string}
    */
   skillTitle: string;
+
   /**
-   * 技能次数
-   *
-   * @type {number}
+   * @time 08-31
+   * 修改技能次数计算方式
    */
-  skillTimes: number;
+  skillTimesLib: SkillTimeLib;
+  /**
+   * @time 08-31
+   * @todo 橙武是否影响当前技能次数
+   * @memberof Options
+   */
+  cwSkillTimesImpact?: (time: number) => number;
 }
 
-interface Options extends SkillInfo {
+export type SkillTimeLib = number | {
+  [key in JiaSuValue]: number;
+};
+
+export interface Options extends SkillInfo {
   core: DpsCore;
   target: Target;
+  support: Support;
   supportContext: SupportContext;
   skillBasicNumber?: number;
   basicDamage?: SkillParam;
@@ -81,10 +92,27 @@ class Skill {
   public skillTimes: number;
 
   /**
+   * @todo 技能次数库
+   *
+   * @type {(number | {
+   *     [key in JiaSuValue]: number;
+   *   })}
+   * @memberof Skill
+   */
+  public skillTimesLib: number | {
+    [key in JiaSuValue]: number;
+  };
+
+  private cwSkillTimesImpact?: (time: number) => number;
+
+  /**
    * 核心类 core
    * @type {DpsCore}
    * 
-   * 辅助类 supportContext
+   * 辅助类 support
+   * @type {Support}
+   * 
+   * 增益列表 supportContext
    * @type {Target}
    * 
    * 目标 target
@@ -92,6 +120,7 @@ class Skill {
    * @memberof Skill2
    */
   public core: DpsCore;
+  public support: Support;
   public target: Target;
   public supportContext: SupportContext;
 
@@ -192,17 +221,41 @@ class Skill {
     invariant(!!options.core, '请设置核心类');
     this.core = options.core;
 
+    invariant(!!options.support, '请设置辅助类');
+    this.support = options.support;
+
     invariant(!!options.target, '请设置目标类');
     this.target = options.target;
 
     invariant(!!options.supportContext, '请设置辅助类');
     this.supportContext = options.supportContext;
 
+    invariant(options.skillTimesLib !== undefined, '请设置技能次数');
+    this.skillTimesLib = options.skillTimesLib;
+
     this.skillBasicNumber = options.skillBasicNumber || 0;
 
-    invariant(options.skillTimes !== undefined, '技能次数不能为空');
-    this.skillTimes = currySkill(getCurrentCoefficient(options.skillTimes, 1), options)();
+    this.cwSkillTimesImpact = options.cwSkillTimesImpact;
 
+    /**
+     * @todo 设置技能次数
+     */
+    if (skillTimesIsNumber(this.skillTimesLib)) {
+      this.skillTimes = this.skillTimesLib;
+    } else {
+
+      // 拿到加速段位
+      const JiaSu = this.core.JiaSu;
+      this.skillTimes = this.skillTimesLib[JiaSu];
+
+      // 如果当前橙武对当前技能有影响
+      // 计算橙武对该技能的影响
+      const hasCw = this.support.hasCw();
+      if (hasCw && this.cwSkillTimesImpact) {
+        const cwTimes = this.support.CWTimes;
+        this.skillTimes += this.cwSkillTimesImpact(cwTimes);
+      }
+    }
     this.basicDamage = currySkill(getCurrentCoefficient(options.basicDamage, this.core.ZongGongJi), { ...options, skillTimes: this.skillTimes })();
 
     this.basicDamageCoefficient = currySkill(getCurrentCoefficient(options.basicDamageCoefficient, 1))();
@@ -225,6 +278,34 @@ class Skill {
       * (1 + this.supportContext.damageBonus);
 
     this.extra = currySkill(getCurrentCoefficient(options.extra, 0))();
+  }
+
+  /**
+   * 设置技能次数
+   *
+   * @private
+   * @memberof Skill
+   */
+  private setSkillTimes() {
+    /**
+     * 设置技能次数
+     */
+    if (skillTimesIsNumber(this.skillTimesLib)) {
+      this.skillTimes = this.skillTimesLib;
+    } else {
+
+      // 拿到加速段位
+      const JiaSu = this.core.JiaSu;
+      this.skillTimes = this.skillTimesLib[JiaSu];
+
+      // 如果当前橙武对当前技能有影响
+      // 计算橙武对该技能的影响
+      const hasCw = this.support.hasCw();
+      if (hasCw && this.cwSkillTimesImpact) {
+        const cwTimes = this.support.CWTimes;
+        this.skillTimes += this.cwSkillTimesImpact(cwTimes);
+      }
+    }
   }
 
   /**
@@ -313,4 +394,8 @@ function currySkill(callback: SkillParam, params: any = {}) {
 
     return callback(params);
   }
+}
+
+export function skillTimesIsNumber(value: SkillTimeLib): value is number {
+  return typeof value === 'number';
 }

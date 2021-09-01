@@ -8,7 +8,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 18:35:26 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-31 11:20:09
+ * @Last Modified time: 2021-09-01 16:22:55
  */
 import CalculatorBase from "../base";
 import Skill from "../../packages/core/skill";
@@ -165,24 +165,13 @@ class YiJinJing extends CalculatorBase {
     const liuHe = new Skill({
       ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.LiuHeGun),
+      // skillTimesLib: 1,
       skillBasicNumber: core.WuQiShangHai,
       basicDamage: 0,
       basicDamageCoefficient: 0,
       poFangCoefficient: 1,
     });
     skills.push(liuHe);
-
-    const liuHeWithWeiTuo = new Skill({
-      ...baseSkillContext,
-      skillName: '韦陀触发六合棍',
-      skillTitle: '韦陀触发六合棍',
-      skillTimes: this.getSkillInfo(SkillNames.WeiTuoXianChu).skillTimes * 2,
-      skillBasicNumber: core.WuQiShangHai,
-      basicDamage: 0,
-      basicDamageCoefficient: 0,
-      poFangCoefficient: 1,
-    });
-    const liuHeWithWeiTuoSubTotal = liuHeWithWeiTuo.calculator();
 
     const weiTuo = new Skill({
       ...baseSkillContext,
@@ -193,8 +182,24 @@ class YiJinJing extends CalculatorBase {
       damageBonuesCoefficient: () => {
         return (BaseCoefficient + MiJiCoefficient + ErYeYiYuanCoefficient + skillSetBonuseCoefficient + FoGuoCoefficient) * ZhongChenCoefficient * MingFaCoefficient;
       },
-      extra: liuHeWithWeiTuoSubTotal.subTotal
     });
+
+    const liuHeWithWeiTuo = new Skill({
+      ...baseSkillContext,
+      skillName: '韦陀触发六合棍',
+      skillTitle: '韦陀触发六合棍',
+      skillTimesLib: weiTuo.skillTimes,
+      skillBasicNumber: core.WuQiShangHai,
+      basicDamage: 0,
+      basicDamageCoefficient: 0,
+      poFangCoefficient: 1,
+    });
+    const liuHeWithWeiTuoSubTotal = liuHeWithWeiTuo.calculator();
+
+    /**
+     * 每次韦陀+2次普攻
+     */
+    weiTuo.extra = liuHeWithWeiTuoSubTotal.subTotal;
     skills.push(weiTuo as any);
 
     const poZhao = new Skill({

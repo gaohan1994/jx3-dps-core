@@ -1,6 +1,8 @@
 
+import { Options, SkillInfo, SkillTimeLib, skillTimesIsNumber } from "../../packages/core/skill";
 import { DpsCore } from "../../packages/core";
-import { EnChantsList, SkillContext } from "../../types";
+import { EnChantsList, JiaSuValue, SkillContext } from "../../types";
+import curry from "../../componet/curry";
 
 export enum SkillNames {
   PoZhao = 'PoZhao',
@@ -18,104 +20,90 @@ export enum SkillNames {
   FeiJian = 'FeiJian',
 }
 
-export function getCWSkillTimes(skillName: string, times: number, CWTimes: number): number {
-  switch (skillName) {
-    // CW每触发一次 韦陀次数+2.5
-    case SkillNames.WeiTuoXianChu: {
-      return times + CWTimes * 2.5;
-    }
+/**
+ * @time 08-31
+ * 柯里化合并技能数
+ */
+const mergeSkillTimes = curry<SkillTimeLib>(function () {
+  const skills: SkillTimeLib[] = [].slice.call(arguments);
 
-    // CW触发一次 守缺次数+1.5
-    case SkillNames.ShouQueShi: {
-      return times + CWTimes * 0.5;
-    }
+  let mergedSkillTiems: {
+    [name: string]: number
+  } = {
+    [JiaSuValue.YiDuanJiaSu]: 0,
+    [JiaSuValue.ErDuanJiaSu]: 0,
+  };
 
-    // CW触发一次 普度次数-3
-    case SkillNames.PuDuSiFang: {
-      return times - CWTimes * 3;
-    }
-
-    default: {
-      return times;
+  for (let index = 0; index < skills.length; index++) {
+    const currentSkill = skills[index];
+    if (skillTimesIsNumber(currentSkill)) {
+      for (let key in mergedSkillTiems) {
+        mergedSkillTiems[key] += currentSkill;
+      }
+    } else {
+      for (let key in mergedSkillTiems) {
+        mergedSkillTiems[key] += currentSkill[key as JiaSuValue];
+      }
     }
   }
+  return mergedSkillTiems;
+});
+
+/**
+ * @time 08-31
+ * 操作技能数
+ */
+const updateSkillTimes = function (value: SkillTimeLib, callback: (value: number) => number): SkillTimeLib {
+  let times = value;
+  if (skillTimesIsNumber(times)) {
+    times = callback(times);
+  } else {
+    for (let key in times) {
+      times[key as JiaSuValue] = callback(times[key as JiaSuValue]);
+    }
+  }
+  return times;
 }
 
-export function getSkillTimes(skillName: string): any {
+export function getSkillTimes(skillName: string): number | {
+  [key in JiaSuValue]: number;
+} {
   switch (skillName) {
     case SkillNames.PoZhao: {
-      return ({ core }: SkillContext) => {
-        const isErDuanJiaSu = core.JiaSu === DpsCore.JiaSuList.ErDuanJiaSu;
-        if (!isErDuanJiaSu) {
-          return 30;
-        }
-        return 31;
+      return {
+        YiDuanJiaSu: 30,
+        ErDuanJiaSu: 31
       }
     }
     case SkillNames.NaYunShi: {
-      return ({ core }: SkillContext) => {
-        const isErDuanJiaSu = core.JiaSu === DpsCore.JiaSuList.ErDuanJiaSu;
-        if (!isErDuanJiaSu) {
-          return Math.round(33 * 1.5);
-        }
-        return Math.round(33 * 1.5 + 1.5);
+      return {
+        YiDuanJiaSu: 33 * 1.5,
+        ErDuanJiaSu: 33 * 1.5 + 1.5
       }
     }
     case SkillNames.WeiTuoXianChu: {
-      return ({ core, support }: SkillContext) => {
-        // console.log('core', core);
-        // console.log('support', support);
-        const isErDuanJiaSu = core.JiaSu === DpsCore.JiaSuList.ErDuanJiaSu;
-        // 技能次数
-        let times = 0;
-        if (!isErDuanJiaSu) {
-          times = Math.round(39 - (33 * 0.5));
-        }
-        times = Math.round(39 - (33 * 0.5) + 1.5);
-        const hasCw = support.hasCw();
-        if (hasCw) {
-          return getCWSkillTimes(SkillNames.WeiTuoXianChu, times, support.CWTimes);
-        }
-        return times;
+      return {
+        YiDuanJiaSu: Math.round(39 - (33 * 0.5)),
+        ErDuanJiaSu: Math.round(39 - (33 * 0.5) + 1.5)
       }
     }
     case SkillNames.HengSaoLiuHe: {
       return 31;
     }
     case SkillNames.ShouQueShi: {
-      return ({ support }: SkillContext) => {
-        let times = 45;
-        const hasCw = support.hasCw();
-        if (hasCw) {
-          return getCWSkillTimes(SkillNames.ShouQueShi, times, support.CWTimes);
-        }
-        return times;
-      }
+      return 45;
     }
     case SkillNames.HengSaoLiuHeDot: {
-      return ({ core }: SkillContext) => {
-        const isErDuanJiaSu = core.JiaSu === DpsCore.JiaSuList.ErDuanJiaSu;
-        if (!isErDuanJiaSu) {
-          return 155;
-        }
-        return 160;
-      }
+      return {
+        YiDuanJiaSu: 155,
+        ErDuanJiaSu: 160,
+      };
     }
     case SkillNames.PuDuSiFang: {
-      return ({ core, support }: SkillContext) => {
-        const isErDuanJiaSu = core.JiaSu === DpsCore.JiaSuList.ErDuanJiaSu;
-        let times = 0;
-        if (!isErDuanJiaSu) {
-          times = 45;
-        }
-        times = 49;
-
-        const hasCw = support.hasCw();
-        if (hasCw) {
-          return getCWSkillTimes(SkillNames.PuDuSiFang, times, support.CWTimes);
-        }
-        return times;
-      }
+      return {
+        YiDuanJiaSu: 45,
+        ErDuanJiaSu: 49
+      };
     }
     case SkillNames.LiuHeGun: {
       return 172;
@@ -130,105 +118,124 @@ export function getSkillTimes(skillName: string): any {
       return 15;
     }
     case SkillNames.XiangMo: {
-      return (...rest: any) => {
-        return getSkillTimes(SkillNames.NaYunShi)(...rest) + getSkillTimes(SkillNames.WeiTuoXianChu)(...rest);
-      }
+      return mergeSkillTimes(
+        getSkillTimes(SkillNames.NaYunShi),
+        getSkillTimes(SkillNames.WeiTuoXianChu),
+      );
     }
     case SkillNames.SuoDi: {
-      return (...rest: any) => {
-        return (getSkillTimes(SkillNames.NaYunShi)(...rest) + getSkillTimes(SkillNames.WeiTuoXianChu)(...rest) + 3 * 5) / 2;
-      }
+      return updateSkillTimes(
+        mergeSkillTimes(
+          getSkillTimes(SkillNames.NaYunShi),
+          getSkillTimes(SkillNames.WeiTuoXianChu),
+        ),
+        (value) => (value + 3 * 5) / 2,
+      );
     }
     case SkillNames.FoGuo: {
-      return (...rest: any) => {
-        return Math.floor(
-          (
-            getSkillTimes(SkillNames.NaYunShi)(...rest)
-            + getSkillTimes(SkillNames.WeiTuoXianChu)(...rest)
-            + getSkillTimes(SkillNames.PuDuSiFang)(...rest)
-            + getSkillTimes(SkillNames.ShouQueShi)(...rest)
-            + getSkillTimes(SkillNames.HengSaoLiuHe)
-            + getSkillTimes(SkillNames.TiHuGuanDing)
-          ) * 0.3 * 0.9
-        );
-      }
+      return updateSkillTimes(
+        mergeSkillTimes(
+          getSkillTimes(SkillNames.NaYunShi),
+          getSkillTimes(SkillNames.WeiTuoXianChu),
+          getSkillTimes(SkillNames.PuDuSiFang),
+          getSkillTimes(SkillNames.ShouQueShi),
+          getSkillTimes(SkillNames.HengSaoLiuHe),
+          getSkillTimes(SkillNames.TiHuGuanDing),
+        ),
+        (value) => value * 0.3 * 0.9
+      );
     }
   }
 }
 
-export const YJJConfig = {
+export const YJJConfig: {
+  [name: string]: SkillInfo
+} = {
   [SkillNames.PoZhao]: {
-    skillTimes: getSkillTimes(SkillNames.PoZhao),
+    skillTimesLib: getSkillTimes(SkillNames.PoZhao),
     skillName: SkillNames.PoZhao,
     skillTitle: '破招',
   },
   [SkillNames.NaYunShi]: {
-    skillTimes: getSkillTimes(SkillNames.NaYunShi),
+    skillTimesLib: getSkillTimes(SkillNames.NaYunShi),
     skillName: SkillNames.NaYunShi,
     skillTitle: '拿云式',
   },
   [SkillNames.WeiTuoXianChu]: {
-    skillTimes: getSkillTimes(SkillNames.WeiTuoXianChu),
+    skillTimesLib: getSkillTimes(SkillNames.WeiTuoXianChu),
     skillName: SkillNames.WeiTuoXianChu,
     skillTitle: '韦陀献杵',
+
+    // 每触发一次cw增加2.5次韦陀
+    cwSkillTimesImpact: (cwTimes) => {
+      return cwTimes * 2.5
+    }
   },
   [SkillNames.HengSaoLiuHe]: {
-    skillTimes: getSkillTimes(SkillNames.HengSaoLiuHe),
+    skillTimesLib: getSkillTimes(SkillNames.HengSaoLiuHe),
     skillName: SkillNames.HengSaoLiuHe,
     skillTitle: '横扫六合',
   },
   [SkillNames.ShouQueShi]: {
-    skillTimes: getSkillTimes(SkillNames.ShouQueShi),
+    skillTimesLib: getSkillTimes(SkillNames.ShouQueShi),
     skillName: SkillNames.ShouQueShi,
     skillTitle: '守缺式',
+    // 每触发一次cw增加0.5次守缺
+    cwSkillTimesImpact: (cwTimes) => {
+      return cwTimes * 0.5;
+    }
   },
   [SkillNames.HengSaoLiuHeDot]: {
-    skillTimes: getSkillTimes(SkillNames.HengSaoLiuHeDot),
+    skillTimesLib: getSkillTimes(SkillNames.HengSaoLiuHeDot),
     skillName: SkillNames.HengSaoLiuHeDot,
     skillTitle: '横扫六合DOT',
   },
   [SkillNames.PuDuSiFang]: {
-    skillTimes: getSkillTimes(SkillNames.PuDuSiFang),
+    skillTimesLib: getSkillTimes(SkillNames.PuDuSiFang),
     skillName: SkillNames.PuDuSiFang,
     skillTitle: '普渡四方',
+    // 每触发一次cw减少3次普度
+    cwSkillTimesImpact: (cwTimes) => {
+      return - (cwTimes * 3)
+    }
   },
   [SkillNames.LiuHeGun]: {
-    skillTimes: getSkillTimes(SkillNames.LiuHeGun),
+    skillTimesLib: getSkillTimes(SkillNames.LiuHeGun),
     skillName: SkillNames.LiuHeGun,
     skillTitle: '六合棍',
   },
   [SkillNames.XiangMo]: {
-    skillTimes: getSkillTimes(SkillNames.XiangMo),
+    skillTimesLib: getSkillTimes(SkillNames.XiangMo),
     skillName: SkillNames.XiangMo,
     skillTitle: '降魔',
   },
   [SkillNames.SuoDi]: {
-    skillTimes: getSkillTimes(SkillNames.SuoDi),
+    skillTimesLib: getSkillTimes(SkillNames.SuoDi),
     skillName: SkillNames.SuoDi,
     skillTitle: '缩地',
   },
   [SkillNames.TiHuGuanDing]: {
-    skillTimes: getSkillTimes(SkillNames.TiHuGuanDing),
+    skillTimesLib: getSkillTimes(SkillNames.TiHuGuanDing),
     skillName: SkillNames.TiHuGuanDing,
     skillTitle: '醍醐灌顶',
   },
   [SkillNames.FoGuo]: {
-    skillTimes: getSkillTimes(SkillNames.FoGuo),
+    skillTimesLib: getSkillTimes(SkillNames.FoGuo),
     skillName: SkillNames.FoGuo,
     skillTitle: '佛果',
   },
   [SkillNames.FeiJian]: {
-    skillTimes: getSkillTimes(SkillNames.FeiJian),
+    skillTimesLib: getSkillTimes(SkillNames.FeiJian),
     skillName: SkillNames.FeiJian,
     skillTitle: '飞剑',
   },
   [EnChantsList.EnChantHand]: {
-    skillTimes: getSkillTimes(EnChantsList.EnChantHand),
+    skillTimesLib: getSkillTimes(EnChantsList.EnChantHand),
     skillName: EnChantsList.EnChantHand,
     skillTitle: '附魔手',
   },
   [EnChantsList.EnChantShoe]: {
-    skillTimes: getSkillTimes(EnChantsList.EnChantShoe),
+    skillTimesLib: getSkillTimes(EnChantsList.EnChantShoe),
     skillName: EnChantsList.EnChantShoe,
     skillTitle: '附魔鞋',
   },
