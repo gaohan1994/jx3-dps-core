@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-01 16:41:23
+ * @Last Modified time: 2021-09-02 16:29:13
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -13,6 +13,7 @@ import { Support, Target } from '../packages/support';
 import { SupportContext, CalculatorResult, CalculatorResultSkillItem, Gain, GainOptions } from '../types';
 import { SkillInfo } from '../packages/core/skill';
 import numeral from 'numeral';
+import { floortNumberPlaces } from '../componet';
 
 class CalculatorBase {
 
@@ -220,7 +221,7 @@ class CalculatorBase {
     /**
      * 计算dps
      */
-    this.dps = total / this.seconds;
+    this.dps = floortNumberPlaces(total / this.seconds);
 
     /**
      * 总输出计算完成之后才能计算percent

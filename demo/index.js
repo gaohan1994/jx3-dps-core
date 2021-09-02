@@ -74,11 +74,11 @@ function Demo() {
       // console.log('item', item);
     });
     // res.skills.showSkillInfo();
-    console.log('skills', skills);
+    // console.log('skills', skills);
     console.log('dps: ', res.dps);
     // console.log('yjj.getSupportContext()', yjj.getSupportContext());
     // yjj.getCore().showAttributes();
-    yjj.getCore().showAttributes();
+    // yjj.getCore().showAttributes();
     // yjj.getTarget().showTargetValue();
     // yjj.getSupport().showGain();
 
