@@ -64,7 +64,7 @@ class SupportBase {
    * @param {Gain} gain
    * @memberof SupportBase
    */
-  public use(gain: SupportName | Gain, options: GainOptions = {}): void {
+  public use(gain: SupportName | Gain, options?: GainOptions): void {
 
     /**
      * @todo 判断增益的类型，是否是自定义增益，拿到当前增益
@@ -80,11 +80,10 @@ class SupportBase {
       index <= 0 && (currentGain = AllGainList[gain]);
     }
 
-    // console.log('currentGain', currentGain)
     /**
      * 如果设置了覆盖率则覆盖
      */
-    const { coverage } = options;
+    const coverage = options && options.coverage;
 
     if (coverage !== undefined) {
       currentGain.data.forEach((item) => {

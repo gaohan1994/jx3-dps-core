@@ -3,7 +3,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:45:42 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-01 16:27:36
+ * @Last Modified time: 2021-09-02 13:42:22
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -246,14 +246,14 @@ class Skill {
 
       // 拿到加速段位
       const JiaSu = this.core.JiaSu;
-      this.skillTimes = this.skillTimesLib[JiaSu];
+      this.skillTimes = Math.floor(this.skillTimesLib[JiaSu]);
 
       // 如果当前橙武对当前技能有影响
       // 计算橙武对该技能的影响
       const hasCw = this.support.hasCw();
       if (hasCw && this.cwSkillTimesImpact) {
         const cwTimes = this.support.CWTimes;
-        this.skillTimes += this.cwSkillTimesImpact(cwTimes);
+        this.skillTimes += Math.floor(this.cwSkillTimesImpact(cwTimes));
       }
     }
     this.basicDamage = currySkill(getCurrentCoefficient(options.basicDamage, this.core.ZongGongJi), { ...options, skillTimes: this.skillTimes })();
@@ -281,40 +281,23 @@ class Skill {
   }
 
   /**
-   * 设置技能次数
-   *
-   * @private
-   * @memberof Skill
-   */
-  private setSkillTimes() {
-    /**
-     * 设置技能次数
-     */
-    if (skillTimesIsNumber(this.skillTimesLib)) {
-      this.skillTimes = this.skillTimesLib;
-    } else {
-
-      // 拿到加速段位
-      const JiaSu = this.core.JiaSu;
-      this.skillTimes = this.skillTimesLib[JiaSu];
-
-      // 如果当前橙武对当前技能有影响
-      // 计算橙武对该技能的影响
-      const hasCw = this.support.hasCw();
-      if (hasCw && this.cwSkillTimesImpact) {
-        const cwTimes = this.support.CWTimes;
-        this.skillTimes += this.cwSkillTimesImpact(cwTimes);
-      }
-    }
-  }
-
-  /**
    * 计算技能小计
    *
    * @return {*}  {number}
    * @memberof Skill2
    */
   public calculator(): this {
+
+    // if (this.skillName === 'SuoDi') {
+    //   console.log('this.supportContext', this.supportContext);
+    //   console.log('技能伤害', (this.skillBasicNumber + (this.basicDamage * this.basicDamageCoefficient)));
+    //   console.log(`乘破防系数 ${this.poFangCoefficient}`)
+    //   console.log(`乘无双系数 ${this.wuShuangCoefficient}`)
+    //   console.log(`乘会心会笑系数 ${this.huiXinHuiXiaoCoefficient}`)
+    //   console.log(`乘目标伤害系数 ${this.targetDamageCoefficient}`)
+    //   console.log(`乘目标易伤系数 ${this.damageBonuesCoefficient}`)
+    //   console.log(`乘技能次数 ${this.skillTimes}`)
+    // }
     /**
      * 当前技能小计
      */

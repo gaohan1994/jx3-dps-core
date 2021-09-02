@@ -3,7 +3,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-31 17:33:22 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-01 16:44:42
+ * @Last Modified time: 2021-09-02 13:49:27
  */
 import { Formation, FormationValue, SupportContextKeys } from "../types";
 
@@ -13,7 +13,7 @@ export const FormationsGains: Formation = {
     data: [
       { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.15, coverage: 1 },
       { gainTarget: SupportContextKeys.PoFangPercent, value: 0.1, coverage: 1 },
-      { gainTarget: SupportContextKeys.WuShuang, value: 0.15, coverage: 1 },
+      { gainTarget: SupportContextKeys.WuShuang, value: 1.95, coverage: 1 },
     ]
   },
   [FormationValue.DuJingZhen]: {
@@ -39,7 +39,7 @@ export const FormationsGains: Formation = {
     data: [
       { gainTarget: SupportContextKeys.HuiXin, value: 0.08, coverage: 1 },
       { gainTarget: SupportContextKeys.HuiXiao, value: 0.15, coverage: 1 },
-      { gainTarget: SupportContextKeys.WuShuang, value: 0.0195, coverage: 1 },
+      { gainTarget: SupportContextKeys.WuShuang, value: 1.95, coverage: 1 },
     ],
   },
   [FormationValue.MoWenZhen]: {
@@ -47,7 +47,7 @@ export const FormationsGains: Formation = {
     data: [
       { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.1, coverage: 1 },
       { gainTarget: SupportContextKeys.HuiXin, value: 0.08, coverage: 1 },
-      { gainTarget: SupportContextKeys.WuShuang, value: 0.0195, coverage: 1 },
+      { gainTarget: SupportContextKeys.WuShuang, value: 1.95, coverage: 1 },
     ]
   }
 }
