@@ -31,21 +31,21 @@ function Demo() {
   // yjj.use(Calculator.CoreHelper.TeamSkills.FenLan);
   // yjj.use(Calculator.CoreHelper.TeamSkills.PoCangQiong);
   // yjj.use(Calculator.CoreHelper.TeamSkills.XiuQi);
-  // yjj.use(Calculator.CoreHelper.SetBonusesGain.ValueSetBonuse);
-  // yjj.use(Calculator.CoreHelper.SetBonusesGain.SkillSetBonuse);
+  yjj.use(Calculator.CoreHelper.SetBonusesGain.ValueSetBonuse);
+  yjj.use(Calculator.CoreHelper.SetBonusesGain.SkillSetBonuse);
   // yjj.use(Calculator.CoreHelper.GroupSkills.JieHuoZhan);
   // yjj.use(Calculator.CoreHelper.GroupSkills.LieRiZhan);
   // yjj.use(Calculator.CoreHelper.GroupSkills.LiDiChengFo);
-  // yjj.use(Calculator.CoreHelper.Formations.TianLuoZhen);
   // yjj.use(Calculator.CoreHelper.Formations.MoWenZhen);
-  yjj.use(Calculator.CoreHelper.Formations.TianGuLeiYinZhen);
+  yjj.use(Calculator.CoreHelper.Formations.TianLuoZhen);
+  // yjj.use(Calculator.CoreHelper.Formations.TianGuLeiYinZhen);
   // yjj.use(Calculator.CoreHelper.GroupSkills.MeiHuaDun);
 
   // yjj.use(Calculator.CoreHelper.Weapons.EffectWather);
 
-  // yjj.use(Calculator.CoreHelper.Enchants.EnChantBelt);
-  // yjj.use(Calculator.CoreHelper.Enchants.EnChantBody);
-  // yjj.use(Calculator.CoreHelper.Enchants.EnChantHead);
+  yjj.use(Calculator.CoreHelper.Enchants.EnChantBelt);
+  yjj.use(Calculator.CoreHelper.Enchants.EnChantBody);
+  yjj.use(Calculator.CoreHelper.Enchants.EnChantHead);
   // yjj.use(Calculator.CoreHelper.EffectSpines.XiangMeng);
 
   // yjj.use(Calculator.CoreHelper.Banquet.ErShiSiQiaoMingYueYe);

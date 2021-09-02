@@ -3,7 +3,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:45:42 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-02 13:42:22
+ * @Last Modified time: 2021-09-02 16:23:10
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -11,6 +11,7 @@ import numeral from 'numeral';
 import { JiaSuValue, SkillContext, SupportContext } from '../../types';
 import DpsCore from './core';
 import { Support, Target } from '../support';
+import { floortNumberPlaces } from '../../componet';
 
 export interface SkillParamFunction {
   (ctx: SkillContext): number;
@@ -241,7 +242,7 @@ class Skill {
      * @todo 设置技能次数
      */
     if (skillTimesIsNumber(this.skillTimesLib)) {
-      this.skillTimes = this.skillTimesLib;
+      this.skillTimes = Math.floor(this.skillTimesLib);
     } else {
 
       // 拿到加速段位
@@ -289,7 +290,6 @@ class Skill {
   public calculator(): this {
 
     // if (this.skillName === 'SuoDi') {
-    //   console.log('this.supportContext', this.supportContext);
     //   console.log('技能伤害', (this.skillBasicNumber + (this.basicDamage * this.basicDamageCoefficient)));
     //   console.log(`乘破防系数 ${this.poFangCoefficient}`)
     //   console.log(`乘无双系数 ${this.wuShuangCoefficient}`)
@@ -297,6 +297,14 @@ class Skill {
     //   console.log(`乘目标伤害系数 ${this.targetDamageCoefficient}`)
     //   console.log(`乘目标易伤系数 ${this.damageBonuesCoefficient}`)
     //   console.log(`乘技能次数 ${this.skillTimes}`)
+
+    //   console.log('baseNumber', floortNumberPlaces(this.skillBasicNumber + (this.basicDamage * this.basicDamageCoefficient), 2));
+    //   console.log(`乘破防系数 ${floortNumberPlaces(this.poFangCoefficient, 4)}`)
+    //   console.log(`乘无双系数 ${floortNumberPlaces(this.wuShuangCoefficient, 4)}`)
+    //   console.log(`乘会心会笑系数 ${floortNumberPlaces(this.huiXinHuiXiaoCoefficient, 4)}`)
+    //   console.log(`乘目标伤害系数 ${floortNumberPlaces(this.targetDamageCoefficient, 4)}`)
+    //   console.log(`乘目标易伤系数 ${floortNumberPlaces(this.damageBonuesCoefficient, 4)}`)
+    //   console.log(`乘技能次数 ${floortNumberPlaces(this.skillTimes)}`)
     // }
     /**
      * 当前技能小计
@@ -305,27 +313,27 @@ class Skill {
       /**
        * 计算技能伤害 整个公式的基础系数
        */
-      (this.skillBasicNumber + (this.basicDamage * this.basicDamageCoefficient))
+      floortNumberPlaces(this.skillBasicNumber + (this.basicDamage * this.basicDamageCoefficient), 2)
       /**
        * 乘破防系数
        */
-      * this.poFangCoefficient
+      * floortNumberPlaces(this.poFangCoefficient, 4)
       /**
        * 乘无双系数
        */
-      * this.wuShuangCoefficient
+      * floortNumberPlaces(this.wuShuangCoefficient, 4)
       /**
        * 乘会心会笑系数
        */
-      * this.huiXinHuiXiaoCoefficient
+      * floortNumberPlaces(this.huiXinHuiXiaoCoefficient, 4)
       /**
        * 乘目标伤害系数
        */
-      * this.targetDamageCoefficient
+      * floortNumberPlaces(this.targetDamageCoefficient, 4)
       /**
        * 乘目标易伤系数
        */
-      * this.damageBonuesCoefficient
+      * floortNumberPlaces(this.damageBonuesCoefficient, 4)
       /**
        * 乘技能次数
        */

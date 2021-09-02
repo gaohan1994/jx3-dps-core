@@ -4,11 +4,12 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-07 20:43:49 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-08-31 17:30:48
+ * @Last Modified time: 2021-09-02 16:26:04
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
 import { CharacterTypes, JiaSuValue } from '../../types';
+import { floortNumberPlaces } from '../../componet';
 
 class DpsCore {
 
@@ -176,13 +177,13 @@ class DpsCore {
     this.options = options;
 
     invariant(typeof options.JiChuGongJi === 'number', '攻击不能为空');
-    this.JiChuGongJi = options.JiChuGongJi;
+    this.JiChuGongJi = floortNumberPlaces(options.JiChuGongJi);
 
     invariant(typeof options.PoFang === 'number', '破防不能为空');
-    this.PoFang = options.PoFang;
+    this.PoFang = floortNumberPlaces(options.PoFang, 2);
 
     invariant(typeof options.PoZhao === 'number', '破招不能为空');
-    this.PoZhao = options.PoZhao;
+    this.PoZhao = floortNumberPlaces(options.PoZhao);
 
     /**
      * @time 08-29
@@ -194,10 +195,10 @@ class DpsCore {
     this.JiaSu = options.JiaSu || DpsCore.JiaSuList.YiDuanJiaSu;
 
     invariant(typeof options.WuShuang === 'number', '无双不能为空');
-    this.WuShuang = options.WuShuang;
+    this.WuShuang = floortNumberPlaces(options.WuShuang, 2);
 
     invariant(typeof options.WuQiShangHai === 'number', '武器伤害不能为空');
-    this.WuQiShangHai = options.WuQiShangHai;
+    this.WuQiShangHai = floortNumberPlaces(options.WuQiShangHai);
 
     invariant(typeof options.mainCoeffiecient === 'function', '主属性设置不能为空');
     this.mainCoeffiecient = options.mainCoeffiecient;
@@ -232,21 +233,21 @@ class DpsCore {
       /**
        * 如果传入的总攻击则使用传入的
        */
-      this.ZongGongJi = options.ZongGongJi;
+      this.ZongGongJi = floortNumberPlaces(options.ZongGongJi);
     } else {
       /**
        * 如果没传入总攻击则计算，需要传入攻击系数
        */
       this.GongJiCoefficient = options.GongJiCoefficient || 1;
 
-      const ZGJ = options.mainCoeffiecient(this[this.type]).ZongGongJi + this.JiChuGongJi * this.GongJiCoefficient;
+      const ZGJ = floortNumberPlaces(options.mainCoeffiecient(this[this.type]).ZongGongJi + this.JiChuGongJi * this.GongJiCoefficient);
       this.ZongGongJi = ZGJ;
     }
 
     this.score = options.score;
 
-    this.HuiXin = options.HuiXin;
-    this.HuiXiao = options.HuiXiao;
+    this.HuiXin = floortNumberPlaces(options.HuiXin, 2);
+    this.HuiXiao = floortNumberPlaces(options.HuiXiao, 2);
   }
 
   /**
