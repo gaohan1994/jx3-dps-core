@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "rollup -c config/rollup.config.js --watch",
     "build": "rollup -c config/rollup.config.js",
-    "demo": "node demo/index.js",
+    "demo": "rollup -c config/rollup.demo.js --watch",
     "pub": "npm publish --registry http://registry.npmjs.org"
   },
   "keywords": [],

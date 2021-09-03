@@ -3,7 +3,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-31 17:33:35 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-01 16:39:36
+ * @Last Modified time: 2021-09-03 01:43:48
  */
 import { Gain, SupportContextKeys, SetBonuse, GroupSkillType, GroupSkillBuffList, TeamSkillValue, Weapon, WeaponValue, EnChants, EnChantsList, EffectSpine, EffectSpineList, Banquet, BanquetList, Food, FoodEnhanceList, FoodSupportList, DrugEnhanceList, DrugSupportList } from "../types";
 
@@ -12,13 +12,13 @@ export const TeamSkillGains: { [name in TeamSkillValue]?: Gain } = {
    * 少林技能
    */
   [TeamSkillValue.JinGangNuMu]: {
-    name: "JinGangNuMu",
+    name: TeamSkillValue.JinGangNuMu,
     data: [
       { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.4, coverage: 1 },
     ]
   },
   [TeamSkillValue.QinLongJue]: {
-    name: 'QinLongJue',
+    name: TeamSkillValue.QinLongJue,
     data: [
       // 擒龙诀 20%基础 25%覆盖
       { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.2, coverage: 0.25 },
@@ -26,20 +26,20 @@ export const TeamSkillGains: { [name in TeamSkillValue]?: Gain } = {
   },
 
   [TeamSkillValue.PoCangQiong]: {
-    name: 'PoCangQiong',
+    name: TeamSkillValue.PoCangQiong,
     data: [
       { gainTarget: SupportContextKeys.HuiXiao, value: 0.1, coverage: 1 }
     ]
   },
   [TeamSkillValue.XiuQi]: {
-    name: 'XiuQi',
+    name: TeamSkillValue.XiuQi,
     data: [
       { gainTarget: SupportContextKeys.YuanQi, value: 111, coverage: 1 },
       { gainTarget: SupportContextKeys.HuiXinLevel, value: 70, coverage: 1 },
     ]
   },
   [TeamSkillValue.FenLan]: {
-    name: 'FenLan',
+    name: TeamSkillValue.FenLan,
     data: [
       { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.07, coverage: 1 }
     ]

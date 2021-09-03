@@ -8,7 +8,7 @@ type SupportName = FormationValue |
   SetBonuse;
 
 export interface SupportBaseOptions {
-  defaultGainList?: Gain[];
+  gainList?: Gain[];
 }
 
 /**
@@ -31,7 +31,7 @@ class SupportBase {
   public gainList: Gain[] = [];
 
   constructor(options: SupportBaseOptions) {
-    this.gainList = options.defaultGainList || [];
+    this.gainList = options.gainList || [];
   }
 
   /**
@@ -73,11 +73,9 @@ class SupportBase {
     let currentGain: Gain = undefined;
 
     if (isGain(gain)) {
-      const index = this.gainList.findIndex(g => g.name === gain.name);
-      index <= 0 && (currentGain = gain);
+      currentGain = gain;
     } else {
-      const index = this.gainList.findIndex(g => g.name === gain);
-      index <= 0 && (currentGain = AllGainList[gain]);
+      currentGain = AllGainList[gain];
     }
 
     /**
@@ -94,12 +92,23 @@ class SupportBase {
     /**
      * @todo 判断是否重复添加
      */
-    if (currentGain === undefined) {
-      console.warn('请勿重复添加增益');
+    const index = this.gainList.findIndex(g => g.name === currentGain.name);
+    if (index >= 0) {
+      console.warn('请勿重复添加增益', gain);
       return;
     }
 
     this.gainList.push(currentGain);
+  }
+
+  /**
+   * 重置增益列表
+   *
+   * @param {Gain[]} gains
+   * @memberof SupportBase
+   */
+  public setGain(gains: Gain[]) {
+    this.gainList = gains;
   }
 
   /**
@@ -108,8 +117,8 @@ class SupportBase {
    * @param {Gain} gain
    * @memberof SupportBase
    */
-  public remove(gain: Gain) {
-    const index = this.gainList.findIndex(g => g.name === gain.name);
+  public remove(gain: string) {
+    const index = this.gainList.findIndex(g => g.name === gain);
     this.gainList.splice(index, 1);
   }
 

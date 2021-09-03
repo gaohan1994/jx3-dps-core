@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-07 20:43:49 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-02 16:26:04
+ * @Last Modified time: 2021-09-03 15:41:04
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -177,7 +177,7 @@ class DpsCore {
     this.options = options;
 
     invariant(typeof options.JiChuGongJi === 'number', '攻击不能为空');
-    this.JiChuGongJi = floortNumberPlaces(options.JiChuGongJi);
+    this.JiChuGongJi = floortNumberPlaces(options.JiChuGongJi, 4);
 
     invariant(typeof options.PoFang === 'number', '破防不能为空');
     this.PoFang = floortNumberPlaces(options.PoFang, 2);
@@ -233,14 +233,17 @@ class DpsCore {
       /**
        * 如果传入的总攻击则使用传入的
        */
-      this.ZongGongJi = floortNumberPlaces(options.ZongGongJi);
+      this.ZongGongJi = floortNumberPlaces(options.ZongGongJi, 4);
     } else {
       /**
        * 如果没传入总攻击则计算，需要传入攻击系数
        */
       this.GongJiCoefficient = options.GongJiCoefficient || 1;
 
-      const ZGJ = floortNumberPlaces(options.mainCoeffiecient(this[this.type]).ZongGongJi + this.JiChuGongJi * this.GongJiCoefficient);
+      const ZGJ = floortNumberPlaces(
+        options.mainCoeffiecient(this[this.type]).ZongGongJi + this.JiChuGongJi * this.GongJiCoefficient,
+        4
+      );
       this.ZongGongJi = ZGJ;
     }
 

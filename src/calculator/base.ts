@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-02 16:29:13
+ * @Last Modified time: 2021-09-03 15:42:06
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -124,6 +124,16 @@ class CalculatorBase {
   }
 
   /**
+   * 删除增益
+   *
+   * @param {string} gain
+   * @memberof CalculatorBase
+   */
+  public remove(gain: string) {
+    this.support.remove(gain);
+  }
+
+  /**
    * 传入技能名称返回技能基本信息
    *
    * @param {string} skillName
@@ -174,7 +184,7 @@ class CalculatorBase {
    * @memberof CalculatorBase
    */
   public addSkills(skills: Skill[] = []) {
-    this.skills.push(...skills);
+    this.skills = skills;
   }
 
   /**
@@ -183,12 +193,18 @@ class CalculatorBase {
    * @memberof CalculatorBase
    */
   public async initUltimate() {
-    const initCore = new DpsCore({
-      ...this.options.core,
-    });
+    /**
+     * 设置全局增益列表
+     */
     const supportContext = await this.support.getSupportAttribute();
     this.supportContext = supportContext;
 
+    /**
+     * 如果没有核心类则生成核心类
+     */
+    const initCore = new DpsCore({
+      ...this.options.core,
+    });
     const core = this.generateUltimateCore(initCore, supportContext);
     this.core = core;
 
