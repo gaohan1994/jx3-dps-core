@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-05 11:26:12
+ * @Last Modified time: 2021-09-05 15:49:06
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -16,6 +16,9 @@ import numeral from 'numeral';
 import { floortNumberPlaces } from '../componet';
 
 class CalculatorBase {
+
+  // 计算器版本
+  public CalculatorVersion: any;
 
   public options: any;
 

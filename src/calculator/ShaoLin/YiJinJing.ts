@@ -8,14 +8,15 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 18:35:26 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-02 13:44:53
+ * @Last Modified time: 2021-09-05 16:05:08
  */
 import CalculatorBase from "../base";
 import Skill from "../../packages/core/skill";
-import { EnChants, EnChantsList, SupportContextKeys, TeamSkillValue } from "../../types";
-import { SkillNames, YJJConfig } from './config'
+import { EnChants, EnChantsList, SupportContextKeys, TeamSkillValue, YiJinJingValues } from "../../types";
+import { SkillNames, getYJJConfig } from './config'
 
 class YiJinJing extends CalculatorBase {
+  static YiJinJingVersion = YiJinJingValues;
 
   static mainCoeffiecient = (YuanQi: number) => {
     return {
@@ -49,12 +50,14 @@ class YiJinJing extends CalculatorBase {
         mainCoeffiecient: YiJinJing.mainCoeffiecient
       }
     });
+    // 设置计算器版本
+    this.CalculatorVersion = options.CalculatorVersion || YiJinJingValues.Normal;
 
     this.professtion = '少林';
 
     this.className = '易筋经';
 
-    this.skillTimesLib = YJJConfig;
+    this.skillTimesLib = getYJJConfig(this.CalculatorVersion);
 
     /**
      * 默认技能增益列表

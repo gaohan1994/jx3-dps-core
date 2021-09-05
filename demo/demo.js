@@ -15,6 +15,7 @@
 
   async function Demo() {
     const Yjj = new Calculator.YiJinJing({
+      CalculatorVersion: Calculator.YiJinJing.YiJinJingVersion.Immortal,
       core: {
         type: 'YuanQi',
         JiChuGongJi: 14470,
@@ -38,30 +39,30 @@
     Yjj.use(Calculator.CoreHelper.Enchants.EnChantBody);
     Yjj.use(Calculator.CoreHelper.Enchants.EnChantHead);
     const BaseDps = await Yjj.total();
-    console.log('BaseDps', BaseDps.dps);
-    const profit = new Calculator.Profit({
-      options: {
-        core: {
-          type: 'YuanQi',
-          JiChuGongJi: 14470,
-          WuQiShangHai: 1998,
-          HuiXin: 19.05,
-          HuiXiao: 175.77,
-          PoFang: 38.01,
-          PoZhao: 4130,
-          WuShuang: 54.06,
-          YuanQi: 2880,
-          JiaSu: Calculator.CoreHelper.JiaSuList.YiDuanJiaSu
-        },
-        support: {
-          mode: 'NeiGong',
-          target: Calculator.CoreHelper.Target.MuZhuang113
-        }
-      },
-      gainList: Yjj.support.gainList
-    });
-    const profitResult = await profit.calculatroProfit();
-    console.log('profitResult', profitResult); // const skills = BaseDps.skills.map((item) => {
+    console.log('BaseDps', BaseDps.dps); // const profit = new Calculator.Profit({
+    //   options: {
+    //     core: {
+    //       type: 'YuanQi',
+    //       JiChuGongJi: 14470,
+    //       WuQiShangHai: 1998,
+    //       HuiXin: 19.05,
+    //       HuiXiao: 175.77,
+    //       PoFang: 38.01,
+    //       PoZhao: 4130,
+    //       WuShuang: 54.06,
+    //       YuanQi: 2880,
+    //       JiaSu: Calculator.CoreHelper.JiaSuList.YiDuanJiaSu,
+    //     },
+    //     support: {
+    //       mode: 'NeiGong',
+    //       target: Calculator.CoreHelper.Target.MuZhuang113,
+    //     },
+    //   },
+    //   gainList: Yjj.support.gainList,
+    // });
+    // const profitResult = await profit.calculatroProfit();
+    // console.log('profitResult', profitResult);
+    // const skills = BaseDps.skills.map((item) => {
     // item.showSkillInfo();
     // return `${item.skillTitle} ${item.skillTimes} ${item.subTotal} 占比：${item.percent}`;
     // console.log('item', item);

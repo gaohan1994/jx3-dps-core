@@ -404,3 +404,8 @@ export type ProfitCore = {
   // 单孔收益
   profitWithStone: Map<number, number>;
 }
+
+export enum YiJinJingValues {
+  Normal = 'Normal',
+  Immortal = 'Immortal'
+}
