@@ -1,5 +1,6 @@
 import DpsCore from './packages/core/core';
 import Support from './packages/support/support';
+import { Profit } from './packages/profit';
 import { YiJinJing } from './calculator';
 import {
   FormationValue,
@@ -131,6 +132,8 @@ const CoreHelper = {
 class Jx3DpsCore {
   static YiJinJing = YiJinJing;
 
+  static Profit = Profit;
+
   static CoreHelper = CoreHelper;
 }
 
@@ -152,5 +155,8 @@ export default Jx3DpsCore;
  * 
  * @param YiJinJing
  * 易筋经计算器
+ * 
+ * @param Profit
+ * 收益计算器
  */
-export { DpsCore, Support, CoreHelper, YiJinJing };
+export { DpsCore, Support, CoreHelper, YiJinJing, Profit };

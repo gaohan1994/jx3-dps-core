@@ -373,3 +373,34 @@ export interface CalculatorResult {
   dps: number;
   skills: CalculatorResultSkillItem[];
 }
+
+/**
+ * 属性收益模块
+ * @param ProfitCore
+ */
+export type ProfitCore = {
+  // 描述该模块收益
+  title: string;
+  // 该属性具体的增益
+  gain: Gain;
+  // 放大倍数
+  multiple: number;
+  // 比例
+  proportion: number;
+
+  // 该属性单位收益
+  attrProfit: number;
+  // 单分收益
+  pointProfit: number;
+
+  // 原dps
+  baseDps?: number;
+  // 增益之后的dps
+  profitDps?: number;
+
+  // 五行石对应的数值如  6级 16点元气
+  stone: Map<number, number>;
+
+  // 单孔收益
+  profitWithStone: Map<number, number>;
+}

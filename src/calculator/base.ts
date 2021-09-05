@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-03 15:42:06
+ * @Last Modified time: 2021-09-05 11:26:12
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -131,6 +131,16 @@ class CalculatorBase {
    */
   public remove(gain: string) {
     this.support.remove(gain);
+  }
+
+  /**
+   * 覆盖增益
+   *
+   * @param {Gain[]} gains
+   * @memberof CalculatorBase
+   */
+  public setGain(gains: Gain[]) {
+    this.support.setGain(gains);
   }
 
   /**
@@ -328,11 +338,15 @@ class CalculatorBase {
      * 
      * @param HuiXin
      */
+
     const HuiXin =
       core.HuiXin
       + ctx.HuiXin * 100 + (ctx.HuiXinLevel / 357.375)
       + (core.mainCoeffiecient(gainMainAttribute).HuiXinLevel) / 357.375;
-    const HuiXiao = core.HuiXiao + ctx.HuiXiao * 100;
+    const HuiXiao =
+      core.HuiXiao
+      + ctx.HuiXiao * 100
+      + (ctx.HuiXiaoLevel / 125.0625);
 
     /**
      * @time 08-24
