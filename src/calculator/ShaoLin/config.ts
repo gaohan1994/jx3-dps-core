@@ -73,7 +73,7 @@ export function getNormalSkillTimes(skillName: string): SkillTimeLib {
     case SkillNames.NaYunShi: {
       return {
         YiDuanJiaSu: 26 * 1.5,
-        ErDuanJiaSu: 33 * 1.5 + 1.5
+        ErDuanJiaSu: 26 * 1.5 + 1.5
       }
     }
     case SkillNames.WeiTuoXianChu: {
@@ -285,6 +285,11 @@ export const YJJConfig: {
     // skillTimesLib: getSkillTimes(SkillNames.XiangMo),
     skillName: SkillNames.XiangMo,
     skillTitle: '降魔',
+
+    // 每触发一次cw增加2.5次韦陀 所以降魔也要加
+    cwSkillTimesImpact: (cwTimes) => {
+      return cwTimes * 2.5
+    }
   },
   [SkillNames.SuoDi]: {
     // skillTimesLib: getNormalSkillTimes(SkillNames.SuoDi),

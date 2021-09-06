@@ -21,7 +21,7 @@ async function Demo() {
       PoZhao: 4130,
       WuShuang: 54.06,
       YuanQi: 2880,
-      JiaSu: Calculator.CoreHelper.JiaSuList.YiDuanJiaSu,
+      JiaSu: Calculator.CoreHelper.JiaSuList.ErDuanJiaSu,
     },
     support: {
       mode: 'NeiGong',
@@ -34,8 +34,11 @@ async function Demo() {
   Yjj.use(Calculator.CoreHelper.Enchants.EnChantBelt);
   Yjj.use(Calculator.CoreHelper.Enchants.EnChantBody);
   Yjj.use(Calculator.CoreHelper.Enchants.EnChantHead);
+  // Yjj.use(Calculator.CoreHelper.);
+  Yjj.use(Calculator.CoreHelper.Weapons.CW);
 
   const BaseDps = await Yjj.total();
+
   console.log('BaseDps', BaseDps.dps);
   // const profit = new Calculator.Profit({
   //   options: {
