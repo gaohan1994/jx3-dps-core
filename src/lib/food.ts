@@ -105,7 +105,7 @@ export const FoodGains: Food = {
     [HomeFoodList.DunDouFu]: {
       name: HomeFoodList.DunDouFu,
       data: [
-        { gainTarget: SupportContextKeys.WuShuang, value: 277, coverage: 1 }
+        { gainTarget: SupportContextKeys.WuShuangLevel, value: 277, coverage: 1 }
       ]
     },
     [HomeFoodList.JianDouFu]: {
