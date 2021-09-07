@@ -3,8 +3,8 @@
  * 
  * @Author: centerm.gaohan 
  * @Date: 2021-08-31 17:38:11 
- * @Last Modified by:   centerm.gaohan 
- * @Last Modified time: 2021-08-31 17:38:11 
+ * @Last Modified by: centerm.gaohan
+ * @Last Modified time: 2021-09-08 00:26:45
  */
 
 import {
@@ -47,6 +47,7 @@ const AllGainList = {
   ...FoodGains.DrugSupport,
   ...FoodGains.FoodEnhance,
   ...FoodGains.FoodSupport,
+  ...FoodGains.HomeFood,
 }
 
 export {
