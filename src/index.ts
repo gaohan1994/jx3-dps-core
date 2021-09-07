@@ -17,6 +17,7 @@ import {
   DrugSupportList,
   TargetListKeys,
   JiaSuValue,
+  HomeFoodList,
 } from './types';
 
 const CoreHelper = {
@@ -97,6 +98,9 @@ const CoreHelper = {
   /**
    * @time 08-24
    * 新增 小吃增益列表
+   * 
+   * @time 09-08
+   * 新增 家园小吃
    * @param Food
    */
   Food: {
@@ -111,6 +115,9 @@ const CoreHelper = {
     },
     DrugSupport: {
       ...DrugSupportList
+    },
+    HomeFood: {
+      ...HomeFoodList,
     },
   },
 

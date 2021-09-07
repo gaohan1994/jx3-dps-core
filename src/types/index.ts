@@ -267,6 +267,17 @@ export enum DrugSupportList {
 }
 
 /**
+ * 家园小吃
+ */
+export enum HomeFoodList {
+  JianDouFu = 'JianDouFu',
+  XiaoChaoQingCai = 'XiaoChaoQingCai',
+  ZhaXiaoYu = 'ZhaXiaoYu',
+  DunDouFu = 'DunDouFu',
+  QingZhengLuYu = 'QingZhengLuYu',
+}
+
+/**
  * 小吃增益
  */
 export type Food = {
@@ -281,6 +292,9 @@ export type Food = {
   }
   DrugSupport: {
     [key in DrugSupportList]: Gain;
+  }
+  HomeFood: {
+    [key in HomeFoodList]: Gain;
   }
 }
 

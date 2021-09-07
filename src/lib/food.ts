@@ -1,4 +1,4 @@
-import { Banquet, BanquetList, DrugEnhanceList, DrugSupportList, Food, FoodEnhanceList, FoodSupportList, SupportContextKeys } from "../types";
+import { Banquet, BanquetList, DrugEnhanceList, DrugSupportList, Food, FoodEnhanceList, FoodSupportList, HomeFoodList, SupportContextKeys } from "../types";
 
 /**
  * 宴席增益
@@ -98,6 +98,38 @@ export const FoodGains: Food = {
       name: DrugSupportList.ShangPinJuHunWan,
       data: [
         { gainTarget: SupportContextKeys.YuanQi, value: 200, coverage: 1 }
+      ]
+    },
+  },
+  HomeFood: {
+    [HomeFoodList.DunDouFu]: {
+      name: HomeFoodList.DunDouFu,
+      data: [
+        { gainTarget: SupportContextKeys.WuShuang, value: 277, coverage: 1 }
+      ]
+    },
+    [HomeFoodList.JianDouFu]: {
+      name: HomeFoodList.JianDouFu,
+      data: [
+        { gainTarget: SupportContextKeys.PoZhao, value: 277, coverage: 1 }
+      ]
+    },
+    [HomeFoodList.QingZhengLuYu]: {
+      name: HomeFoodList.QingZhengLuYu,
+      data: [
+        { gainTarget: SupportContextKeys.PoFangLevel, value: 277, coverage: 1 }
+      ]
+    },
+    [HomeFoodList.XiaoChaoQingCai]: {
+      name: HomeFoodList.XiaoChaoQingCai,
+      data: [
+        { gainTarget: SupportContextKeys.JiChuGongJi, value: 147, coverage: 1 }
+      ]
+    },
+    [HomeFoodList.ZhaXiaoYu]: {
+      name: HomeFoodList.ZhaXiaoYu,
+      data: [
+        { gainTarget: SupportContextKeys.HuiXinLevel, value: 277, coverage: 1 }
       ]
     },
   }

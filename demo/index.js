@@ -39,6 +39,11 @@ async function Demo() {
 
   const BaseDps = await Yjj.total();
 
+  const { skills } = BaseDps;
+  console.log(
+    'xiangmo',
+    skills.find((item) => item.skillName === 'XiangMo')
+  );
   console.log('BaseDps', BaseDps.dps);
   // const profit = new Calculator.Profit({
   //   options: {
