@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-07 20:43:49 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-10-01 01:08:14
+ * @Last Modified time: 2021-11-18 20:27:40
  */
 import invariant from 'invariant';
 import chalk from 'chalk';
@@ -249,28 +249,6 @@ class DpsCore {
 
     this.HuiXin = floortNumberPlaces(options.HuiXin, 2);
     this.HuiXiao = floortNumberPlaces(options.HuiXiao, 2);
-  }
-
-  /**
-   * 打印属性
-   *
-   * @memberof DpsCore
-   */
-  public showAttributes() {
-    console.log(chalk.yellow(`---- core start ----`));
-    console.log(chalk.yellow(`
-      主属性 ${this.YuanQi || this.LiDao || this.GenGu || this.ShenFa}
-      武器伤害 ${this.WuQiShangHai}
-      基础攻击 ${this.JiChuGongJi}
-      总攻击 ${this.ZongGongJi}
-      会心 ${this.HuiXin}
-      会心效果 ${this.HuiXiao}
-      破防 ${this.PoFang}
-      破招 ${this.PoZhao}
-      加速 ${this.JiaSu}
-      无双 ${this.WuShuang}
-    `));
-    console.log(chalk.yellow(`----core end----`));
   }
 }
 

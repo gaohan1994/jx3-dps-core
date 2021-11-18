@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-10-03 11:22:27
+ * @Last Modified time: 2021-11-18 20:27:44
  */
 import invariant from 'invariant';
 import { DpsCore, Skill } from '../packages/core'
@@ -474,10 +474,6 @@ class CalculatorBase {
     this.skills.forEach((skill) => {
       console.log(skill.skillName);
     })
-  }
-
-  public showCoreValue() {
-    this.core.showAttributes();
   }
 
   public showSupportValue() {

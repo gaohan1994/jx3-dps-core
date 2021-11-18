@@ -3,61 +3,32 @@
  * @Author: centerm.gaohan
  * @Date: 2021-10-01 00:33:41
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-11-18 18:37:52
+ * @Last Modified time: 2021-11-18 20:23:31
  */
 
 import invariant from 'invariant';
 import Skill from '../packages/core/skill_new';
 import { Support, Target } from '../packages/support';
 import { Gain, GainOptions, YiJinJingValues } from '../types';
-import DpsCore, { createDpsCoreZongGongJi, } from '../packages/core/core_new';
-import { combineAttributeCoefficient, combineMainAttribute, combineStandAttribute } from '../packages/support/support';
+import DpsCore from '../packages/core/core_new';
 import { createConfig } from './CalculatorWoker';
-import { deepClone } from '../componet/utils';
+import { deepClone, getYuanQiAttribute, increaseHuiXiao, increaseHuiXin, increaseJiChuGongJi, increaseMainAttribute, increasePoFang, increasePoZhao, increaseWuShuang, makeZongGongJi } from '../componet/utils';
+import { pipe } from '../componet';
 
 export default class CalculatorBase {
-  /**
-   * 计算器版本
-   */
   public CalculatorVersion: any;
   public options: any;
-  /**
-   * 技能列表
-   */
+
   public skills: Array<Skill> = [];
-  /**
-   * 核心类
-   * @type {Core}
-   * @memberof CalculatorBase
-   */
+
   public core: DpsCore;
-  /**
-   * 辅助类
-   *
-   * @type {Support}
-   * @memberof CalculatorBase
-   */
+
   public support: Support;
-  /**
-   * 目标类
-   *
-   * @type {Target}
-   * @memberof CalculatorBase
-   */
+
   public target: Target;
-  /**
-   * 职业
-   *
-   * @type {string}
-   * @memberof CalculatorBase
-   */
+
   public professtion: string;
-  /**
-   * 心法
-   *
-   * @type {string}
-   * @memberof CalculatorBase
-   */
+
   public className: string;
   /**
    * 战斗时间 单位：秒 
@@ -67,20 +38,9 @@ export default class CalculatorBase {
    * @memberof CalculatorBase
    */
   public seconds: number;
-  /**
-   * 总期望
-   *
-   * @type {number}
-   * @memberof CalculatorBase
-   */
+
   public totalExpectation: number;
 
-  /**
-   * dps
-   *
-   * @type {number}
-   * @memberof CalculatorBase
-   */
   public dps: number;
 
   constructor(options: any = {}) {
@@ -92,41 +52,18 @@ export default class CalculatorBase {
     this.seconds = options.seconds || (5 * 60);
   }
 
-  /**
-   * 使用增益
-   *
-   * @memberof CalculatorBase
-   */
   public use(gain: string | Gain, rest: GainOptions) {
     this.support.use(gain as any, rest);
   }
 
-  /**
-   * 删除增益
-   *
-   * @param {string} gain
-   * @memberof CalculatorBase
-   */
   public remove(gain: string) {
     this.support.remove(gain);
   }
 
-  /**
-   * 覆盖增益
-   *
-   * @param {Gain[]} gains
-   * @memberof CalculatorBase
-   */
   public setGain(gains: Gain[]) {
     this.support.setGain(gains);
   }
 
-  /**
-   * 添加技能
-   *
-   * @param {Skill[]} [skills=[]]
-   * @memberof CalculatorBase
-   */
   public addSkills(skills: Skill[] = []) {
     this.skills = skills;
   }
@@ -156,9 +93,6 @@ export const createCalculator = function createYiJinJingCalculatro(
   version: YiJinJingValues
 ): CalculatorResult {
 
-  /**
-   * 计算结果
-   */
   let calculatorResult: CalculatorResult = {
     dps: 0,
     total: 0,
@@ -167,21 +101,22 @@ export const createCalculator = function createYiJinJingCalculatro(
   };
 
   try {
-    // 获得全局辅助对象
     let supportContext = support.getSupportAttributeSync();
-    /**
-     * 把增益的属性结合core 生成最终计算类
-     */
-    let baseCore = deepClone(core);
+    let coreClone = deepClone(core);
+    const increasedMainAttributesFromSupportContext = getYuanQiAttribute(supportContext);
 
-    // 先增加主属性相关
-    combineMainAttribute(baseCore, supportContext, baseCore.mainCoeffiecient as any);
-    // 增加其他基础属性
-    combineStandAttribute(baseCore, supportContext);
-    // 增加系数相关 如破防系数、基础攻击系数
-    combineAttributeCoefficient(baseCore, supportContext);
-    // 生成面板攻击
-    createDpsCoreZongGongJi(baseCore);
+    // 生成核心计算类 baseCore
+    const getBaseCore = pipe(
+      () => increaseMainAttribute(coreClone, increasedMainAttributesFromSupportContext),
+      (core: DpsCore) => increaseHuiXin(core, supportContext),
+      (core: DpsCore) => increaseHuiXiao(core, supportContext),
+      (core: DpsCore) => increasePoFang(core, supportContext),
+      (core: DpsCore) => increaseWuShuang(core, supportContext),
+      (core: DpsCore) => increasePoZhao(core, supportContext),
+      (core: DpsCore) => increaseJiChuGongJi(core, supportContext),
+      (core: DpsCore) => makeZongGongJi(core),
+    );
+    const baseCore = getBaseCore();
 
     // 生成计算器技能配置文件
     const calculatorConfig = createConfig(

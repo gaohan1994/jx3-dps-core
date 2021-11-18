@@ -61,6 +61,10 @@ async function newDemo() {
     name: 'UPDATE08-30',
     data: [{ gainTarget: 'damageBonus', value: 0.03, coverage: 1 }],
   });
+  support.use({
+    name: '少林常驻破防加成',
+    data: [{ gainTarget: 'PoFangPercent', value: 0.15, coverage: 1 }],
+  });
 
   const calculatorResult = createCalculator(
     newCore,
