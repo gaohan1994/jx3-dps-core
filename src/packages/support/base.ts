@@ -58,6 +58,20 @@ class SupportBase {
     return next();
   }
 
+  public countCurrentSupportGainSync(ctx: SupportContext) {
+
+    if (this.gainList.length > 0) {
+      this.gainList.forEach((gain) => {
+        gain.data.forEach((gainAttribute) => {
+          ctx[gainAttribute.gainTarget] += (gainAttribute.value * gainAttribute.coverage);
+        });
+      })
+    }
+
+    return ctx;
+  }
+
+
   /**
    * 使用增益
    *

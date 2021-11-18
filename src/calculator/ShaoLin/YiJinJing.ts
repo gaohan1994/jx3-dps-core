@@ -8,7 +8,7 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 18:35:26 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-06 20:47:14
+ * @Last Modified time: 2021-10-10 16:54:56
  */
 import CalculatorBase from "../base";
 import Skill from "../../packages/core/skill";
@@ -174,7 +174,7 @@ class YiJinJing extends CalculatorBase {
       basicDamageCoefficient: 0,
       poFangCoefficient: 1,
     });
-    skills.push(liuHe);
+
 
     const weiTuo = new Skill({
       ...baseSkillContext,
@@ -203,7 +203,7 @@ class YiJinJing extends CalculatorBase {
      * 每次韦陀+2次普攻
      */
     weiTuo.extra = liuHeWithWeiTuoSubTotal.subTotal;
-    skills.push(weiTuo as any);
+
 
     const poZhao = new Skill({
       ...baseSkillContext,
@@ -213,7 +213,7 @@ class YiJinJing extends CalculatorBase {
       basicDamageCoefficient: 15.2288,
       damageBonuesCoefficient: BaseCoefficient + ErYeYiYuanCoefficient,
     });
-    skills.push(poZhao);
+
 
     const naYunShi = new Skill({
       ...baseSkillContext,
@@ -225,7 +225,7 @@ class YiJinJing extends CalculatorBase {
         return (BaseCoefficient + MiJiCoefficient + ErYeYiYuanCoefficient + skillSetBonuseCoefficient + FoGuoCoefficient) * ZhongChenCoefficient * MingFaCoefficient;
       },
     });
-    skills.push(naYunShi);
+
 
     const hengSaoLiuHe = new Skill({
       ...baseSkillContext,
@@ -239,7 +239,7 @@ class YiJinJing extends CalculatorBase {
         return (core.HuiXin / 100 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1);
       }
     });
-    skills.push(hengSaoLiuHe);
+
 
     const shouQueShi = new Skill({
       ...baseSkillContext,
@@ -255,7 +255,7 @@ class YiJinJing extends CalculatorBase {
       },
       targetDamageCoefficient: ingoreTargetDefenceCoefficient
     });
-    skills.push(shouQueShi);
+
 
     const hengSaoLiuHeDot = new Skill({
       ...baseSkillContext,
@@ -269,7 +269,7 @@ class YiJinJing extends CalculatorBase {
         return (core.HuiXin / 100 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1);
       }
     });
-    skills.push(hengSaoLiuHeDot);
+
 
     const puDuSiFang = new Skill({
       ...baseSkillContext,
@@ -281,7 +281,7 @@ class YiJinJing extends CalculatorBase {
         return (BaseCoefficient + 0.0996 + FoGuoCoefficient + ErYeYiYuanCoefficient + cwBuff) * MingFaCoefficient;
       }
     });
-    skills.push(puDuSiFang);
+
 
     const suoDi = new Skill({
       ...baseSkillContext,
@@ -290,7 +290,7 @@ class YiJinJing extends CalculatorBase {
       basicDamageCoefficient: 1.25,
       damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient) * MingFaCoefficient,
     });
-    skills.push(suoDi);
+
 
     const tiHuGuanDing = new Skill({
       ...baseSkillContext,
@@ -299,7 +299,7 @@ class YiJinJing extends CalculatorBase {
       basicDamageCoefficient: 1.92185,
       damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient),
     });
-    skills.push(tiHuGuanDing);
+
 
     const foGuo = new Skill({
       ...baseSkillContext,
@@ -308,7 +308,7 @@ class YiJinJing extends CalculatorBase {
       basicDamageCoefficient: 0.697922,
       damageBonuesCoefficient: BaseCoefficient + 0.3 + ErYeYiYuanCoefficient
     });
-    skills.push(foGuo);
+
 
     const FMHand = new Skill({
       ...baseSkillContext,
@@ -317,7 +317,7 @@ class YiJinJing extends CalculatorBase {
       basicDamageCoefficient: 0.95,
       damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient) * 0.4,
     });
-    skills.push(FMHand);
+
 
     const FMFeet = new Skill({
       ...baseSkillContext,
@@ -326,7 +326,7 @@ class YiJinJing extends CalculatorBase {
       basicDamageCoefficient: 0.38125,
       damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient)
     });
-    skills.push(FMFeet);
+
 
     const weituoTotal = await weiTuo.calculator().subTotal;
     const nayunTotal = await naYunShi.calculator().subTotal;
@@ -343,6 +343,20 @@ class YiJinJing extends CalculatorBase {
       huiXinHuiXiaoCoefficient: 1,
       targetDamageCoefficient: 1,
     });
+
+    skills.push(liuHe);
+    skills.push(weiTuo as any);
+    skills.push(poZhao);
+    skills.push(naYunShi);
+    skills.push(hengSaoLiuHe);
+    skills.push(shouQueShi);
+    skills.push(hengSaoLiuHeDot);
+    skills.push(puDuSiFang);
+    skills.push(suoDi);
+    skills.push(tiHuGuanDing);
+    skills.push(foGuo);
+    skills.push(FMHand);
+    skills.push(FMFeet);
     skills.push(xiangMo);
 
     super.addSkills(skills);

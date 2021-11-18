@@ -1,5 +1,5 @@
 import numeral from 'numeral';
-import compose from './compose';
+import compose, { composeSync, pipe } from './compose';
 import CoreMiddleware from './middleware';
 // import curry from './curry';
 
@@ -21,8 +21,36 @@ export function floortNumberPlaces(number: number, place?: number) {
   return Math.floor(numeral(number).value() * index) / index;
 }
 
+/**
+ * 乘法计算器
+ *
+ * @return {*} 
+ */
+const multiplication = function multiplicationCalculator(...rest: any[]): number {
+  const params: number[] = Array.prototype.slice.call(arguments);
+  return params.reduce((prevValue, currentValue) => {
+    return prevValue * currentValue;
+  }, 1);
+}
+
+/**
+ * 加法计算器
+ *
+ * @return {*} 
+ */
+const addition = function additionCalculator(...rest: any[]): number {
+  const params: number[] = Array.prototype.slice.call(arguments);
+  return params.reduce((prevValue, currentValue) => {
+    return prevValue + currentValue;
+  }, 0);
+}
+
+
 export {
   compose,
   CoreMiddleware,
-  // curry
+  multiplication,
+  addition,
+  composeSync,
+  pipe,
 };

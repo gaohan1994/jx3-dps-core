@@ -4,7 +4,21 @@
 }((function () { 'use strict';
 
   // const { YiJinJing } = require('../build');
+  require('../build').component;
+
+  const {
+    createConfig,
+    createCalculator
+  } = require('../build').calculator;
+
   const Calculator = require('../build');
+
+  const {
+    createYiJinJingFactory
+  } = require('../build').CoreNew;
+
+  require('../build').Target; // const
+
   /**
    * 08-24
    * 1、无视目标防御
@@ -13,9 +27,49 @@
    */
 
 
-  async function Demo() {
+  async function newDemo() {
+    function sort(skills) {
+      return skills.sort((a, b) => {
+        return a.skillTitle.charCodeAt(0) - b.skillTitle.charCodeAt(0);
+      });
+    }
+
+    const newCore = createYiJinJingFactory(2880, 14470, 19.05, 175.77, 38.01, 4130, 54.06, 'YiDuanJiaSu', 1998);
+    const support = new Calculator.Support({
+      mode: 'NeiGong',
+      target: Calculator.CoreHelper.Target.MuZhuang113
+    });
+    support.use(Calculator.CoreHelper.SetBonusesGain.ValueSetBonuse);
+    support.use(Calculator.CoreHelper.SetBonusesGain.SkillSetBonuse);
+    support.use(Calculator.CoreHelper.Enchants.EnChantBelt);
+    support.use(Calculator.CoreHelper.Enchants.EnChantBody);
+    support.use(Calculator.CoreHelper.Enchants.EnChantHead);
+    support.use('JinGangNuMu');
+    support.use('QinLongJue');
+    support.use({
+      name: 'UPDATE08-30',
+      data: [{
+        gainTarget: 'damageBonus',
+        value: 0.03,
+        coverage: 1
+      }]
+    });
+    const calculatorResult = createCalculator(newCore, support, Calculator.YiJinJing.YiJinJingVersion.Normal);
+    const {
+      dps,
+      total,
+      skills
+    } = calculatorResult;
+    const afterSkills = sort(skills); // console.log('total', total);
+
+    console.log('dps', dps);
+    afterSkills.forEach(item => {// console.log(`${item.skillTitle}:${item.subTotal}`);
+    });
+    console.log('----'); // console.log('config', config);
+    // return;
+
     const Yjj = new Calculator.YiJinJing({
-      CalculatorVersion: Calculator.YiJinJing.YiJinJingVersion.Immortal,
+      CalculatorVersion: Calculator.YiJinJing.YiJinJingVersion.Normal,
       core: {
         type: 'YuanQi',
         JiChuGongJi: 14470,
@@ -26,7 +80,7 @@
         PoZhao: 4130,
         WuShuang: 54.06,
         YuanQi: 2880,
-        JiaSu: Calculator.CoreHelper.JiaSuList.ErDuanJiaSu
+        JiaSu: Calculator.CoreHelper.JiaSuList.YiDuanJiaSu
       },
       support: {
         mode: 'NeiGong',
@@ -37,82 +91,12 @@
     Yjj.use(Calculator.CoreHelper.SetBonusesGain.SkillSetBonuse);
     Yjj.use(Calculator.CoreHelper.Enchants.EnChantBelt);
     Yjj.use(Calculator.CoreHelper.Enchants.EnChantBody);
-    Yjj.use(Calculator.CoreHelper.Enchants.EnChantHead); // Yjj.use(Calculator.CoreHelper.);
+    Yjj.use(Calculator.CoreHelper.Enchants.EnChantHead);
+    const BaseDps = await Yjj.total(); // console.log('total', BaseDps.totalExpectation);
 
-    Yjj.use(Calculator.CoreHelper.Weapons.CW);
-    const BaseDps = await Yjj.total();
-    const {
-      skills
-    } = BaseDps;
-    console.log('xiangmo', skills.find(item => item.skillName === 'XiangMo'));
-    console.log('BaseDps', BaseDps.dps); // const profit = new Calculator.Profit({
-    //   options: {
-    //     core: {
-    //       type: 'YuanQi',
-    //       JiChuGongJi: 14470,
-    //       WuQiShangHai: 1998,
-    //       HuiXin: 19.05,
-    //       HuiXiao: 175.77,
-    //       PoFang: 38.01,
-    //       PoZhao: 4130,
-    //       WuShuang: 54.06,
-    //       YuanQi: 2880,
-    //       JiaSu: Calculator.CoreHelper.JiaSuList.YiDuanJiaSu,
-    //     },
-    //     support: {
-    //       mode: 'NeiGong',
-    //       target: Calculator.CoreHelper.Target.MuZhuang113,
-    //     },
-    //   },
-    //   gainList: Yjj.support.gainList,
-    // });
-    // const profitResult = await profit.calculatroProfit();
-    // console.log('profitResult', profitResult);
-    // const skills = BaseDps.skills.map((item) => {
-    // item.showSkillInfo();
-    // return `${item.skillTitle} ${item.skillTimes} ${item.subTotal} 占比：${item.percent}`;
-    // console.log('item', item);
-    // });
-    // BaseDps.skills.showSkillInfo();
-    // console.log('基础面板');
-    // Yjj.showCoreValue();
-    // console.log('基础dps: ', BaseDps.dps);
-    // console.log('Yjj.getSupportContext()', Yjj.getSupportContext());
-    // Yjj.use({
-    //   name: 'Profit-YuanQi',
-    //   data: [{ gainTarget: 'YuanQi', value: 30, coverage: 1 }],
-    // });
-    // const YuanQiDps = await Yjj.total();
-    // const YuanQiCoe = (YuanQiDps.dps / BaseDps.dps - 1) * 100;
-    // console.log('元气dps', YuanQiDps.dps);
-    // console.log('元气系数', YuanQiCoe);
-    // Yjj.remove('Profit-YuanQi');
-    // Yjj.use({
-    //   name: 'Profit-JiChuGongJi',
-    //   data: [{ gainTarget: 'JiChuGongJi', value: 70, coverage: 1 }],
-    // });
-    // // Yjj.support.showGain();
-    // const JiChuDps = await Yjj.total();
-    // const JiChuCoe = (JiChuDps.dps / BaseDps.dps - 1) * 100;
-    // console.log('基础dps', JiChuDps.dps);
-    // console.log('基础系数', JiChuCoe);
-    // const JiChuYjj = new Calculator.YiJinJing({
-    //   core: {
-    //     ...baseCore,
-    //     JiChuGongJi: baseCore.JiChuGongJi + 7,
-    //   },
-    //   support: {
-    //     ...Yjj.support,
-    //     target: Yjj.options.target,
-    //   },
-    // });
-    // const JiChuDps = await JiChuYjj.total();
-    // const JiChuCoe = (JiChuDps.dps / BaseDps.dps - 1) * 100;
-    // console.log('JiChuYjj', JiChuYjj.showCoreValue());
-    // console.log('JiChuDps.dps', JiChuDps.dps);
-    // console.log('JiChuCoe', JiChuCoe);
+    console.log(BaseDps.dps);
   }
 
-  Demo();
+  newDemo();
 
 })));

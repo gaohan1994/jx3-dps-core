@@ -1,4 +1,5 @@
 
+import { composeSync } from './compose';
 import { compose } from './index';
 
 /**
@@ -62,6 +63,11 @@ class CoreMiddleware {
       ...this.middlewares
     ]);
 
+    return composeMiddlewares(params);
+  }
+
+  executeSync(params: any = null) {
+    const composeMiddlewares = composeSync(...this.middlewares);
     return composeMiddlewares(params);
   }
 }

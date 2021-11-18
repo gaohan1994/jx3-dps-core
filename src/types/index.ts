@@ -45,6 +45,50 @@ export enum SupportMode {
   WaiGong = 'WaiGong'
 }
 
+type MyPartial<T> = { [P in keyof T]?: T[P] }
+// 接下来设计一个这样的类型工具NonFunctionKeys<T> ，
+// 通过使用 NonFunctionKeys<T> 得到对象类型 T 中非函数的属性名组成的联合类型
+
+type MixedProps = { name: string; setName: (name: string) => void };
+
+type NonFunctionKeys<T> = {
+  [P in keyof T]: T[P] extends Function ? never : P;
+}[keyof T];
+
+// expect: "name"
+type Keys = NonFunctionKeys<MixedProps>;
+
+type ContructorParameters<T extends new (...args: any[]) => any>
+  = T extends new (...args: infer P) => any ? P : never;
+
+// [string, number] => string | number
+type ElementOf<T> = T extends Array<infer E> ? E : never;
+type TTuple = [string, number];
+type ElementOfTTuple = ElementOf<TTuple>;
+
+// 'NeiGong' | 'WaiGong' => {NeiGong: Gain, WaiGong: Gain}
+
+function createEnum<T extends string>(keys: Array<T>): { [K in T]: K } {
+  return keys.reduce((result, key) => {
+    result[key] = key
+    return result;
+  }, Object.create(null));
+}
+
+// 创建 K: V
+const CoreEnum = createEnum(['YuanQi', 'GenGu', 'LiDao', 'ShenFa']);
+
+type CoreEnum = keyof typeof CoreEnum;
+
+const SupportEnum2 = createEnum(['NeiGong', 'WaiGong']);
+type SupportEnum2 = typeof SupportEnum2;
+
+type UnionEnum<T> = {
+  [key in keyof T]: Gain
+}
+
+type SupportGain = UnionEnum<SupportEnum2>;
+
 export enum CharacterTypes {
   /**
    * 元气
@@ -241,6 +285,7 @@ export enum FoodEnhanceList {
   BaiRouXueChang = 'BaiRouXueChang',
   GuanTangBao = 'GuanTangBao',
 }
+
 
 /**
  * 增强药品

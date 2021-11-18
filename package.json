@@ -6,11 +6,13 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "watch": "rollup -c config/rollup.config.js --watch",
     "build": "rollup -c config/rollup.config.js",
     "demo": "rollup -c config/rollup.demo.js --watch",
-    "pub": "npm publish --registry http://registry.npmjs.org"
+    "pub": "npm publish --registry http://registry.npmjs.org",
+    "es5": "tsc --watch",
+    "start": "npm run watch && npm run demo"
   },
   "keywords": [],
   "author": "Ghan",
@@ -19,18 +21,25 @@
     "chalk": "^4.1.2",
     "invariant": "^2.2.4",
     "numeral": "^2.0.6",
-    "smar-util": "^1.1.3"
+    "smar-util": "^1.1.8"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "devDependencies": {
-    "rollup": "^2.56.2",
-    "typescript": "^4.3.5",
     "@babel/core": "^7.15.0",
+    "@babel/preset-typescript": "^7.15.0",
     "@types/invariant": "^2.2.34",
+    "@types/jest": "^27.0.2",
     "@types/numeral": "^2.0.1",
+    "jest": "^27.2.3",
+    "rollup": "^2.56.2",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-typescript2": "^0.30.0"
+    "rollup-plugin-typescript2": "^0.30.0",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.3.5"
   }
 }

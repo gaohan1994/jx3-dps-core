@@ -73,5 +73,34 @@ function compose(middlewares: any[]) {
     return dispatch(0);
   };
 }
+/**
+ * 同步 compose
+ *
+ * @param {...Function[]} functions
+ */
+function composeSync(...functions: Function[]) {
+  if (functions.length === 0) {
+    return (args: any) => args;
+  }
 
+  if (functions.length === 1) {
+    return functions[0];
+  }
+
+  return functions.reduce((a, b) => (...args: any[]) => a(b(...args)))
+}
+
+function pipe(...functions: Function[]) {
+  if (functions.length === 0) {
+    return (args: any) => args;
+  }
+
+  if (functions.length === 1) {
+    return functions[0];
+  }
+
+  return functions.reduce((a, b) => (...args: any[]) => b(a(...args)))
+}
+
+export { composeSync, pipe }
 export default compose;

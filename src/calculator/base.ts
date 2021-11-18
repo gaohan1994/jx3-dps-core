@@ -4,10 +4,9 @@
  * @Author: centerm.gaohan 
  * @Date: 2021-08-08 19:12:37 
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-05 15:49:06
+ * @Last Modified time: 2021-10-03 11:22:27
  */
 import invariant from 'invariant';
-import chalk from 'chalk';
 import { DpsCore, Skill } from '../packages/core'
 import { Support, Target } from '../packages/support';
 import { SupportContext, CalculatorResult, CalculatorResultSkillItem, Gain, GainOptions } from '../types';
@@ -232,6 +231,7 @@ class CalculatorBase {
    * @memberof CalculatorBase
    */
   public executeCalculator(): CalculatorResult {
+    // console.log('this.supportContext', this.supportContext);
     let skillsArray: Skill[] = [];
     for (let i = 0; i < this.skills.length; i++) {
       skillsArray.push(
@@ -464,20 +464,16 @@ class CalculatorBase {
   }
 
   public showCalculatorValue() {
-    console.log(chalk.white(`---- calculator start ----`));
-    console.log(chalk.white(`计算器：
+    console.log(`计算器：
       职业:${this.professtion}
       心法:${this.className}
-    `));
-    console.log(chalk.white(`---- calculator end ----`));
+    `);
   }
 
   public showSkills() {
-    console.log(chalk.white(`---- showSkills start ----`));
     this.skills.forEach((skill) => {
-      console.log(chalk.white(skill.skillName));
+      console.log(skill.skillName);
     })
-    console.log(chalk.white(`---- showSkills end ----`));
   }
 
   public showCoreValue() {

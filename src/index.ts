@@ -20,6 +20,11 @@ import {
   HomeFoodList,
 } from './types';
 
+export * as component from './componet/index';
+export * as calculator from './calculator/index';
+export * as CoreNew from './packages/core/core_new';
+export * as Target from './packages/support';
+
 const CoreHelper = {
   /**
    * 加速列表
