@@ -1,19 +1,19 @@
 /**
  * 易筋经计算器
- * 
+ *
  * 加法计算：二业加成0.0996秘籍加成3+4+5%,30%佛果触发30% 4件套10% CW特效5%
- * 
+ *
  * 乘法计算: 幻身100% 众嗔20%
- * 
- * @Author: centerm.gaohan 
- * @Date: 2021-08-08 18:35:26 
- * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-10-10 16:54:56
+ *
+ * @Author: centerm.gaohan
+ * @Date: 2021-08-08 18:35:26
+ * @Last Modified by: Harper.Gao
+ * @Last Modified time: 2021-11-19 10:21:03
  */
-import CalculatorBase from "../base";
-import Skill from "../../packages/core/skill";
-import { EnChants, EnChantsList, SupportContextKeys, TeamSkillValue, YiJinJingValues } from "../../types";
-import { SkillNames, getYJJConfig } from './config'
+import CalculatorBase from '../base';
+import Skill from '../../packages/core/skill';
+import { EnChantsList, SupportContextKeys, TeamSkillValue, YiJinJingValues } from '../../types';
+import { SkillNames, getYJJConfig } from './config';
 
 class YiJinJing extends CalculatorBase {
   static YiJinJingVersion = YiJinJingValues;
@@ -25,30 +25,30 @@ class YiJinJing extends CalculatorBase {
 
       /**
        * @time 08-24
-       * 
+       *
        * 每点元气增加破防等级 0.3
-       * 
+       *
        * @param PoFangLevel
        */
       PoFangLevel: YuanQi * 0.3,
       /**
        * @time 08-24
-       * 
+       *
        * 每点元气增加会心等级
-       * 
+       *
        * @param HuiXinLevel 0.38
        */
-      HuiXinLevel: YuanQi * 0.38
+      HuiXinLevel: YuanQi * 0.38,
     };
-  }
+  };
 
   constructor(options: any) {
     super({
       ...options,
       core: {
         ...options.core,
-        mainCoeffiecient: YiJinJing.mainCoeffiecient
-      }
+        mainCoeffiecient: YiJinJing.mainCoeffiecient,
+      },
     });
     // 设置计算器版本
     this.CalculatorVersion = options.CalculatorVersion || YiJinJingValues.Normal;
@@ -62,7 +62,7 @@ class YiJinJing extends CalculatorBase {
     /**
      * 默认技能增益列表
      * 少林独有
-     * 
+     *
      * @parma JinGangNuMu
      * @parma QinLongJue
      */
@@ -75,9 +75,7 @@ class YiJinJing extends CalculatorBase {
      */
     this.support.use({
       name: 'UPDATE08-30',
-      data: [
-        { gainTarget: SupportContextKeys.damageBonus, value: 0.03, coverage: 1 }
-      ]
+      data: [{ gainTarget: SupportContextKeys.damageBonus, value: 0.03, coverage: 1 }],
     });
   }
 
@@ -87,7 +85,6 @@ class YiJinJing extends CalculatorBase {
    * @memberof YiJinJing
    */
   public async addSkills() {
-
     const core = super.getCore();
 
     const target = super.getTarget();
@@ -101,7 +98,7 @@ class YiJinJing extends CalculatorBase {
     const BaseCoefficient = 1;
     /**
      * 二业依缘系数
-     * 
+     *
      * @param ErYeYiYuanCoefficient
      */
     const ErYeYiYuanCoefficient = 0.0996;
@@ -113,28 +110,28 @@ class YiJinJing extends CalculatorBase {
 
     /**
      * 众嗔系数（乘法）
-     * 
+     *
      * @param ZhongChenCoefficient
      */
     const ZhongChenCoefficient = 1.2;
 
     /**
      * 明发系数
-     * 
+     *
      * @param MingFaCoefficient
      */
     const MingFaCoefficient = 1.11;
 
     /**
      * 佛果系数
-     * 
+     *
      * @param FoGuoCoefficient
      */
     const FoGuoCoefficient = 0.3 * 0.3;
 
     /**
      * 秘籍易伤 buff
-     * 
+     *
      * @param MiJiCoefficient
      */
     const MiJiCoefficient = 0.12;
@@ -147,20 +144,20 @@ class YiJinJing extends CalculatorBase {
     /**
      * 无视内功防御的系数
      *
-     * @return {*} 
+     * @return {*}
      */
     const ingoreTargetDefenceCoefficient = () => {
       const ingoreDefense = 0.4 * target.neiFang;
       const coefficient = target.defenseCoefficient / (target.defenseCoefficient + ingoreDefense);
       return coefficient;
-    }
+    };
 
     const baseSkillContext = {
       core,
       target,
       support,
       supportContext,
-    }
+    };
 
     /**
      * 六合棍
@@ -175,7 +172,6 @@ class YiJinJing extends CalculatorBase {
       poFangCoefficient: 1,
     });
 
-
     const weiTuo = new Skill({
       ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.WeiTuoXianChu),
@@ -183,7 +179,15 @@ class YiJinJing extends CalculatorBase {
       basicDamageCoefficient: 1.66,
       targetDamageCoefficient: ingoreTargetDefenceCoefficient,
       damageBonuesCoefficient: () => {
-        return (BaseCoefficient + MiJiCoefficient + ErYeYiYuanCoefficient + skillSetBonuseCoefficient + FoGuoCoefficient) * ZhongChenCoefficient * MingFaCoefficient;
+        return (
+          (BaseCoefficient +
+            MiJiCoefficient +
+            ErYeYiYuanCoefficient +
+            skillSetBonuseCoefficient +
+            FoGuoCoefficient) *
+          ZhongChenCoefficient *
+          MingFaCoefficient
+        );
       },
     });
 
@@ -204,7 +208,6 @@ class YiJinJing extends CalculatorBase {
      */
     weiTuo.extra = liuHeWithWeiTuoSubTotal.subTotal;
 
-
     const poZhao = new Skill({
       ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.PoZhao),
@@ -214,7 +217,6 @@ class YiJinJing extends CalculatorBase {
       damageBonuesCoefficient: BaseCoefficient + ErYeYiYuanCoefficient,
     });
 
-
     const naYunShi = new Skill({
       ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.NaYunShi),
@@ -222,10 +224,17 @@ class YiJinJing extends CalculatorBase {
       basicDamageCoefficient: 2,
       targetDamageCoefficient: ingoreTargetDefenceCoefficient,
       damageBonuesCoefficient: () => {
-        return (BaseCoefficient + MiJiCoefficient + ErYeYiYuanCoefficient + skillSetBonuseCoefficient + FoGuoCoefficient) * ZhongChenCoefficient * MingFaCoefficient;
+        return (
+          (BaseCoefficient +
+            MiJiCoefficient +
+            ErYeYiYuanCoefficient +
+            skillSetBonuseCoefficient +
+            FoGuoCoefficient) *
+          ZhongChenCoefficient *
+          MingFaCoefficient
+        );
       },
     });
-
 
     const hengSaoLiuHe = new Skill({
       ...baseSkillContext,
@@ -233,13 +242,16 @@ class YiJinJing extends CalculatorBase {
       skillBasicNumber: 75,
       basicDamageCoefficient: 0.58,
       damageBonuesCoefficient: () => {
-        return (BaseCoefficient + ErYeYiYuanCoefficient + FoGuoCoefficient + 0.5) * 2 * MingFaCoefficient;
+        return (
+          (BaseCoefficient + ErYeYiYuanCoefficient + FoGuoCoefficient + 0.5) * 2 * MingFaCoefficient
+        );
       },
       huiXinHuiXiaoCoefficient: () => {
-        return (core.HuiXin / 100 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1);
-      }
+        return (
+          (core.HuiXin / 100 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1)
+        );
+      },
     });
-
 
     const shouQueShi = new Skill({
       ...baseSkillContext,
@@ -248,14 +260,21 @@ class YiJinJing extends CalculatorBase {
       basicDamageCoefficient: 1.36,
       damageBonuesCoefficient: () => {
         const cwBuff = hasCw ? 0.0996 / 2 : 0;
-        return (BaseCoefficient + 0.12 + ErYeYiYuanCoefficient + cwBuff + FoGuoCoefficient) * ZhongChenCoefficient * MingFaCoefficient;
+        return (
+          (BaseCoefficient + 0.12 + ErYeYiYuanCoefficient + cwBuff + FoGuoCoefficient) *
+          ZhongChenCoefficient *
+          MingFaCoefficient
+        );
       },
       huiXinHuiXiaoCoefficient: () => {
-        return (core.HuiXin / 100 + 0.04 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1 + 0.04);
+        return (
+          (core.HuiXin / 100 + 0.04 + 0.1) * (core.HuiXiao / 100 + 0.1) +
+          1 -
+          (core.HuiXin / 100 + 0.1 + 0.04)
+        );
       },
-      targetDamageCoefficient: ingoreTargetDefenceCoefficient
+      targetDamageCoefficient: ingoreTargetDefenceCoefficient,
     });
-
 
     const hengSaoLiuHeDot = new Skill({
       ...baseSkillContext,
@@ -263,13 +282,16 @@ class YiJinJing extends CalculatorBase {
       skillBasicNumber: 45,
       basicDamageCoefficient: 0.083,
       damageBonuesCoefficient: () => {
-        return (BaseCoefficient + FoGuoCoefficient + ErYeYiYuanCoefficient) * 2 * 3 * MingFaCoefficient;
+        return (
+          (BaseCoefficient + FoGuoCoefficient + ErYeYiYuanCoefficient) * 2 * 3 * MingFaCoefficient
+        );
       },
       huiXinHuiXiaoCoefficient: () => {
-        return (core.HuiXin / 100 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1);
-      }
+        return (
+          (core.HuiXin / 100 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1)
+        );
+      },
     });
-
 
     const puDuSiFang = new Skill({
       ...baseSkillContext,
@@ -278,10 +300,12 @@ class YiJinJing extends CalculatorBase {
       basicDamageCoefficient: 0.92,
       damageBonuesCoefficient: () => {
         const cwBuff = hasCw ? 0.0996 / 2 : 0;
-        return (BaseCoefficient + 0.0996 + FoGuoCoefficient + ErYeYiYuanCoefficient + cwBuff) * MingFaCoefficient;
-      }
+        return (
+          (BaseCoefficient + 0.0996 + FoGuoCoefficient + ErYeYiYuanCoefficient + cwBuff) *
+          MingFaCoefficient
+        );
+      },
     });
-
 
     const suoDi = new Skill({
       ...baseSkillContext,
@@ -291,24 +315,21 @@ class YiJinJing extends CalculatorBase {
       damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient) * MingFaCoefficient,
     });
 
-
     const tiHuGuanDing = new Skill({
       ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.TiHuGuanDing),
       skillBasicNumber: 407.5,
       basicDamageCoefficient: 1.92185,
-      damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient),
+      damageBonuesCoefficient: BaseCoefficient + ErYeYiYuanCoefficient,
     });
-
 
     const foGuo = new Skill({
       ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.FoGuo),
       skillBasicNumber: 127.5,
       basicDamageCoefficient: 0.697922,
-      damageBonuesCoefficient: BaseCoefficient + 0.3 + ErYeYiYuanCoefficient
+      damageBonuesCoefficient: BaseCoefficient + 0.3 + ErYeYiYuanCoefficient,
     });
-
 
     const FMHand = new Skill({
       ...baseSkillContext,
@@ -318,15 +339,13 @@ class YiJinJing extends CalculatorBase {
       damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient) * 0.4,
     });
 
-
     const FMFeet = new Skill({
       ...baseSkillContext,
       ...this.getSkillInfo(EnChantsList.EnChantShoe),
       skillBasicNumber: 0,
       basicDamageCoefficient: 0.38125,
-      damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient)
+      damageBonuesCoefficient: BaseCoefficient + ErYeYiYuanCoefficient,
     });
-
 
     const weituoTotal = await weiTuo.calculator().subTotal;
     const nayunTotal = await naYunShi.calculator().subTotal;
@@ -335,7 +354,7 @@ class YiJinJing extends CalculatorBase {
       ...baseSkillContext,
       ...this.getSkillInfo(SkillNames.XiangMo),
       skillBasicNumber: 0,
-      basicDamage: (ctx) => {
+      basicDamage: ctx => {
         return (weituoTotal + nayunTotal) / 4 / 1.2 / ctx.skillTimes;
       },
       poFangCoefficient: 1,

@@ -1,4 +1,3 @@
-
 import { composeSync } from './compose';
 import { compose } from './index';
 
@@ -8,7 +7,6 @@ import { compose } from './index';
  * @class CoreMiddleware
  */
 class CoreMiddleware {
-
   public middlewares: any[];
 
   /**
@@ -59,9 +57,7 @@ class CoreMiddleware {
    * @memberof CoreMiddleware
    */
   execute(params: any = null) {
-    const composeMiddlewares = compose([
-      ...this.middlewares
-    ]);
+    const composeMiddlewares = compose([...this.middlewares]);
 
     return composeMiddlewares(params);
   }

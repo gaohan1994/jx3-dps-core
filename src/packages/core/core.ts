@@ -1,18 +1,16 @@
 /**
  * 计算器核心类
- * 
- * @Author: centerm.gaohan 
- * @Date: 2021-08-07 20:43:49 
- * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-11-18 20:27:40
+ *
+ * @Author: centerm.gaohan
+ * @Date: 2021-08-07 20:43:49
+ * @Last Modified by: Harper.Gao
+ * @Last Modified time: 2021-11-19 10:25:28
  */
 import invariant from 'invariant';
-import chalk from 'chalk';
 import { CharacterTypes, JiaSuValue } from '../../types';
 import { floortNumberPlaces } from '../../componet';
 
 class DpsCore {
-
   static JiaSuList = JiaSuValue;
 
   /**
@@ -186,7 +184,7 @@ class DpsCore {
     /**
      * @time 08-29
      * @param JiaSu
-     * 
+     *
      * 加速默认是一段加速修改为直接设置段数
      */
     invariant(options.JiaSu !== undefined, '加速不能为空');
@@ -203,9 +201,9 @@ class DpsCore {
 
     invariant(
       typeof options.YuanQi === 'number' ||
-      typeof options.GenGu === 'number' ||
-      typeof options.LiDao === 'number' ||
-      typeof options.ShenFa === 'number',
+        typeof options.GenGu === 'number' ||
+        typeof options.LiDao === 'number' ||
+        typeof options.ShenFa === 'number',
       '主属性不能为空'
     );
 
@@ -239,7 +237,8 @@ class DpsCore {
       this.GongJiCoefficient = options.GongJiCoefficient || 1;
 
       const ZGJ = floortNumberPlaces(
-        options.mainCoeffiecient(this[this.type]).ZongGongJi + this.JiChuGongJi * this.GongJiCoefficient,
+        options.mainCoeffiecient(this[this.type]).ZongGongJi +
+          this.JiChuGongJi * this.GongJiCoefficient,
         4
       );
       this.ZongGongJi = ZGJ;

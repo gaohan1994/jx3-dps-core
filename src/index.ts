@@ -31,14 +31,14 @@ const CoreHelper = {
    * @param JiaSuList
    */
   JiaSuList: {
-    ...JiaSuValue
+    ...JiaSuValue,
   },
   /**
    * 所有阵法
    * @param Formations
    */
   Formations: {
-    ...FormationValue
+    ...FormationValue,
   },
 
   /**
@@ -46,7 +46,7 @@ const CoreHelper = {
    * @param TeamSkills
    */
   TeamSkills: {
-    ...TeamSkillValue
+    ...TeamSkillValue,
   },
 
   /**
@@ -54,7 +54,7 @@ const CoreHelper = {
    * @param GroupSkills
    */
   GroupSkills: {
-    ...GroupSkillBuffList
+    ...GroupSkillBuffList,
   },
 
   /**
@@ -62,7 +62,7 @@ const CoreHelper = {
    * @parma SetBonusesGain
    */
   SetBonusesGain: {
-    ...SetBonuse
+    ...SetBonuse,
   },
 
   /**
@@ -70,7 +70,7 @@ const CoreHelper = {
    * @param WeaponValue
    */
   Weapons: {
-    ...WeaponValue
+    ...WeaponValue,
   },
 
   /**
@@ -79,7 +79,7 @@ const CoreHelper = {
    * @param Enchants
    */
   Enchants: {
-    ...EnChantsList
+    ...EnChantsList,
   },
 
   /**
@@ -88,7 +88,7 @@ const CoreHelper = {
    * @param EffectSpines
    */
   EffectSpines: {
-    ...EffectSpineList
+    ...EffectSpineList,
   },
 
   /**
@@ -97,29 +97,29 @@ const CoreHelper = {
    * @param Banquet
    */
   Banquet: {
-    ...BanquetList
+    ...BanquetList,
   },
 
   /**
    * @time 08-24
    * 新增 小吃增益列表
-   * 
+   *
    * @time 09-08
    * 新增 家园小吃
    * @param Food
    */
   Food: {
     FoodEnhance: {
-      ...FoodEnhanceList
+      ...FoodEnhanceList,
     },
     DrugEnhance: {
-      ...DrugEnhanceList
+      ...DrugEnhanceList,
     },
     FoodSupport: {
-      ...FoodSupportList
+      ...FoodSupportList,
     },
     DrugSupport: {
-      ...DrugSupportList
+      ...DrugSupportList,
     },
     HomeFood: {
       ...HomeFoodList,
@@ -132,9 +132,9 @@ const CoreHelper = {
    * @param Target
    */
   Target: {
-    ...TargetListKeys
-  }
-}
+    ...TargetListKeys,
+  },
+};
 
 /**
  * 主类
@@ -153,21 +153,21 @@ export default Jx3DpsCore;
 
 /**
  * 导出工具类
- * 
+ *
  * @param DpsCore
  * 核心类
- * 
+ *
  * @param Support
  * 辅助计算类
- * 
+ *
  * 核心辅助类
  * @param CoreHelper
- * 
+ *
  * 导出计算器
- * 
+ *
  * @param YiJinJing
  * 易筋经计算器
- * 
+ *
  * @param Profit
  * 收益计算器
  */

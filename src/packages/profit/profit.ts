@@ -1,16 +1,16 @@
 /**
  * 收益计算器
- * @Author: centerm.gaohan 
- * @Date: 2021-09-03 16:23:37 
- * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-05 11:31:56
+ * @Author: centerm.gaohan
+ * @Date: 2021-09-03 16:23:37
+ * @Last Modified by: Harper.Gao
+ * @Last Modified time: 2021-11-19 10:26:45
  */
 
-import invariant from "invariant";
-import CalculatorBase from "../../calculator/base";
+import invariant from 'invariant';
+import CalculatorBase from '../../calculator/base';
 import smar from 'smar-util';
-import { YiJinJing } from '../../calculator/index'
-import { Gain, ProfitCore, SupportContextKeys } from "../../types";
+import { YiJinJing } from '../../calculator/index';
+import { Gain, ProfitCore, SupportContextKeys } from '../../types';
 
 type ProfitConstructorOptions = {
   /**
@@ -24,7 +24,7 @@ type ProfitConstructorOptions = {
    * @type {Gain[]}
    */
   gainList: Gain[];
-}
+};
 
 class Profit {
   // 创建核心类的参数
@@ -48,9 +48,7 @@ class Profit {
       pointProfit: 0,
       gain: {
         name: 'Profit-YuanQi',
-        data: [
-          { gainTarget: SupportContextKeys.YuanQi, value: 3 * 10, coverage: 1 }
-        ]
+        data: [{ gainTarget: SupportContextKeys.YuanQi, value: 3 * 10, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),
@@ -73,8 +71,8 @@ class Profit {
       gain: {
         name: 'Profit-JiChuGongJi',
         data: [
-          { gainTarget: SupportContextKeys.JiChuGongJi, value: 175 / 73 * 3 * 10, coverage: 1 }
-        ]
+          { gainTarget: SupportContextKeys.JiChuGongJi, value: (175 / 73) * 3 * 10, coverage: 1 },
+        ],
       },
       stone: new Map(),
       profitWithStone: new Map(),
@@ -96,8 +94,8 @@ class Profit {
       gain: {
         name: 'Profit-PoFang',
         data: [
-          { gainTarget: SupportContextKeys.PoFangLevel, value: (325 * 3 * 100) / 73, coverage: 1 }
-        ]
+          { gainTarget: SupportContextKeys.PoFangLevel, value: (325 * 3 * 100) / 73, coverage: 1 },
+        ],
       },
       stone: new Map(),
       profitWithStone: new Map(),
@@ -119,8 +117,8 @@ class Profit {
       gain: {
         name: 'Profit-HuiXin',
         data: [
-          { gainTarget: SupportContextKeys.HuiXinLevel, value: (325 * 3 * 1000) / 73, coverage: 1 }
-        ]
+          { gainTarget: SupportContextKeys.HuiXinLevel, value: (325 * 3 * 1000) / 73, coverage: 1 },
+        ],
       },
       stone: new Map(),
       profitWithStone: new Map(),
@@ -139,8 +137,8 @@ class Profit {
       gain: {
         name: 'Profit-HuiXiao',
         data: [
-          { gainTarget: SupportContextKeys.HuiXiaoLevel, value: (325 * 3 * 10) / 73, coverage: 1 }
-        ]
+          { gainTarget: SupportContextKeys.HuiXiaoLevel, value: (325 * 3 * 10) / 73, coverage: 1 },
+        ],
       },
       stone: new Map(),
       profitWithStone: new Map(),
@@ -159,8 +157,8 @@ class Profit {
       gain: {
         name: 'Profit-WuShuang',
         data: [
-          { gainTarget: SupportContextKeys.WuShuangLevel, value: (325 * 3 * 10) / 73, coverage: 1 }
-        ]
+          { gainTarget: SupportContextKeys.WuShuangLevel, value: (325 * 3 * 10) / 73, coverage: 1 },
+        ],
       },
       stone: new Map(),
       profitWithStone: new Map(),
@@ -178,9 +176,7 @@ class Profit {
       pointProfit: 0,
       gain: {
         name: 'Profit-PoZhao',
-        data: [
-          { gainTarget: SupportContextKeys.PoZhao, value: (325 * 3 * 10) / 73, coverage: 1 }
-        ]
+        data: [{ gainTarget: SupportContextKeys.PoZhao, value: (325 * 3 * 10) / 73, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),
@@ -205,7 +201,6 @@ class Profit {
   }
 
   private async setBaseDps() {
-
     const baseCalculator = new YiJinJing({ ...this.baseOptions });
     baseCalculator.setGain(this.baseGainList);
 
@@ -217,7 +212,6 @@ class Profit {
   }
 
   public async calculatroProfitCore(item: ProfitCore): Promise<any> {
-
     /**
      * 获取当前增益列表
      */
@@ -237,7 +231,7 @@ class Profit {
     /**
      * 计算单位收益
      */
-    const attrProfit = (result.dps / this.baseDps - 1) * 100 / item.multiple;
+    const attrProfit = ((result.dps / this.baseDps - 1) * 100) / item.multiple;
     /**
      * 计算单分收益
      */
@@ -253,11 +247,8 @@ class Profit {
 
     // 设置石头收益
     currentProfitCore.stone.forEach((value, key) => {
-      currentProfitCore.profitWithStone.set(
-        key,
-        currentProfitCore.pointProfit * value
-      );
-    })
+      currentProfitCore.profitWithStone.set(key, currentProfitCore.pointProfit * value);
+    });
 
     return currentProfitCore;
   }
@@ -269,26 +260,23 @@ class Profit {
    * @memberof Profit
    */
   public calculatroProfit(): Promise<ProfitCore[]> {
-
     let newProfitList: ProfitCore[] = [];
 
-    let promises: Array<Promise<ProfitCore>> = [];
+    const promises: Array<Promise<ProfitCore>> = [];
 
     /**
      * 遍历每一项收益并计算各收益的值
      */
-    this.profitList.forEach((item) => {
-      let result = this.calculatroProfitCore(item);
+    this.profitList.forEach(item => {
+      const result = this.calculatroProfitCore(item);
       promises.push(result);
     });
 
-    return Promise.all(promises)
-      .then((response) => {
-        newProfitList = response;
+    return Promise.all(promises).then(response => {
+      newProfitList = response;
 
-        return newProfitList;
-      });
-
+      return newProfitList;
+    });
   }
 }
 

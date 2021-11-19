@@ -1,11 +1,16 @@
-import { Gain, SupportContext, FormationValue, TeamSkillValue, GroupSkillBuffList, SetBonuse, GainOptions } from "../../types";
+import {
+  Gain,
+  SupportContext,
+  FormationValue,
+  TeamSkillValue,
+  GroupSkillBuffList,
+  SetBonuse,
+  GainOptions,
+} from '../../types';
 import chalk from 'chalk';
-import { AllGainList } from "../../lib";
+import { AllGainList } from '../../lib';
 
-type SupportName = FormationValue |
-  TeamSkillValue |
-  GroupSkillBuffList |
-  SetBonuse;
+type SupportName = FormationValue | TeamSkillValue | GroupSkillBuffList | SetBonuse;
 
 export interface SupportBaseOptions {
   gainList?: Gain[];
@@ -39,7 +44,7 @@ class SupportBase {
    *
    * @param {SupportContext} ctx
    * @param {*} next
-   * @return {*} 
+   * @return {*}
    * @memberof SupportBase
    */
   public countCurrentSupportGain(ctx: SupportContext, next: any) {
@@ -48,29 +53,27 @@ class SupportBase {
     }
 
     if (this.gainList.length > 0) {
-      this.gainList.forEach((gain) => {
-        gain.data.forEach((gainAttribute) => {
-          ctx[gainAttribute.gainTarget] += (gainAttribute.value * gainAttribute.coverage);
+      this.gainList.forEach(gain => {
+        gain.data.forEach(gainAttribute => {
+          ctx[gainAttribute.gainTarget] += gainAttribute.value * gainAttribute.coverage;
         });
-      })
+      });
     }
 
     return next();
   }
 
   public countCurrentSupportGainSync(ctx: SupportContext) {
-
     if (this.gainList.length > 0) {
-      this.gainList.forEach((gain) => {
-        gain.data.forEach((gainAttribute) => {
-          ctx[gainAttribute.gainTarget] += (gainAttribute.value * gainAttribute.coverage);
+      this.gainList.forEach(gain => {
+        gain.data.forEach(gainAttribute => {
+          ctx[gainAttribute.gainTarget] += gainAttribute.value * gainAttribute.coverage;
         });
-      })
+      });
     }
 
     return ctx;
   }
-
 
   /**
    * 使用增益
@@ -79,7 +82,6 @@ class SupportBase {
    * @memberof SupportBase
    */
   public use(gain: SupportName | Gain, options?: GainOptions): void {
-
     /**
      * @todo 判断增益的类型，是否是自定义增益，拿到当前增益
      * @param isGain
@@ -98,7 +100,7 @@ class SupportBase {
     const coverage = options && options.coverage;
 
     if (coverage !== undefined) {
-      currentGain.data.forEach((item) => {
+      currentGain.data.forEach(item => {
         item.coverage = coverage;
       });
     }
@@ -137,10 +139,12 @@ class SupportBase {
   }
 
   public showGain() {
-    const names = this.gainList.map((g) => g.name);
-    console.log(chalk.blue(`增益列表
+    const names = this.gainList.map(g => g.name);
+    console.log(
+      chalk.blue(`增益列表
       ${names.join(', ')}
-    `));
+    `)
+    );
   }
 }
 

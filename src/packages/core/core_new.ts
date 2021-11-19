@@ -1,10 +1,10 @@
 /**
  * 计算器核心类
- * 
- * @Author: centerm.gaohan 
- * @Date: 2021-08-07 20:43:49 
- * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-11-18 20:29:06
+ *
+ * @Author: centerm.gaohan
+ * @Date: 2021-08-07 20:43:49
+ * @Last Modified by: Harper.Gao
+ * @Last Modified time: 2021-11-19 10:25:13
  */
 import invariant from 'invariant';
 import { CharacterTypes } from '../../types';
@@ -16,7 +16,7 @@ export enum JiaSuValue {
 
 function createEnum<T extends string>(keys: Array<T>): { [K in T]: K } {
   return keys.reduce((result, key) => {
-    result[key] = key
+    result[key] = key;
     return result;
   }, Object.create(null));
 }
@@ -25,6 +25,15 @@ function createEnum<T extends string>(keys: Array<T>): { [K in T]: K } {
 export const CoreEnum = createEnum(['YuanQi', 'GenGu', 'LiDao', 'ShenFa']);
 
 export type CoreEnum = keyof typeof CoreEnum;
+
+export interface MainCoeffiecient {
+  (yuanQi: number): {
+    JiChuGongJi: number;
+    ZongGongJi: number;
+    PoFangLevel: number;
+    HuiXinLevel: number;
+  };
+}
 
 class DpsCore {
   static JiaSuList = JiaSuValue;
@@ -43,10 +52,9 @@ class DpsCore {
   public GenGu?: number;
   public LiDao?: number;
   public ShenFa?: number;
-
   public options: any;
 
-  public mainCoeffiecient: Function;
+  public mainCoeffiecient: MainCoeffiecient;
 
   constructor(options: any) {
     this.options = options;
@@ -65,7 +73,7 @@ class DpsCore {
     /**
      * @time 08-29
      * @param JiaSu
-     * 
+     *
      * 加速默认是一段加速修改为直接设置段数
      */
     this.JiaSu = options.JiaSu || DpsCore.JiaSuList.YiDuanJiaSu;
@@ -81,9 +89,9 @@ class DpsCore {
 
     invariant(
       typeof options.YuanQi === 'number' ||
-      typeof options.GenGu === 'number' ||
-      typeof options.LiDao === 'number' ||
-      typeof options.ShenFa === 'number',
+        typeof options.GenGu === 'number' ||
+        typeof options.LiDao === 'number' ||
+        typeof options.ShenFa === 'number',
       '主属性不能为空'
     );
     this.HuiXin = options.HuiXin;
@@ -110,8 +118,7 @@ class DpsCore {
   }
 }
 
-export const createDpsCoreFactory = (coreType: CoreEnum, mainCoeffiecient: Function) => {
-
+export const createDpsCoreFactory = (coreType: CoreEnum, mainCoeffiecient: MainCoeffiecient) => {
   function createDpsCore(
     mainAttribute: number,
     JiChuGongJi: number,
@@ -121,7 +128,7 @@ export const createDpsCoreFactory = (coreType: CoreEnum, mainCoeffiecient: Funct
     PoZhao: number,
     WuShuang: number,
     JiaSu: JiaSuValue,
-    WuQiShangHai?: number,
+    WuQiShangHai?: number
   ) {
     return new DpsCore({
       // 设置人物主属性
@@ -146,15 +153,18 @@ export const createDpsCoreFactory = (coreType: CoreEnum, mainCoeffiecient: Funct
   }
 
   return createDpsCore;
-}
+};
 
-const YiJinJingMainCoeffiecient = (YuanQi: number) => ({
+const YiJinJingMainCoeffiecient: MainCoeffiecient = (YuanQi: number) => ({
   JiChuGongJi: YuanQi * 0.18,
   ZongGongJi: YuanQi * 1.85,
   PoFangLevel: YuanQi * 0.3,
-  HuiXinLevel: YuanQi * 0.38
+  HuiXinLevel: YuanQi * 0.38,
 });
 
-export const createYiJinJingFactory = createDpsCoreFactory(CoreEnum.YuanQi, YiJinJingMainCoeffiecient);
+export const createYiJinJingFactory = createDpsCoreFactory(
+  CoreEnum.YuanQi,
+  YiJinJingMainCoeffiecient
+);
 
 export default DpsCore;

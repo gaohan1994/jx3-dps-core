@@ -1,20 +1,20 @@
+/* eslint-disable no-console */
 /**
  * 技能类
- * @Author: centerm.gaohan 
- * @Date: 2021-08-08 19:45:42 
- * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-10-10 16:50:48
+ * @Author: centerm.gaohan
+ * @Date: 2021-08-08 19:45:42
+ * @Last Modified by: Harper.Gao
+ * @Last Modified time: 2021-11-19 10:26:13
  */
-import numeral from 'numeral';
-import { addition, floortNumberPlaces, multiplication } from '../../componet';
+import { addition, multiplication } from '../../componet';
 import DpsCore from './core_new';
-import { Support, Target } from '../support';
+import { Support } from '../support';
 import { combination, MiJi } from './miji';
 
 export default class Skill {
   public debug: boolean;
   /**
-   * 技能名称 
+   * 技能名称
    */
   public skillName: string;
   /**
@@ -30,8 +30,8 @@ export default class Skill {
    */
   public skillBasicNumber: number;
   /**
-    * 基础伤害
-    */
+   * 基础伤害
+   */
   public basicDamage: number;
   /**
    * 基础攻击系数
@@ -128,18 +128,19 @@ export default class Skill {
 
 /**
  * 计算单个技能的伤害
- * 
- * 技能伤害 = 
+ *
+ * 技能伤害 =
  * @param {Skill} skill
  * @return {*}  {number}
  */
 export const calculatorSkill = function calculatorSkillSubtotal(skill: Skill): number {
   const debug = skill.debug;
   // 技能的附加伤害
-  let extra = skill.extra;
+  const extra = skill.extra;
 
   // 技能基础伤害
-  const skillCalculatorBasicNumber = skill.skillBasicNumber + (skill.basicDamage * skill.basicDamageCoefficient);
+  const skillCalculatorBasicNumber =
+    skill.skillBasicNumber + skill.basicDamage * skill.basicDamageCoefficient;
 
   // 根据技能的基础技能
   let subtotal = multiplication(
@@ -155,7 +156,7 @@ export const calculatorSkill = function calculatorSkillSubtotal(skill: Skill): n
     // 易伤系数
     skill.damageBonuesCoefficient,
     // 技能次数
-    skill.skillTimes,
+    skill.skillTimes
   );
 
   // 如果有附加伤害则加上附加伤害
@@ -167,19 +168,19 @@ export const calculatorSkill = function calculatorSkillSubtotal(skill: Skill): n
     console.log('DEBUG ', skill.skillTitle);
     console.log('subtotal', subtotal);
     console.log('技能伤害', skillCalculatorBasicNumber);
-    console.log(`乘破防系数 ${skill.poFangCoefficient}`)
-    console.log(`乘无双系数 ${skill.wuShuangCoefficient}`)
-    console.log(`乘会心会笑系数 ${skill.huiXinHuiXiaoCoefficient}`)
-    console.log(`乘目标伤害系数 ${skill.targetDamageCoefficient}`)
-    console.log(`乘目标易伤系数 ${skill.damageBonuesCoefficient}`)
-    console.log(`乘技能次数 ${skill.skillTimes}`)
+    console.log(`乘破防系数 ${skill.poFangCoefficient}`);
+    console.log(`乘无双系数 ${skill.wuShuangCoefficient}`);
+    console.log(`乘会心会笑系数 ${skill.huiXinHuiXiaoCoefficient}`);
+    console.log(`乘目标伤害系数 ${skill.targetDamageCoefficient}`);
+    console.log(`乘目标易伤系数 ${skill.damageBonuesCoefficient}`);
+    console.log(`乘技能次数 ${skill.skillTimes}`);
   }
 
   // 赋值给技能
   skill.subTotal = subtotal;
   // 返回技能小计
   return subtotal;
-}
+};
 
 interface CreateSkillAttributes {
   skillName: string;
@@ -201,7 +202,7 @@ interface CreateSkillAttributes {
  *
  * @param {*} core
  * @param {*} support
- * @return {*} 
+ * @return {*}
  */
 export function createSkillFactory(core: DpsCore, support: Support) {
   // 获得核心类
@@ -212,32 +213,31 @@ export function createSkillFactory(core: DpsCore, support: Support) {
   const _target = support.target;
 
   function initAttribute(value?: number, initValue?: number) {
-    return value !== undefined
-      ? typeof value === 'number'
-        ? value
-        : initValue
-      : initValue;
+    return value !== undefined ? (typeof value === 'number' ? value : initValue) : initValue;
   }
 
-  function createSkill({
-    skillName,
-    skillTitle,
-    skillTimes,
-    basicDamage,
-    skillBasicNumber,
-    basicDamageCoefficient,
-    damageBonuesCoefficient,
-    poFangCoefficient,
-    wuShuangCoefficient,
-    huiXinHuiXiaoCoefficient,
-    targetDamageCoefficient,
-    miJi,
-  }: CreateSkillAttributes, debug: boolean = false): Skill {
+  function createSkill(
+    {
+      skillName,
+      skillTitle,
+      skillTimes,
+      basicDamage,
+      skillBasicNumber,
+      basicDamageCoefficient,
+      damageBonuesCoefficient,
+      poFangCoefficient,
+      wuShuangCoefficient,
+      huiXinHuiXiaoCoefficient,
+      targetDamageCoefficient,
+      miJi,
+    }: CreateSkillAttributes,
+    debug = false
+  ): Skill {
     // 是否开启debug模式
     const _debug = debug === undefined ? false : typeof debug === 'boolean' ? debug : false;
 
     // 设置属性 如果没有赋值属性则设置默认值
-    let skill = new Skill({
+    const skill = new Skill({
       skillName: skillName,
       skillTitle: skillTitle,
       // 技能次数 默认1
@@ -248,13 +248,17 @@ export function createSkillFactory(core: DpsCore, support: Support) {
       // 伤害系数 默认1
       basicDamageCoefficient: initAttribute(basicDamageCoefficient, 1),
       // 易伤 buff 基础+全局
-      damageBonuesCoefficient: initAttribute(damageBonuesCoefficient, 1) * (1 + supportContext.damageBonus),
-      // 破防 
+      damageBonuesCoefficient:
+        initAttribute(damageBonuesCoefficient, 1) * (1 + supportContext.damageBonus),
+      // 破防
       poFangCoefficient: initAttribute(poFangCoefficient, 1 + _core.PoFang / 100),
       // 无双
       wuShuangCoefficient: initAttribute(wuShuangCoefficient, 1 + _core.WuShuang / 100),
       // 双会
-      huiXinHuiXiaoCoefficient: initAttribute(huiXinHuiXiaoCoefficient, (_core.HuiXin / 100) * (_core.HuiXiao / 100) + 1 - (_core.HuiXin / 100)),
+      huiXinHuiXiaoCoefficient: initAttribute(
+        huiXinHuiXiaoCoefficient,
+        (_core.HuiXin / 100) * (_core.HuiXiao / 100) + 1 - _core.HuiXin / 100
+      ),
       // 承伤
       targetDamageCoefficient: initAttribute(targetDamageCoefficient, _target.damageCoefficient),
       // 秘籍

@@ -1,21 +1,26 @@
 /**
  * 计算器基类
- * 
- * @Author: centerm.gaohan 
- * @Date: 2021-08-08 19:12:37 
- * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-11-18 20:27:44
+ *
+ * @Author: centerm.gaohan
+ * @Date: 2021-08-08 19:12:37
+ * @Last Modified by: Harper.Gao
+ * @Last Modified time: 2021-11-19 10:21:04
  */
 import invariant from 'invariant';
-import { DpsCore, Skill } from '../packages/core'
+import { DpsCore, Skill } from '../packages/core';
 import { Support, Target } from '../packages/support';
-import { SupportContext, CalculatorResult, CalculatorResultSkillItem, Gain, GainOptions } from '../types';
+import {
+  SupportContext,
+  CalculatorResult,
+  CalculatorResultSkillItem,
+  Gain,
+  GainOptions,
+} from '../types';
 import { SkillInfo } from '../packages/core/skill';
 import numeral from 'numeral';
 import { floortNumberPlaces } from '../componet';
 
 class CalculatorBase {
-
   // 计算器版本
   public CalculatorVersion: any;
 
@@ -72,7 +77,7 @@ class CalculatorBase {
   public className: string;
 
   /**
-   * 战斗时间 单位：秒 
+   * 战斗时间 单位：秒
    * 默认 5分钟 300秒
    *
    * @type {number}
@@ -105,7 +110,7 @@ class CalculatorBase {
    */
   public skillTimesLib: {
     [name: string]: SkillInfo;
-  }
+  };
 
   constructor(options: any = {}) {
     this.options = options;
@@ -113,7 +118,7 @@ class CalculatorBase {
     invariant(!!options.support, '辅助类不能为空');
     this.support = new Support(options.support);
 
-    this.seconds = options.seconds || (5 * 60);
+    this.seconds = options.seconds || 5 * 60;
   }
 
   /**
@@ -234,16 +239,14 @@ class CalculatorBase {
     // console.log('this.supportContext', this.supportContext);
     let skillsArray: Skill[] = [];
     for (let i = 0; i < this.skills.length; i++) {
-      skillsArray.push(
-        this.skills[i].calculator()
-      );
+      skillsArray.push(this.skills[i].calculator());
     }
 
     /**
      * 计算总输出
      */
     let total = 0;
-    skillsArray.forEach((skill) => {
+    skillsArray.forEach(skill => {
       total += skill.subTotal;
     });
     this.totalExpectation = total;
@@ -257,16 +260,18 @@ class CalculatorBase {
      */
     const percentArray: CalculatorResultSkillItem[] = [];
 
-    skillsArray.forEach((skill) => {
+    skillsArray.forEach(skill => {
       /**
        * 修改成4位小数
        */
-      const currentPercent = numeral(numeral(skill.subTotal / this.totalExpectation).format('0.0000')).value()
+      const currentPercent = numeral(
+        numeral(skill.subTotal / this.totalExpectation).format('0.0000')
+      ).value();
 
       skill.percent = currentPercent;
 
       /**
-       * 
+       *
        * @time 08-29
        * 修改加入加速，skilltimes返回值为skill.skillTimes
        * 否则返回的skilltimes 可能为function类型
@@ -275,7 +280,7 @@ class CalculatorBase {
         subTotal: skill.subTotal,
         percent: skill.percent,
         ...this.getSkillInfo(skill.skillName),
-        skillTimes: skill.skillTimes
+        skillTimes: skill.skillTimes,
       });
     });
 
@@ -314,7 +319,6 @@ class CalculatorBase {
    * @memberof DpsCore
    */
   public generateUltimateCore(core: DpsCore, ctx: SupportContext): DpsCore {
-
     /**
      * 增加的主属性
      * @param gainMainAttribute
@@ -322,55 +326,55 @@ class CalculatorBase {
     const gainMainAttribute = ctx[core.type];
     /**
      * 最终主属性
-     * 
+     *
      * @parma mainAttribute
      */
     const mainAttribute = core[core.type] + gainMainAttribute;
 
     /**
      * 计算基础攻击
-     * 
+     *
      * @param JiChuGongJi
      */
-    const JiChuGongJi = core.JiChuGongJi + ctx.JiChuGongJi + (core.mainCoeffiecient(gainMainAttribute).JiChuGongJi || 0);
+    const JiChuGongJi =
+      core.JiChuGongJi +
+      ctx.JiChuGongJi +
+      (core.mainCoeffiecient(gainMainAttribute).JiChuGongJi || 0);
 
     /**
      * @time 08-24
      * 新增主属性增加的会心等级
      * 计算最终会心、会心效果
-     * 
+     *
      * @param HuiXin
      */
 
     const HuiXin =
-      core.HuiXin
-      + ctx.HuiXin * 100 + (ctx.HuiXinLevel / 357.375)
-      + (core.mainCoeffiecient(gainMainAttribute).HuiXinLevel) / 357.375;
-    const HuiXiao =
-      core.HuiXiao
-      + ctx.HuiXiao * 100
-      + (ctx.HuiXiaoLevel / 125.0625);
+      core.HuiXin +
+      ctx.HuiXin * 100 +
+      ctx.HuiXinLevel / 357.375 +
+      core.mainCoeffiecient(gainMainAttribute).HuiXinLevel / 357.375;
+    const HuiXiao = core.HuiXiao + ctx.HuiXiao * 100 + ctx.HuiXiaoLevel / 125.0625;
 
     /**
      * @time 08-24
      * 新增主属性增加的破防等级
      * 计算最终破防
-     * 
+     *
      * @param PoFang
      */
     const PoFang =
-      (
-        core.PoFang
-        + (ctx.PoFangLevel / 357.375)
-        + (core.mainCoeffiecient(gainMainAttribute).PoFangLevel) / 357.375
-      ) * (1.15 + ctx.PoFangPercent);
+      (core.PoFang +
+        ctx.PoFangLevel / 357.375 +
+        core.mainCoeffiecient(gainMainAttribute).PoFangLevel / 357.375) *
+      (1.15 + ctx.PoFangPercent);
 
     /**
      * 计算最终无双
-     * 
+     *
      * @param WuShuang
      */
-    const WuShuang = core.WuShuang + ctx.WuShuang + (ctx.WuShuangLevel / 344.5875);
+    const WuShuang = core.WuShuang + ctx.WuShuang + ctx.WuShuangLevel / 344.5875;
 
     const PoZhao = core.PoZhao + ctx.PoZhao;
 
@@ -396,7 +400,7 @@ class CalculatorBase {
 
       /**
        * 武器伤害不变
-       * 
+       *
        * @param WuQiShangHai
        */
       WuQiShangHai: core.WuQiShangHai,
@@ -428,7 +432,6 @@ class CalculatorBase {
    * @memberof CalculatorBase
    */
   public generateUltimateTarget(ctx: SupportContext): Target {
-
     /**
      * 初始化目标参数
      * @param targetOptions
@@ -438,7 +441,7 @@ class CalculatorBase {
     /**
      * 全局无视内防系数
      * @oaram globalIgnoreDefense
-     * 
+     *
      * 无视内防等级
      * @param ignoreDefense
      */
@@ -452,13 +455,14 @@ class CalculatorBase {
      * 实际内防 = 内防 *（1 - 全局无视内防等级）* （1 - 无视内防等级）
      * @param currentTargetNeiFang
      */
-    const currentTargetNeiFang = (initTarget.neiFang - 0) * (1 - globalIgnoreDefense) * (1 - ignoreDefense);
+    const currentTargetNeiFang =
+      (initTarget.neiFang - 0) * (1 - globalIgnoreDefense) * (1 - ignoreDefense);
 
     const _target = new Target({
       name: initTarget.name,
       level: initTarget.level,
       defenseCoefficient: initTarget.defenseCoefficient,
-      neiFang: currentTargetNeiFang
+      neiFang: currentTargetNeiFang,
     });
     return _target;
   }
@@ -471,14 +475,13 @@ class CalculatorBase {
   }
 
   public showSkills() {
-    this.skills.forEach((skill) => {
+    this.skills.forEach(skill => {
       console.log(skill.skillName);
-    })
+    });
   }
 
   public showSupportValue() {
     this.support.showSupportValue();
   }
-
 }
 export default CalculatorBase;

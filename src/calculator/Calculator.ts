@@ -3,7 +3,7 @@
  * @Author: centerm.gaohan
  * @Date: 2021-10-01 00:33:41
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-11-18 20:23:31
+ * @Last Modified time: 2021-11-19 10:12:18
  */
 
 import invariant from 'invariant';
@@ -12,7 +12,18 @@ import { Support, Target } from '../packages/support';
 import { Gain, GainOptions, YiJinJingValues } from '../types';
 import DpsCore from '../packages/core/core_new';
 import { createConfig } from './CalculatorWoker';
-import { deepClone, getYuanQiAttribute, increaseHuiXiao, increaseHuiXin, increaseJiChuGongJi, increaseMainAttribute, increasePoFang, increasePoZhao, increaseWuShuang, makeZongGongJi } from '../componet/utils';
+import {
+  deepClone,
+  getYuanQiAttribute,
+  increaseHuiXiao,
+  increaseHuiXin,
+  increaseJiChuGongJi,
+  increaseMainAttribute,
+  increasePoFang,
+  increasePoZhao,
+  increaseWuShuang,
+  makeZongGongJi,
+} from '../componet/utils';
 import { pipe } from '../componet';
 
 export default class CalculatorBase {
@@ -31,7 +42,7 @@ export default class CalculatorBase {
 
   public className: string;
   /**
-   * 战斗时间 单位：秒 
+   * 战斗时间 单位：秒
    * 默认 5分钟 300秒
    *
    * @type {number}
@@ -48,8 +59,7 @@ export default class CalculatorBase {
 
     invariant(!!options.support, '辅助类不能为空');
     this.support = new Support(options.support);
-
-    this.seconds = options.seconds || (5 * 60);
+    this.seconds = options.seconds || 5 * 60;
   }
 
   public use(gain: string | Gain, rest: GainOptions) {
@@ -78,7 +88,7 @@ type CalculatorResult = {
   total: number;
   seconds: number;
   skills: Skill[];
-}
+};
 
 /**
  * 创建易筋经计算器
@@ -92,55 +102,45 @@ export const createCalculator = function createYiJinJingCalculatro(
   support: Support,
   version: YiJinJingValues
 ): CalculatorResult {
-
-  let calculatorResult: CalculatorResult = {
+  const calculatorResult: CalculatorResult = {
     dps: 0,
     total: 0,
     seconds: 0,
     skills: [],
   };
 
-  try {
-    let supportContext = support.getSupportAttributeSync();
-    let coreClone = deepClone(core);
-    const increasedMainAttributesFromSupportContext = getYuanQiAttribute(supportContext);
+  const supportContext = support.getSupportAttributeSync();
+  const coreClone = deepClone(core);
+  const increasedMainAttributesFromSupportContext = getYuanQiAttribute(supportContext);
 
-    // 生成核心计算类 baseCore
-    const getBaseCore = pipe(
-      () => increaseMainAttribute(coreClone, increasedMainAttributesFromSupportContext),
-      (core: DpsCore) => increaseHuiXin(core, supportContext),
-      (core: DpsCore) => increaseHuiXiao(core, supportContext),
-      (core: DpsCore) => increasePoFang(core, supportContext),
-      (core: DpsCore) => increaseWuShuang(core, supportContext),
-      (core: DpsCore) => increasePoZhao(core, supportContext),
-      (core: DpsCore) => increaseJiChuGongJi(core, supportContext),
-      (core: DpsCore) => makeZongGongJi(core),
-    );
-    const baseCore = getBaseCore();
+  // 生成核心计算类 baseCore
+  const getBaseCore = pipe(
+    () => increaseMainAttribute(coreClone, increasedMainAttributesFromSupportContext),
+    (core: DpsCore) => increaseHuiXin(core, supportContext),
+    (core: DpsCore) => increaseHuiXiao(core, supportContext),
+    (core: DpsCore) => increasePoFang(core, supportContext),
+    (core: DpsCore) => increaseWuShuang(core, supportContext),
+    (core: DpsCore) => increasePoZhao(core, supportContext),
+    (core: DpsCore) => increaseJiChuGongJi(core, supportContext),
+    (core: DpsCore) => makeZongGongJi(core)
+  );
+  const baseCore = getBaseCore();
 
-    // 生成计算器技能配置文件
-    const calculatorConfig = createConfig(
-      baseCore,
-      support,
-      version,
-    );
-    const { skills } = calculatorConfig;
+  // 生成计算器技能配置文件
+  const calculatorConfig = createConfig(baseCore, support, version);
+  const { skills } = calculatorConfig;
 
-    let totalDamage = 0;
+  let totalDamage = 0;
 
-    skills.forEach(skill => {
-      totalDamage += skill.subTotal;
-    });
+  skills.forEach(skill => {
+    totalDamage += skill.subTotal;
+  });
 
-    let dps = totalDamage / 300;
+  const dps = totalDamage / 300;
 
-    calculatorResult.dps = dps;
-    calculatorResult.total = totalDamage;
-    calculatorResult.skills = skills;
-    calculatorResult.seconds = 300;
-  } catch (error) {
-    console.log('计算器执行计算时出错！', error);
-  } finally {
-    return calculatorResult;
-  }
-}
+  calculatorResult.dps = dps;
+  calculatorResult.total = totalDamage;
+  calculatorResult.skills = skills;
+  calculatorResult.seconds = 300;
+  return calculatorResult;
+};

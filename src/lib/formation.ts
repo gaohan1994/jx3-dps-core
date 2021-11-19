@@ -1,11 +1,11 @@
 /**
  * 阵法增益配置文件
- * @Author: centerm.gaohan 
- * @Date: 2021-08-31 17:33:22 
- * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-02 13:49:27
+ * @Author: centerm.gaohan
+ * @Date: 2021-08-31 17:33:22
+ * @Last Modified by: Harper.Gao
+ * @Last Modified time: 2021-11-19 10:23:34
  */
-import { Formation, FormationValue, SupportContextKeys } from "../types";
+import { Formation, FormationValue, SupportContextKeys } from '../types';
 
 export const FormationsGains: Formation = {
   [FormationValue.TianGuLeiYinZhen]: {
@@ -14,7 +14,7 @@ export const FormationsGains: Formation = {
       { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.15, coverage: 1 },
       { gainTarget: SupportContextKeys.PoFangPercent, value: 0.1, coverage: 1 },
       { gainTarget: SupportContextKeys.WuShuang, value: 1.95, coverage: 1 },
-    ]
+    ],
   },
   [FormationValue.DuJingZhen]: {
     name: FormationValue.DuJingZhen,
@@ -48,6 +48,6 @@ export const FormationsGains: Formation = {
       { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.1, coverage: 1 },
       { gainTarget: SupportContextKeys.HuiXin, value: 0.08, coverage: 1 },
       { gainTarget: SupportContextKeys.WuShuang, value: 1.95, coverage: 1 },
-    ]
-  }
-}
+    ],
+  },
+};

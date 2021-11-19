@@ -1,15 +1,15 @@
 /**
  * 辅助类
- * 
- * @Author: centerm.gaohan 
- * @Date: 2021-08-08 16:29:54 
- * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-11-18 20:25:09
+ *
+ * @Author: centerm.gaohan
+ * @Date: 2021-08-08 16:29:54
+ * @Last Modified by: Harper.Gao
+ * @Last Modified time: 2021-11-19 10:27:16
  */
 
 import invariant from 'invariant';
 import chalk from 'chalk';
-import { SupportMode, SupportContext, SetBonuse } from "../../types";
+import { SupportMode, SupportContext, SetBonuse } from '../../types';
 import { CoreMiddleware } from '../../componet';
 import { Target, TargetOptions, SupportBase, SupportBaseOptions } from './index';
 
@@ -78,10 +78,10 @@ export default class Support extends SupportBase {
         .then(() => {
           resolve(ctx);
         })
-        .catch((error) => {
+        .catch(error => {
           reject(error);
-        })
-    })
+        });
+    });
   }
 
   public getSupportAttributeSync(): SupportContext {
@@ -110,28 +110,28 @@ export default class Support extends SupportBase {
 
     const middleware = new CoreMiddleware([]);
     middleware.use(this.countCurrentSupportGainSync.bind(this));
-    return middleware.executeSync(ctx)
+    return middleware.executeSync(ctx);
   }
 
   // 打印属性
   public showSupportValue() {
-    console.log(chalk.blue(`---- support start ----`));
+    console.log(chalk.blue('---- support start ----'));
     this.target.showTargetValue();
-    console.log(chalk.blue(`---- support end ----`));
+    console.log(chalk.blue('---- support end ----'));
   }
 
   // 是否有技能套装
   public hasSkillSetBonuese() {
-    return this.gainList.some((g) => g.name === SetBonuse.SkillSetBonuse);
+    return this.gainList.some(g => g.name === SetBonuse.SkillSetBonuse);
   }
 
   // 判断是否有橙武
   public hasCw() {
-    return this.gainList.some((g) => g.name === 'CW');
+    return this.gainList.some(g => g.name === 'CW');
   }
 
   // 是否有属性套装
   public hasValueSetBonuese() {
-    return this.gainList.some((g) => g.name === SetBonuse.ValueSetBonuse);
+    return this.gainList.some(g => g.name === SetBonuse.ValueSetBonuse);
   }
 }

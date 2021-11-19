@@ -1,7 +1,6 @@
-
-import { Options, SkillInfo, SkillTimeLib, skillTimesIsNumber } from "../../packages/core/skill";
-import { EnChantsList, JiaSuValue, SkillContext, YiJinJingValues } from "../../types";
-import curry from "../../componet/curry";
+import { SkillInfo, SkillTimeLib, skillTimesIsNumber } from '../../packages/core/skill';
+import { EnChantsList, JiaSuValue, YiJinJingValues } from '../../types';
+import curry from '../../componet/curry';
 
 export enum SkillNames {
   PoZhao = 'PoZhao',
@@ -23,11 +22,11 @@ export enum SkillNames {
  * @time 08-31
  * 柯里化合并技能数
  */
-const mergeSkillTimes = curry<SkillTimeLib>(function () {
-  const skills: SkillTimeLib[] = [].slice.call(arguments);
+const mergeSkillTimes = curry<SkillTimeLib>(function (...restSkills: SkillTimeLib[]) {
+  const skills: SkillTimeLib[] = restSkills;
 
-  let mergedSkillTiems: {
-    [name: string]: number
+  const mergedSkillTiems: {
+    [name: string]: number;
   } = {
     [JiaSuValue.YiDuanJiaSu]: 0,
     [JiaSuValue.ErDuanJiaSu]: 0,
@@ -36,11 +35,11 @@ const mergeSkillTimes = curry<SkillTimeLib>(function () {
   for (let index = 0; index < skills.length; index++) {
     const currentSkill = skills[index];
     if (skillTimesIsNumber(currentSkill)) {
-      for (let key in mergedSkillTiems) {
+      for (const key in mergedSkillTiems) {
         mergedSkillTiems[key] += currentSkill;
       }
     } else {
-      for (let key in mergedSkillTiems) {
+      for (const key in mergedSkillTiems) {
         mergedSkillTiems[key] += currentSkill[key as JiaSuValue];
       }
     }
@@ -52,17 +51,20 @@ const mergeSkillTimes = curry<SkillTimeLib>(function () {
  * @time 08-31
  * 操作技能数
  */
-const updateSkillTimes = function (value: SkillTimeLib, callback: (value: number) => number): SkillTimeLib {
+const updateSkillTimes = function (
+  value: SkillTimeLib,
+  callback: (value: number) => number
+): SkillTimeLib {
   let times = value;
   if (skillTimesIsNumber(times)) {
     times = callback(times);
   } else {
-    for (let key in times) {
+    for (const key in times) {
       times[key as JiaSuValue] = callback(times[key as JiaSuValue]);
     }
   }
   return times;
-}
+};
 
 // 获得正式版技能数
 export function getNormalSkillTimes(skillName: string): SkillTimeLib {
@@ -73,14 +75,14 @@ export function getNormalSkillTimes(skillName: string): SkillTimeLib {
     case SkillNames.NaYunShi: {
       return {
         YiDuanJiaSu: 26 * 1.5,
-        ErDuanJiaSu: 26 * 1.5 + 1.5
-      }
+        ErDuanJiaSu: 26 * 1.5 + 1.5,
+      };
     }
     case SkillNames.WeiTuoXianChu: {
       return {
-        YiDuanJiaSu: Math.round(38 - (26 * 0.5)),
-        ErDuanJiaSu: Math.round(38 - (26 * 0.5) + 1.5)
-      }
+        YiDuanJiaSu: Math.round(38 - 26 * 0.5),
+        ErDuanJiaSu: Math.round(38 - 26 * 0.5 + 1.5),
+      };
     }
     case SkillNames.HengSaoLiuHe: {
       return 32;
@@ -97,7 +99,7 @@ export function getNormalSkillTimes(skillName: string): SkillTimeLib {
     case SkillNames.PuDuSiFang: {
       return {
         YiDuanJiaSu: 45,
-        ErDuanJiaSu: 49
+        ErDuanJiaSu: 49,
       };
     }
     case SkillNames.LiuHeGun: {
@@ -115,16 +117,16 @@ export function getNormalSkillTimes(skillName: string): SkillTimeLib {
     case SkillNames.XiangMo: {
       return mergeSkillTimes(
         getNormalSkillTimes(SkillNames.NaYunShi),
-        getNormalSkillTimes(SkillNames.WeiTuoXianChu),
+        getNormalSkillTimes(SkillNames.WeiTuoXianChu)
       );
     }
     case SkillNames.SuoDi: {
       return updateSkillTimes(
         mergeSkillTimes(
           getNormalSkillTimes(SkillNames.NaYunShi),
-          getNormalSkillTimes(SkillNames.WeiTuoXianChu),
+          getNormalSkillTimes(SkillNames.WeiTuoXianChu)
         ),
-        (value) => (value + 3 * 5) / 2,
+        value => (value + 3 * 5) / 2
       );
     }
     case SkillNames.FoGuo: {
@@ -135,9 +137,9 @@ export function getNormalSkillTimes(skillName: string): SkillTimeLib {
           getNormalSkillTimes(SkillNames.PuDuSiFang),
           getNormalSkillTimes(SkillNames.ShouQueShi),
           getNormalSkillTimes(SkillNames.HengSaoLiuHe),
-          getNormalSkillTimes(SkillNames.TiHuGuanDing),
+          getNormalSkillTimes(SkillNames.TiHuGuanDing)
         ),
-        (value) => value * 0.3 * 0.9
+        value => value * 0.3 * 0.9
       );
     }
   }
@@ -149,20 +151,20 @@ export function getImmortalSkillConfig(skillName: string): SkillTimeLib {
     case SkillNames.PoZhao: {
       return {
         YiDuanJiaSu: 30,
-        ErDuanJiaSu: 31
-      }
+        ErDuanJiaSu: 31,
+      };
     }
     case SkillNames.NaYunShi: {
       return {
         YiDuanJiaSu: 33 * 1.5,
-        ErDuanJiaSu: 33 * 1.5 + 1.5
-      }
+        ErDuanJiaSu: 33 * 1.5 + 1.5,
+      };
     }
     case SkillNames.WeiTuoXianChu: {
       return {
-        YiDuanJiaSu: Math.round(39 - (33 * 0.5)),
-        ErDuanJiaSu: Math.round(39 - (33 * 0.5) + 1.5)
-      }
+        YiDuanJiaSu: Math.round(39 - 33 * 0.5),
+        ErDuanJiaSu: Math.round(39 - 33 * 0.5 + 1.5),
+      };
     }
     case SkillNames.HengSaoLiuHe: {
       return 31;
@@ -179,7 +181,7 @@ export function getImmortalSkillConfig(skillName: string): SkillTimeLib {
     case SkillNames.PuDuSiFang: {
       return {
         YiDuanJiaSu: 45,
-        ErDuanJiaSu: 49
+        ErDuanJiaSu: 49,
       };
     }
     case SkillNames.LiuHeGun: {
@@ -197,16 +199,16 @@ export function getImmortalSkillConfig(skillName: string): SkillTimeLib {
     case SkillNames.XiangMo: {
       return mergeSkillTimes(
         getImmortalSkillConfig(SkillNames.NaYunShi),
-        getImmortalSkillConfig(SkillNames.WeiTuoXianChu),
+        getImmortalSkillConfig(SkillNames.WeiTuoXianChu)
       );
     }
     case SkillNames.SuoDi: {
       return updateSkillTimes(
         mergeSkillTimes(
           getImmortalSkillConfig(SkillNames.NaYunShi),
-          getImmortalSkillConfig(SkillNames.WeiTuoXianChu),
+          getImmortalSkillConfig(SkillNames.WeiTuoXianChu)
         ),
-        (value) => (value + 3 * 5) / 2,
+        value => (value + 3 * 5) / 2
       );
     }
     case SkillNames.FoGuo: {
@@ -217,16 +219,16 @@ export function getImmortalSkillConfig(skillName: string): SkillTimeLib {
           getImmortalSkillConfig(SkillNames.PuDuSiFang),
           getImmortalSkillConfig(SkillNames.ShouQueShi),
           getImmortalSkillConfig(SkillNames.HengSaoLiuHe),
-          getImmortalSkillConfig(SkillNames.TiHuGuanDing),
+          getImmortalSkillConfig(SkillNames.TiHuGuanDing)
         ),
-        (value) => value * 0.3 * 0.9
+        value => value * 0.3 * 0.9
       );
     }
   }
 }
 
 export const YJJConfig: {
-  [name: string]: Partial<SkillInfo>,
+  [name: string]: Partial<SkillInfo>;
 } = {
   [SkillNames.PoZhao]: {
     // skillTimesLib: getNormalSkillTimes(SkillNames.PoZhao),
@@ -244,9 +246,9 @@ export const YJJConfig: {
     skillTitle: '韦陀献杵',
 
     // 每触发一次cw增加2.5次韦陀
-    cwSkillTimesImpact: (cwTimes) => {
-      return cwTimes * 2.5
-    }
+    cwSkillTimesImpact: cwTimes => {
+      return cwTimes * 2.5;
+    },
   },
   [SkillNames.HengSaoLiuHe]: {
     // skillTimesLib: getNormalSkillTimes(SkillNames.HengSaoLiuHe),
@@ -258,9 +260,9 @@ export const YJJConfig: {
     skillName: SkillNames.ShouQueShi,
     skillTitle: '守缺式',
     // 每触发一次cw增加0.5次守缺
-    cwSkillTimesImpact: (cwTimes) => {
+    cwSkillTimesImpact: cwTimes => {
       return cwTimes * 0.5;
-    }
+    },
   },
   [SkillNames.HengSaoLiuHeDot]: {
     // skillTimesLib: getNormalSkillTimes(SkillNames.HengSaoLiuHeDot),
@@ -272,9 +274,9 @@ export const YJJConfig: {
     skillName: SkillNames.PuDuSiFang,
     skillTitle: '普渡四方',
     // 每触发一次cw减少3次普度
-    cwSkillTimesImpact: (cwTimes) => {
-      return - (cwTimes * 3)
-    }
+    cwSkillTimesImpact: cwTimes => {
+      return -(cwTimes * 3);
+    },
   },
   [SkillNames.LiuHeGun]: {
     // skillTimesLib: getNormalSkillTimes(SkillNames.LiuHeGun),
@@ -287,9 +289,9 @@ export const YJJConfig: {
     skillTitle: '降魔',
 
     // 每触发一次cw增加2.5次韦陀 所以降魔也要加
-    cwSkillTimesImpact: (cwTimes) => {
-      return cwTimes * 2.5
-    }
+    cwSkillTimesImpact: cwTimes => {
+      return cwTimes * 2.5;
+    },
   },
   [SkillNames.SuoDi]: {
     // skillTimesLib: getNormalSkillTimes(SkillNames.SuoDi),
@@ -321,12 +323,13 @@ export const YJJConfig: {
     skillName: EnChantsList.EnChantShoe,
     skillTitle: '附魔鞋',
   },
-}
+};
 
-export const getYJJConfig = (version: YiJinJingValues): {
-  [name: string]: SkillInfo,
+export const getYJJConfig = (
+  version: YiJinJingValues
+): {
+  [name: string]: SkillInfo;
 } => {
-
   let currentGetSkillFunction: (skillName: string) => SkillTimeLib;
 
   if (version === YiJinJingValues.Normal) {
@@ -335,8 +338,8 @@ export const getYJJConfig = (version: YiJinJingValues): {
     currentGetSkillFunction = getImmortalSkillConfig;
   }
 
-  for (let key in YJJConfig) {
-    YJJConfig[key].skillTimesLib = currentGetSkillFunction(YJJConfig[key].skillName)
+  for (const key in YJJConfig) {
+    YJJConfig[key].skillTimesLib = currentGetSkillFunction(YJJConfig[key].skillName);
   }
   return YJJConfig as any;
-}
+};

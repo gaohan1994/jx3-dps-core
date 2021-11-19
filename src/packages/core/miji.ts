@@ -32,16 +32,16 @@ export class MiJi {
 // 创建秘籍
 export const createMiJi = function (target: string, value: number, tag?: MiJiTag) {
   return new MiJi({ target, value, tag: tag !== undefined ? tag : ValueMiJi });
-}
+};
 
 /**
  * 返回秘籍加成的技能
  */
 export const combination = function combineSkillWithMiJi(skill: Skill, target: Target): Skill {
-  let _target = target;
+  const _target = target;
 
   // 拿到秘籍
-  let miJi = skill.miJi;
+  const miJi = skill.miJi;
 
   /**
    * 加成属性秘籍
@@ -68,7 +68,8 @@ export const combination = function combineSkillWithMiJi(skill: Skill, target: T
     // 剩余内防
     const remainingNeiDang = _target.neiFang * remainingDefenceCoefficient;
     // 承伤系数
-    const coefficient = _target.defenseCoefficient / (_target.defenseCoefficient + remainingNeiDang);
+    const coefficient =
+      _target.defenseCoefficient / (_target.defenseCoefficient + remainingNeiDang);
 
     skill.targetDamageCoefficient = coefficient;
   }
@@ -103,4 +104,4 @@ export const combination = function combineSkillWithMiJi(skill: Skill, target: T
   }
 
   return skill;
-}
+};

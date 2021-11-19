@@ -1,5 +1,5 @@
-import DpsCore from "../packages/core/core";
-import Support from "../packages/support/support";
+import DpsCore from '../packages/core/core';
+import Support from '../packages/support/support';
 import Target from '../packages/support/target';
 
 export enum JiaSuValue {
@@ -9,9 +9,9 @@ export enum JiaSuValue {
 
 /**
  * 技能增益核心类
- * 
+ *
  * @todo 新增覆盖率
- * @time 08-31 
+ * @time 08-31
  * @param coverage
  *
  * @export
@@ -30,11 +30,11 @@ export type Gain = {
 
 export type GainOptions = {
   coverage?: number;
-}
+};
 
 /**
- * 辅助类类别 
- * 
+ * 辅助类类别
+ *
  * 内功 / 外功
  *
  * @export
@@ -42,52 +42,8 @@ export type GainOptions = {
  */
 export enum SupportMode {
   NeiGong = 'NeiGong',
-  WaiGong = 'WaiGong'
+  WaiGong = 'WaiGong',
 }
-
-type MyPartial<T> = { [P in keyof T]?: T[P] }
-// 接下来设计一个这样的类型工具NonFunctionKeys<T> ，
-// 通过使用 NonFunctionKeys<T> 得到对象类型 T 中非函数的属性名组成的联合类型
-
-type MixedProps = { name: string; setName: (name: string) => void };
-
-type NonFunctionKeys<T> = {
-  [P in keyof T]: T[P] extends Function ? never : P;
-}[keyof T];
-
-// expect: "name"
-type Keys = NonFunctionKeys<MixedProps>;
-
-type ContructorParameters<T extends new (...args: any[]) => any>
-  = T extends new (...args: infer P) => any ? P : never;
-
-// [string, number] => string | number
-type ElementOf<T> = T extends Array<infer E> ? E : never;
-type TTuple = [string, number];
-type ElementOfTTuple = ElementOf<TTuple>;
-
-// 'NeiGong' | 'WaiGong' => {NeiGong: Gain, WaiGong: Gain}
-
-function createEnum<T extends string>(keys: Array<T>): { [K in T]: K } {
-  return keys.reduce((result, key) => {
-    result[key] = key
-    return result;
-  }, Object.create(null));
-}
-
-// 创建 K: V
-const CoreEnum = createEnum(['YuanQi', 'GenGu', 'LiDao', 'ShenFa']);
-
-type CoreEnum = keyof typeof CoreEnum;
-
-const SupportEnum2 = createEnum(['NeiGong', 'WaiGong']);
-type SupportEnum2 = typeof SupportEnum2;
-
-type UnionEnum<T> = {
-  [key in keyof T]: Gain
-}
-
-type SupportGain = UnionEnum<SupportEnum2>;
 
 export enum CharacterTypes {
   /**
@@ -129,7 +85,7 @@ export type TargetParams = {
   defenseCoefficient: number;
   neiFang: number;
   level: number;
-}
+};
 
 /**
  * 阵法列表
@@ -153,7 +109,7 @@ export enum FormationValue {
  */
 export enum TeamSkillValue {
   /**
-   * 
+   *
    * 内功技能增益
    */
   JinGangNuMu = 'JinGangNuMu',
@@ -171,12 +127,10 @@ export enum TeamSkillValue {
   SuiXingChen = 'SuiXingChen',
   YinMeiXiang = 'YinMeiXiang',
   JiLei = 'JiLei',
-  Jiu = 'Jiu'
+  Jiu = 'Jiu',
 }
 
-export enum GroupSkillList {
-
-}
+export enum GroupSkillList {}
 
 /**
  * 团队技能增益
@@ -195,10 +149,9 @@ export enum GroupSkillBuffList {
   HanXiaoQianJun = 'HanXiaoQianJun',
 }
 
-
 export type Formation = {
   [key in FormationValue]: Gain;
-}
+};
 
 export enum EnChantsList {
   // 附魔头
@@ -214,16 +167,16 @@ export enum EnChantsList {
 }
 
 export type EnChants = {
-  [key in EnChantsList]: Gain
-}
+  [key in EnChantsList]: Gain;
+};
 
 export enum EffectSpineList {
-  XiangMeng = 'XiangMeng'
+  XiangMeng = 'XiangMeng',
 }
 
 export type EffectSpine = {
-  [key in EffectSpineList]: Gain
-}
+  [key in EffectSpineList]: Gain;
+};
 
 /**
  * 武器类型
@@ -240,12 +193,12 @@ export enum WeaponValue {
   /**
    * 水特效
    */
-  EffectWather = 'EffectWather'
+  EffectWather = 'EffectWather',
 }
 
 export type Weapon = {
   [key in WeaponValue]: Gain;
-}
+};
 
 /**
  * 套装类型
@@ -273,8 +226,8 @@ export enum BanquetList {
 }
 
 export type Banquet = {
-  [key in BanquetList]: Gain
-}
+  [key in BanquetList]: Gain;
+};
 
 /**
  * 增强食品
@@ -285,7 +238,6 @@ export enum FoodEnhanceList {
   BaiRouXueChang = 'BaiRouXueChang',
   GuanTangBao = 'GuanTangBao',
 }
-
 
 /**
  * 增强药品
@@ -328,29 +280,28 @@ export enum HomeFoodList {
 export type Food = {
   FoodEnhance: {
     [key in FoodEnhanceList]: Gain;
-  },
+  };
   DrugEnhance: {
     [key in DrugEnhanceList]: Gain;
-  },
+  };
   FoodSupport: {
     [key in FoodSupportList]: Gain;
-  }
+  };
   DrugSupport: {
     [key in DrugSupportList]: Gain;
-  }
+  };
   HomeFood: {
     [key in HomeFoodList]: Gain;
-  }
-}
+  };
+};
 
 type Partical<T> = {
   [P in keyof T]?: T[P];
-}
+};
 
 export type GroupSkillType = Partical<{
   [key in GroupSkillBuffList]: Gain;
-}>
-
+}>;
 
 export interface SkillContext {
   core: DpsCore;
@@ -388,14 +339,14 @@ export enum SupportContextKeys {
   /**
    * 新增全局无视防御系数
    * 包含2个技能 梅花盾 和 田螺阵
-   * 
+   *
    * @time 09-01
    * @param globalIgnoreDefense
    */
   globalIgnoreDefense = 'globalIgnoreDefense',
   /**
    * 新增无视防御系数
-   * 
+   *
    * @time 08-24
    * @param ignoreDefense
    */
@@ -417,7 +368,7 @@ export enum SupportContextKeys {
 
 export type SupportContext = {
   [key in SupportContextKeys]: number;
-}
+};
 
 export interface CalculatorResultSkillItem {
   skillName: string;
@@ -462,9 +413,9 @@ export type ProfitCore = {
 
   // 单孔收益
   profitWithStone: Map<number, number>;
-}
+};
 
 export enum YiJinJingValues {
   Normal = 'Normal',
-  Immortal = 'Immortal'
+  Immortal = 'Immortal',
 }

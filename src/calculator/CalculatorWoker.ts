@@ -1,15 +1,15 @@
 /**
- * @Author: centerm.gaohan 
- * @Date: 2021-10-01 00:37:06 
+ * @Author: centerm.gaohan
+ * @Date: 2021-10-01 00:37:06
  * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-11-18 18:22:39
+ * @Last Modified time: 2021-11-19 10:12:23
  */
-import Skill, { createSkillFactory } from "../packages/core/skill_new";
-import { addition, multiplication } from "../componet";
-import { JiaSuValue, YiJinJingValues } from "../types";
-import DpsCore from "../packages/core/core_new";
-import { Support } from "../packages/support";
-import { createMiJi, IgnoreDefenceMiJi } from "../packages/core/miji";
+import Skill, { createSkillFactory } from '../packages/core/skill_new';
+import { addition, multiplication } from '../componet';
+import { JiaSuValue, YiJinJingValues } from '../types';
+import DpsCore from '../packages/core/core_new';
+import { Support } from '../packages/support';
+import { createMiJi, IgnoreDefenceMiJi } from '../packages/core/miji';
 
 // 技能名称
 export enum SkillNames {
@@ -33,8 +33,11 @@ type CalculatorConfig = {
 };
 
 type SkillAttributeConfig<T = Array<number>> = T;
+interface SkillBeforeCreatedFunction {
+  (params: any): number;
+}
 
-type SkillBeforeCreated = Array<number> | Function;
+type SkillBeforeCreated = Array<number> | SkillBeforeCreatedFunction;
 
 type SkillTimesConfig<T = Array<number>> = { [name: string]: SkillAttributeConfig<T> };
 
@@ -44,7 +47,7 @@ type SkillTimes = { [key in SkillNames]: number };
 const normalSkillTimes: SkillTimesConfig<SkillBeforeCreated> = {
   [SkillNames.PoZhao]: [30, 30, 0],
   [SkillNames.NaYunShi]: [26 * 1.5, 26 * 1.5 + 1.5, 0],
-  [SkillNames.WeiTuoXianChu]: [38 - (26 * 0.5), 38 - (26 * 0.5) + 1.5, 2.5],
+  [SkillNames.WeiTuoXianChu]: [38 - 26 * 0.5, 38 - 26 * 0.5 + 1.5, 2.5],
   [SkillNames.HengSaoLiuHe]: [32, 32, 0],
   [SkillNames.HengSaoLiuHeDot]: [155, 160, 0],
   [SkillNames.ShouQueShi]: [45, 45, 0.5],
@@ -61,7 +64,7 @@ const normalSkillTimes: SkillTimesConfig<SkillBeforeCreated> = {
 const immortalSkillTimes: SkillTimesConfig<SkillBeforeCreated> = {
   [SkillNames.PoZhao]: [30, 31, 0],
   [SkillNames.NaYunShi]: [33 * 1.5, 33 * 1.5 + 1.5, 0],
-  [SkillNames.WeiTuoXianChu]: [39 - (33 * 0.5), 39 - (33 * 0.5) + 1.5, 2.5],
+  [SkillNames.WeiTuoXianChu]: [39 - 33 * 0.5, 39 - 33 * 0.5 + 1.5, 2.5],
   [SkillNames.HengSaoLiuHe]: [31, 31, 0],
   [SkillNames.HengSaoLiuHeDot]: [155, 160, 0],
   [SkillNames.ShouQueShi]: [45, 45, 0.5],
@@ -81,8 +84,19 @@ function suodiSkillTimes({ NaYunShi, WeiTuoXianChu }: SkillTimes): number {
 }
 
 // 佛果技能次数公式
-function fuoguoSkillTimes({ NaYunShi, WeiTuoXianChu, PuDuSiFang, ShouQueShi, HengSaoLiuHe, TiHuGuanDing }: SkillTimes): number {
-  return multiplication(addition(NaYunShi, WeiTuoXianChu, PuDuSiFang, ShouQueShi, HengSaoLiuHe, TiHuGuanDing), 0.3, 0.9);
+function fuoguoSkillTimes({
+  NaYunShi,
+  WeiTuoXianChu,
+  PuDuSiFang,
+  ShouQueShi,
+  HengSaoLiuHe,
+  TiHuGuanDing,
+}: SkillTimes): number {
+  return multiplication(
+    addition(NaYunShi, WeiTuoXianChu, PuDuSiFang, ShouQueShi, HengSaoLiuHe, TiHuGuanDing),
+    0.3,
+    0.9
+  );
 }
 
 // 降魔技能次数计算公式
@@ -94,20 +108,22 @@ function skillAttributeIsNumberType(data: SkillBeforeCreated): data is Array<num
   return Array.isArray(data);
 }
 
-function skillAttributeIsFunctionType(data: SkillBeforeCreated): data is Function {
+function skillAttributeIsFunctionType(
+  data: SkillBeforeCreated
+): data is SkillBeforeCreatedFunction {
   return typeof data === 'function';
 }
 
 /**
  * 根据传入的 version 生成对应的 config
- * 
- * @param {YiJinJingValues} version 
+ *
+ * @param {YiJinJingValues} version
  */
 export const createConfig = function createSkillTimesConfig(
   core: DpsCore,
   support: Support,
   // 技能次数版本
-  version: YiJinJingValues,
+  version: YiJinJingValues
 ) {
   const JiaSu = core.JiaSu;
   // 是否含有橙武
@@ -118,14 +134,14 @@ export const createConfig = function createSkillTimesConfig(
   /**
    * 计算器配置文件
    */
-  let calculatorConfig: CalculatorConfig = {
+  const calculatorConfig: CalculatorConfig = {
     skills: [],
   };
 
   /**
    * 技能次数配置文件
    */
-  let skillTimes: SkillTimes = {
+  const skillTimes: SkillTimes = {
     PoZhao: 0,
     NaYunShi: 0,
     WeiTuoXianChu: 0,
@@ -162,7 +178,7 @@ export const createConfig = function createSkillTimesConfig(
 
     function updateSkillTimesByCw(): void {
       // 更新技能次数如果有橙武 橙武次数 * 单次橙武影响的技能数
-      skillTimes[skillName] += (currentSkillConfig[2] * cwTimes);
+      skillTimes[skillName] += currentSkillConfig[2] * cwTimes;
     }
 
     skillTimes[skillName] = currentSkillConfig[token];
@@ -183,19 +199,19 @@ export const createConfig = function createSkillTimesConfig(
   /**
    * 首先拿到所有的keys
    */
-  let keys = Object.keys(config) as SkillNames[];
+  const keys = Object.keys(config) as SkillNames[];
 
   /**
    * 函数类型的技能配置文件的队列
    */
-  let quene = [];
+  const quene = [];
 
   /**
    * 第一遍遍历
    * 遍历所有非函数类型的技能配置
    */
-  for (let i = 0; i < keys.length;) {
-    let currentKey = keys.shift();
+  for (let i = 0; i < keys.length; ) {
+    const currentKey = keys.shift();
     if (skillAttributeIsFunctionType(config[currentKey])) {
       /**
        * 如果是技能类型的配置则插入到队列中去等待第二次遍历
@@ -235,9 +251,7 @@ export const createConfig = function createSkillTimesConfig(
     const MiJiCoefficient = 0.12;
     const FoGuoCoefficient = 0.3 * 0.3;
 
-    const ignoreMiJi = [
-      createMiJi('', 0.6, IgnoreDefenceMiJi)
-    ];
+    const ignoreMiJi = [createMiJi('', 0.6, IgnoreDefenceMiJi)];
     const PoZhao = skillFactory({
       skillName: SkillNames.PoZhao,
       skillTitle: '破招',
@@ -263,7 +277,14 @@ export const createConfig = function createSkillTimesConfig(
       skillTimes: skillTimes[SkillNames.WeiTuoXianChu],
       skillBasicNumber: 179,
       basicDamageCoefficient: 1.66,
-      damageBonuesCoefficient: (BaseCoefficient + MiJiCoefficient + ErYeYiYuanCoefficient + skillSetBonuseCoefficient + FoGuoCoefficient) * ZhongChenCoefficient * MingFaCoefficient,
+      damageBonuesCoefficient:
+        (BaseCoefficient +
+          MiJiCoefficient +
+          ErYeYiYuanCoefficient +
+          skillSetBonuseCoefficient +
+          FoGuoCoefficient) *
+        ZhongChenCoefficient *
+        MingFaCoefficient,
       miJi: ignoreMiJi,
     });
 
@@ -273,7 +294,14 @@ export const createConfig = function createSkillTimesConfig(
       skillTimes: skillTimes[SkillNames.NaYunShi],
       skillBasicNumber: 258.5,
       basicDamageCoefficient: 2,
-      damageBonuesCoefficient: (BaseCoefficient + MiJiCoefficient + ErYeYiYuanCoefficient + skillSetBonuseCoefficient + FoGuoCoefficient) * ZhongChenCoefficient * MingFaCoefficient,
+      damageBonuesCoefficient:
+        (BaseCoefficient +
+          MiJiCoefficient +
+          ErYeYiYuanCoefficient +
+          skillSetBonuseCoefficient +
+          FoGuoCoefficient) *
+        ZhongChenCoefficient *
+        MingFaCoefficient,
       miJi: ignoreMiJi,
     });
 
@@ -283,8 +311,10 @@ export const createConfig = function createSkillTimesConfig(
       skillTimes: skillTimes[SkillNames.HengSaoLiuHe],
       skillBasicNumber: 75,
       basicDamageCoefficient: 0.58,
-      damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient + FoGuoCoefficient + 0.5) * 2 * MingFaCoefficient,
-      huiXinHuiXiaoCoefficient: (core.HuiXin / 100 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1)
+      damageBonuesCoefficient:
+        (BaseCoefficient + ErYeYiYuanCoefficient + FoGuoCoefficient + 0.5) * 2 * MingFaCoefficient,
+      huiXinHuiXiaoCoefficient:
+        (core.HuiXin / 100 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1),
     });
 
     const cwBuff = hasCw ? 0.0996 / 2 : 0;
@@ -295,8 +325,14 @@ export const createConfig = function createSkillTimesConfig(
       skillTimes: skillTimes[SkillNames.ShouQueShi],
       skillBasicNumber: 144.5,
       basicDamageCoefficient: 1.36,
-      damageBonuesCoefficient: (BaseCoefficient + 0.12 + ErYeYiYuanCoefficient + cwBuff + FoGuoCoefficient) * ZhongChenCoefficient * MingFaCoefficient,
-      huiXinHuiXiaoCoefficient: (core.HuiXin / 100 + 0.04 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1 + 0.04),
+      damageBonuesCoefficient:
+        (BaseCoefficient + 0.12 + ErYeYiYuanCoefficient + cwBuff + FoGuoCoefficient) *
+        ZhongChenCoefficient *
+        MingFaCoefficient,
+      huiXinHuiXiaoCoefficient:
+        (core.HuiXin / 100 + 0.04 + 0.1) * (core.HuiXiao / 100 + 0.1) +
+        1 -
+        (core.HuiXin / 100 + 0.1 + 0.04),
       miJi: ignoreMiJi,
     });
 
@@ -306,8 +342,10 @@ export const createConfig = function createSkillTimesConfig(
       skillTimes: skillTimes[SkillNames.HengSaoLiuHeDot],
       skillBasicNumber: 45,
       basicDamageCoefficient: 0.083,
-      damageBonuesCoefficient: (BaseCoefficient + FoGuoCoefficient + ErYeYiYuanCoefficient) * 2 * 3 * MingFaCoefficient,
-      huiXinHuiXiaoCoefficient: (core.HuiXin / 100 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1)
+      damageBonuesCoefficient:
+        (BaseCoefficient + FoGuoCoefficient + ErYeYiYuanCoefficient) * 2 * 3 * MingFaCoefficient,
+      huiXinHuiXiaoCoefficient:
+        (core.HuiXin / 100 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1),
     });
 
     const PuDuSiFang = skillFactory({
@@ -316,7 +354,9 @@ export const createConfig = function createSkillTimesConfig(
       skillTimes: skillTimes[SkillNames.PuDuSiFang],
       skillBasicNumber: 163.5,
       basicDamageCoefficient: 0.92,
-      damageBonuesCoefficient: (BaseCoefficient + 0.0996 + FoGuoCoefficient + ErYeYiYuanCoefficient + cwBuff) * MingFaCoefficient,
+      damageBonuesCoefficient:
+        (BaseCoefficient + 0.0996 + FoGuoCoefficient + ErYeYiYuanCoefficient + cwBuff) *
+        MingFaCoefficient,
     });
 
     const SuoDi = skillFactory({
@@ -334,7 +374,7 @@ export const createConfig = function createSkillTimesConfig(
       skillTimes: skillTimes[SkillNames.TiHuGuanDing],
       skillBasicNumber: 407.5,
       basicDamageCoefficient: 1.92185,
-      damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient),
+      damageBonuesCoefficient: BaseCoefficient + ErYeYiYuanCoefficient,
     });
     const FoGuo = skillFactory({
       skillName: SkillNames.FoGuo,
@@ -360,7 +400,7 @@ export const createConfig = function createSkillTimesConfig(
       skillTimes: skillTimes[SkillNames.EnChantShoe],
       skillBasicNumber: 0,
       basicDamageCoefficient: 0.38125,
-      damageBonuesCoefficient: (BaseCoefficient + ErYeYiYuanCoefficient)
+      damageBonuesCoefficient: BaseCoefficient + ErYeYiYuanCoefficient,
     });
 
     const WeiTuoSubTotal = WeiTuoXianChu.subTotal;
@@ -378,11 +418,25 @@ export const createConfig = function createSkillTimesConfig(
       targetDamageCoefficient: 1,
     });
 
-    const skills = [ShouQueShi, FoGuo, LiuHeGun, PoZhao, WeiTuoXianChu, NaYunShi, HengSaoLiuHe, HengSaoLiuHeDot, PuDuSiFang, SuoDi, TiHuGuanDing, EnChantHand, EnChantShoe, XiangMo];
+    const skills = [
+      ShouQueShi,
+      FoGuo,
+      LiuHeGun,
+      PoZhao,
+      WeiTuoXianChu,
+      NaYunShi,
+      HengSaoLiuHe,
+      HengSaoLiuHeDot,
+      PuDuSiFang,
+      SuoDi,
+      TiHuGuanDing,
+      EnChantHand,
+      EnChantShoe,
+      XiangMo,
+    ];
     calculatorConfig.skills = skills;
+    return calculatorConfig;
   } catch (error) {
     console.warn('初始化技能配置时出错', error);
-  } finally {
-    return calculatorConfig;
   }
-}
+};

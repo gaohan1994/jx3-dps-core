@@ -1,27 +1,16 @@
 /**
  * 增益列表库
- * 
- * @Author: centerm.gaohan 
- * @Date: 2021-08-31 17:38:11 
- * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-08 00:26:45
+ *
+ * @Author: centerm.gaohan
+ * @Date: 2021-08-31 17:38:11
+ * @Last Modified by: Harper.Gao
+ * @Last Modified time: 2021-11-19 10:23:37
  */
 
-import {
-  TeamSkillGains,
-  GroupSkillGains,
-} from './skill';
+import { TeamSkillGains, GroupSkillGains } from './skill';
 import { FormationsGains } from './formation';
-import {
-  WeaponGains,
-  EnChantGains,
-  EffectSpineGains,
-  SetBonuseGains,
-} from './item';
-import {
-  BanquetGains,
-  FoodGains,
-} from './food'
+import { WeaponGains, EnChantGains, EffectSpineGains, SetBonuseGains } from './item';
+import { BanquetGains, FoodGains } from './food';
 
 /**
  * 全部增益列表
@@ -48,7 +37,7 @@ const AllGainList = {
   ...FoodGains.FoodEnhance,
   ...FoodGains.FoodSupport,
   ...FoodGains.HomeFood,
-}
+};
 
 export {
   AllGainList,
