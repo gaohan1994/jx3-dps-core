@@ -4,10 +4,8 @@
  * @Author: centerm.gaohan
  * @Date: 2021-08-08 18:41:58
  * @Last Modified by: Harper.Gao
- * @Last Modified time: 2021-11-19 10:27:29
+ * @Last Modified time: 2021-11-21 17:59:43
  */
-
-import chalk from 'chalk';
 import { TargetListKeys, TargetParams } from '../../types';
 
 export type TargetOptions = string | TargetParams;
@@ -93,17 +91,6 @@ class Target {
 
     this.damageCoefficient =
       currentTarget.defenseCoefficient / (currentTarget.neiFang + currentTarget.defenseCoefficient);
-  }
-
-  public showTargetValue() {
-    console.log(
-      chalk.red(`目标：${this.name}
-      等级：${this.level}
-      伤害系数：${this.damageCoefficient}
-      防御系数：${this.defenseCoefficient}
-      内防：${this.neiFang}
-    `)
-    );
   }
 }
 

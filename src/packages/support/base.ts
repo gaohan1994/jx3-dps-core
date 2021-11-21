@@ -7,7 +7,6 @@ import {
   SetBonuse,
   GainOptions,
 } from '../../types';
-import chalk from 'chalk';
 import { AllGainList } from '../../lib';
 
 type SupportName = FormationValue | TeamSkillValue | GroupSkillBuffList | SetBonuse;
@@ -136,15 +135,6 @@ class SupportBase {
   public remove(gain: string) {
     const index = this.gainList.findIndex(g => g.name === gain);
     this.gainList.splice(index, 1);
-  }
-
-  public showGain() {
-    const names = this.gainList.map(g => g.name);
-    console.log(
-      chalk.blue(`增益列表
-      ${names.join(', ')}
-    `)
-    );
   }
 }
 

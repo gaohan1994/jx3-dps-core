@@ -18,10 +18,8 @@
   "author": "Ghan",
   "license": "MIT",
   "dependencies": {
-    "chalk": "^4.1.2",
     "invariant": "^2.2.4",
-    "numeral": "^2.0.6",
-    "smar-util": "^1.1.8"
+    "numeral": "^2.0.6"
   },
   "jest": {
     "testEnvironment": "node"

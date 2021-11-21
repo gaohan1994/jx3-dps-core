@@ -3,13 +3,13 @@
  * @Author: centerm.gaohan
  * @Date: 2021-09-03 16:23:37
  * @Last Modified by: Harper.Gao
- * @Last Modified time: 2021-11-19 10:26:45
+ * @Last Modified time: 2021-11-21 17:59:07
  */
 
 import invariant from 'invariant';
-import smar from 'smar-util';
 import YiJinJing from '@/calculator/ShaoLin/YiJinJing';
 import { Gain, ProfitCore, SupportContextKeys } from '../../types';
+import { deepClone } from '@/componet/utils';
 
 type ProfitConstructorOptions = {
   /**
@@ -189,12 +189,12 @@ class Profit {
      * 设置核心类
      *  */
     invariant(options !== undefined, '请输入初始化参数');
-    this.baseOptions = smar.deepClone(options);
+    this.baseOptions = deepClone(options);
 
     /**
      * 设置基础增益列表
      */
-    this.baseGainList = smar.deepClone(gainList);
+    this.baseGainList = deepClone(gainList);
 
     this.setBaseDps();
   }

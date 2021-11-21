@@ -4,7 +4,7 @@
  * @Author: centerm.gaohan
  * @Date: 2021-08-08 19:12:37
  * @Last Modified by: Harper.Gao
- * @Last Modified time: 2021-11-21 17:53:35
+ * @Last Modified time: 2021-11-21 18:00:29
  */
 import invariant from 'invariant';
 import numeral from 'numeral';
@@ -464,23 +464,6 @@ class CalculatorBase {
       neiFang: currentTargetNeiFang,
     });
     return _target;
-  }
-
-  public showCalculatorValue() {
-    console.log(`计算器：
-      职业:${this.professtion}
-      心法:${this.className}
-    `);
-  }
-
-  public showSkills() {
-    this.skills.forEach(skill => {
-      console.log(skill.skillName);
-    });
-  }
-
-  public showSupportValue() {
-    this.support.showSupportValue();
   }
 }
 export default CalculatorBase;

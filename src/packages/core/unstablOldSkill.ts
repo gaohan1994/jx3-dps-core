@@ -4,15 +4,13 @@
  * @Author: centerm.gaohan
  * @Date: 2021-08-08 19:45:42
  * @Last Modified by: Harper.Gao
- * @Last Modified time: 2021-11-21 17:21:51
+ * @Last Modified time: 2021-11-21 17:59:18
  */
 import invariant from 'invariant';
-import chalk from 'chalk';
 import numeral from 'numeral';
 import { JiaSuValue, SkillContext, SupportContext } from '../../types';
 import DpsCore from './unstableOldCore';
 import { Support, Target } from '../support';
-import { floortNumberPlaces } from '../../componet';
 
 export interface SkillParamFunction {
   (ctx: SkillContext): number;
@@ -369,21 +367,6 @@ class Skill {
     this.subTotal = subTotal;
 
     return this;
-  }
-
-  /**
-   * 打印技能日志
-   *
-   * @memberof Skill
-   */
-  public showSkillInfo() {
-    console.log(
-      chalk.cyan(`
-      技能名称：${this.skillName}
-      技能次数:${this.skillTimes}
-      小计:${this.subTotal} 
-    `)
-    );
   }
 }
 
