@@ -10,10 +10,11 @@
     "sourceMap": true,
     "declaration": true,
     "outDir": "dist",
-    "baseUrl": "src",
+    "baseUrl": ".",
     // "rootDir": ".",
     "paths": {
-      "*": ["node_modules/*", "src/types/*"]
+      "*": ["node_modules/*", "src/types/*"],
+      "@/*": ["src/*"]
     }
   },
   "include": ["src/**/*"]
