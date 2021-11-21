@@ -11,7 +11,7 @@
  * @Last Modified time: 2021-11-19 10:21:03
  */
 import CalculatorBase from '../base';
-import Skill from '../../packages/core/skill';
+import Skill from '../../packages/core/unstablOldSkill';
 import { EnChantsList, SupportContextKeys, TeamSkillValue, YiJinJingValues } from '../../types';
 import { SkillNames, getYJJConfig } from './config';
 

@@ -1,6 +1,13 @@
-import DpsCore from '../packages/core/core';
+import DpsCore from '../packages/core/unstableOldCore';
 import Support from '../packages/support/support';
 import Target from '../packages/support/target';
+
+export function createEnum<T extends string>(keys: Array<T>): { [K in T]: K } {
+  return keys.reduce((result, key) => {
+    result[key] = key;
+    return result;
+  }, Object.create(null));
+}
 
 export enum JiaSuValue {
   YiDuanJiaSu = 'YiDuanJiaSu',

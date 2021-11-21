@@ -3,29 +3,15 @@
   factory();
 }((function () { 'use strict';
 
-  // const { YiJinJing } = require('../build');
-  require('../build').component;
-
   const {
-    createConfig,
-    createCalculator
-  } = require('../build').calculator;
+    createDpsCore,
+    createCalculator,
+    Support,
+    CoreHelper,
+    UnstableOldYiJinJing
+  } = require('../build');
 
-  const Calculator = require('../build');
-
-  const {
-    createYiJinJingFactory
-  } = require('../build').CoreNew;
-
-  require('../build').Target; // const
-
-  /**
-   * 08-24
-   * 1、无视目标防御
-   * 2、团队易伤
-   * 3、主属性计算
-   */
-
+  const YiJinJing = UnstableOldYiJinJing;
 
   async function newDemo() {
     function sort(skills) {
@@ -34,16 +20,16 @@
       });
     }
 
-    const newCore = createYiJinJingFactory(2880, 14470, 19.05, 175.77, 38.01, 4130, 54.06, 'YiDuanJiaSu', 1998);
-    const support = new Calculator.Support({
+    const newCore = createDpsCore(2880, 14470, 19.05, 175.77, 38.01, 4130, 54.06, 'YiDuanJiaSu', 1998);
+    const support = new Support({
       mode: 'NeiGong',
-      target: Calculator.CoreHelper.Target.MuZhuang113
+      target: CoreHelper.Target.MuZhuang113
     });
-    support.use(Calculator.CoreHelper.SetBonusesGain.ValueSetBonuse);
-    support.use(Calculator.CoreHelper.SetBonusesGain.SkillSetBonuse);
-    support.use(Calculator.CoreHelper.Enchants.EnChantBelt);
-    support.use(Calculator.CoreHelper.Enchants.EnChantBody);
-    support.use(Calculator.CoreHelper.Enchants.EnChantHead);
+    support.use(CoreHelper.SetBonusesGain.ValueSetBonuse);
+    support.use(CoreHelper.SetBonusesGain.SkillSetBonuse);
+    support.use(CoreHelper.Enchants.EnChantBelt);
+    support.use(CoreHelper.Enchants.EnChantBody);
+    support.use(CoreHelper.Enchants.EnChantHead);
     support.use('JinGangNuMu');
     support.use('QinLongJue');
     support.use({
@@ -62,7 +48,7 @@
         coverage: 1
       }]
     });
-    const calculatorResult = createCalculator(newCore, support, Calculator.YiJinJing.YiJinJingVersion.Normal);
+    const calculatorResult = createCalculator(newCore, support, CoreHelper.CalculatorVersion.Normal);
     const {
       dps,
       total,
@@ -76,8 +62,8 @@
     console.log('----'); // console.log('config', config);
     // return;
 
-    const Yjj = new Calculator.YiJinJing({
-      CalculatorVersion: Calculator.YiJinJing.YiJinJingVersion.Normal,
+    const Yjj = new YiJinJing({
+      CalculatorVersion: YiJinJing.YiJinJingVersion.Normal,
       core: {
         type: 'YuanQi',
         JiChuGongJi: 14470,
@@ -88,18 +74,18 @@
         PoZhao: 4130,
         WuShuang: 54.06,
         YuanQi: 2880,
-        JiaSu: Calculator.CoreHelper.JiaSuList.YiDuanJiaSu
+        JiaSu: CoreHelper.JiaSuList.YiDuanJiaSu
       },
       support: {
         mode: 'NeiGong',
-        target: Calculator.CoreHelper.Target.MuZhuang113
+        target: CoreHelper.Target.MuZhuang113
       }
     });
-    Yjj.use(Calculator.CoreHelper.SetBonusesGain.ValueSetBonuse);
-    Yjj.use(Calculator.CoreHelper.SetBonusesGain.SkillSetBonuse);
-    Yjj.use(Calculator.CoreHelper.Enchants.EnChantBelt);
-    Yjj.use(Calculator.CoreHelper.Enchants.EnChantBody);
-    Yjj.use(Calculator.CoreHelper.Enchants.EnChantHead);
+    Yjj.use(CoreHelper.SetBonusesGain.ValueSetBonuse);
+    Yjj.use(CoreHelper.SetBonusesGain.SkillSetBonuse);
+    Yjj.use(CoreHelper.Enchants.EnChantBelt);
+    Yjj.use(CoreHelper.Enchants.EnChantBody);
+    Yjj.use(CoreHelper.Enchants.EnChantHead);
     const BaseDps = await Yjj.total(); // console.log('total', BaseDps.totalExpectation);
 
     console.log(BaseDps.dps);

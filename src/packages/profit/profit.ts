@@ -7,9 +7,8 @@
  */
 
 import invariant from 'invariant';
-import CalculatorBase from '../../calculator/base';
 import smar from 'smar-util';
-import { YiJinJing } from '../../calculator/index';
+import YiJinJing from '@/calculator/ShaoLin/YiJinJing';
 import { Gain, ProfitCore, SupportContextKeys } from '../../types';
 
 type ProfitConstructorOptions = {

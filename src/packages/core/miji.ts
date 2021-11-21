@@ -1,5 +1,5 @@
 import { Target } from '../support';
-import Skill from './skill_new';
+import Skill from './skill';
 
 // 秘籍的类型
 export type MiJiTag = 0 | 1;

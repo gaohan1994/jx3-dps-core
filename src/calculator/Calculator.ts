@@ -2,16 +2,16 @@
  * 新的计算器文件
  * @Author: centerm.gaohan
  * @Date: 2021-10-01 00:33:41
- * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-11-19 10:12:18
+ * @Last Modified by: Harper.Gao
+ * @Last Modified time: 2021-11-21 17:53:36
  */
 
 import invariant from 'invariant';
-import Skill from '../packages/core/skill_new';
+import Skill from '../packages/core/skill';
 import { Support, Target } from '../packages/support';
 import { Gain, GainOptions, YiJinJingValues } from '../types';
-import DpsCore from '../packages/core/core_new';
-import { createConfig } from './CalculatorWoker';
+import DpsCore from '../packages/core/core';
+import { createConfig } from './calculatorWoker';
 import {
   deepClone,
   getYuanQiAttribute,
@@ -29,29 +29,14 @@ import { pipe } from '../componet';
 export default class CalculatorBase {
   public CalculatorVersion: any;
   public options: any;
-
   public skills: Array<Skill> = [];
-
   public core: DpsCore;
-
   public support: Support;
-
   public target: Target;
-
   public professtion: string;
-
   public className: string;
-  /**
-   * 战斗时间 单位：秒
-   * 默认 5分钟 300秒
-   *
-   * @type {number}
-   * @memberof CalculatorBase
-   */
-  public seconds: number;
-
+  public seconds: number; // 战斗时间 default: 300s
   public totalExpectation: number;
-
   public dps: number;
 
   constructor(options: any = {}) {
@@ -97,11 +82,11 @@ type CalculatorResult = {
  * @param {Support} support 辅助类
  * @param {YiJinJingValues} version 计算器版本
  */
-export const createCalculator = function createYiJinJingCalculatro(
+export const createCalculator = (
   core: DpsCore,
   support: Support,
   version: YiJinJingValues
-): CalculatorResult {
+): CalculatorResult => {
   const calculatorResult: CalculatorResult = {
     dps: 0,
     total: 0,
@@ -125,7 +110,6 @@ export const createCalculator = function createYiJinJingCalculatro(
     (core: DpsCore) => makeZongGongJi(core)
   );
   const baseCore = getBaseCore();
-
   // 生成计算器技能配置文件
   const calculatorConfig = createConfig(baseCore, support, version);
   const { skills } = calculatorConfig;

@@ -1,4 +1,4 @@
-import { SkillInfo, SkillTimeLib, skillTimesIsNumber } from '../../packages/core/skill';
+import { SkillInfo, SkillTimeLib, skillTimesIsNumber } from '../../packages/core/unstablOldSkill';
 import { EnChantsList, JiaSuValue, YiJinJingValues } from '../../types';
 import curry from '../../componet/curry';
 

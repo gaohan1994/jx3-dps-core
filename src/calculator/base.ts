@@ -4,21 +4,21 @@
  * @Author: centerm.gaohan
  * @Date: 2021-08-08 19:12:37
  * @Last Modified by: Harper.Gao
- * @Last Modified time: 2021-11-19 10:21:04
+ * @Last Modified time: 2021-11-21 17:53:35
  */
 import invariant from 'invariant';
-import { DpsCore, Skill } from '../packages/core';
-import { Support, Target } from '../packages/support';
+import numeral from 'numeral';
+import DpsCore from '@/packages/core/unstableOldCore';
+import Skill, { SkillInfo } from '@/packages/core/unstablOldSkill';
+import { Support, Target } from '@/packages/support';
 import {
   SupportContext,
   CalculatorResult,
   CalculatorResultSkillItem,
   Gain,
   GainOptions,
-} from '../types';
-import { SkillInfo } from '../packages/core/skill';
-import numeral from 'numeral';
-import { floortNumberPlaces } from '../componet';
+} from '@/types';
+import { floortNumberPlaces } from '@/componet';
 
 class CalculatorBase {
   // 计算器版本
@@ -419,7 +419,6 @@ class CalculatorBase {
       PoZhao,
       JiaSu: core.JiaSu,
     });
-
     return ultimate;
   }
 

@@ -1,4 +1,4 @@
-import DpsCore, { CoreEnum } from '../packages/core/core_new';
+import DpsCore, { CoreEnum } from '../packages/core/core';
 import { pipe } from './compose';
 
 export function deepClone<T>(target: T): T {

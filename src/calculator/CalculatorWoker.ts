@@ -4,10 +4,10 @@
  * @Last Modified by: centerm.gaohan
  * @Last Modified time: 2021-11-19 10:12:23
  */
-import Skill, { createSkillFactory } from '../packages/core/skill_new';
+import Skill, { createSkillFactory } from '../packages/core/skill';
 import { addition, multiplication } from '../componet';
 import { JiaSuValue, YiJinJingValues } from '../types';
-import DpsCore from '../packages/core/core_new';
+import DpsCore from '../packages/core/core';
 import { Support } from '../packages/support';
 import { createMiJi, IgnoreDefenceMiJi } from '../packages/core/miji';
 
