@@ -4,15 +4,30 @@ import { pipe } from './compose';
 export function deepClone<T>(target: T): T {
   if (typeof target !== 'object') return;
   const newObj: any = target instanceof Array ? [] : {};
-
   for (const key in target) {
     if (target.hasOwnProperty(key)) {
       newObj[key] = typeof target[key] === 'object' ? deepClone(target[key]) : target[key];
     }
   }
-
   return newObj;
 }
+
+// 执行原函数之前先执行beforeFunction
+export const before = (originFunction: any, beforeFunction: any): any => {
+  return (...rest: any[]) => {
+    beforeFunction.apply(this, rest);
+    return originFunction.apply(this, rest);
+  };
+};
+
+// 执行原函数之后执行beforeFunction
+export const after = (originFunction: any, beforeFunction: any): any => {
+  return (...rest: any[]) => {
+    const result = originFunction.apply(this, rest);
+    beforeFunction.apply(this, rest);
+    return result;
+  };
+};
 
 export const mergeAttribute = function <T>(attribute1: T, attribute2: T) {
   for (const key in attribute2) {
