@@ -10,7 +10,6 @@ import invariant from 'invariant';
 import numeral from 'numeral';
 import DpsCore from '@/packages/core/unstableOldCore';
 import Skill, { SkillInfo } from '@/packages/core/unstablOldSkill';
-import { Support, Target } from '@/packages/support';
 import {
   SupportContext,
   CalculatorResult,
@@ -19,6 +18,8 @@ import {
   GainOptions,
 } from '@/types';
 import { floortNumberPlaces } from '@/componet';
+import Support from '@/packages/support/support';
+import Target from '@/packages/support/target';
 
 class CalculatorBase {
   // 计算器版本

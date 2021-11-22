@@ -10,7 +10,8 @@ import invariant from 'invariant';
 import numeral from 'numeral';
 import { JiaSuValue, SkillContext, SupportContext } from '../../types';
 import DpsCore from './unstableOldCore';
-import { Support, Target } from '../support';
+import Support from '@/packages/support/support';
+import Target from '@/packages/support/target';
 
 export interface SkillParamFunction {
   (ctx: SkillContext): number;

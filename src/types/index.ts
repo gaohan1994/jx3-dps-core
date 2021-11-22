@@ -30,9 +30,13 @@ export interface GainAttribute {
   coverage: number;
 }
 
+export const GainTypes = createEnum(['Noraml', 'Costom']);
+export type GainTypes = keyof typeof GainTypes;
+
 export type Gain = {
   name: string;
   data: Array<GainAttribute>;
+  type?: GainTypes;
 };
 
 export type GainOptions = {

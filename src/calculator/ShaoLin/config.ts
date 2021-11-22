@@ -1,22 +1,23 @@
 import { SkillInfo, SkillTimeLib, skillTimesIsNumber } from '../../packages/core/unstablOldSkill';
-import { EnChantsList, JiaSuValue, YiJinJingValues } from '../../types';
+import { createEnum, EnChantsList, JiaSuValue, YiJinJingValues } from '../../types';
 import curry from '../../componet/curry';
 
-export enum SkillNames {
-  PoZhao = 'PoZhao',
-  NaYunShi = 'NaYunShi',
-  HengSaoLiuHe = 'HengSaoLiuHe',
-  HengSaoLiuHeDot = 'HengSaoLiuHeDot',
-  ShouQueShi = 'ShouQueShi',
-  PuDuSiFang = 'PuDuSiFang',
-  XiangMo = 'XiangMo',
-  SuoDi = 'SuoDi',
-  TiHuGuanDing = 'TiHuGuanDing',
-  FoGuo = 'FoGuo',
-  WeiTuoXianChu = 'WeiTuoXianChu',
-  LiuHeGun = 'LiuHeGun',
-  FeiJian = 'FeiJian',
-}
+export const SkillNames = createEnum([
+  'PoZhao',
+  'NaYunShi',
+  'HengSaoLiuHe',
+  'HengSaoLiuHeDot',
+  'ShouQueShi',
+  'PuDuSiFang',
+  'XiangMo',
+  'SuoDi',
+  'TiHuGuanDing',
+  'FoGuo',
+  'WeiTuoXianChu',
+  'LiuHeGun',
+  'FeiJian',
+]);
+export type SkillNames = keyof typeof SkillNames;
 
 /**
  * @time 08-31

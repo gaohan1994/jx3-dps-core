@@ -4,6 +4,7 @@ const {
   Support, 
   CoreHelper,
   UnstableOldYiJinJing,
+  Profit,
 } =require('../build');
 
 const YiJinJing = UnstableOldYiJinJing;
@@ -39,10 +40,12 @@ async function newDemo() {
   support.use('QinLongJue');
   support.use({
     name: 'UPDATE08-30',
+    type: 'Costom',
     data: [{ gainTarget: 'damageBonus', value: 0.03, coverage: 1 }],
   });
   support.use({
     name: '少林常驻破防加成',
+    type: 'Costom',
     data: [{ gainTarget: 'PoFangPercent', value: 0.15, coverage: 1 }],
   });
 
@@ -53,6 +56,15 @@ async function newDemo() {
   );
   const { dps, total, skills } = calculatorResult;
   const afterSkills = sort(skills);
+
+  const profit = new Profit({
+    core: newCore, 
+    support, 
+    version: CoreHelper.CalculatorVersion.Normal
+  });
+  const profitList = profit.calculatroProfit();
+  // console.log('profitList', profitList)
+  // return;
 
   // console.log('total', total);
   console.log('dps', dps);

@@ -7,8 +7,8 @@
  * @Last Modified time: 2021-11-19 10:25:28
  */
 import invariant from 'invariant';
-import { CharacterTypes, JiaSuValue } from '../../types';
-import { floortNumberPlaces } from '../../componet';
+import { CharacterTypes, JiaSuValue } from '@/types';
+import { floortNumberPlaces } from '@/componet';
 
 class DpsCore {
   static JiaSuList = JiaSuValue;

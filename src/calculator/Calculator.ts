@@ -7,10 +7,11 @@
  */
 
 import invariant from 'invariant';
-import Skill from '../packages/core/skill';
-import { Support, Target } from '../packages/support';
-import { Gain, GainOptions, YiJinJingValues } from '../types';
-import DpsCore from '../packages/core/core';
+import Skill from '@/packages/core/skill';
+import Support from '@/packages/support/support';
+import Target from '@/packages/support/target';
+import { Gain, GainOptions, YiJinJingValues } from '@/types';
+import DpsCore from '@/packages/core/core';
 import { createConfig } from './calculatorWoker';
 import {
   deepClone,
@@ -23,8 +24,8 @@ import {
   increasePoZhao,
   increaseWuShuang,
   makeZongGongJi,
-} from '../componet/utils';
-import { pipe } from '../componet';
+} from '@/componet/utils';
+import { pipe } from '@/componet/compose';
 
 export default class CalculatorBase {
   public CalculatorVersion: any;
@@ -68,7 +69,7 @@ export default class CalculatorBase {
   }
 }
 
-type CalculatorResult = {
+export type CalculatorResult = {
   dps: number;
   total: number;
   seconds: number;

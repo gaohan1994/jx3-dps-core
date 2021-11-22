@@ -1,5 +1,4 @@
-import { composeSync } from './compose';
-import { compose } from './index';
+import { composeSync, compose } from './compose';
 
 /**
  * 中间件类

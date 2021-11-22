@@ -8,9 +8,13 @@
  */
 
 import invariant from 'invariant';
-import { SupportMode, SupportContext, SetBonuse } from '../../types';
-import { CoreMiddleware } from '../../componet';
-import { Target, TargetOptions, SupportBase, SupportBaseOptions } from './index';
+import { SupportMode, SupportContext, SetBonuse, Gain, GainTypes } from '@/types';
+import Target, { TargetOptions } from './target';
+import SupportBase, { SupportBaseOptions, SupportName } from './base';
+import CoreMiddleware from '@/componet/middleware';
+import { deepClone } from '@/componet/utils';
+
+export const isCostomGain = (gain: Gain): boolean => gain && gain.type === GainTypes.Costom;
 
 export interface SupportOptions extends SupportBaseOptions {
   mode: SupportMode;
@@ -77,7 +81,7 @@ export default class Support extends SupportBase {
         .then(() => {
           resolve(ctx);
         })
-        .catch(error => {
+        .catch((error: any) => {
           reject(error);
         });
     });
@@ -127,3 +131,21 @@ export default class Support extends SupportBase {
     return this.gainList.some(g => g.name === SetBonuse.ValueSetBonuse);
   }
 }
+
+export const copySupport = (support: Support): Support => {
+  const { options, gainList = [] } = support;
+  const nextOptions = deepClone(options);
+  const nextGainList = deepClone(gainList);
+  const nextSupport = new Support(nextOptions);
+
+  for (let i = 0; i < nextGainList.length; i++) {
+    const currentGain = nextGainList[i];
+
+    if (isCostomGain(currentGain)) {
+      nextSupport.use(currentGain);
+      continue;
+    }
+    nextSupport.use(currentGain.name as SupportName);
+  }
+  return nextSupport;
+};

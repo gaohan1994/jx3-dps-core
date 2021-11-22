@@ -1,4 +1,5 @@
-import DpsCore, { CoreEnum } from '../packages/core/core';
+import DpsCore, { CoreEnum } from '@/packages/core/core';
+import { Gain } from '@/types';
 import { pipe } from './compose';
 
 export function deepClone<T>(target: T): T {
@@ -27,6 +28,20 @@ export const after = (originFunction: any, beforeFunction: any): any => {
     beforeFunction.apply(this, rest);
     return result;
   };
+};
+
+export function isGain(data: Gain[] | Gain): data is Gain {
+  return !Array.isArray(data) && typeof data.name === 'string';
+}
+
+export const mergeGainList = (...restGainList: Gain[]): Gain[] => {
+  const nextGainList: Gain[] = [];
+  restGainList.reduce((prevGainList, gainList) => {
+    const currentGainList: Gain[] = !isGain(gainList) ? gainList : [gainList];
+    return prevGainList.concat(currentGainList);
+  }, nextGainList);
+
+  return nextGainList;
 };
 
 export const mergeAttribute = function <T>(attribute1: T, attribute2: T) {

@@ -9,7 +9,7 @@ import {
 } from '../../types';
 import { AllGainList } from '../../lib';
 
-type SupportName = FormationValue | TeamSkillValue | GroupSkillBuffList | SetBonuse;
+export type SupportName = FormationValue | TeamSkillValue | GroupSkillBuffList | SetBonuse;
 
 export interface SupportBaseOptions {
   gainList?: Gain[];
