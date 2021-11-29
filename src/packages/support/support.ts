@@ -8,13 +8,17 @@
  */
 
 import invariant from 'invariant';
-import { SupportMode, SupportContext, SetBonuse, Gain, GainTypes } from '@/types';
-import Target, { TargetOptions } from './target';
-import SupportBase, { SupportBaseOptions, SupportName } from './base';
+import { createEnum, SupportContext, SetBonuse } from '@/types';
 import CoreMiddleware from '@/componet/middleware';
 import { deepClone } from '@/componet/utils';
+import { Gain, GainTypes } from '@/packages/gain/gain';
+import Target, { TargetOptions } from './target';
+import SupportBase, { SupportBaseOptions, SupportName } from './base';
 
 export const isCostomGain = (gain: Gain): boolean => gain && gain.type === GainTypes.Costom;
+
+export const SupportMode = createEnum(['WaiGong', 'NeiGong']);
+export type SupportMode = keyof typeof SupportMode;
 
 export interface SupportOptions extends SupportBaseOptions {
   mode: SupportMode;
@@ -42,53 +46,8 @@ export default class Support extends SupportBase {
     this.CWTimes = options.CWTimes || 3;
   }
 
-  /**
-   * 获得辅助总增益
-   *
-   * @return {*}  {Promise<SupportContext>}
-   * @memberof Support
-   */
-  public getSupportAttribute(): Promise<SupportContext> {
-    let ctx: SupportContext = {
-      YuanQi: 0,
-      GenGu: 0,
-      LiDao: 0,
-      ShenFa: 0,
-      damageBonus: 0,
-      JiChuGongJi: 0,
-      JiChuGongJiPercent: 0,
-      PoFangPercent: 0,
-      PoFangLevel: 0,
-      HuiXin: 0,
-      HuiXinLevel: 0,
-      HuiXiao: 0,
-      HuiXiaoLevel: 0,
-      MingZhong: 0,
-      MingZhongLevel: 0,
-      WuShuang: 0,
-      WuShuangLevel: 0,
-      PoZhao: 0,
-      ignoreDefense: 0,
-      globalIgnoreDefense: 0,
-    };
-
-    const middleware = new CoreMiddleware([]);
-    middleware.use(this.countCurrentSupportGain.bind(this));
-
-    return new Promise((resolve, reject) => {
-      middleware
-        .execute(ctx)
-        .then(() => {
-          resolve(ctx);
-        })
-        .catch((error: any) => {
-          reject(error);
-        });
-    });
-  }
-
   public getSupportAttributeSync(): SupportContext {
-    let ctx: SupportContext = {
+    const ctx: SupportContext = {
       YuanQi: 0,
       GenGu: 0,
       LiDao: 0,

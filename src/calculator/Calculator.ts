@@ -6,11 +6,9 @@
  * @Last Modified time: 2021-11-21 17:53:36
  */
 
-import invariant from 'invariant';
 import Skill from '@/packages/core/skill';
 import Support from '@/packages/support/support';
-import Target from '@/packages/support/target';
-import { Gain, GainOptions, YiJinJingValues } from '@/types';
+import { createEnum } from '@/types';
 import DpsCore from '@/packages/core/core';
 import { createConfig } from './calculatorWoker';
 import {
@@ -27,47 +25,8 @@ import {
 } from '@/componet/utils';
 import { pipe } from '@/componet/compose';
 
-export default class CalculatorBase {
-  public CalculatorVersion: any;
-  public options: any;
-  public skills: Array<Skill> = [];
-  public core: DpsCore;
-  public support: Support;
-  public target: Target;
-  public professtion: string;
-  public className: string;
-  public seconds: number; // 战斗时间 default: 300s
-  public totalExpectation: number;
-  public dps: number;
-
-  constructor(options: any = {}) {
-    this.options = options;
-
-    invariant(!!options.support, '辅助类不能为空');
-    this.support = new Support(options.support);
-    this.seconds = options.seconds || 5 * 60;
-  }
-
-  public use(gain: string | Gain, rest: GainOptions) {
-    this.support.use(gain as any, rest);
-  }
-
-  public remove(gain: string) {
-    this.support.remove(gain);
-  }
-
-  public setGain(gains: Gain[]) {
-    this.support.setGain(gains);
-  }
-
-  public addSkills(skills: Skill[] = []) {
-    this.skills = skills;
-  }
-
-  public addSkill(skill: Skill) {
-    this.skills.push(skill);
-  }
-}
+export const YiJinJingVersions = createEnum(['Normal', 'Immortal']);
+export type YiJinJingVersions = keyof typeof YiJinJingVersions;
 
 export type CalculatorResult = {
   dps: number;
@@ -86,7 +45,7 @@ export type CalculatorResult = {
 export const createCalculator = (
   core: DpsCore,
   support: Support,
-  version: YiJinJingValues
+  version: YiJinJingVersions
 ): CalculatorResult => {
   const calculatorResult: CalculatorResult = {
     dps: 0,

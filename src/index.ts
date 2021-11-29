@@ -6,25 +6,23 @@ import {
   WeaponValue,
   EnChantsList,
   EffectSpineList,
-  BanquetList,
   FoodEnhanceList,
   DrugEnhanceList,
   FoodSupportList,
   DrugSupportList,
   TargetListKeys,
-  JiaSuValue,
   HomeFoodList,
-  YiJinJingValues,
 } from '@/types';
 
 import Support from '@/packages/support/support';
 import Profit from '@/packages/profit/profit';
 
-import DpsCore, { createDpsCore } from '@/packages/core/core';
-import { createCalculator } from '@/calculator/calculator';
+import DpsCore, { createDpsCore, JiaSuValue } from '@/packages/core/core';
+import { createCalculator, YiJinJingVersions } from '@/calculator/calculator';
+import { BanquetList } from './config/food.config';
 
 const CoreHelper = {
-  CalculatorVersion: YiJinJingValues,
+  CalculatorVersion: YiJinJingVersions,
   // 加速列表
   JiaSuList: {
     ...JiaSuValue,

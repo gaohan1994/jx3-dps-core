@@ -5,11 +5,37 @@
  * @Last Modified by: Harper.Gao
  * @Last Modified time: 2021-11-21 17:59:07
  */
-import { ProfitCore, SupportContextKeys, YiJinJingValues } from '@/types';
+import { BuffKeys } from '@/types';
 import { deepClone } from '@/componet/utils';
 import DpsCore from '@/packages/core/core';
 import Support, { copySupport } from '@/packages/support/support';
-import { CalculatorResult, createCalculator } from '@/calculator/calculator';
+import { CalculatorResult, createCalculator, YiJinJingVersions } from '@/calculator/calculator';
+import { Gain } from '@/packages/gain/gain';
+
+/**
+ * Constants ==============================================================
+ * ========================================================================
+ */
+
+export type ProfitCore = {
+  title: string; // 描述该模块收益
+  gain: Gain; // 该属性具体的增益
+  multiple: number; // 放大倍数
+  proportion: number; // 比例
+  attrProfit: number; // 该属性单位收益
+  pointProfit: number; // 单分收益
+  baseDps?: number; // 原dps
+  profitDps?: number; // 增益之后的dps
+  stone: Map<number, number>; // 五行石对应的数值如  6级 16点元气
+  profitWithStone: Map<number, number>; // 单孔收益
+};
+
+export type ProfitConstructorOptions = {
+  core: DpsCore;
+  support: Support;
+  version: YiJinJingVersions;
+  baseResult?: CalculatorResult;
+};
 
 /**
  * Usage =================================================================
@@ -19,18 +45,11 @@ import { CalculatorResult, createCalculator } from '@/calculator/calculator';
  * const profitList = profit.calculatroProfit();
  */
 
-type ProfitConstructorOptions = {
-  core: DpsCore;
-  support: Support;
-  version: YiJinJingValues;
-  baseResult?: CalculatorResult;
-};
-
 class Profit {
   // 创建核心类的参数
   public core: DpsCore;
   public support: Support;
-  public version: YiJinJingValues;
+  public version: YiJinJingVersions;
   public baseResult: CalculatorResult;
   public baseDps: number;
   public profitList: ProfitCore[] = [];
@@ -55,7 +74,7 @@ class Profit {
       pointProfit: 0,
       gain: {
         name: 'Profit-YuanQi',
-        data: [{ gainTarget: SupportContextKeys.YuanQi, value: 3 * 10, coverage: 1 }],
+        data: [{ gainTarget: BuffKeys.YuanQi, value: 3 * 10, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),
@@ -75,9 +94,7 @@ class Profit {
       pointProfit: 0,
       gain: {
         name: 'Profit-JiChuGongJi',
-        data: [
-          { gainTarget: SupportContextKeys.JiChuGongJi, value: (175 / 73) * 3 * 10, coverage: 1 },
-        ],
+        data: [{ gainTarget: BuffKeys.JiChuGongJi, value: (175 / 73) * 3 * 10, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),
@@ -96,9 +113,7 @@ class Profit {
       pointProfit: 0,
       gain: {
         name: 'Profit-PoFang',
-        data: [
-          { gainTarget: SupportContextKeys.PoFangLevel, value: (325 * 3 * 100) / 73, coverage: 1 },
-        ],
+        data: [{ gainTarget: BuffKeys.PoFangLevel, value: (325 * 3 * 100) / 73, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),
@@ -117,9 +132,7 @@ class Profit {
       pointProfit: 0,
       gain: {
         name: 'Profit-HuiXin',
-        data: [
-          { gainTarget: SupportContextKeys.HuiXinLevel, value: (325 * 3 * 1000) / 73, coverage: 1 },
-        ],
+        data: [{ gainTarget: BuffKeys.HuiXinLevel, value: (325 * 3 * 1000) / 73, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),
@@ -137,9 +150,7 @@ class Profit {
       pointProfit: 0,
       gain: {
         name: 'Profit-HuiXiao',
-        data: [
-          { gainTarget: SupportContextKeys.HuiXiaoLevel, value: (325 * 3 * 10) / 73, coverage: 1 },
-        ],
+        data: [{ gainTarget: BuffKeys.HuiXiaoLevel, value: (325 * 3 * 10) / 73, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),
@@ -157,9 +168,7 @@ class Profit {
       pointProfit: 0,
       gain: {
         name: 'Profit-WuShuang',
-        data: [
-          { gainTarget: SupportContextKeys.WuShuangLevel, value: (325 * 3 * 10) / 73, coverage: 1 },
-        ],
+        data: [{ gainTarget: BuffKeys.WuShuangLevel, value: (325 * 3 * 10) / 73, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),
@@ -177,7 +186,7 @@ class Profit {
       pointProfit: 0,
       gain: {
         name: 'Profit-PoZhao',
-        data: [{ gainTarget: SupportContextKeys.PoZhao, value: (325 * 3 * 10) / 73, coverage: 1 }],
+        data: [{ gainTarget: BuffKeys.PoZhao, value: (325 * 3 * 10) / 73, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),

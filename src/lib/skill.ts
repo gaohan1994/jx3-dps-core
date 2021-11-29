@@ -5,63 +5,57 @@
  * @Last Modified by: Harper.Gao
  * @Last Modified time: 2021-11-19 10:23:42
  */
-import {
-  Gain,
-  SupportContextKeys,
-  GroupSkillType,
-  GroupSkillBuffList,
-  TeamSkillValue,
-} from '../types';
+import { BuffKeys, GroupSkillBuffList, TeamSkillValue } from '../types';
 
-export const TeamSkillGains: { [name in TeamSkillValue]?: Gain } = {
+export const TeamSkillGains = {
   /**
    * 少林技能
    */
   [TeamSkillValue.JinGangNuMu]: {
     name: TeamSkillValue.JinGangNuMu,
-    data: [{ gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.4, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.4, coverage: 1 }],
   },
   [TeamSkillValue.QinLongJue]: {
     name: TeamSkillValue.QinLongJue,
     data: [
       // 擒龙诀 20%基础 25%覆盖
-      { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.2, coverage: 0.25 },
+      { gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.2, coverage: 0.25 },
     ],
   },
 
   [TeamSkillValue.PoCangQiong]: {
     name: TeamSkillValue.PoCangQiong,
-    data: [{ gainTarget: SupportContextKeys.HuiXiao, value: 0.1, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.HuiXiao, value: 0.1, coverage: 1 }],
   },
   [TeamSkillValue.XiuQi]: {
     name: TeamSkillValue.XiuQi,
     data: [
-      { gainTarget: SupportContextKeys.YuanQi, value: 111, coverage: 1 },
-      { gainTarget: SupportContextKeys.HuiXinLevel, value: 70, coverage: 1 },
+      { gainTarget: BuffKeys.YuanQi, value: 111, coverage: 1 },
+      { gainTarget: BuffKeys.HuiXinLevel, value: 70, coverage: 1 },
     ],
   },
   [TeamSkillValue.FenLan]: {
     name: TeamSkillValue.FenLan,
-    data: [{ gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.07, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.07, coverage: 1 }],
   },
 };
 
-export const GroupSkillGains: GroupSkillType = {
+export const GroupSkillGains = {
   [GroupSkillBuffList.JieHuoZhan]: {
     name: GroupSkillBuffList.JieHuoZhan,
-    data: [{ gainTarget: SupportContextKeys.damageBonus, value: 0.03, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.damageBonus, value: 0.03, coverage: 1 }],
   },
   [GroupSkillBuffList.LieRiZhan]: {
     name: GroupSkillBuffList.LieRiZhan,
-    data: [{ gainTarget: SupportContextKeys.damageBonus, value: 0.05, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.damageBonus, value: 0.05, coverage: 1 }],
   },
   [GroupSkillBuffList.LiDiChengFo]: {
     name: GroupSkillBuffList.LiDiChengFo,
-    data: [{ gainTarget: SupportContextKeys.ignoreDefense, value: 0.12, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.ignoreDefense, value: 0.12, coverage: 1 }],
   },
   [GroupSkillBuffList.HanXiaoQianJun]: {
     name: GroupSkillBuffList.HanXiaoQianJun,
-    data: [{ gainTarget: SupportContextKeys.PoFangPercent, value: 0.1, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.PoFangPercent, value: 0.1, coverage: 1 }],
   },
   /**
    * @todo 新增团队技能宏法，默认覆盖率10%
@@ -69,10 +63,10 @@ export const GroupSkillGains: GroupSkillType = {
    */
   [GroupSkillBuffList.HongFa]: {
     name: GroupSkillBuffList.HongFa,
-    data: [{ gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.3, coverage: 0.1 }],
+    data: [{ gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.3, coverage: 0.1 }],
   },
   [GroupSkillBuffList.MeiHuaDun]: {
     name: GroupSkillBuffList.MeiHuaDun,
-    data: [{ gainTarget: SupportContextKeys.globalIgnoreDefense, value: 0.15, coverage: 0.2 }],
+    data: [{ gainTarget: BuffKeys.globalIgnoreDefense, value: 0.15, coverage: 0.2 }],
   },
 };

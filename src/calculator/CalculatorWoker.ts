@@ -6,10 +6,10 @@
  */
 import Skill, { createSkillFactory } from '@/packages/core/skill';
 import { addition, multiplication } from '@/componet';
-import { JiaSuValue, YiJinJingValues } from '@/types';
-import DpsCore from '@/packages/core/core';
+import DpsCore, { JiaSuValue } from '@/packages/core/core';
 import { createMiJi, IgnoreDefenceMiJi } from '@/packages/core/miji';
 import Support from '@/packages/support/support';
+import { YiJinJingVersions } from './calculator';
 
 // 技能名称
 export enum SkillNames {
@@ -119,7 +119,7 @@ export const createConfig = function createSkillTimesConfig(
   core: DpsCore,
   support: Support,
   // 技能次数版本
-  version: YiJinJingValues
+  version: YiJinJingVersions
 ) {
   const JiaSu = core.JiaSu;
   // 是否含有橙武
@@ -150,7 +150,7 @@ export const createConfig = function createSkillTimesConfig(
 
   let config: SkillTimesConfig;
 
-  if (version === YiJinJingValues.Immortal) {
+  if (version === YiJinJingVersions.Immortal) {
     config = immortalSkillTimes as any;
   } else {
     config = normalSkillTimes as any;

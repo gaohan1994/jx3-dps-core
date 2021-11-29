@@ -5,49 +5,49 @@
  * @Last Modified by: Harper.Gao
  * @Last Modified time: 2021-11-19 10:23:34
  */
-import { Formation, FormationValue, SupportContextKeys } from '../types';
+import { FormationValue, BuffKeys } from '../types';
 
-export const FormationsGains: Formation = {
+export const FormationsGains = {
   [FormationValue.TianGuLeiYinZhen]: {
     name: FormationValue.TianGuLeiYinZhen,
     data: [
-      { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.15, coverage: 1 },
-      { gainTarget: SupportContextKeys.PoFangPercent, value: 0.1, coverage: 1 },
-      { gainTarget: SupportContextKeys.WuShuang, value: 1.95, coverage: 1 },
+      { gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.15, coverage: 1 },
+      { gainTarget: BuffKeys.PoFangPercent, value: 0.1, coverage: 1 },
+      { gainTarget: BuffKeys.WuShuang, value: 1.95, coverage: 1 },
     ],
   },
   [FormationValue.DuJingZhen]: {
     name: FormationValue.DuJingZhen,
     data: [
-      { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.05, coverage: 1 },
-      { gainTarget: SupportContextKeys.HuiXin, value: 0.03, coverage: 1 },
-      { gainTarget: SupportContextKeys.HuiXiao, value: 0.1, coverage: 1 },
-      { gainTarget: SupportContextKeys.PoFangLevel, value: 0.05, coverage: 1 },
+      { gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.05, coverage: 1 },
+      { gainTarget: BuffKeys.HuiXin, value: 0.03, coverage: 1 },
+      { gainTarget: BuffKeys.HuiXiao, value: 0.1, coverage: 1 },
+      { gainTarget: BuffKeys.PoFangLevel, value: 0.05, coverage: 1 },
     ],
   },
   [FormationValue.TianLuoZhen]: {
     name: FormationValue.TianLuoZhen,
     data: [
-      { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.05, coverage: 1 },
-      { gainTarget: SupportContextKeys.HuiXin, value: 0.05, coverage: 1 },
-      { gainTarget: SupportContextKeys.HuiXiao, value: 0.15, coverage: 1 },
-      { gainTarget: SupportContextKeys.globalIgnoreDefense, value: 0.05, coverage: 1 },
+      { gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.05, coverage: 1 },
+      { gainTarget: BuffKeys.HuiXin, value: 0.05, coverage: 1 },
+      { gainTarget: BuffKeys.HuiXiao, value: 0.15, coverage: 1 },
+      { gainTarget: BuffKeys.globalIgnoreDefense, value: 0.05, coverage: 1 },
     ],
   },
   [FormationValue.QiChunZhen]: {
     name: FormationValue.QiChunZhen,
     data: [
-      { gainTarget: SupportContextKeys.HuiXin, value: 0.08, coverage: 1 },
-      { gainTarget: SupportContextKeys.HuiXiao, value: 0.15, coverage: 1 },
-      { gainTarget: SupportContextKeys.WuShuang, value: 1.95, coverage: 1 },
+      { gainTarget: BuffKeys.HuiXin, value: 0.08, coverage: 1 },
+      { gainTarget: BuffKeys.HuiXiao, value: 0.15, coverage: 1 },
+      { gainTarget: BuffKeys.WuShuang, value: 1.95, coverage: 1 },
     ],
   },
   [FormationValue.MoWenZhen]: {
     name: FormationValue.MoWenZhen,
     data: [
-      { gainTarget: SupportContextKeys.JiChuGongJiPercent, value: 0.1, coverage: 1 },
-      { gainTarget: SupportContextKeys.HuiXin, value: 0.08, coverage: 1 },
-      { gainTarget: SupportContextKeys.WuShuang, value: 1.95, coverage: 1 },
+      { gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.1, coverage: 1 },
+      { gainTarget: BuffKeys.HuiXin, value: 0.08, coverage: 1 },
+      { gainTarget: BuffKeys.WuShuang, value: 1.95, coverage: 1 },
     ],
   },
 };
