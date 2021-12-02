@@ -19,7 +19,8 @@
   "license": "MIT",
   "dependencies": {
     "invariant": "^2.2.4",
-    "numeral": "^2.0.6"
+    "numeral": "^2.0.6",
+    "rollup-plugin-uglify": "^6.0.4"
   },
   "jest": {
     "testEnvironment": "node"
