@@ -9,14 +9,12 @@
 import invariant from 'invariant';
 import { createEnum } from '@/types';
 
-export enum JiaSuValue {
-  YiDuanJiaSu = 'YiDuanJiaSu',
-  ErDuanJiaSu = 'ErDuanJiaSu',
-}
-
 // 创建 K: V
 export const CoreEnum = createEnum(['YuanQi', 'GenGu', 'LiDao', 'ShenFa']);
 export type CoreEnum = keyof typeof CoreEnum;
+
+export const JiaSuValue = createEnum(['YiDuanJiaSu', 'ErDuanJiaSu']);
+export type JiaSuValue = keyof typeof JiaSuValue;
 
 export interface MainCoeffiecient {
   (yuanQi: number): {

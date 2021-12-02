@@ -4,7 +4,6 @@ const rollupBuiltinsPlugin = require('rollup-plugin-node-builtins');
 const rollupBabel = require('rollup-plugin-babel');
 const rollupCommonJsPlugin = require('rollup-plugin-commonjs');
 const rollupTypescriptPlugin = require('rollup-plugin-typescript2');
-const packageJson = require('../package.json');
 const aliasPlugin = require('@rollup/plugin-alias');
 
 // get project root dir

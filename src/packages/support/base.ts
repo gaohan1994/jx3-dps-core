@@ -1,28 +1,10 @@
-import {
-  Gain,
-  SupportContext,
-  FormationValue,
-  TeamSkillValue,
-  GroupSkillBuffList,
-  SetBonuse,
-  GainOptions,
-} from '../../types';
-import { AllGainList } from '../../lib';
+import { SupportContext } from '@/types';
+import { Gain, isGain, selectGainByName } from '@/packages/gain/gain';
+import gainModule from '../gain';
 
-export type SupportName = FormationValue | TeamSkillValue | GroupSkillBuffList | SetBonuse;
-
+const { allGainList } = gainModule;
 export interface SupportBaseOptions {
   gainList?: Gain[];
-}
-
-/**
- * 判断Gain类型 是增益库里的增益还是自定义增益
- *
- * @param {(SupportName | Gain)} value
- * @return {*}  {value is Gain}
- */
-function isGain(value: SupportName | Gain): value is Gain {
-  return typeof value !== 'string' && Array.isArray(value.data);
 }
 
 class SupportBase {
@@ -80,7 +62,7 @@ class SupportBase {
    * @param {Gain} gain
    * @memberof SupportBase
    */
-  public use(gain: SupportName | Gain, options?: GainOptions): void {
+  public use(gain: string | Gain, options?: { coverage: number }): void {
     /**
      * @todo 判断增益的类型，是否是自定义增益，拿到当前增益
      * @param isGain
@@ -90,7 +72,11 @@ class SupportBase {
     if (isGain(gain)) {
       currentGain = gain;
     } else {
-      currentGain = AllGainList[gain];
+      currentGain = selectGainByName(allGainList, gain);
+    }
+
+    if (!currentGain) {
+      return;
     }
 
     /**

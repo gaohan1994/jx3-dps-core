@@ -1,5 +1,5 @@
+import { Gain } from '@/packages/gain/gain';
 import DpsCore, { CoreEnum } from '@/packages/core/core';
-import { Gain } from '@/types';
 import { pipe } from './compose';
 
 export function deepClone<T>(target: T): T {
@@ -15,29 +15,38 @@ export function deepClone<T>(target: T): T {
 
 // 执行原函数之前先执行beforeFunction
 export const before = (originFunction: any, beforeFunction: any): any => {
-  return (...rest: any[]) => {
+  return function (...rest: any[]) {
     beforeFunction.apply(this, rest);
     return originFunction.apply(this, rest);
   };
 };
 
-// 执行原函数之后执行beforeFunction
-export const after = (originFunction: any, beforeFunction: any): any => {
-  return (...rest: any[]) => {
+// 执行原函数之后执行afterFunction
+export const after = (originFunction: any, afterFunction: any): any => {
+  return function (...rest: any[]) {
     const result = originFunction.apply(this, rest);
-    beforeFunction.apply(this, rest);
+    afterFunction.apply(this, rest);
     return result;
   };
 };
 
-export function isGain(data: Gain[] | Gain): data is Gain {
+// 执行原函数之后以originFunction的result作为入参执行afterFunction
+export const afterResult = (originFunction: any, afterFunction: any): any => {
+  return function (...rest: any[]) {
+    const result = originFunction.apply(this, rest);
+    afterFunction.call(this, result);
+    return result;
+  };
+};
+
+export function isSingleGain(data: Gain[] | Gain): data is Gain {
   return !Array.isArray(data) && typeof data.name === 'string';
 }
 
 export const mergeGainList = (...restGainList: Gain[]): Gain[] => {
   const nextGainList: Gain[] = [];
   restGainList.reduce((prevGainList, gainList) => {
-    const currentGainList: Gain[] = !isGain(gainList) ? gainList : [gainList];
+    const currentGainList: Gain[] = !isSingleGain(gainList) ? gainList : [gainList];
     return prevGainList.concat(currentGainList);
   }, nextGainList);
 
