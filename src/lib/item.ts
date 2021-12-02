@@ -6,35 +6,25 @@
  * @Last Modified time: 2021-11-19 10:23:40
  */
 
-import {
-  Weapon,
-  WeaponValue,
-  SupportContextKeys,
-  EnChants,
-  EnChantsList,
-  EffectSpine,
-  EffectSpineList,
-  SetBonuse,
-  Gain,
-} from '../types';
+import { WeaponValue, BuffKeys, EnChantsList, SetBonuse, EffectSpineList } from '@/types';
 
 /**
  * @time 08-24
  *
  * 新增 武器增益列表
  */
-export const WeaponGains: Weapon = {
+export const WeaponGains = {
   [WeaponValue.EffectWather]: {
     name: WeaponValue.EffectWather,
-    data: [{ gainTarget: SupportContextKeys.JiChuGongJi, value: 490, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 490, coverage: 1 }],
   },
   [WeaponValue.CW]: {
     name: WeaponValue.CW,
-    data: [{ gainTarget: SupportContextKeys.JiChuGongJi, value: 0, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 0, coverage: 1 }],
   },
   [WeaponValue.Normal]: {
     name: WeaponValue.EffectWather,
-    data: [{ gainTarget: SupportContextKeys.JiChuGongJi, value: 0, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 0, coverage: 1 }],
   },
 };
 
@@ -43,57 +33,57 @@ export const WeaponGains: Weapon = {
  *
  * 新增 附魔增益列表
  */
-export const EnChantGains: EnChants = {
+export const EnChantGains = {
   [EnChantsList.EnChantBelt]: {
     name: EnChantsList.EnChantBelt,
-    data: [{ gainTarget: SupportContextKeys.damageBonus, value: 0.011, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.damageBonus, value: 0.011, coverage: 1 }],
   },
   [EnChantsList.EnChantBody]: {
     name: EnChantsList.EnChantBody,
-    data: [{ gainTarget: SupportContextKeys.JiChuGongJi, value: 357, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 357, coverage: 1 }],
   },
   [EnChantsList.EnChantHand]: {
     name: EnChantsList.EnChantHand,
-    data: [{ gainTarget: SupportContextKeys.JiChuGongJi, value: 0, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 0, coverage: 1 }],
   },
   [EnChantsList.EnChantHead]: {
     name: EnChantsList.EnChantHead,
-    data: [{ gainTarget: SupportContextKeys.PoFangLevel, value: 496, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 496, coverage: 1 }],
   },
   [EnChantsList.EnChantShoe]: {
     name: EnChantsList.EnChantShoe,
-    data: [{ gainTarget: SupportContextKeys.JiChuGongJi, value: 0, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 0, coverage: 1 }],
   },
 };
 
 /**
  * 特效腰椎增益
  */
-export const EffectSpineGains: EffectSpine = {
+export const EffectSpineGains = {
   [EffectSpineList.XiangMeng]: {
     name: EffectSpineList.XiangMeng,
-    data: [{ gainTarget: SupportContextKeys.PoFangLevel, value: 3845, coverage: 15 / 180 }],
+    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 3845, coverage: 15 / 180 }],
   },
 };
 
 /**
  * 套装增益
  */
-export const SetBonuseGains: { [name in SetBonuse]: Gain } = {
+export const SetBonuseGains: { [name in SetBonuse]: any } = {
   [SetBonuse.ValueSetBonuse]: {
     name: SetBonuse.ValueSetBonuse,
     data: [
       // 套装 4%会心 覆盖率 40%
-      { gainTarget: SupportContextKeys.HuiXin, value: 0.04, coverage: 0.4 },
+      { gainTarget: BuffKeys.HuiXin, value: 0.04, coverage: 0.4 },
       // 套装会心效果 4% 覆盖率40%
-      { gainTarget: SupportContextKeys.HuiXiao, value: 0.04, coverage: 0.4 },
+      { gainTarget: BuffKeys.HuiXiao, value: 0.04, coverage: 0.4 },
     ],
   },
   [SetBonuse.SkillSetBonuse]: {
     name: SetBonuse.SkillSetBonuse,
     data: [
       // 套装 4%会心 覆盖率 40%
-      { gainTarget: SupportContextKeys.HuiXin, value: 0, coverage: 1 },
+      { gainTarget: BuffKeys.HuiXin, value: 0, coverage: 1 },
     ],
   },
 };

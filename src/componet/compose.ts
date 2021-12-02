@@ -1,4 +1,4 @@
-function compose(middlewares: any[]) {
+export function compose(middlewares: any[]) {
   /**
    * 校验 middlewares 格式
    */
@@ -66,7 +66,7 @@ function compose(middlewares: any[]) {
  *
  * @param {...Function[]} functions
  */
-function composeSync(...functions: any[]) {
+export function composeSync(...functions: any[]) {
   if (functions.length === 0) {
     return (args: any) => args;
   }
@@ -82,7 +82,7 @@ function composeSync(...functions: any[]) {
   );
 }
 
-function pipe(...functions: any[]) {
+export function pipe(...functions: any[]) {
   if (functions.length === 0) {
     return (args: any) => args;
   }
@@ -97,6 +97,4 @@ function pipe(...functions: any[]) {
         b(a(...args))
   );
 }
-
-export { composeSync, pipe };
 export default compose;

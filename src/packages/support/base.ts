@@ -1,15 +1,14 @@
 import {
-  Gain,
   SupportContext,
   FormationValue,
   TeamSkillValue,
   GroupSkillBuffList,
   SetBonuse,
-  GainOptions,
 } from '../../types';
-import { AllGainList } from '../../lib';
+import { AllGainList } from '../gain';
+import { Gain } from '@/packages/gain/gain';
 
-type SupportName = FormationValue | TeamSkillValue | GroupSkillBuffList | SetBonuse;
+export type SupportName = FormationValue | TeamSkillValue | GroupSkillBuffList | SetBonuse;
 
 export interface SupportBaseOptions {
   gainList?: Gain[];
@@ -80,7 +79,7 @@ class SupportBase {
    * @param {Gain} gain
    * @memberof SupportBase
    */
-  public use(gain: SupportName | Gain, options?: GainOptions): void {
+  public use(gain: SupportName | Gain, options?: { coverage: number }): void {
     /**
      * @todo 判断增益的类型，是否是自定义增益，拿到当前增益
      * @param isGain

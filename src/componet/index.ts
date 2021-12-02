@@ -1,6 +1,4 @@
 import numeral from 'numeral';
-import compose, { composeSync, pipe } from './compose';
-import CoreMiddleware from './middleware';
 
 /**
  * 整理小数位数
@@ -25,7 +23,7 @@ export function floortNumberPlaces(number: number, place?: number) {
  *
  * @return {*}
  */
-const multiplication = function multiplicationCalculator(...rest: any[]): number {
+export const multiplication = function multiplicationCalculator(...rest: any[]): number {
   const params: number[] = Array.prototype.slice.call(arguments);
   return params.reduce((prevValue, currentValue) => {
     return prevValue * currentValue;
@@ -37,11 +35,9 @@ const multiplication = function multiplicationCalculator(...rest: any[]): number
  *
  * @return {*}
  */
-const addition = function additionCalculator(...rest: any[]): number {
+export const addition = function additionCalculator(...rest: any[]): number {
   const params: number[] = Array.prototype.slice.call(arguments);
   return params.reduce((prevValue, currentValue) => {
     return prevValue + currentValue;
   }, 0);
 };
-
-export { compose, CoreMiddleware, multiplication, addition, composeSync, pipe };

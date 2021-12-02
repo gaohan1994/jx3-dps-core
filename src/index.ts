@@ -6,28 +6,23 @@ import {
   WeaponValue,
   EnChantsList,
   EffectSpineList,
-  BanquetList,
   FoodEnhanceList,
   DrugEnhanceList,
   FoodSupportList,
   DrugSupportList,
   TargetListKeys,
-  JiaSuValue,
   HomeFoodList,
-  YiJinJingValues,
 } from '@/types';
 
 import Support from '@/packages/support/support';
 import Profit from '@/packages/profit/profit';
 
-import unstableOldCore from '@/packages/core/unstableOldCore';
-import UnstableOldYiJinJing from '@/calculator/ShaoLin/YiJinJing';
-
-import DpsCore, { createDpsCore } from '@/packages/core/core';
-import { createCalculator } from '@/calculator/calculator';
+import DpsCore, { createDpsCore, JiaSuValue } from '@/packages/core/core';
+import { createCalculator, YiJinJingVersions } from '@/calculator/calculator';
+import { BanquetList } from './config/food.config';
 
 const CoreHelper = {
-  CalculatorVersion: YiJinJingValues,
+  CalculatorVersion: YiJinJingVersions,
   // 加速列表
   JiaSuList: {
     ...JiaSuValue,
@@ -95,22 +90,4 @@ const CoreHelper = {
   },
 };
 
-// old calculator
-class UnstableOldJx3DpsCore {
-  static YiJinJing = UnstableOldYiJinJing;
-  static Profit = Profit;
-  static CoreHelper = CoreHelper;
-}
-
-export {
-  createCalculator,
-  DpsCore,
-  createDpsCore,
-  Support,
-  CoreHelper,
-  Profit,
-  // unstable packages need remove on Version 2.0.0
-  UnstableOldJx3DpsCore,
-  unstableOldCore,
-  UnstableOldYiJinJing,
-};
+export { createCalculator, createDpsCore, DpsCore, Support, CoreHelper, Profit };

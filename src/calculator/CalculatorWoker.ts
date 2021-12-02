@@ -4,12 +4,12 @@
  * @Last Modified by: centerm.gaohan
  * @Last Modified time: 2021-11-19 10:12:23
  */
-import Skill, { createSkillFactory } from '../packages/core/skill';
-import { addition, multiplication } from '../componet';
-import { JiaSuValue, YiJinJingValues } from '../types';
-import DpsCore from '../packages/core/core';
-import { Support } from '../packages/support';
-import { createMiJi, IgnoreDefenceMiJi } from '../packages/core/miji';
+import Skill, { createSkillFactory } from '@/packages/core/skill';
+import { addition, multiplication } from '@/componet';
+import DpsCore, { JiaSuValue } from '@/packages/core/core';
+import { createMiJi, IgnoreDefenceMiJi } from '@/packages/core/miji';
+import Support from '@/packages/support/support';
+import { YiJinJingVersions } from './calculator';
 
 // 技能名称
 export enum SkillNames {
@@ -104,10 +104,6 @@ function xiangmoSkillTimes({ NaYunShi, WeiTuoXianChu }: SkillTimesConfig): numbe
   return addition(NaYunShi, WeiTuoXianChu);
 }
 
-function skillAttributeIsNumberType(data: SkillBeforeCreated): data is Array<number> {
-  return Array.isArray(data);
-}
-
 function skillAttributeIsFunctionType(
   data: SkillBeforeCreated
 ): data is SkillBeforeCreatedFunction {
@@ -123,24 +119,18 @@ export const createConfig = function createSkillTimesConfig(
   core: DpsCore,
   support: Support,
   // 技能次数版本
-  version: YiJinJingValues
+  version: YiJinJingVersions
 ) {
   const JiaSu = core.JiaSu;
   // 是否含有橙武
   const hasCw = support.hasCw();
   // 橙武触发次数
   const cwTimes = support.CWTimes;
-  const target = support.target;
-  /**
-   * 计算器配置文件
-   */
+  // 计算器配置文件
   const calculatorConfig: CalculatorConfig = {
     skills: [],
   };
-
-  /**
-   * 技能次数配置文件
-   */
+  // 技能次数配置文件
   const skillTimes: SkillTimes = {
     PoZhao: 0,
     NaYunShi: 0,
@@ -160,17 +150,13 @@ export const createConfig = function createSkillTimesConfig(
 
   let config: SkillTimesConfig;
 
-  if (version === YiJinJingValues.Immortal) {
+  if (version === YiJinJingVersions.Immortal) {
     config = immortalSkillTimes as any;
   } else {
     config = normalSkillTimes as any;
   }
 
-  /**
-   * 根据加速段数和cw返回技能次数
-   *
-   * @param {JiaSuValue} JiaSu
-   */
+  // 根据加速段数和cw返回技能次数
   function calculatorSillTimesByNumberConfigWithJiaSuAndCw(skillName: SkillNames): void {
     // 根据段位选择技能数
     const token = JiaSu === JiaSuValue.YiDuanJiaSu ? 0 : 1;
@@ -188,44 +174,30 @@ export const createConfig = function createSkillTimesConfig(
     }
   }
 
-  /**
-   * 根据回调返回技能次数
-   */
+  // 根据回调返回技能次数
   function calculatorSillTimesByCallback(skillName: SkillNames): void {
     const currentCallback: any = config[skillName];
     skillTimes[skillName] = currentCallback(skillTimes);
   }
 
-  /**
-   * 首先拿到所有的keys
-   */
+  // 首先拿到所有的keys
   const keys = Object.keys(config) as SkillNames[];
 
-  /**
-   * 函数类型的技能配置文件的队列
-   */
+  // 函数类型的技能配置文件的队列
   const quene = [];
 
-  /**
-   * 第一遍遍历
-   * 遍历所有非函数类型的技能配置
-   */
+  // 第一遍遍历:遍历所有非函数类型的技能配置
   for (let i = 0; i < keys.length; ) {
     const currentKey = keys.shift();
     if (skillAttributeIsFunctionType(config[currentKey])) {
-      /**
-       * 如果是技能类型的配置则插入到队列中去等待第二次遍历
-       */
+      // 如果是技能类型的配置则插入到队列中去等待第二次遍历
       quene.push(currentKey);
       continue;
     }
 
     calculatorSillTimesByNumberConfigWithJiaSuAndCw(currentKey);
   }
-
-  /**
-   * 第二次遍历 遍历函数类型的技能配置文件
-   */
+  // 第二次遍历 遍历函数类型的技能配置文件
   while (quene.length > 0) {
     const currentKey = quene.shift();
     calculatorSillTimesByCallback(currentKey);

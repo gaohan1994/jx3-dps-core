@@ -8,10 +8,8 @@
     createCalculator,
     Support,
     CoreHelper,
-    UnstableOldYiJinJing
+    Profit
   } = require('../build');
-
-  const YiJinJing = UnstableOldYiJinJing;
 
   async function newDemo() {
     function sort(skills) {
@@ -34,6 +32,7 @@
     support.use('QinLongJue');
     support.use({
       name: 'UPDATE08-30',
+      type: 'Costom',
       data: [{
         gainTarget: 'damageBonus',
         value: 0.03,
@@ -42,6 +41,7 @@
     });
     support.use({
       name: '少林常驻破防加成',
+      type: 'Costom',
       data: [{
         gainTarget: 'PoFangPercent',
         value: 0.15,
@@ -54,41 +54,19 @@
       total,
       skills
     } = calculatorResult;
-    const afterSkills = sort(skills); // console.log('total', total);
+    const afterSkills = sort(skills);
+    const profit = new Profit({
+      core: newCore,
+      support,
+      version: CoreHelper.CalculatorVersion.Normal
+    });
+    profit.calculatroProfit(); // console.log('profitList', profitList)
+    // return;
+    // console.log('total', total);
 
     console.log('dps', dps);
     afterSkills.forEach(item => {// console.log(`${item.skillTitle}:${item.subTotal}`);
     });
-    console.log('----'); // console.log('config', config);
-    // return;
-
-    const Yjj = new YiJinJing({
-      CalculatorVersion: YiJinJing.YiJinJingVersion.Normal,
-      core: {
-        type: 'YuanQi',
-        JiChuGongJi: 14470,
-        WuQiShangHai: 1998,
-        HuiXin: 19.05,
-        HuiXiao: 175.77,
-        PoFang: 38.01,
-        PoZhao: 4130,
-        WuShuang: 54.06,
-        YuanQi: 2880,
-        JiaSu: CoreHelper.JiaSuList.YiDuanJiaSu
-      },
-      support: {
-        mode: 'NeiGong',
-        target: CoreHelper.Target.MuZhuang113
-      }
-    });
-    Yjj.use(CoreHelper.SetBonusesGain.ValueSetBonuse);
-    Yjj.use(CoreHelper.SetBonusesGain.SkillSetBonuse);
-    Yjj.use(CoreHelper.Enchants.EnChantBelt);
-    Yjj.use(CoreHelper.Enchants.EnChantBody);
-    Yjj.use(CoreHelper.Enchants.EnChantHead);
-    const BaseDps = await Yjj.total(); // console.log('total', BaseDps.totalExpectation);
-
-    console.log(BaseDps.dps);
   }
 
   newDemo();

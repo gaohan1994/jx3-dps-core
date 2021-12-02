@@ -1,7 +1,3 @@
-import DpsCore from '../packages/core/unstableOldCore';
-import Support from '../packages/support/support';
-import Target from '../packages/support/target';
-
 export function createEnum<T extends string>(keys: Array<T>): { [K in T]: K } {
   return keys.reduce((result, key) => {
     result[key] = key;
@@ -9,77 +5,35 @@ export function createEnum<T extends string>(keys: Array<T>): { [K in T]: K } {
   }, Object.create(null));
 }
 
-export enum JiaSuValue {
-  YiDuanJiaSu = 'YiDuanJiaSu',
-  ErDuanJiaSu = 'ErDuanJiaSu',
-}
+// 增益目标
+export const BuffKeys = createEnum([
+  'YuanQi',
+  'GenGu',
+  'LiDao',
+  'ShenFa',
+  'damageBonus',
+  'globalIgnoreDefense', // 新增全局无视防御系数 包含2个技能 梅花盾 和 田螺阵
+  'ignoreDefense', // 新增无视防御系数
+  'PoFangPercent',
+  'PoFangLevel',
+  'JiChuGongJi',
+  'JiChuGongJiPercent',
+  'HuiXin',
+  'HuiXinLevel',
+  'HuiXiao',
+  'HuiXiaoLevel',
+  'MingZhong',
+  'MingZhongLevel',
+  'WuShuang',
+  'WuShuangLevel',
+  'PoZhao',
+]);
+export type BuffKeys = keyof typeof BuffKeys;
 
-/**
- * 技能增益核心类
- *
- * @todo 新增覆盖率
- * @time 08-31
- * @param coverage
- *
- * @export
- * @enum {number}
- */
-export interface GainAttribute {
-  gainTarget: SupportContextKeys;
-  value: number;
-  coverage: number;
-}
-
-export type Gain = {
-  name: string;
-  data: Array<GainAttribute>;
+export type SupportContext = {
+  [key in BuffKeys]: number;
 };
 
-export type GainOptions = {
-  coverage?: number;
-};
-
-/**
- * 辅助类类别
- *
- * 内功 / 外功
- *
- * @export
- * @enum {number}
- */
-export enum SupportMode {
-  NeiGong = 'NeiGong',
-  WaiGong = 'WaiGong',
-}
-
-export enum CharacterTypes {
-  /**
-   * 元气
-   */
-  YuanQi = 'YuanQi',
-
-  /**
-   * 根骨
-   */
-  GenGu = 'GenGu',
-
-  /**
-   * 力道
-   */
-  LiDao = 'LiDao',
-
-  /**
-   * 身法
-   */
-  ShenFa = 'ShenFa',
-}
-
-/**
- * 目标列表
- *
- * @export
- * @enum {number}
- */
 export enum TargetListKeys {
   DaMoDong = 'DaMoDong',
   MuZhuang111 = 'MuZhuang111',
@@ -94,12 +48,10 @@ export type TargetParams = {
   level: number;
 };
 
-/**
- * 阵法列表
- *
- * @export
- * @enum {number}
- */
+export enum EffectSpineList {
+  XiangMeng = 'XiangMeng',
+}
+
 export enum FormationValue {
   TianGuLeiYinZhen = 'TianGuLeiYinZhen',
   DuJingZhen = 'DuJingZhen',
@@ -108,43 +60,19 @@ export enum FormationValue {
   MoWenZhen = 'MoWenZhen',
 }
 
-/**
- * 技能增益列表
- *
- * @export
- * @enum {number}
- */
 export enum TeamSkillValue {
-  /**
-   *
-   * 内功技能增益
-   */
   JinGangNuMu = 'JinGangNuMu',
   QinLongJue = 'QinLongJue',
   PoCangQiong = 'PoCangQiong',
   XiuQi = 'XiuQi',
   FenLan = 'FenLan',
-
-  /**
-   * 外功小队技能增益
-   *
-   * @export
-   * @enum {number}
-   */
+  // 外功
   SuiXingChen = 'SuiXingChen',
   YinMeiXiang = 'YinMeiXiang',
   JiLei = 'JiLei',
   Jiu = 'Jiu',
 }
 
-export enum GroupSkillList {}
-
-/**
- * 团队技能增益
- *
- * @export
- * @enum {number}
- */
 export enum GroupSkillBuffList {
   HongFa = 'HongFa',
   LiDiChengFo = 'LiDiChengFo',
@@ -156,273 +84,52 @@ export enum GroupSkillBuffList {
   HanXiaoQianJun = 'HanXiaoQianJun',
 }
 
-export type Formation = {
-  [key in FormationValue]: Gain;
-};
-
 export enum EnChantsList {
-  // 附魔头
-  EnChantHead = 'EnChantHead',
-  // 附魔衣服
-  EnChantBody = 'EnChantBody',
-  // 附魔腰带
-  EnChantBelt = 'EnChantBelt',
-  // 附魔护手
-  EnChantHand = 'EnChantHand',
-  // 附魔鞋子
-  EnChantShoe = 'EnChantShoe',
+  EnChantHead = 'EnChantHead', // 附魔头
+  EnChantBody = 'EnChantBody', // 附魔衣服
+  EnChantBelt = 'EnChantBelt', // 附魔腰带
+  EnChantHand = 'EnChantHand', // 附魔护手
+  EnChantShoe = 'EnChantShoe', // 附魔鞋子
 }
 
-export type EnChants = {
-  [key in EnChantsList]: Gain;
-};
-
-export enum EffectSpineList {
-  XiangMeng = 'XiangMeng',
-}
-
-export type EffectSpine = {
-  [key in EffectSpineList]: Gain;
-};
-
-/**
- * 武器类型
- *
- * @export
- * @enum {number}
- */
 export enum WeaponValue {
   Normal = 'Normal',
-  /**
-   * 橙武
-   */
-  CW = 'CW',
-  /**
-   * 水特效
-   */
-  EffectWather = 'EffectWather',
+  CW = 'CW', // 橙武
+  EffectWather = 'EffectWather', // 水特效
 }
 
-export type Weapon = {
-  [key in WeaponValue]: Gain;
-};
-
-/**
- * 套装类型
- *
- * @export
- * @enum {number}
- */
 export enum SetBonuse {
-  /**
-   * 技能套装效果
-   */
-  SkillSetBonuse = 'SkillSetBonuse',
-
-  /**
-   * 数值套装效果
-   */
-  ValueSetBonuse = 'ValueSetBonuse',
+  SkillSetBonuse = 'SkillSetBonuse', // 套装类型
+  ValueSetBonuse = 'ValueSetBonuse', // 数值套装效果
 }
 
-export enum BanquetList {
-  ShuiZhuYu = 'ShuiZhuYu',
-  ErShiSiQiaoMingYueYe = 'ErShiSiQiaoMingYueYe',
-  TongZeYan = 'TongZeYan',
-  ZhengYuCaiPan = 'ZhengYuCaiPan',
-}
-
-export type Banquet = {
-  [key in BanquetList]: Gain;
-};
-
-/**
- * 增强食品
- */
+// 增强食品
 export enum FoodEnhanceList {
   SuanCaiYu = 'SuanCaiYu',
   HongShaoPaiGu = 'HongShaoPaiGu',
   BaiRouXueChang = 'BaiRouXueChang',
   GuanTangBao = 'GuanTangBao',
 }
-
-/**
- * 增强药品
- */
+// 增强药品
 export enum DrugEnhanceList {
   ShangPinYuLiSan = 'ShangPinYuLiSan',
   ShangPinPoHuiSan = 'ShangPinPoHuiSan',
   ShangPinNingShenSan = 'ShangPinNingShenSan',
   ShangPinZhanFengDan = 'ShangPinZhanFengDan',
 }
-
-/**
- * 辅助食品
- */
+// 辅助食品
 export enum FoodSupportList {
   YuPianShaGuoZhou = 'YuPianShaGuoZhou',
 }
-
-/**
- * 辅助药品
- */
+// 辅助药品
 export enum DrugSupportList {
   ShangPinJuHunWan = 'ShangPinJuHunWan',
 }
-
-/**
- * 家园小吃
- */
+// 家园小吃
 export enum HomeFoodList {
   JianDouFu = 'JianDouFu',
   XiaoChaoQingCai = 'XiaoChaoQingCai',
   ZhaXiaoYu = 'ZhaXiaoYu',
   DunDouFu = 'DunDouFu',
   QingZhengLuYu = 'QingZhengLuYu',
-}
-
-/**
- * 小吃增益
- */
-export type Food = {
-  FoodEnhance: {
-    [key in FoodEnhanceList]: Gain;
-  };
-  DrugEnhance: {
-    [key in DrugEnhanceList]: Gain;
-  };
-  FoodSupport: {
-    [key in FoodSupportList]: Gain;
-  };
-  DrugSupport: {
-    [key in DrugSupportList]: Gain;
-  };
-  HomeFood: {
-    [key in HomeFoodList]: Gain;
-  };
-};
-
-type Partical<T> = {
-  [P in keyof T]?: T[P];
-};
-
-export type GroupSkillType = Partical<{
-  [key in GroupSkillBuffList]: Gain;
-}>;
-
-export interface SkillContext {
-  core: DpsCore;
-
-  support: Support;
-
-  target?: Target;
-
-  skillName?: string;
-
-  supportContext?: SupportContext;
-
-  /**
-   * 当前技能的dps期望
-   *
-   * @type {number}
-   * @memberof SkillContext
-   */
-  subTotal?: number;
-
-  skillTimes?: number;
-
-  basicDamage?: number;
-
-  coefficient?: number;
-}
-
-export enum SupportContextKeys {
-  YuanQi = 'YuanQi',
-  GenGu = 'GenGu',
-  LiDao = 'LiDao',
-  ShenFa = 'ShenFa',
-  damageBonus = 'damageBonus',
-
-  /**
-   * 新增全局无视防御系数
-   * 包含2个技能 梅花盾 和 田螺阵
-   *
-   * @time 09-01
-   * @param globalIgnoreDefense
-   */
-  globalIgnoreDefense = 'globalIgnoreDefense',
-  /**
-   * 新增无视防御系数
-   *
-   * @time 08-24
-   * @param ignoreDefense
-   */
-  ignoreDefense = 'ignoreDefense',
-  PoFangPercent = 'PoFangPercent',
-  PoFangLevel = 'PoFangLevel',
-  JiChuGongJi = 'JiChuGongJi',
-  JiChuGongJiPercent = 'JiChuGongJiPercent',
-  HuiXin = 'HuiXin',
-  HuiXinLevel = 'HuiXinLevel',
-  HuiXiao = 'HuiXiao',
-  HuiXiaoLevel = 'HuiXiaoLevel',
-  MingZhong = 'MingZhong',
-  MingZhongLevel = 'MingZhongLevel',
-  WuShuang = 'WuShuang',
-  WuShuangLevel = 'WuShuangLevel',
-  PoZhao = 'PoZhao',
-}
-
-export type SupportContext = {
-  [key in SupportContextKeys]: number;
-};
-
-export interface CalculatorResultSkillItem {
-  skillName: string;
-  subTotal: number;
-  percent: number;
-  skillTimes: number;
-}
-
-export interface CalculatorResult {
-  totalExpectation: number;
-  seconds: number;
-  dps: number;
-  skills: CalculatorResultSkillItem[];
-}
-
-/**
- * 属性收益模块
- * @param ProfitCore
- */
-export type ProfitCore = {
-  // 描述该模块收益
-  title: string;
-  // 该属性具体的增益
-  gain: Gain;
-  // 放大倍数
-  multiple: number;
-  // 比例
-  proportion: number;
-
-  // 该属性单位收益
-  attrProfit: number;
-  // 单分收益
-  pointProfit: number;
-
-  // 原dps
-  baseDps?: number;
-  // 增益之后的dps
-  profitDps?: number;
-
-  // 五行石对应的数值如  6级 16点元气
-  stone: Map<number, number>;
-
-  // 单孔收益
-  profitWithStone: Map<number, number>;
-};
-
-export enum YiJinJingValues {
-  Normal = 'Normal',
-  Immortal = 'Immortal',
 }

@@ -1,18 +1,57 @@
-import DpsCore, { CoreEnum } from '../packages/core/core';
+import { Gain } from '@/packages/gain/gain';
+import DpsCore, { CoreEnum } from '@/packages/core/core';
 import { pipe } from './compose';
 
 export function deepClone<T>(target: T): T {
   if (typeof target !== 'object') return;
   const newObj: any = target instanceof Array ? [] : {};
-
   for (const key in target) {
     if (target.hasOwnProperty(key)) {
       newObj[key] = typeof target[key] === 'object' ? deepClone(target[key]) : target[key];
     }
   }
-
   return newObj;
 }
+
+// 执行原函数之前先执行beforeFunction
+export const before = (originFunction: any, beforeFunction: any): any => {
+  return function (...rest: any[]) {
+    beforeFunction.apply(this, rest);
+    return originFunction.apply(this, rest);
+  };
+};
+
+// 执行原函数之后执行afterFunction
+export const after = (originFunction: any, afterFunction: any): any => {
+  return function (...rest: any[]) {
+    const result = originFunction.apply(this, rest);
+    afterFunction.apply(this, rest);
+    return result;
+  };
+};
+
+// 执行原函数之后以originFunction的result作为入参执行afterFunction
+export const afterResult = (originFunction: any, afterFunction: any): any => {
+  return function (...rest: any[]) {
+    const result = originFunction.apply(this, rest);
+    afterFunction.call(this, result);
+    return result;
+  };
+};
+
+export function isGain(data: Gain[] | Gain): data is Gain {
+  return !Array.isArray(data) && typeof data.name === 'string';
+}
+
+export const mergeGainList = (...restGainList: Gain[]): Gain[] => {
+  const nextGainList: Gain[] = [];
+  restGainList.reduce((prevGainList, gainList) => {
+    const currentGainList: Gain[] = !isGain(gainList) ? gainList : [gainList];
+    return prevGainList.concat(currentGainList);
+  }, nextGainList);
+
+  return nextGainList;
+};
 
 export const mergeAttribute = function <T>(attribute1: T, attribute2: T) {
   for (const key in attribute2) {
