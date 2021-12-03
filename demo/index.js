@@ -33,8 +33,8 @@ async function newDemo() {
   support.use(CoreHelper.Enchants.EnChantBelt);
   support.use(CoreHelper.Enchants.EnChantBody);
   support.use(CoreHelper.Enchants.EnChantHead);
-  support.use('JinGangNuMu');
-  support.use('QinLongJue');
+  support.use(CoreHelper.TeamSkills.JinGangNuMu);
+  support.use(CoreHelper.TeamSkills.QinLongJue);
   support.use({
     name: 'UPDATE08-30',
     type: 'Costom',

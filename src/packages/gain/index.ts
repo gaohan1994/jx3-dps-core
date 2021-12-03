@@ -8,10 +8,6 @@
  */
 
 import { afterResult } from '@/componet/utils';
-import { TeamSkillGains, GroupSkillGains } from '../../lib/skill';
-import { FormationsGains } from '../../lib/formation';
-import { WeaponGains, EnChantGains, EffectSpineGains, SetBonuseGains } from '../../lib/item';
-import { BanquetGains, FoodGains } from '../../lib/food';
 import { GainGroup, createGainGroup as createGainGroupBase, GainGroupTypes } from './group';
 import { createGain, Gain, GainAttribute, GainTypes } from './gain';
 
@@ -20,34 +16,24 @@ import {
   FoodSupportConfig,
   DrugEnhanceConfig,
   DrugSupportConfig,
+  BanquetConfig,
 } from '@/config/food.config';
-
-const AllGainList: { [key: string]: any } = {
-  // 阵法增益
-  ...FormationsGains,
-  // 小队技能增益
-  ...TeamSkillGains,
-  // 团队技能增益
-  ...GroupSkillGains,
-  // 装备增益
-  ...SetBonuseGains,
-  ...WeaponGains,
-  ...EnChantGains,
-  ...EffectSpineGains,
-  // 小吃、宴席增益
-  ...BanquetGains,
-  ...FoodGains.DrugEnhance,
-  ...FoodGains.DrugSupport,
-  ...FoodGains.FoodEnhance,
-  ...FoodGains.FoodSupport,
-  ...FoodGains.HomeFood,
-};
+import { FormationsConfig } from '@/config/formation.config';
+import { GroupSkillConfig, TeamSkillConfig } from '@/config/skill.config';
+import {
+  WeaponConfig,
+  EnChantConfig,
+  SetBonuseConfig,
+  EffectSpineConfig,
+} from '@/config/item.config';
 
 const gainModule = (function () {
   // 全部Group
   const allGainGroupList: GainGroup[] = [];
   // 全部Gain
   const allGainList: Gain[] = [];
+
+  // const coreHelper: {name: string:} = {};
 
   // 创建group之后插入到 groupList
   const createGroupInsertIntoGroupList = (group: GainGroup) => {
@@ -79,40 +65,27 @@ const gainModule = (function () {
       createGainInsertIntoGainList(gain);
     }
   };
-  // 创建食品增益列表
-  const foodEnhanceGroup = createGainGroup(GainGroupTypes.FoodEnhance, '增强食品');
-  const createFoodEnhanceGain = createGainFactory(foodEnhanceGroup);
-  makeGainsUseConfig(createFoodEnhanceGain, FoodEnchanceConfig);
 
-  const foodSupportGroup = createGainGroup(GainGroupTypes.FoodSupport, '辅助食品');
-  const createFoodSupportGain = createGainFactory(foodSupportGroup);
-  makeGainsUseConfig(createFoodSupportGain, FoodSupportConfig);
+  const beginGainWork = (groupName: GainGroupTypes, groupTitle: string, config: any) => {
+    const group = createGainGroup(groupName, groupTitle);
+    const factory = createGainFactory(group);
+    makeGainsUseConfig(factory, config);
+  };
 
-  const drugEnchanceGroup = createGainGroup(GainGroupTypes.DrugEnhance, '增强药品');
-  const createDrugEnchanceGain = createGainFactory(drugEnchanceGroup);
-  makeGainsUseConfig(createDrugEnchanceGain, DrugEnhanceConfig);
-
-  const drugSupportGroup = createGainGroup(GainGroupTypes.DrugSupport, '辅助药品');
-  const createDrugSupportGain = createGainFactory(drugSupportGroup);
-  makeGainsUseConfig(createDrugSupportGain, DrugSupportConfig);
+  beginGainWork(GainGroupTypes.FoodEnhance, '增强食品', FoodEnchanceConfig);
+  beginGainWork(GainGroupTypes.FoodSupport, '辅助食品', FoodSupportConfig);
+  beginGainWork(GainGroupTypes.DrugEnhance, '增强药品', DrugEnhanceConfig);
+  beginGainWork(GainGroupTypes.DrugSupport, '辅助药品', DrugSupportConfig);
+  beginGainWork(GainGroupTypes.Banquet, '宴席', BanquetConfig);
+  beginGainWork(GainGroupTypes.Formations, '阵法', FormationsConfig);
+  beginGainWork(GainGroupTypes.TeamSkills, '技能增益', TeamSkillConfig);
+  beginGainWork(GainGroupTypes.GroupSkills, '团队技能增益', GroupSkillConfig);
+  beginGainWork(GainGroupTypes.Weapons, '武器', WeaponConfig);
+  beginGainWork(GainGroupTypes.Enchants, '附魔', EnChantConfig);
+  beginGainWork(GainGroupTypes.SetBonusesGain, '套装', SetBonuseConfig);
+  beginGainWork(GainGroupTypes.EffectSpines, '特效腰椎', EffectSpineConfig);
 
   return { allGainGroupList, allGainList };
 })();
 
-const { allGainGroupList, allGainList } = gainModule;
-console.log('[allGainGroupList: ]', allGainGroupList.length);
-console.log('[allGainList : ]', allGainList);
-
-export {
-  AllGainList,
-  FormationsGains,
-  TeamSkillGains,
-  GroupSkillGains,
-  SetBonuseGains,
-  WeaponGains,
-  EnChantGains,
-  EffectSpineGains,
-  BanquetGains,
-  FoodGains,
-  gainModule,
-};
+export default gainModule;

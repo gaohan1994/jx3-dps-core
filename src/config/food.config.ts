@@ -6,7 +6,7 @@ export enum BanquetList {
   'TongZeYan' = '同泽宴',
   'ZhengYuCaiPan' = '蒸鱼菜盘',
 }
-export const BanquetGains = [
+export const BanquetConfig = [
   {
     name: BanquetList.ShuiZhuYu,
     data: [{ gainTarget: BuffKeys.WuShuangLevel, value: 100, coverage: 1 }],
