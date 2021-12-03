@@ -40,3 +40,11 @@ export const createGainGroup = (gainGroupName: string, gainGroupTitle: string) =
   const group = new GainGroup(gainGroupName, gainGroupTitle);
   return group;
 };
+
+export const selectGainGroupByName = (groups: GainGroup[], name: string): GainGroup => {
+  return groups.find(g => g.name === name);
+};
+
+export const selectGainGroupById = (groups: GainGroup[], id: number): GainGroup => {
+  return groups.find(g => g.groupId === id);
+};

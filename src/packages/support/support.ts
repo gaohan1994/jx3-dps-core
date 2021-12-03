@@ -8,12 +8,13 @@
  */
 
 import invariant from 'invariant';
-import { createEnum, SupportContext, SetBonuse } from '@/types';
+import { createEnum, SupportContext } from '@/types';
 import CoreMiddleware from '@/componet/middleware';
 import { deepClone } from '@/componet/utils';
 import { Gain, GainTypes } from '@/packages/gain/gain';
 import Target, { TargetOptions } from './target';
-import SupportBase, { SupportBaseOptions, SupportName } from './base';
+import SupportBase, { SupportBaseOptions } from './base';
+import { SetBonuseList } from '@/config/item.config';
 
 export const isCostomGain = (gain: Gain): boolean => gain && gain.type === GainTypes.Costom;
 
@@ -77,7 +78,7 @@ export default class Support extends SupportBase {
 
   // 是否有技能套装
   public hasSkillSetBonuese() {
-    return this.gainList.some(g => g.name === SetBonuse.SkillSetBonuse);
+    return this.gainList.some(g => g.name === SetBonuseList.SkillSetBonuse);
   }
 
   // 判断是否有橙武
@@ -87,7 +88,7 @@ export default class Support extends SupportBase {
 
   // 是否有属性套装
   public hasValueSetBonuese() {
-    return this.gainList.some(g => g.name === SetBonuse.ValueSetBonuse);
+    return this.gainList.some(g => g.name === SetBonuseList.ValueSetBonuse);
   }
 }
 
@@ -104,7 +105,7 @@ export const copySupport = (support: Support): Support => {
       nextSupport.use(currentGain);
       continue;
     }
-    nextSupport.use(currentGain.name as SupportName);
+    nextSupport.use(currentGain.name);
   }
   return nextSupport;
 };

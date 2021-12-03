@@ -39,14 +39,14 @@ export const afterResult = (originFunction: any, afterFunction: any): any => {
   };
 };
 
-export function isGain(data: Gain[] | Gain): data is Gain {
+export function isSingleGain(data: Gain[] | Gain): data is Gain {
   return !Array.isArray(data) && typeof data.name === 'string';
 }
 
 export const mergeGainList = (...restGainList: Gain[]): Gain[] => {
   const nextGainList: Gain[] = [];
   restGainList.reduce((prevGainList, gainList) => {
-    const currentGainList: Gain[] = !isGain(gainList) ? gainList : [gainList];
+    const currentGainList: Gain[] = !isSingleGain(gainList) ? gainList : [gainList];
     return prevGainList.concat(currentGainList);
   }, nextGainList);
 
