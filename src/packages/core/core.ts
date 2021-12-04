@@ -7,7 +7,7 @@
  * @Last Modified time: 2021-11-21 17:56:30
  */
 import invariant from 'invariant';
-import { createEnum } from '@/types';
+import { createEnum } from '@types';
 
 // 创建 K: V
 export const CoreEnum = createEnum(['YuanQi', 'GenGu', 'LiDao', 'ShenFa']);

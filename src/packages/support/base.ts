@@ -1,5 +1,5 @@
-import { SupportContext } from '@/types';
-import { Gain, isGain, selectGainByName } from '@/packages/gain/gain';
+import { SupportContext } from '@types';
+import { Gain, isGain, selectGainByName } from '@packages/gain/gain';
 import gainModule from '../gain';
 
 const { allGainList } = gainModule;

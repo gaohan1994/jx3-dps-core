@@ -1,4 +1,4 @@
-import { BuffKeys } from '@/types';
+import { BuffKeys } from '@types';
 
 export enum BanquetList {
   'ShuiZhuYu' = '水煮鱼',

@@ -1,4 +1,4 @@
-import { createEnum } from '@/types';
+import { createEnum } from '@types';
 import { Gain } from './gain';
 
 export const GainGroupTypes = createEnum([

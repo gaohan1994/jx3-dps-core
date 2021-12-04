@@ -1,4 +1,4 @@
-import Target from '@/packages/support/target';
+import Target from '@packages/support/target';
 import Skill from './skill';
 
 // 秘籍的类型
