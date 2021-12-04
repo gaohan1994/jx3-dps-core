@@ -38,3 +38,12 @@ YJJ.total().then((result) => {
   console.log('result', result.dps);
 });
 ```
+
+"_moduleAliases": {
+    "@": "src"
+    // "@/calculator": "src/calculator",
+    // "@/component": "src/component",
+    // "@/config": "src/config",
+    // "@/packages": "src/packages",
+    // "@/types": "src/types.ts"
+  }

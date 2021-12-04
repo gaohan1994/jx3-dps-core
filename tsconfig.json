@@ -13,8 +13,11 @@
     "baseUrl": ".",
     // "rootDir": ".",
     "paths": {
-      "*": ["node_modules/*", "src/types/*"],
-      "@/*": ["src/*"]
+      "@calculator/*": ["src/calculator/*"],
+      "@componet/*": ["src/componet/*"],
+      "@config/*": ["src/config/*"],
+      "@packages/*": ["src/packages/*"],
+      "@types": ["./src/types.ts"]
     }
   },
   "include": ["src/**/*"]

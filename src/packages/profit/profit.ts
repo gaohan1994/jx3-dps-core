@@ -5,12 +5,12 @@
  * @Last Modified by: Harper.Gao
  * @Last Modified time: 2021-11-21 17:59:07
  */
-import { BuffKeys } from '@/types';
-import { deepClone } from '@/componet/utils';
-import DpsCore from '@/packages/core/core';
-import Support, { copySupport } from '@/packages/support/support';
-import { CalculatorResult, createCalculator, YiJinJingVersions } from '@/calculator/calculator';
-import { Gain } from '@/packages/gain/gain';
+import { BuffKeys } from '@types';
+import { deepClone } from '@componet/utils';
+import DpsCore from '@packages/core/core';
+import Support, { copySupport } from '@packages/support/support';
+import { CalculatorResult, createCalculator, YiJinJingVersions } from '@calculator/calculator';
+import { Gain } from '@packages/gain/gain';
 
 /**
  * Constants ==============================================================

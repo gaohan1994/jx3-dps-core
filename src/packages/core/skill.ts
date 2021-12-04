@@ -8,10 +8,10 @@
  */
 import invariant from 'invariant';
 import DpsCore from './core';
-import Support from '@/packages/support/support';
+import Support from '@packages/support/support';
 import { combination, MiJi } from './miji';
-import { createEnum } from '@/types';
-import { pipe } from '@/componet/compose';
+import { createEnum } from '@types';
+import { pipe } from '@componet/compose';
 
 const SkillMultiplicationInterfaceEnum = createEnum([
   'poFangCoefficient',

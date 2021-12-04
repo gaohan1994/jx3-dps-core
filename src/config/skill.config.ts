@@ -5,7 +5,7 @@
  * @Last Modified by: Harper.Gao
  * @Last Modified time: 2021-11-19 10:23:42
  */
-import { BuffKeys } from '@/types';
+import { BuffKeys } from '@types';
 
 export enum TeamSkillList {
   JinGangNuMu = '金刚怒目',

@@ -1,4 +1,4 @@
-import { BuffKeys, createEnum } from '@/types';
+import { BuffKeys, createEnum } from '@types';
 
 export interface GainAttribute {
   gainTarget: BuffKeys;

@@ -7,7 +7,7 @@
  * @Last Modified time: 2021-11-19 10:23:37
  */
 
-import { afterResult } from '@/componet/utils';
+import { afterResult } from '@componet/utils';
 import { GainGroup, createGainGroup as createGainGroupBase, GainGroupTypes } from './group';
 import { createGain, Gain, GainAttribute, GainTypes } from './gain';
 
@@ -17,15 +17,15 @@ import {
   DrugEnhanceConfig,
   DrugSupportConfig,
   BanquetConfig,
-} from '@/config/food.config';
-import { FormationsConfig } from '@/config/formation.config';
-import { GroupSkillConfig, TeamSkillConfig } from '@/config/skill.config';
+} from '@config/food.config';
+import { FormationsConfig } from '@config/formation.config';
+import { GroupSkillConfig, TeamSkillConfig } from '@config/skill.config';
 import {
   WeaponConfig,
   EnChantConfig,
   SetBonuseConfig,
   EffectSpineConfig,
-} from '@/config/item.config';
+} from '@config/item.config';
 
 const gainModule = (function () {
   // 全部Group
