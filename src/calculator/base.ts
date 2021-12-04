@@ -7,11 +7,11 @@
  */
 
 import invariant from 'invariant';
-import Skill from '@/packages/core/skill';
-import Support from '@/packages/support/support';
-import Target from '@/packages/support/target';
-import DpsCore from '@/packages/core/core';
-import { Gain } from '@/packages/gain/gain';
+import Skill from '@packages/core/skill';
+import Support from '@packages/support/support';
+import Target from '@packages/support/target';
+import DpsCore from '@packages/core/core';
+import { Gain } from '@packages/gain/gain';
 
 export default class CalculatorBase {
   public CalculatorVersion: any;

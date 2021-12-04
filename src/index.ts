@@ -1,20 +1,20 @@
-import { TargetListKeys, HomeFoodList } from '@/types';
+import { TargetListKeys, HomeFoodList } from '@types';
 
-import Support from '@/packages/support/support';
-import Profit from '@/packages/profit/profit';
+import Support from '@packages/support/support';
+import Profit from '@packages/profit/profit';
 
-import DpsCore, { createDpsCore, JiaSuValue } from '@/packages/core/core';
-import { createCalculator, YiJinJingVersions } from '@/calculator/calculator';
+import DpsCore, { createDpsCore, JiaSuValue } from '@packages/core/core';
+import { createCalculator, YiJinJingVersions } from '@calculator/calculator';
 import {
   BanquetList,
   FoodSupportList,
   FoodEnhanceList,
   DrugSupportList,
   DrugEnhanceList,
-} from '@/config/food.config';
-import { WeaponList, EnChantsList, EffectSpineList, SetBonuseList } from '@/config/item.config';
-import { FormationList } from '@/config/formation.config';
-import { TeamSkillList, GroupSkillList } from '@/config/skill.config';
+} from '@config/food.config';
+import { WeaponList, EnChantsList, EffectSpineList, SetBonuseList } from '@config/item.config';
+import { FormationList } from '@config/formation.config';
+import { TeamSkillList, GroupSkillList } from '@config/skill.config';
 
 export {
   createGain,
@@ -23,8 +23,8 @@ export {
   getGainName,
   selectGainByName,
   selectGainById,
-} from '@/packages/gain/gain';
-export { createGainGroup, selectGainGroupByName, selectGainGroupById } from '@/packages/gain/group';
+} from '@packages/gain/gain';
+export { createGainGroup, selectGainGroupByName, selectGainGroupById } from '@packages/gain/group';
 
 const CoreHelper = {
   CalculatorVersion: YiJinJingVersions,

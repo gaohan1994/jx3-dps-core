@@ -5,14 +5,12 @@ const rollupBabel = require('rollup-plugin-babel');
 const rollupCommonJsPlugin = require('rollup-plugin-commonjs');
 const rollupTypescriptPlugin = require('rollup-plugin-typescript2');
 const aliasPlugin = require('@rollup/plugin-alias');
-const uglifyPlugin = require("rollup-plugin-uglify");
-const {uglify} = uglifyPlugin;
-
-// get project root dir
-const projectRootDir = path.resolve(__dirname);
+const cleaner = require('rollup-plugin-cleaner');
+const uglifyPlugin = require('rollup-plugin-uglify');
+const { uglify } = uglifyPlugin;
 
 const customResolver = rollupResolvePlugin({
-  extensions: ['.mjs', '.js', '.jsx', '.ts', '.json', '.sass', '.scss']
+  extensions: ['.mjs', '.js', '.jsx', '.ts', '.d.ts', '.json', '.sass', '.scss'],
 });
 
 function getPath(pathName) {
@@ -47,17 +45,9 @@ module.exports = {
    * @param plugins
    */
   plugins: [
-
-    aliasPlugin({
-      entries: [
-        {
-          find: '@',
-          replacement: path.resolve(projectRootDir, 'src')
-        }
-      ],
-      customResolver
+    cleaner({
+      targets: ['build'],
     }),
-
     /**
      * rollup 解析代码中依赖的 node_modules
      * @param rollupResolvePlugin
@@ -85,12 +75,32 @@ module.exports = {
      * @param rollupTypescriptPlugin
      */
     rollupTypescriptPlugin({
+      typescript: require('ttypescript'),
       tsconfig: getPath('../tsconfig.json'),
       extensions: ['.js', '.ts'],
+      tsconfigDefaults: {
+        compilerOptions: {
+          plugins: [
+            { transform: 'typescript-transform-paths' },
+            { transform: 'typescript-transform-paths', afterDeclarations: true },
+          ],
+        },
+      },
     }),
 
     rollupBabel({
       exclude: 'node_modules/**',
+    }),
+
+    aliasPlugin({
+      entries: [
+        { find: '@calculator', replacement: '../src/calculator' },
+        { find: '@component', replacement: '../src/component' },
+        { find: '@config', replacement: '../src/config' },
+        { find: '@packages', replacement: '../src/packages' },
+        { find: '@types', replacement: '../src/types.ts' },
+      ],
+      customResolver,
     }),
 
     uglify(),

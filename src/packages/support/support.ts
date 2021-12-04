@@ -8,13 +8,13 @@
  */
 
 import invariant from 'invariant';
-import { createEnum, SupportContext } from '@/types';
-import CoreMiddleware from '@/componet/middleware';
-import { deepClone } from '@/componet/utils';
-import { Gain, GainTypes } from '@/packages/gain/gain';
+import { createEnum, SupportContext } from '@types';
+import CoreMiddleware from '@componet/middleware';
+import { deepClone } from '@componet/utils';
+import { Gain, GainTypes } from '@packages/gain/gain';
+import { SetBonuseList } from '@config/item.config';
 import Target, { TargetOptions } from './target';
 import SupportBase, { SupportBaseOptions } from './base';
-import { SetBonuseList } from '@/config/item.config';
 
 export const isCostomGain = (gain: Gain): boolean => gain && gain.type === GainTypes.Costom;
 

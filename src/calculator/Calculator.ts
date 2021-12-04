@@ -6,10 +6,10 @@
  * @Last Modified time: 2021-11-21 17:53:36
  */
 
-import Skill from '@/packages/core/skill';
-import Support from '@/packages/support/support';
-import { createEnum } from '@/types';
-import DpsCore from '@/packages/core/core';
+import Skill from '@packages/core/skill';
+import Support from '@packages/support/support';
+import { createEnum } from '@types';
+import DpsCore from '@packages/core/core';
 import { createConfig } from './calculatorWoker';
 import {
   deepClone,
@@ -22,8 +22,8 @@ import {
   increasePoZhao,
   increaseWuShuang,
   makeZongGongJi,
-} from '@/componet/utils';
-import { pipe } from '@/componet/compose';
+} from '@componet/utils';
+import { pipe } from '@componet/compose';
 
 export const YiJinJingVersions = createEnum(['Normal', 'Immortal']);
 export type YiJinJingVersions = keyof typeof YiJinJingVersions;

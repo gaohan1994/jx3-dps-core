@@ -1,5 +1,5 @@
-import { Gain } from '@/packages/gain/gain';
-import DpsCore, { CoreEnum } from '@/packages/core/core';
+import { Gain } from '@packages/gain/gain';
+import DpsCore, { CoreEnum } from '@packages/core/core';
 import { pipe } from './compose';
 
 export function deepClone<T>(target: T): T {
