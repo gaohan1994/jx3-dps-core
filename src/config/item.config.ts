@@ -5,73 +5,75 @@
  * @Last Modified by: Harper.Gao
  * @Last Modified time: 2021-11-19 10:23:40
  */
+import { BuffKeys } from '@/types';
 
-import { WeaponValue, BuffKeys, EnChantsList, SetBonuse, EffectSpineList } from '@/types';
-
-/**
- * @time 08-24
- *
- * 新增 武器增益列表
- */
-export const WeaponGains = {
-  [WeaponValue.EffectWather]: {
-    name: WeaponValue.EffectWather,
+export enum WeaponList {
+  Normal = '普通武器',
+  CW = '橙武',
+  EffectWather = '水特效武器',
+}
+export const WeaponConfig = [
+  {
+    name: WeaponList.EffectWather,
     data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 490, coverage: 1 }],
   },
-  [WeaponValue.CW]: {
-    name: WeaponValue.CW,
+  {
+    name: WeaponList.CW,
     data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 0, coverage: 1 }],
   },
-  [WeaponValue.Normal]: {
-    name: WeaponValue.EffectWather,
+  {
+    name: WeaponList.EffectWather,
     data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 0, coverage: 1 }],
   },
-};
+];
 
-/**
- * @time 08-24
- *
- * 新增 附魔增益列表
- */
-export const EnChantGains = {
-  [EnChantsList.EnChantBelt]: {
+export enum EnChantsList {
+  EnChantHead = '附魔头',
+  EnChantBody = '附魔衣服',
+  EnChantBelt = '附魔腰带',
+  EnChantHand = '附魔护手',
+  EnChantShoe = '附魔鞋子',
+}
+export const EnChantConfig = [
+  {
     name: EnChantsList.EnChantBelt,
     data: [{ gainTarget: BuffKeys.damageBonus, value: 0.011, coverage: 1 }],
   },
-  [EnChantsList.EnChantBody]: {
+  {
     name: EnChantsList.EnChantBody,
     data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 357, coverage: 1 }],
   },
-  [EnChantsList.EnChantHand]: {
+  {
     name: EnChantsList.EnChantHand,
     data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 0, coverage: 1 }],
   },
-  [EnChantsList.EnChantHead]: {
+  {
     name: EnChantsList.EnChantHead,
     data: [{ gainTarget: BuffKeys.PoFangLevel, value: 496, coverage: 1 }],
   },
-  [EnChantsList.EnChantShoe]: {
+  {
     name: EnChantsList.EnChantShoe,
     data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 0, coverage: 1 }],
   },
-};
+];
 
-/**
- * 特效腰椎增益
- */
-export const EffectSpineGains = {
-  [EffectSpineList.XiangMeng]: {
+export enum EffectSpineList {
+  XiangMeng = '香梦',
+}
+export const EffectSpineConfig = [
+  {
     name: EffectSpineList.XiangMeng,
     data: [{ gainTarget: BuffKeys.PoFangLevel, value: 3845, coverage: 15 / 180 }],
   },
-};
+];
 
-/**
- * 套装增益
- */
-export const SetBonuseGains: { [name in SetBonuse]: any } = {
-  [SetBonuse.ValueSetBonuse]: {
-    name: SetBonuse.ValueSetBonuse,
+export enum SetBonuseList {
+  SkillSetBonuse = '技能套装',
+  ValueSetBonuse = '数值套装',
+}
+export const SetBonuseConfig = [
+  {
+    name: SetBonuseList.ValueSetBonuse,
     data: [
       // 套装 4%会心 覆盖率 40%
       { gainTarget: BuffKeys.HuiXin, value: 0.04, coverage: 0.4 },
@@ -79,11 +81,11 @@ export const SetBonuseGains: { [name in SetBonuse]: any } = {
       { gainTarget: BuffKeys.HuiXiao, value: 0.04, coverage: 0.4 },
     ],
   },
-  [SetBonuse.SkillSetBonuse]: {
-    name: SetBonuse.SkillSetBonuse,
+  {
+    name: SetBonuseList.SkillSetBonuse,
     data: [
       // 套装 4%会心 覆盖率 40%
       { gainTarget: BuffKeys.HuiXin, value: 0, coverage: 1 },
     ],
   },
-};
+];

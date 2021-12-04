@@ -5,68 +5,80 @@
  * @Last Modified by: Harper.Gao
  * @Last Modified time: 2021-11-19 10:23:42
  */
-import { BuffKeys, GroupSkillBuffList, TeamSkillValue } from '../types';
+import { BuffKeys } from '@/types';
 
-export const TeamSkillGains = {
-  /**
-   * 少林技能
-   */
-  [TeamSkillValue.JinGangNuMu]: {
-    name: TeamSkillValue.JinGangNuMu,
+export enum TeamSkillList {
+  JinGangNuMu = '金刚怒目',
+  QinLongJue = '擒龙诀',
+  PoCangQiong = '破苍穹',
+  XiuQi = '秀气',
+  FenLan = '分澜',
+}
+export const TeamSkillConfig = [
+  {
+    name: TeamSkillList.JinGangNuMu,
     data: [{ gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.4, coverage: 1 }],
   },
-  [TeamSkillValue.QinLongJue]: {
-    name: TeamSkillValue.QinLongJue,
-    data: [
-      // 擒龙诀 20%基础 25%覆盖
-      { gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.2, coverage: 0.25 },
-    ],
+  {
+    // 擒龙诀 20%基础 25%覆盖
+    name: TeamSkillList.QinLongJue,
+    data: [{ gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.2, coverage: 0.25 }],
   },
-
-  [TeamSkillValue.PoCangQiong]: {
-    name: TeamSkillValue.PoCangQiong,
+  {
+    name: TeamSkillList.PoCangQiong,
     data: [{ gainTarget: BuffKeys.HuiXiao, value: 0.1, coverage: 1 }],
   },
-  [TeamSkillValue.XiuQi]: {
-    name: TeamSkillValue.XiuQi,
+  {
+    name: TeamSkillList.XiuQi,
     data: [
       { gainTarget: BuffKeys.YuanQi, value: 111, coverage: 1 },
       { gainTarget: BuffKeys.HuiXinLevel, value: 70, coverage: 1 },
     ],
   },
-  [TeamSkillValue.FenLan]: {
-    name: TeamSkillValue.FenLan,
+  {
+    name: TeamSkillList.FenLan,
     data: [{ gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.07, coverage: 1 }],
   },
-};
+];
 
-export const GroupSkillGains = {
-  [GroupSkillBuffList.JieHuoZhan]: {
-    name: GroupSkillBuffList.JieHuoZhan,
+export enum GroupSkillList {
+  HongFa = '弘法',
+  LiDiChengFo = '立地成佛',
+  ChaoShengYan = '朝圣言',
+  JieHuoZhan = '戒火斩',
+  LieRiZhan = '烈日斩',
+  HaoLingSanJun = '号令三军',
+  MeiHuaDun = '梅花盾',
+  HanXiaoQianJun = '寒宵千军',
+}
+
+export const GroupSkillConfig = [
+  {
+    name: GroupSkillList.JieHuoZhan,
     data: [{ gainTarget: BuffKeys.damageBonus, value: 0.03, coverage: 1 }],
   },
-  [GroupSkillBuffList.LieRiZhan]: {
-    name: GroupSkillBuffList.LieRiZhan,
+  {
+    name: GroupSkillList.LieRiZhan,
     data: [{ gainTarget: BuffKeys.damageBonus, value: 0.05, coverage: 1 }],
   },
-  [GroupSkillBuffList.LiDiChengFo]: {
-    name: GroupSkillBuffList.LiDiChengFo,
+  {
+    name: GroupSkillList.LiDiChengFo,
     data: [{ gainTarget: BuffKeys.ignoreDefense, value: 0.12, coverage: 1 }],
   },
-  [GroupSkillBuffList.HanXiaoQianJun]: {
-    name: GroupSkillBuffList.HanXiaoQianJun,
+  {
+    name: GroupSkillList.HanXiaoQianJun,
     data: [{ gainTarget: BuffKeys.PoFangPercent, value: 0.1, coverage: 1 }],
   },
   /**
    * @todo 新增团队技能宏法，默认覆盖率10%
    * @time 08-31
    */
-  [GroupSkillBuffList.HongFa]: {
-    name: GroupSkillBuffList.HongFa,
+  {
+    name: GroupSkillList.HongFa,
     data: [{ gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.3, coverage: 0.1 }],
   },
-  [GroupSkillBuffList.MeiHuaDun]: {
-    name: GroupSkillBuffList.MeiHuaDun,
+  {
+    name: GroupSkillList.MeiHuaDun,
     data: [{ gainTarget: BuffKeys.globalIgnoreDefense, value: 0.15, coverage: 0.2 }],
   },
-};
+];

@@ -1,5 +1,4 @@
-
-import { compose } from './index';
+import { composeSync, compose } from './compose';
 
 /**
  * 中间件类
@@ -7,7 +6,6 @@ import { compose } from './index';
  * @class CoreMiddleware
  */
 class CoreMiddleware {
-
   public middlewares: any[];
 
   /**
@@ -58,10 +56,13 @@ class CoreMiddleware {
    * @memberof CoreMiddleware
    */
   execute(params: any = null) {
-    const composeMiddlewares = compose([
-      ...this.middlewares
-    ]);
+    const composeMiddlewares = compose([...this.middlewares]);
 
+    return composeMiddlewares(params);
+  }
+
+  executeSync(params: any = null) {
+    const composeMiddlewares = composeSync(...this.middlewares);
     return composeMiddlewares(params);
   }
 }

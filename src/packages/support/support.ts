@@ -1,56 +1,40 @@
 /**
  * 辅助类
- * 
- * @Author: centerm.gaohan 
- * @Date: 2021-08-08 16:29:54 
- * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-01 16:34:15
+ *
+ * @Author: centerm.gaohan
+ * @Date: 2021-08-08 16:29:54
+ * @Last Modified by: Harper.Gao
+ * @Last Modified time: 2021-11-21 17:59:37
  */
 
 import invariant from 'invariant';
-import chalk from 'chalk';
-import { SupportMode, SupportContext, SetBonuse } from "../../types";
-import { CoreMiddleware } from '../../componet';
-import { Target, TargetOptions, SupportBase, SupportBaseOptions } from './index';
+import { createEnum, SupportContext } from '@/types';
+import CoreMiddleware from '@/componet/middleware';
+import { deepClone } from '@/componet/utils';
+import { Gain, GainTypes } from '@/packages/gain/gain';
+import Target, { TargetOptions } from './target';
+import SupportBase, { SupportBaseOptions } from './base';
+import { SetBonuseList } from '@/config/item.config';
+
+export const isCostomGain = (gain: Gain): boolean => gain && gain.type === GainTypes.Costom;
+
+export const SupportMode = createEnum(['WaiGong', 'NeiGong']);
+export type SupportMode = keyof typeof SupportMode;
 
 export interface SupportOptions extends SupportBaseOptions {
   mode: SupportMode;
   target?: TargetOptions;
-
   CWTimes?: number;
 }
 
-class Support extends SupportBase {
+export default class Support extends SupportBase {
   static Mode = SupportMode;
-  /**
-   * 辅助类类型
-   *
-   * @type {SupportMode}
-   * @memberof Support
-   */
   public mode: SupportMode;
-  /**
-   * 缓存参数
-   *
-   * @memberof Target
-   */
   public options: any;
-
-  /**
-   * 橙武触发次数默认3次
-   *
-   * @type {number}
-   * @memberof Support
-   */
-  public CWTimes: number;
-
-  /**
-   * 目标
-   *
-   * @type {Target}
-   * @memberof Support
-   */
   public target: Target = undefined;
+
+  // 橙武触发次数默认3次
+  public CWTimes: number;
 
   constructor(options: SupportOptions) {
     super(options);
@@ -59,22 +43,12 @@ class Support extends SupportBase {
     invariant(!!options.mode, '辅助类类型不能为空');
     this.mode = options.mode;
 
-    /**
-     * 初始化目标
-     */
     this.target = new Target(options.target);
-
     this.CWTimes = options.CWTimes || 3;
   }
 
-  /**
-   * 获得辅助总增益
-   *
-   * @return {*}  {Promise<SupportContext>}
-   * @memberof Support
-   */
-  public getSupportAttribute(): Promise<SupportContext> {
-    let ctx: SupportContext = {
+  public getSupportAttributeSync(): SupportContext {
+    const ctx: SupportContext = {
       YuanQi: 0,
       GenGu: 0,
       LiDao: 0,
@@ -98,60 +72,40 @@ class Support extends SupportBase {
     };
 
     const middleware = new CoreMiddleware([]);
-    middleware.use(this.countCurrentSupportGain.bind(this));
-
-    return new Promise((resolve, reject) => {
-      middleware
-        .execute(ctx)
-        .then(() => {
-          resolve(ctx);
-        })
-        .catch((error) => {
-          reject(error);
-        })
-    })
+    middleware.use(this.countCurrentSupportGainSync.bind(this));
+    return middleware.executeSync(ctx);
   }
 
-  /**
-   * 打印属性
-   *
-   * @memberof Support
-   */
-  public showSupportValue() {
-    console.log(chalk.blue(`---- support start ----`));
-    this.target.showTargetValue();
-    console.log(chalk.blue(`---- support end ----`));
-  }
-
-  /**
-   * 是否有技能套装
-   *
-   * @return {*} 
-   * @memberof PersonBuff
-   */
+  // 是否有技能套装
   public hasSkillSetBonuese() {
-    return this.gainList.some((g) => g.name === SetBonuse.SkillSetBonuse);
+    return this.gainList.some(g => g.name === SetBonuseList.SkillSetBonuse);
   }
 
-  /**
-   * 判断是否有橙武
-   *
-   * @return {*} 
-   * @memberof Support
-   */
+  // 判断是否有橙武
   public hasCw() {
-    return this.gainList.some((g) => g.name === 'CW');
+    return this.gainList.some(g => g.name === 'CW');
   }
 
-  /**
-   * 是否有属性套装
-   *
-   * @return {*} 
-   * @memberof PersonBuff
-   */
+  // 是否有属性套装
   public hasValueSetBonuese() {
-    return this.gainList.some((g) => g.name === SetBonuse.ValueSetBonuse);
+    return this.gainList.some(g => g.name === SetBonuseList.ValueSetBonuse);
   }
 }
 
-export default Support;
+export const copySupport = (support: Support): Support => {
+  const { options, gainList = [] } = support;
+  const nextOptions = deepClone(options);
+  const nextGainList = deepClone(gainList);
+  const nextSupport = new Support(nextOptions);
+
+  for (let i = 0; i < nextGainList.length; i++) {
+    const currentGain = nextGainList[i];
+
+    if (isCostomGain(currentGain)) {
+      nextSupport.use(currentGain);
+      continue;
+    }
+    nextSupport.use(currentGain.name);
+  }
+  return nextSupport;
+};

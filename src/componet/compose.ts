@@ -1,16 +1,4 @@
-
-/**
- * @function compose
- *
- * @param {Array<middlewares>} middlewares
- *
- * 中间件数组
- *
- * @return
- *
- * 返回组合所有插件的函数
- */
-function compose(middlewares: any[]) {
+export function compose(middlewares: any[]) {
   /**
    * 校验 middlewares 格式
    */
@@ -36,7 +24,7 @@ function compose(middlewares: any[]) {
    * @param {function} next
    * 下一个中间件
    */
-  return function wrapMiddleware(params: any, next?: Function) {
+  return function wrapMiddleware(params: any, next?: any) {
     let index = -1;
 
     function dispatch(i: number) {
@@ -73,5 +61,40 @@ function compose(middlewares: any[]) {
     return dispatch(0);
   };
 }
+/**
+ * 同步 compose
+ *
+ * @param {...Function[]} functions
+ */
+export function composeSync(...functions: any[]) {
+  if (functions.length === 0) {
+    return (args: any) => args;
+  }
 
+  if (functions.length === 1) {
+    return functions[0];
+  }
+
+  return functions.reduce(
+    (a, b) =>
+      (...args: any[]) =>
+        a(b(...args))
+  );
+}
+
+export function pipe(...functions: any[]) {
+  if (functions.length === 0) {
+    return (args: any) => args;
+  }
+
+  if (functions.length === 1) {
+    return functions[0];
+  }
+
+  return functions.reduce(
+    (a, b) =>
+      (...args: any[]) =>
+        b(a(...args))
+  );
+}
 export default compose;

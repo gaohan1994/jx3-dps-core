@@ -1,34 +1,52 @@
 {
   "name": "jx3-dps-core",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "",
   "homepage": "https://github.com/gaohan1994/jx3-dps-core",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "watch": "rollup -c config/rollup.config.js --watch",
     "build": "rollup -c config/rollup.config.js",
     "demo": "rollup -c config/rollup.demo.js --watch",
-    "pub": "npm publish --registry http://registry.npmjs.org"
+    "pub": "npm publish",
+    "es5": "tsc --watch",
+    "start": "npm run watch && npm run demo"
   },
   "keywords": [],
   "author": "Ghan",
   "license": "MIT",
   "dependencies": {
-    "@babel/core": "^7.15.0",
-    "@types/invariant": "^2.2.34",
-    "@types/numeral": "^2.0.1",
-    "chalk": "^4.1.2",
     "invariant": "^2.2.4",
     "numeral": "^2.0.6",
+    "rollup-plugin-uglify": "^6.0.4"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/preset-typescript": "^7.15.0",
+    "@rollup/plugin-alias": "^3.1.8",
+    "@types/invariant": "^2.2.34",
+    "@types/jest": "^27.0.2",
+    "@types/numeral": "^2.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-react": "^7.27.0",
+    "jest": "^27.2.3",
+    "prettier": "^2.4.1",
     "rollup": "^2.56.2",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript2": "^0.30.0",
-    "smar-util": "^1.1.3",
+    "ts-jest": "^27.0.5",
     "typescript": "^4.3.5"
   }
 }

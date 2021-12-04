@@ -1,392 +1,248 @@
+/* eslint-disable no-console */
 /**
  * 技能类
- * @Author: centerm.gaohan 
- * @Date: 2021-08-08 19:45:42 
- * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-09-05 15:46:56
+ * @Author: centerm.gaohan
+ * @Date: 2021-08-08 19:45:42
+ * @Last Modified by: Harper.Gao
+ * @Last Modified time: 2021-11-21 17:29:49
  */
 import invariant from 'invariant';
-import chalk from 'chalk';
-import numeral from 'numeral';
-import { JiaSuValue, SkillContext, SupportContext } from '../../types';
 import DpsCore from './core';
-import { Support, Target } from '../support';
-import { floortNumberPlaces } from '../../componet';
+import Support from '@/packages/support/support';
+import { combination, MiJi } from './miji';
+import { createEnum } from '@/types';
+import { pipe } from '@/componet/compose';
 
-export interface SkillParamFunction {
-  (ctx: SkillContext): number;
+const SkillMultiplicationInterfaceEnum = createEnum([
+  'poFangCoefficient',
+  'wuShuangCoefficient',
+  'huiXinHuiXiaoCoefficient',
+  'targetDamageCoefficient',
+  'damageBonuesCoefficient',
+  'skillTimes',
+]);
+type SkillMultiplicationInterfaceEnum = keyof typeof SkillMultiplicationInterfaceEnum;
+
+interface ISkill {
+  [key: string]: any;
 }
 
-export type SkillParam = number | SkillParamFunction;
-
-export type SkillInfo = {
-  /**
-   * 技能名称
-   *
-   * @type {string}
-   */
-  skillName: string;
-  /**
-   * 技能中文名称
-   *
-   * @type {string}
-   */
-  skillTitle: string;
-
-  /**
-   * @time 08-31
-   * 修改技能次数计算方式
-   */
-  skillTimesLib: SkillTimeLib;
-  /**
-   * @time 08-31
-   * @todo 橙武是否影响当前技能次数
-   * @memberof Options
-   */
-  cwSkillTimesImpact?: (time: number) => number;
-}
-
-export type SkillTimeLib = number | {
-  [key in JiaSuValue]: number;
+const calculateBasicNumber = (skill: Skill) => {
+  skill.subTotal = skill.skillBasicNumber + skill.basicDamage * skill.basicDamageCoefficient;
+  return skill;
 };
-
-export interface Options extends SkillInfo {
-  core: DpsCore;
-  target: Target;
-  support: Support;
-  supportContext: SupportContext;
-  skillBasicNumber?: number;
-  basicDamage?: SkillParam;
-  basicDamageCoefficient?: SkillParam;
-  poFangCoefficient?: SkillParam;
-  wuShuangCoefficient?: SkillParam;
-  huiXinHuiXiaoCoefficient?: SkillParam;
-  targetDamageCoefficient?: SkillParam;
-  damageBonuesCoefficient?: SkillParam;
-  extra?: SkillParam;
-}
-
-class Skill {
-  public options: Options;
-
-  /**
-   * 技能名称 
-   *
-   * @type {string}
-   * @memberof Skill
-   */
-  public skillName: string;
-  /**
-   * 技能中文名称
-   *
-   * @type {string}
-   * @memberof Skill
-   */
-  public skillTitle: string;
-
-  /**
-   * 技能次数
-   *
-   * @type {number}
-   * @memberof Skill
-   */
-  public skillTimes: number;
-
-  /**
-   * @todo 技能次数库
-   *
-   * @type {(number | {
-   *     [key in JiaSuValue]: number;
-   *   })}
-   * @memberof Skill
-   */
-  public skillTimesLib: number | {
-    [key in JiaSuValue]: number;
+const createMultiplicationSkillEquation =
+  (calculateKey: SkillMultiplicationInterfaceEnum) =>
+  (skill: Skill): Skill => {
+    invariant(
+      typeof skill.subTotal === 'number',
+      `[Skill-Subtotal-Error][Skill-Name: ${skill.skillName}]技能subtotal缺失`
+    );
+    const { debug } = skill;
+    debug &&
+      console.log(
+        `[Skill-Subtotal-Debug][Skill-Name: ${skill.skillName}]Skill before calculate ${calculateKey}:`,
+        skill.subTotal
+      );
+    skill.subTotal *= (skill as ISkill)[calculateKey];
+    debug &&
+      console.log(
+        `[Skill-Subtotal-Debug][Skill-Name: ${skill.skillName}]Skill after calculate ${calculateKey}:`,
+        skill.subTotal
+      );
+    return skill;
   };
 
-  private cwSkillTimesImpact?: (time: number) => number;
+const calculatePoFang = createMultiplicationSkillEquation(
+  SkillMultiplicationInterfaceEnum.poFangCoefficient
+);
+const calculateWuShuang = createMultiplicationSkillEquation(
+  SkillMultiplicationInterfaceEnum.wuShuangCoefficient
+);
+const calculateHuiXinHuiXiao = createMultiplicationSkillEquation(
+  SkillMultiplicationInterfaceEnum.huiXinHuiXiaoCoefficient
+);
+const calculateTargetDamage = createMultiplicationSkillEquation(
+  SkillMultiplicationInterfaceEnum.targetDamageCoefficient
+);
+const calculateDamageBonues = createMultiplicationSkillEquation(
+  SkillMultiplicationInterfaceEnum.damageBonuesCoefficient
+);
+const calculateSkillTimes = createMultiplicationSkillEquation(
+  SkillMultiplicationInterfaceEnum.skillTimes
+);
+const calculateSkillExtra = (skill: Skill): Skill => {
+  skill.subTotal += skill.extra || 0;
+  return skill;
+};
 
-  /**
-   * 核心类 core
-   * @type {DpsCore}
-   * 
-   * 辅助类 support
-   * @type {Support}
-   * 
-   * 增益列表 supportContext
-   * @type {Target}
-   * 
-   * 目标 target
-   * @type {SupportContext}
-   * @memberof Skill2
-   */
-  public core: DpsCore;
-  public support: Support;
-  public target: Target;
-  public supportContext: SupportContext;
+export default class Skill {
+  public debug: boolean;
+  public skillName: string; // 技能名称
+  public skillTitle: string; // 技能中文名称
+  public skillTimes: number;
+  public skillBasicNumber: number; // 技能基础数值很小的那个
+  public basicDamage: number; // 基础伤害
+  public basicDamageCoefficient: number; // 基础攻击系数
+  public poFangCoefficient: number; // 破防系数
+  public wuShuangCoefficient: number; // 无双系数
+  public huiXinHuiXiaoCoefficient: number; // 会心会笑计算系数
+  public targetDamageCoefficient: number; // 目标伤害系数
+  public damageBonuesCoefficient: number; // 易伤系数
+  public miJi?: MiJi[]; // 技能秘籍 unstable
+  public extra?: number; // 额外伤害
+  public subTotal?: number; // 本技能小计
+  public percent?: number; // 占总输出百分比
 
-  /**
-   * 技能基础数值很小的那个
-   *
-   * @type {number}
-   * @memberof Skill2
-   */
-  public skillBasicNumber: number;
-  /**
-    * 基础伤害
-    *
-    * @type {number}
-    * @memberof Skill
-    */
-  public basicDamage: number;
-  /**
-   * 基础攻击系数
-   *
-   * @type {SkillParam}
-   * @memberof Skill2
-   */
-  public basicDamageCoefficient: number;
-
-  /**
-   * 破防系数
-   *
-   * @type {SkillParam}
-   * @memberof Skill2
-   */
-  public poFangCoefficient: number;
-
-  /**
-   * 无双系数
-   *
-   * @type {SkillParam}
-   * @memberof Skill2
-   */
-  public wuShuangCoefficient: number;
-
-  /**
-   * 会心会笑计算系数
-   *
-   * @type {SkillParam}
-   * @memberof Skill2
-   */
-  public huiXinHuiXiaoCoefficient: number;
-
-  /**
-   * 目标伤害系数
-   *
-   * @type {SkillParam}
-   * @memberof Skill2
-   */
-  public targetDamageCoefficient: number;
-
-  /**
-   * 易伤系数
-   *
-   * @type {SkillParam}
-   * @memberof Skill2
-   */
-  public damageBonuesCoefficient: number;
-
-  /**
-   * 额外伤害
-   *
-   * @type {number}
-   * @memberof Skill2
-   */
-  public extra: number;
-
-  /**
-   * 本技能小计
-   *
-   * @type {number}
-   * @memberof Skill2
-   */
-  public subTotal: number;
-
-  /**
-   * 占总输出百分比
-   *
-   * @type {number}
-   * @memberof Skill
-   */
-  public percent: number;
-
-  constructor(options: Options) {
-    this.options = options;
-
-    invariant(!!options.skillName, '技能名称不能为空')
+  constructor(options: any) {
+    this.debug = options.debug;
     this.skillName = options.skillName;
-
     this.skillTitle = options.skillTitle;
-
-    invariant(!!options.core, '请设置核心类');
-    this.core = options.core;
-
-    invariant(!!options.support, '请设置辅助类');
-    this.support = options.support;
-
-    invariant(!!options.target, '请设置目标类');
-    this.target = options.target;
-
-    invariant(!!options.supportContext, '请设置辅助类');
-    this.supportContext = options.supportContext;
-
-    invariant(options.skillTimesLib !== undefined, '请设置技能次数');
-    this.skillTimesLib = options.skillTimesLib;
-
     this.skillBasicNumber = options.skillBasicNumber || 0;
-
-    this.cwSkillTimesImpact = options.cwSkillTimesImpact;
-
+    this.skillTimes = options.skillTimes;
+    this.basicDamage = options.basicDamage;
+    this.basicDamageCoefficient = options.basicDamageCoefficient;
+    this.poFangCoefficient = options.poFangCoefficient;
+    this.wuShuangCoefficient = options.wuShuangCoefficient;
+    this.huiXinHuiXiaoCoefficient = options.huiXinHuiXiaoCoefficient;
+    this.targetDamageCoefficient = options.targetDamageCoefficient;
+    this.miJi = options.miJi || [];
     /**
-     * @todo 设置技能次数
-     */
-    if (skillTimesIsNumber(this.skillTimesLib)) {
-      this.skillTimes = Math.floor(this.skillTimesLib);
-    } else {
-
-      // 拿到加速段位
-      const JiaSu = this.core.JiaSu;
-      this.skillTimes = Math.floor(this.skillTimesLib[JiaSu]);
-
-      // 如果当前橙武对当前技能有影响
-      // 计算橙武对该技能的影响
-      const hasCw = this.support.hasCw();
-      if (hasCw && this.cwSkillTimesImpact) {
-        const cwTimes = this.support.CWTimes;
-        this.skillTimes += Math.floor(this.cwSkillTimesImpact(cwTimes));
-      }
-    }
-    this.basicDamage = currySkill(getCurrentCoefficient(options.basicDamage, this.core.ZongGongJi), { ...options, skillTimes: this.skillTimes })();
-
-    this.basicDamageCoefficient = currySkill(getCurrentCoefficient(options.basicDamageCoefficient, 1))();
-
-    this.poFangCoefficient = currySkill(getCurrentCoefficient(options.poFangCoefficient, 1 + this.core.PoFang / 100))();
-
-    this.wuShuangCoefficient = currySkill(getCurrentCoefficient(options.wuShuangCoefficient, 1 + this.core.WuShuang / 100))();
-
-    this.huiXinHuiXiaoCoefficient = currySkill(getCurrentCoefficient(options.huiXinHuiXiaoCoefficient, (this.core.HuiXin / 100) * (this.core.HuiXiao / 100) + 1 - (this.core.HuiXin / 100)))();
-
-    this.targetDamageCoefficient = currySkill(getCurrentCoefficient(options.targetDamageCoefficient, this.target.damageCoefficient))();
-
-    /**
+     * 易伤系数
      * 新增增伤系数，辅助类提供的全局增伤系数
-     * 
      * @time 08-24
      */
-    this.damageBonuesCoefficient =
-      currySkill(getCurrentCoefficient(options.damageBonuesCoefficient, 1))()
-      * (1 + this.supportContext.damageBonus);
-
-    this.extra = currySkill(getCurrentCoefficient(options.extra, 0))();
+    this.damageBonuesCoefficient = options.damageBonuesCoefficient;
+    // 附加伤害
+    this.extra = options.extra;
+    try {
+      calculatorSkill(this);
+    } catch (error) {
+      console.log('error', error);
+    }
   }
 
-  /**
-   * 计算技能小计
-   *
-   * @return {*}  {number}
-   * @memberof Skill2
-   */
   public calculator(): this {
-
-    if (this.skillName === 'SuoDi') {
-      // console.log('技能伤害', (this.skillBasicNumber + (this.basicDamage * this.basicDamageCoefficient)));
-      // console.log(`乘破防系数 ${this.poFangCoefficient}`)
-      // console.log(`乘无双系数 ${this.wuShuangCoefficient}`)
-      // console.log(`乘会心会笑系数 ${this.huiXinHuiXiaoCoefficient}`)
-      // console.log(`乘目标伤害系数 ${this.targetDamageCoefficient}`)
-      // console.log(`乘目标易伤系数 ${this.damageBonuesCoefficient}`)
-      // console.log(`乘技能次数 ${this.skillTimes}`)
-
-      // console.log('baseNumber', floortNumberPlaces(this.skillBasicNumber + (this.basicDamage * this.basicDamageCoefficient), 4));
-      // console.log(`乘破防系数 ${floortNumberPlaces(this.poFangCoefficient, 4)}`)
-      // console.log(`乘无双系数 ${floortNumberPlaces(this.wuShuangCoefficient, 4)}`)
-      // console.log(`乘会心会笑系数 ${floortNumberPlaces(this.huiXinHuiXiaoCoefficient, 4)}`)
-      // console.log(`乘目标伤害系数 ${floortNumberPlaces(this.targetDamageCoefficient, 4)}`)
-      // console.log(`乘目标易伤系数 ${floortNumberPlaces(this.damageBonuesCoefficient, 4)}`)
-      // console.log(`乘技能次数 ${floortNumberPlaces(this.skillTimes)}`)
-    }
-    /**
-     * 当前技能小计
-     */
-    const subTotal =
-      /**
-       * 计算技能伤害 整个公式的基础系数
-       */
-      floortNumberPlaces(this.skillBasicNumber + (this.basicDamage * this.basicDamageCoefficient), 4)
-      /**
-       * 乘破防系数
-       */
-      * floortNumberPlaces(this.poFangCoefficient, 4)
-      /**
-       * 乘无双系数
-       */
-      * floortNumberPlaces(this.wuShuangCoefficient, 4)
-      /**
-       * 乘会心会笑系数
-       */
-      * floortNumberPlaces(this.huiXinHuiXiaoCoefficient, 4)
-      /**
-       * 乘目标伤害系数
-       */
-      * floortNumberPlaces(this.targetDamageCoefficient, 4)
-      /**
-       * 乘目标易伤系数
-       */
-      * floortNumberPlaces(this.damageBonuesCoefficient, 4)
-      /**
-       * 乘技能次数
-       */
-      * this.skillTimes
-      /**
-       * 是否有额外伤害有则添加
-       */
-      + this.extra;
-
-    this.subTotal = formatNumber(subTotal);
-
+    calculatorSkill(this);
     return this;
   }
+}
 
-  /**
-   * 打印技能日志
-   *
-   * @memberof Skill
-   */
-  public showSkillInfo() {
-    console.log(chalk.cyan(`
-      技能名称：${this.skillName}
-      技能次数:${this.skillTimes}
-      小计:${this.subTotal} 
-    `));
+/**
+ * 计算单个技能的伤害
+ *
+ * 技能伤害 =
+ * @param {Skill} skill
+ * @return {*}  {number}
+ */
+export const calculatorSkill = function calculatorSkillSubtotal(skill: Skill): number {
+  const calculateSkillSubtotalEquation = pipe(
+    () => calculateBasicNumber(skill),
+    () => calculatePoFang(skill),
+    () => calculateWuShuang(skill),
+    () => calculateHuiXinHuiXiao(skill),
+    () => calculateTargetDamage(skill),
+    () => calculateDamageBonues(skill),
+    () => calculateSkillTimes(skill),
+    () => calculateSkillExtra(skill)
+  );
+  calculateSkillSubtotalEquation();
+  return skill.subTotal;
+};
+
+interface CreateSkillAttributes {
+  skillName: string;
+  skillTitle: string;
+  skillTimes: number;
+  basicDamage?: number;
+  skillBasicNumber?: number;
+  basicDamageCoefficient?: number;
+  poFangCoefficient?: number;
+  wuShuangCoefficient?: number;
+  huiXinHuiXiaoCoefficient?: number;
+  targetDamageCoefficient?: number;
+  damageBonuesCoefficient?: number;
+  miJi?: MiJi[];
+}
+
+/**
+ * 创建技能的工厂
+ *
+ * @param {*} core
+ * @param {*} support
+ * @return {*}
+ */
+export function createSkillFactory(core: DpsCore, support: Support) {
+  // 获得核心类
+  const _core = core;
+  // 获得全局辅助数值
+  const supportContext = support.getSupportAttributeSync();
+  // 辅助类
+  const _target = support.target;
+
+  function initAttribute(value?: number, initValue?: number) {
+    return value !== undefined ? (typeof value === 'number' ? value : initValue) : initValue;
   }
-}
 
-export default Skill;
+  function createSkill(
+    {
+      skillName,
+      skillTitle,
+      skillTimes,
+      basicDamage,
+      skillBasicNumber,
+      basicDamageCoefficient,
+      damageBonuesCoefficient,
+      poFangCoefficient,
+      wuShuangCoefficient,
+      huiXinHuiXiaoCoefficient,
+      targetDamageCoefficient,
+      miJi,
+    }: CreateSkillAttributes,
+    debug = false
+  ): Skill {
+    // 是否开启debug模式
+    const _debug = debug === undefined ? false : typeof debug === 'boolean' ? debug : false;
 
+    // 设置属性 如果没有赋值属性则设置默认值
+    const skill = new Skill({
+      skillName: skillName,
+      skillTitle: skillTitle,
+      // 技能次数 默认1
+      skillTimes: skillTimes,
+      // 总攻击 默认为面板攻击
+      basicDamage: initAttribute(basicDamage, _core.ZongGongJi),
+      skillBasicNumber: initAttribute(skillBasicNumber, 0),
+      // 伤害系数 默认1
+      basicDamageCoefficient: initAttribute(basicDamageCoefficient, 1),
+      // 易伤 buff 基础+全局
+      damageBonuesCoefficient:
+        initAttribute(damageBonuesCoefficient, 1) * (1 + supportContext.damageBonus),
+      // 破防
+      poFangCoefficient: initAttribute(poFangCoefficient, 1 + _core.PoFang / 100),
+      // 无双
+      wuShuangCoefficient: initAttribute(wuShuangCoefficient, 1 + _core.WuShuang / 100),
+      // 双会
+      huiXinHuiXiaoCoefficient: initAttribute(
+        huiXinHuiXiaoCoefficient,
+        (_core.HuiXin / 100) * (_core.HuiXiao / 100) + 1 - _core.HuiXin / 100
+      ),
+      // 承伤
+      targetDamageCoefficient: initAttribute(targetDamageCoefficient, _target.damageCoefficient),
+      // 秘籍
+      miJi: miJi || [],
+      // 是否开启debug
+      debug: _debug,
+    });
 
-export function formatNumber(value: number): number {
-  return numeral(numeral(value).format('0.00')).value();
-}
-
-function getCurrentCoefficient(coefficient1?: SkillParam, coefficient2?: SkillParam): SkillParam {
-  return coefficient1 !== undefined
-    ? coefficient1
-    : coefficient2 !== undefined
-      ? coefficient2
-      : 0;
-}
-
-function currySkill(callback: SkillParam, params: any = {}) {
-  return function (): number {
-    if (typeof callback !== 'function') {
-      return callback;
+    if (Array.isArray(skill.miJi) && skill.miJi.length > 0) {
+      // 如果该技能含有秘籍则把秘籍的属性加成进技能中
+      combination(skill, _target);
+      skill.calculator();
     }
 
-    return callback(params);
+    return skill;
   }
-}
 
-export function skillTimesIsNumber(value: SkillTimeLib): value is number {
-  return typeof value === 'number';
+  return createSkill;
 }

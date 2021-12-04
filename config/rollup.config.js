@@ -4,7 +4,16 @@ const rollupBuiltinsPlugin = require('rollup-plugin-node-builtins');
 const rollupBabel = require('rollup-plugin-babel');
 const rollupCommonJsPlugin = require('rollup-plugin-commonjs');
 const rollupTypescriptPlugin = require('rollup-plugin-typescript2');
-const packageJson = require('../package.json');
+const aliasPlugin = require('@rollup/plugin-alias');
+const uglifyPlugin = require("rollup-plugin-uglify");
+const {uglify} = uglifyPlugin;
+
+// get project root dir
+const projectRootDir = path.resolve(__dirname);
+
+const customResolver = rollupResolvePlugin({
+  extensions: ['.mjs', '.js', '.jsx', '.ts', '.json', '.sass', '.scss']
+});
 
 function getPath(pathName) {
   return path.resolve(__dirname, pathName);
@@ -38,6 +47,17 @@ module.exports = {
    * @param plugins
    */
   plugins: [
+
+    aliasPlugin({
+      entries: [
+        {
+          find: '@',
+          replacement: path.resolve(projectRootDir, 'src')
+        }
+      ],
+      customResolver
+    }),
+
     /**
      * rollup 解析代码中依赖的 node_modules
      * @param rollupResolvePlugin
@@ -72,5 +92,7 @@ module.exports = {
     rollupBabel({
       exclude: 'node_modules/**',
     }),
+
+    uglify(),
   ],
 };
