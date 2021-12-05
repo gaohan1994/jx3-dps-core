@@ -55,12 +55,12 @@
       skills
     } = calculatorResult;
     const afterSkills = sort(skills);
-    const profit = new Profit({
+    new Profit({
       core: newCore,
       support,
       version: CoreHelper.CalculatorVersion.Normal
-    });
-    profit.calculatroProfit(); // console.log('profitList', profitList)
+    }); // const profitList = profit.calculatroProfit();
+    // console.log('profitList', profitList)
     // return;
     // console.log('total', total);
 

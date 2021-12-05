@@ -1,10 +1,4 @@
-const {
-  createDpsCore, 
-  createCalculator, 
-  Support, 
-  CoreHelper,
-  Profit,
-} =require('../build');
+const { createDpsCore, createCalculator, Support, CoreHelper, Profit } = require('../build');
 
 async function newDemo() {
   function sort(skills) {
@@ -21,7 +15,17 @@ async function newDemo() {
     }
   }
 
-  const newCore = createDpsCore(2880, 14470, 19.05, 175.77, 38.01, 4130, 54.06, 'YiDuanJiaSu', 1998);
+  const newCore = createDpsCore(
+    2880,
+    14470,
+    19.05,
+    175.77,
+    38.01,
+    4130,
+    54.06,
+    'YiDuanJiaSu',
+    1998
+  );
 
   const support = new Support({
     mode: 'NeiGong',
@@ -46,26 +50,22 @@ async function newDemo() {
     data: [{ gainTarget: 'PoFangPercent', value: 0.15, coverage: 1 }],
   });
 
-  const calculatorResult = createCalculator(
-    newCore,
-    support,
-    CoreHelper.CalculatorVersion.Normal
-  );
+  const calculatorResult = createCalculator(newCore, support, CoreHelper.CalculatorVersion.Normal);
   const { dps, total, skills } = calculatorResult;
   const afterSkills = sort(skills);
 
   const profit = new Profit({
-    core: newCore, 
-    support, 
-    version: CoreHelper.CalculatorVersion.Normal
+    core: newCore,
+    support,
+    version: CoreHelper.CalculatorVersion.Normal,
   });
-  const profitList = profit.calculatroProfit();
+  // const profitList = profit.calculatroProfit();
   // console.log('profitList', profitList)
   // return;
 
   // console.log('total', total);
   console.log('dps', dps);
-  afterSkills.forEach((item) => {
+  afterSkills.forEach(item => {
     // console.log(`${item.skillTitle}:${item.subTotal}`);
   });
 }
