@@ -12,6 +12,8 @@ import { createEnum } from '@types';
 import DpsCore from '@packages/core/core';
 import { createConfig } from './calculatorWoker';
 import {
+  calculateSkillsPercent,
+  calculateSkillsTotal,
   deepClone,
   getYuanQiAttribute,
   increaseHuiXiao,
@@ -74,11 +76,8 @@ export const createCalculator = (
   const calculatorConfig = createConfig(baseCore, support, version);
   const { skills } = calculatorConfig;
 
-  let totalDamage = 0;
-
-  skills.forEach(skill => {
-    totalDamage += skill.subTotal;
-  });
+  const totalDamage = calculateSkillsTotal(skills);
+  calculateSkillsPercent(totalDamage, skills);
 
   const dps = totalDamage / 300;
 

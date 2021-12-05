@@ -1,6 +1,7 @@
 import { Gain } from '@packages/gain/gain';
 import DpsCore, { CoreEnum } from '@packages/core/core';
 import { pipe } from './compose';
+import Skill from '@packages/core/skill';
 
 export function deepClone<T>(target: T): T {
   if (typeof target !== 'object') return;
@@ -179,4 +180,21 @@ export const makeZongGongJi = (core: DpsCore) => {
   const finalZongGongJi = ZongGongJi + nextCore.JiChuGongJi * nextCore.GongJiCoefficient;
   nextCore.ZongGongJi = finalZongGongJi;
   return nextCore;
+};
+
+export const calculateSkillsTotal = (skills: Skill[]): number => {
+  let totalDamage = 0;
+
+  skills.forEach(skill => {
+    totalDamage += skill.subTotal;
+  });
+  return totalDamage;
+};
+
+export const calculateSkillsPercent = (totalDamage: number, skills: Skill[]) => {
+  const length = skills.length;
+  for (let i = 0; i < length; i++) {
+    const currentSkill = skills[i];
+    currentSkill.percent = currentSkill.subTotal / totalDamage;
+  }
 };
