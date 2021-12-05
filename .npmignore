@@ -8,5 +8,5 @@ demo/
 tslint.json
 tsconfig.json
 *.log
-# src/
+src/
 dist/
