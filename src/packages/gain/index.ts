@@ -32,9 +32,6 @@ const gainModule = (function () {
   const allGainGroupList: GainGroup[] = [];
   // 全部Gain
   const allGainList: Gain[] = [];
-
-  // const coreHelper: {name: string:} = {};
-
   // 创建group之后插入到 groupList
   const createGroupInsertIntoGroupList = (group: GainGroup) => {
     allGainGroupList.push(group);

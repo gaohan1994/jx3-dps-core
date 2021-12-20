@@ -16,6 +16,7 @@ import { WeaponList, EnChantsList, EffectSpineList, SetBonuseList } from '@confi
 import { FormationList } from '@config/formation.config';
 import { TeamSkillList, GroupSkillList } from '@config/skill.config';
 
+import gainModule from '@packages/gain';
 export {
   createGain,
   gainDataToString,
@@ -77,4 +78,4 @@ const CoreHelper = {
   },
 };
 
-export { createCalculator, createDpsCore, DpsCore, Support, CoreHelper, Profit };
+export { createCalculator, gainModule, createDpsCore, DpsCore, Support, CoreHelper, Profit };
