@@ -1,4 +1,11 @@
-const { createDpsCore, createCalculator, Support, CoreHelper, Profit } = require('../build');
+const {
+  createDpsCore,
+  createCalculator,
+  Support,
+  CoreHelper,
+  Profit,
+  gainModule,
+} = require('../build');
 
 async function newDemo() {
   function sort(skills) {
@@ -64,9 +71,11 @@ async function newDemo() {
   // return;
 
   // console.log('total', total);
-  console.log('dps', dps);
+  // console.log('dps', dps);
   afterSkills.forEach(item => {
     // console.log(`${item.skillTitle}:${item.subTotal}`);
   });
+
+  console.log('gainModule', gainModule.allGainGroupList.length);
 }
 newDemo();

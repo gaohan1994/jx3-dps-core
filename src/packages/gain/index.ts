@@ -27,14 +27,21 @@ import {
   EffectSpineConfig,
 } from '@config/item.config';
 
-const gainModule = (function () {
+type GainModule = {
+  allGainGroupList: GainGroup[];
+  allGainList: Gain[];
+};
+
+const gainModule: GainModule = {
+  allGainGroupList: [],
+  allGainList: [],
+};
+
+(function () {
   // 全部Group
   const allGainGroupList: GainGroup[] = [];
   // 全部Gain
   const allGainList: Gain[] = [];
-
-  // const coreHelper: {name: string:} = {};
-
   // 创建group之后插入到 groupList
   const createGroupInsertIntoGroupList = (group: GainGroup) => {
     allGainGroupList.push(group);
@@ -85,7 +92,8 @@ const gainModule = (function () {
   beginGainWork(GainGroupTypes.SetBonusesGain, '套装', SetBonuseConfig);
   beginGainWork(GainGroupTypes.EffectSpines, '特效腰椎', EffectSpineConfig);
 
-  return { allGainGroupList, allGainList };
+  gainModule.allGainGroupList = allGainGroupList;
+  gainModule.allGainList = allGainList;
 })();
 
 export default gainModule;
