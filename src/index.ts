@@ -16,6 +16,7 @@ import { WeaponList, EnChantsList, EffectSpineList, SetBonuseList } from '@confi
 import { FormationList } from '@config/formation.config';
 import { TeamSkillList, GroupSkillList } from '@config/skill.config';
 import gainModule from '@packages/gain/index';
+import { GainGroupTypes } from '@packages/gain/group';
 
 export {
   createGain,
@@ -29,6 +30,7 @@ export { createGainGroup, selectGainGroupByName, selectGainGroupById } from '@pa
 
 const CoreHelper = {
   CalculatorVersion: YiJinJingVersions,
+  GainGroupTypes,
   JiaSuList: {
     ...JiaSuValue,
   },
