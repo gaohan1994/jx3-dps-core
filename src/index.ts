@@ -15,8 +15,8 @@ import {
 import { WeaponList, EnChantsList, EffectSpineList, SetBonuseList } from '@config/item.config';
 import { FormationList } from '@config/formation.config';
 import { TeamSkillList, GroupSkillList } from '@config/skill.config';
+import gainModule from '@packages/gain/index';
 
-import gainModule from '@packages/gain';
 export {
   createGain,
   gainDataToString,

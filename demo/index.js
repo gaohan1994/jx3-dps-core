@@ -71,11 +71,10 @@ async function newDemo() {
   // return;
 
   // console.log('total', total);
-  // console.log('dps', dps);
+  console.log('dps', dps);
   afterSkills.forEach(item => {
     // console.log(`${item.skillTitle}:${item.subTotal}`);
   });
-
-  console.log('gainModule', gainModule.allGainGroupList.length);
+  console.log('gainModule', gainModule);
 }
 newDemo();

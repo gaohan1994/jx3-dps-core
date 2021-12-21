@@ -2,7 +2,6 @@ import { SupportContext } from '@types';
 import { Gain, isGain, selectGainByName } from '@packages/gain/gain';
 import gainModule from '../gain';
 
-const { allGainList } = gainModule;
 export interface SupportBaseOptions {
   gainList?: Gain[];
 }
@@ -72,7 +71,7 @@ class SupportBase {
     if (isGain(gain)) {
       currentGain = gain;
     } else {
-      currentGain = selectGainByName(allGainList, gain);
+      currentGain = selectGainByName(gainModule.allGainList, gain);
     }
 
     if (!currentGain) {

@@ -6,8 +6,6 @@
  * @Last Modified by: Harper.Gao
  * @Last Modified time: 2021-11-19 10:23:37
  */
-
-import { afterResult } from '@componet/utils';
 import { GainGroup, createGainGroup as createGainGroupBase, GainGroupTypes } from './group';
 import { createGain, Gain, GainAttribute, GainTypes } from './gain';
 
@@ -27,73 +25,59 @@ import {
   EffectSpineConfig,
 } from '@config/item.config';
 
-type GainModule = {
-  allGainGroupList: GainGroup[];
-  allGainList: Gain[];
+// 创建增益工厂模式
+const createGainFactory =
+  (group: GainGroup) =>
+  ({ name = '', data = [] }: { name: string; data: GainAttribute[] }) => {
+    const gain = createGain(name, data, GainTypes.Normal, group.groupId);
+    group.list.push(gain);
+    return gain;
+  };
+
+// 使用工厂和配置文件创建增益
+const makeGainsUseConfig = (factory: any, gainConfig: any[]) => {
+  const length = gainConfig.length;
+  const gains = [];
+  for (let i = 0; i < length; i++) {
+    const currentGainConfig = gainConfig[i];
+    const gain = factory({ ...currentGainConfig });
+    gains.push(gain);
+  }
+  return gains;
 };
 
-const gainModule: GainModule = {
-  allGainGroupList: [],
-  allGainList: [],
-};
-
-(function () {
+class GainModule {
   // 全部Group
-  const allGainGroupList: GainGroup[] = [];
+  public allGainGroupList: GainGroup[];
   // 全部Gain
-  const allGainList: Gain[] = [];
-  // 创建group之后插入到 groupList
-  const createGroupInsertIntoGroupList = (group: GainGroup) => {
-    allGainGroupList.push(group);
-    return group;
-  };
-  const createGainGroup = afterResult(createGainGroupBase, createGroupInsertIntoGroupList);
+  public allGainList: Gain[];
 
-  // 创建完gain之后插入到全部 gainList
-  const createGainInsertIntoGainList = (gain: Gain) => {
-    allGainList.push(gain);
-  };
+  constructor() {
+    this.allGainGroupList = [];
+    this.allGainList = [];
 
-  // 创建增益工厂模式
-  const createGainFactory =
-    (group: GainGroup) =>
-    ({ name = '', data = [] }: { name: string; data: GainAttribute[] }) => {
-      const gain = createGain(name, data, GainTypes.Normal, group.groupId);
-      group.list.push(gain);
-      return gain;
-    };
+    this.beginGainWork(GainGroupTypes.FoodEnhance, '增强食品', FoodEnchanceConfig);
+    this.beginGainWork(GainGroupTypes.FoodSupport, '辅助食品', FoodSupportConfig);
+    this.beginGainWork(GainGroupTypes.DrugEnhance, '增强药品', DrugEnhanceConfig);
+    this.beginGainWork(GainGroupTypes.DrugSupport, '辅助药品', DrugSupportConfig);
+    this.beginGainWork(GainGroupTypes.Banquet, '宴席', BanquetConfig);
+    this.beginGainWork(GainGroupTypes.Formations, '阵法', FormationsConfig);
+    this.beginGainWork(GainGroupTypes.TeamSkills, '技能增益', TeamSkillConfig);
+    this.beginGainWork(GainGroupTypes.GroupSkills, '团队技能增益', GroupSkillConfig);
+    this.beginGainWork(GainGroupTypes.Weapons, '武器', WeaponConfig);
+    this.beginGainWork(GainGroupTypes.Enchants, '附魔', EnChantConfig);
+    this.beginGainWork(GainGroupTypes.SetBonusesGain, '套装', SetBonuseConfig);
+    this.beginGainWork(GainGroupTypes.EffectSpines, '特效腰椎', EffectSpineConfig);
+  }
 
-  // 使用工厂和配置文件创建增益
-  const makeGainsUseConfig = (factory: any, gainConfig: any[]) => {
-    const length = gainConfig.length;
-    for (let i = 0; i < length; i++) {
-      const currentGainConfig = gainConfig[i];
-      const gain = factory({ ...currentGainConfig });
-      createGainInsertIntoGainList(gain);
-    }
-  };
+  beginGainWork = (groupName: GainGroupTypes, groupTitle: string, config: any) => {
+    const group = createGainGroupBase(groupName, groupTitle);
+    this.allGainGroupList.push(group);
 
-  const beginGainWork = (groupName: GainGroupTypes, groupTitle: string, config: any) => {
-    const group = createGainGroup(groupName, groupTitle);
     const factory = createGainFactory(group);
-    makeGainsUseConfig(factory, config);
+    const gains = makeGainsUseConfig(factory, config);
+    this.allGainList.push(...gains);
   };
+}
 
-  beginGainWork(GainGroupTypes.FoodEnhance, '增强食品', FoodEnchanceConfig);
-  beginGainWork(GainGroupTypes.FoodSupport, '辅助食品', FoodSupportConfig);
-  beginGainWork(GainGroupTypes.DrugEnhance, '增强药品', DrugEnhanceConfig);
-  beginGainWork(GainGroupTypes.DrugSupport, '辅助药品', DrugSupportConfig);
-  beginGainWork(GainGroupTypes.Banquet, '宴席', BanquetConfig);
-  beginGainWork(GainGroupTypes.Formations, '阵法', FormationsConfig);
-  beginGainWork(GainGroupTypes.TeamSkills, '技能增益', TeamSkillConfig);
-  beginGainWork(GainGroupTypes.GroupSkills, '团队技能增益', GroupSkillConfig);
-  beginGainWork(GainGroupTypes.Weapons, '武器', WeaponConfig);
-  beginGainWork(GainGroupTypes.Enchants, '附魔', EnChantConfig);
-  beginGainWork(GainGroupTypes.SetBonusesGain, '套装', SetBonuseConfig);
-  beginGainWork(GainGroupTypes.EffectSpines, '特效腰椎', EffectSpineConfig);
-
-  gainModule.allGainGroupList = allGainGroupList;
-  gainModule.allGainList = allGainList;
-})();
-
-export default gainModule;
+export default new GainModule();
