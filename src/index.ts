@@ -27,6 +27,8 @@ export {
 } from '@packages/gain/gain';
 export { createGainGroup, selectGainGroupByName, selectGainGroupById } from '@packages/gain/group';
 
+const { allGainGroupList, allGainList } = gainModule;
+
 const CoreHelper = {
   CalculatorVersion: YiJinJingVersions,
   JiaSuList: {
@@ -78,4 +80,13 @@ const CoreHelper = {
   },
 };
 
-export { createCalculator, gainModule, createDpsCore, DpsCore, Support, CoreHelper, Profit };
+export {
+  createCalculator,
+  allGainGroupList,
+  allGainList,
+  createDpsCore,
+  DpsCore,
+  Support,
+  CoreHelper,
+  Profit,
+};

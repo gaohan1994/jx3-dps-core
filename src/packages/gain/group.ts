@@ -1,5 +1,8 @@
 import { createEnum } from '@types';
 import { Gain } from './gain';
+import gainModule from '../gain';
+
+const { allGainGroupList } = gainModule;
 
 export const GainGroupTypes = createEnum([
   'Formations',
@@ -41,10 +44,16 @@ export const createGainGroup = (gainGroupName: string, gainGroupTitle: string) =
   return group;
 };
 
-export const selectGainGroupByName = (groups: GainGroup[], name: string): GainGroup => {
+export const selectGainGroupByName = (
+  groups: GainGroup[] = allGainGroupList,
+  name: string
+): GainGroup => {
   return groups.find(g => g.name === name);
 };
 
-export const selectGainGroupById = (groups: GainGroup[], id: number): GainGroup => {
+export const selectGainGroupById = (
+  groups: GainGroup[] = allGainGroupList,
+  id: number
+): GainGroup => {
   return groups.find(g => g.groupId === id);
 };

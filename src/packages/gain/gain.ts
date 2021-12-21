@@ -1,4 +1,7 @@
 import { BuffKeys, createEnum } from '@types';
+import gainModule from './index';
+
+const { allGainList } = gainModule;
 
 export interface GainAttribute {
   gainTarget: BuffKeys;
@@ -60,11 +63,11 @@ export const getGainName = (gain: Gain): string => {
   return gain.name;
 };
 
-export const selectGainByName = (gains: Gain[], name: string): Gain => {
+export const selectGainByName = (gains: Gain[] = allGainList, name: string): Gain => {
   return gains.find(g => g.name === name);
 };
 
-export const selectGainById = (gains: Gain[], id: number): Gain => {
+export const selectGainById = (gains: Gain[] = allGainList, id: number): Gain => {
   return gains.find(g => g.id === id);
 };
 
