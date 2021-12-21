@@ -30,7 +30,7 @@ export { createGainGroup, selectGainGroupByName, selectGainGroupById } from '@pa
 
 const CoreHelper = {
   CalculatorVersion: YiJinJingVersions,
-  GainGroupTypes,
+  GainGroupTypes: GainGroupTypes,
   JiaSuList: {
     ...JiaSuValue,
   },
