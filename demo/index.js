@@ -46,6 +46,7 @@ async function newDemo() {
   support.use(CoreHelper.Enchants.EnChantHead);
   support.use(CoreHelper.TeamSkills.JinGangNuMu);
   support.use(CoreHelper.TeamSkills.QinLongJue);
+  support.use(CoreHelper.Weapons.CW);
   support.use({
     name: 'UPDATE08-30',
     type: 'Costom',
@@ -75,6 +76,6 @@ async function newDemo() {
   afterSkills.forEach(item => {
     // console.log(`${item.skillTitle}:${item.subTotal}`);
   });
-  console.log('gainModule', gainModule);
+  // console.log('gainModule', gainModule);
 }
 newDemo();

@@ -83,7 +83,7 @@ export default class Support extends SupportBase {
 
   // 判断是否有橙武
   public hasCw() {
-    return this.gainList.some(g => g.name === 'CW');
+    return this.gainList.some(g => g.name === '橙武');
   }
 
   // 是否有属性套装

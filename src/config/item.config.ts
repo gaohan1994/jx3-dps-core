@@ -83,9 +83,6 @@ export const SetBonuseConfig = [
   },
   {
     name: SetBonuseList.SkillSetBonuse,
-    data: [
-      // 套装 4%会心 覆盖率 40%
-      { gainTarget: BuffKeys.HuiXin, value: 0, coverage: 1 },
-    ],
+    data: [],
   },
 ];
