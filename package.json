@@ -10,7 +10,7 @@
     "watch": "rollup -c config/rollup.config.development.js --watch",
     "build": "rollup -c config/rollup.config.js",
     "demo": "rollup -c config/rollup.demo.js --watch",
-    "pub": "npm publish",
+    "pub": "npm run build && npm publish",
     "es5": "tsc --watch",
     "start": "npm run watch && npm run demo"
   },
