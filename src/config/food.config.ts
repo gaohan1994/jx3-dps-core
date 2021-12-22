@@ -116,7 +116,7 @@ export const HomeFoodConfig = [
   },
   {
     name: HomeFoodList.ZhaYuGan,
-    data: [{ gainTarget: BuffKeys.HuiXin, value: 277, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.HuiXinLevel, value: 277, coverage: 1 }],
   },
   {
     name: HomeFoodList.QingZhengLuYu,
@@ -144,5 +144,57 @@ export const WeaponEnchantConfig = [
   {
     name: WeaponEnchantList.ZhuiXiaoMoShi,
     data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 233, coverage: 1 }],
+  },
+];
+
+export enum HomeDrinkList {
+  // NvErHongJinZhaoZui = '女儿红-今朝醉',
+  // NvErHongLiuRiZui = '女儿红-六日醉',
+  // NvErHongXunYouSan = '女儿红-旬又三',
+  ZhuangYuanHongJinZhaoZui = '状元红-今朝醉',
+  ZhuangYuanHongLiuRiZui = '状元红-六日醉',
+  ZhuangYuanHongXunYouSan = '状元红-旬又三',
+}
+
+export const HomeDrinkConfig = [
+  // {
+  //   name: HomeDrinkList.NvErHongJinZhaoZui,
+  //   data: [{ gainTarget: BuffKeys.JiaSu, value: 320, coverage: 1 }],
+  // },
+  // {
+  //   name: HomeDrinkList.NvErHongLiuRiZui,
+  //   data: [{ gainTarget: BuffKeys.JiaSu, value: 320, coverage: 1 }],
+  // },
+  // {
+  //   name: HomeDrinkList.NvErHongXunYouSan,
+  //   data: [{ gainTarget: BuffKeys.JiaSu, value: 320, coverage: 1 }],
+  // },
+  {
+    name: HomeDrinkList.ZhuangYuanHongJinZhaoZui,
+    data: [{ gainTarget: BuffKeys.YuanQi, value: 22, coverage: 1 }],
+  },
+  {
+    name: HomeDrinkList.ZhuangYuanHongLiuRiZui,
+    data: [{ gainTarget: BuffKeys.YuanQi, value: 48, coverage: 1 }],
+  },
+  {
+    name: HomeDrinkList.ZhuangYuanHongXunYouSan,
+    data: [{ gainTarget: BuffKeys.YuanQi, value: 96, coverage: 1 }],
+  },
+];
+
+export enum FestivalFoodList {
+  XiHuaGao = '细花糕',
+  JinQianHuaGao = '金钱花糕',
+}
+
+export const FestivalFoodConfig = [
+  {
+    name: FestivalFoodList.XiHuaGao,
+    data: [{ gainTarget: BuffKeys.HuiXin, value: 1073, coverage: 1 }],
+  },
+  {
+    name: FestivalFoodList.JinQianHuaGao,
+    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 577, coverage: 1 }],
   },
 ];

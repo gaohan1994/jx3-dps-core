@@ -17,6 +17,8 @@ import {
   BanquetConfig,
   HomeFoodConfig,
   WeaponEnchantConfig,
+  HomeDrinkConfig,
+  FestivalFoodConfig,
 } from '@config/food.config';
 import { FormationsConfig } from '@config/formation.config';
 import { GroupSkillConfig, TeamSkillConfig } from '@config/skill.config';
@@ -65,6 +67,8 @@ class GainModule {
     this.beginGainWork(GainGroupTypes.Banquet, '宴席', BanquetConfig);
     this.beginGainWork(GainGroupTypes.HomeFood, '家园烹饪', HomeFoodConfig);
     this.beginGainWork(GainGroupTypes.WeaponEnchant, '武器磨石', WeaponEnchantConfig);
+    this.beginGainWork(GainGroupTypes.HomeDrink, '家园酿酒', HomeDrinkConfig);
+    this.beginGainWork(GainGroupTypes.FestivalFood, '节日食品', FestivalFoodConfig);
     this.beginGainWork(GainGroupTypes.Formations, '阵法', FormationsConfig);
     this.beginGainWork(GainGroupTypes.TeamSkills, '技能增益', TeamSkillConfig);
     this.beginGainWork(GainGroupTypes.GroupSkills, '团队技能', GroupSkillConfig);

@@ -13,6 +13,8 @@ import {
   DrugEnhanceList,
   HomeFoodList,
   WeaponEnchantList,
+  HomeDrinkList,
+  FestivalFoodList,
 } from '@config/food.config';
 import { WeaponList, EnChantsList, EffectSpineList, SetBonuseList } from '@config/item.config';
 import { FormationList } from '@config/formation.config';
@@ -76,8 +78,14 @@ const CoreHelper = {
     HomeFood: {
       ...HomeFoodList,
     },
-    WeaponEnchantList: {
+    WeaponEnchant: {
       ...WeaponEnchantList,
+    },
+    HomeDrink: {
+      ...HomeDrinkList,
+    },
+    FestivalFood: {
+      ...FestivalFoodList,
     },
   },
   Target: {

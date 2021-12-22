@@ -17,6 +17,8 @@ export const GainGroupTypes = createEnum([
   'HomeFood',
   'Target',
   'WeaponEnchant',
+  'HomeDrink',
+  'FestivalFood',
 ]);
 export type GainGroupTypes = keyof typeof GainGroupTypes;
 
