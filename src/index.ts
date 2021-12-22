@@ -1,4 +1,4 @@
-import { TargetListKeys, HomeFoodList } from '@types';
+import { TargetListKeys } from '@types';
 
 import Support from '@packages/support/support';
 import Profit from '@packages/profit/profit';
@@ -11,6 +11,10 @@ import {
   FoodEnhanceList,
   DrugSupportList,
   DrugEnhanceList,
+  HomeFoodList,
+  WeaponEnchantList,
+  HomeDrinkList,
+  FestivalFoodList,
 } from '@config/food.config';
 import { WeaponList, EnChantsList, EffectSpineList, SetBonuseList } from '@config/item.config';
 import { FormationList } from '@config/formation.config';
@@ -30,7 +34,7 @@ export { createGainGroup, selectGainGroupByName, selectGainGroupById } from '@pa
 
 const CoreHelper = {
   CalculatorVersion: YiJinJingVersions,
-  GainGroupTypes,
+  GainGroupTypes: GainGroupTypes,
   JiaSuList: {
     ...JiaSuValue,
   },
@@ -73,6 +77,15 @@ const CoreHelper = {
     },
     HomeFood: {
       ...HomeFoodList,
+    },
+    WeaponEnchant: {
+      ...WeaponEnchantList,
+    },
+    HomeDrink: {
+      ...HomeDrinkList,
+    },
+    FestivalFood: {
+      ...FestivalFoodList,
     },
   },
   Target: {

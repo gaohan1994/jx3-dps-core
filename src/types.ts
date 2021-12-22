@@ -47,11 +47,3 @@ export type TargetParams = {
   neiFang: number;
   level: number;
 };
-// 家园小吃
-export enum HomeFoodList {
-  JianDouFu = 'JianDouFu',
-  XiaoChaoQingCai = 'XiaoChaoQingCai',
-  ZhaXiaoYu = 'ZhaXiaoYu',
-  DunDouFu = 'DunDouFu',
-  QingZhengLuYu = 'QingZhengLuYu',
-}
