@@ -100,3 +100,49 @@ export const DrugSupportConfig = [
     data: [{ gainTarget: BuffKeys.YuanQi, value: 200, coverage: 1 }],
   },
 ];
+
+// 家园小吃
+export enum HomeFoodList {
+  JianDouFu = '煎豆腐',
+  XiaoChaoQingCai = '小炒青菜',
+  ZhaYuGan = '炸鱼干',
+  DunDouFu = '炖豆腐',
+  QingZhengLuYu = '清蒸鲈鱼',
+}
+export const HomeFoodConfig = [
+  {
+    name: HomeFoodList.XiaoChaoQingCai,
+    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 149, coverage: 1 }],
+  },
+  {
+    name: HomeFoodList.ZhaYuGan,
+    data: [{ gainTarget: BuffKeys.HuiXin, value: 277, coverage: 1 }],
+  },
+  {
+    name: HomeFoodList.QingZhengLuYu,
+    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 277, coverage: 1 }],
+  },
+  {
+    name: HomeFoodList.JianDouFu,
+    data: [{ gainTarget: BuffKeys.PoZhao, value: 277, coverage: 1 }],
+  },
+  {
+    name: HomeFoodList.DunDouFu,
+    data: [{ gainTarget: BuffKeys.WuShuang, value: 277, coverage: 1 }],
+  },
+];
+
+export enum WeaponEnchantList {
+  ZhuiXiaoRongDing = '坠霄熔锭',
+  ZhuiXiaoMoShi = '坠霄磨石',
+}
+export const WeaponEnchantConfig = [
+  {
+    name: WeaponEnchantList.ZhuiXiaoRongDing,
+    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 320, coverage: 1 }],
+  },
+  {
+    name: WeaponEnchantList.ZhuiXiaoMoShi,
+    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 233, coverage: 1 }],
+  },
+];

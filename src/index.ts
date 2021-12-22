@@ -1,4 +1,4 @@
-import { TargetListKeys, HomeFoodList } from '@types';
+import { TargetListKeys } from '@types';
 
 import Support from '@packages/support/support';
 import Profit from '@packages/profit/profit';
@@ -11,6 +11,8 @@ import {
   FoodEnhanceList,
   DrugSupportList,
   DrugEnhanceList,
+  HomeFoodList,
+  WeaponEnchantList,
 } from '@config/food.config';
 import { WeaponList, EnChantsList, EffectSpineList, SetBonuseList } from '@config/item.config';
 import { FormationList } from '@config/formation.config';
@@ -73,6 +75,9 @@ const CoreHelper = {
     },
     HomeFood: {
       ...HomeFoodList,
+    },
+    WeaponEnchantList: {
+      ...WeaponEnchantList,
     },
   },
   Target: {
