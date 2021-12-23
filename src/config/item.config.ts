@@ -21,10 +21,6 @@ export const WeaponConfig = [
     name: WeaponList.CW,
     data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 0, coverage: 1 }],
   },
-  {
-    name: WeaponList.EffectWather,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 0, coverage: 1 }],
-  },
 ];
 
 export enum EnChantsList {
