@@ -54,12 +54,12 @@ export const EnChantConfig = [
 ];
 
 export enum EffectSpineList {
-  XiangMeng = '香梦',
+  CiWeiTong = '此未同',
 }
 export const EffectSpineConfig = [
   {
-    name: EffectSpineList.XiangMeng,
-    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 3845, coverage: 15 / 180 }],
+    name: EffectSpineList.CiWeiTong,
+    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 4165, coverage: 15 / 180 }],
   },
 ];
 

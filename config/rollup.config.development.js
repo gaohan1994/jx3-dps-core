@@ -28,7 +28,7 @@ module.exports = {
    */
   output: [
     {
-      file: 'build/index.js',
+      file: 'bundle/index.js',
       format: 'umd',
       name: 'jx3-dps-core',
     },
