@@ -4,7 +4,7 @@ import Support from '@packages/support/support';
 import Profit from '@packages/profit/profit';
 
 import DpsCore, { createDpsCore, JiaSuValue } from '@packages/core/core';
-import { createCalculator, YiJinJingVersions } from '@calculator/calculator';
+import { createCalculator } from '@calculator/calculator';
 import {
   BanquetList,
   FoodSupportList,
@@ -21,6 +21,11 @@ import { FormationList } from '@config/formation.config';
 import { TeamSkillList, GroupSkillList } from '@config/skill.config';
 import gainModule from '@packages/gain/index';
 import { GainGroupTypes } from '@packages/gain/group';
+import {
+  createConfig,
+  YiJinJingQiXueVersion,
+  YiJinJingSkillEnchant,
+} from '@calculator/calculatorWoker';
 
 export {
   createGain,
@@ -33,8 +38,9 @@ export {
 export { createGainGroup, selectGainGroupByName, selectGainGroupById } from '@packages/gain/group';
 
 const CoreHelper = {
-  CalculatorVersion: YiJinJingVersions,
   GainGroupTypes: GainGroupTypes,
+  YiJinJingQiXueVersion: YiJinJingQiXueVersion,
+  YiJinJingSkillEnchant: YiJinJingSkillEnchant,
   JiaSuList: {
     ...JiaSuValue,
   },
@@ -93,4 +99,13 @@ const CoreHelper = {
   },
 };
 
-export { createCalculator, gainModule, createDpsCore, DpsCore, Support, CoreHelper, Profit };
+export {
+  createCalculator,
+  createConfig,
+  createDpsCore,
+  gainModule,
+  DpsCore,
+  Support,
+  CoreHelper,
+  Profit,
+};

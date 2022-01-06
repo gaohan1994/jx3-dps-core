@@ -8,12 +8,9 @@
 
 import Skill from '@packages/core/skill';
 import Support from '@packages/support/support';
-import { createEnum } from '@types';
 import DpsCore from '@packages/core/core';
-import { createConfig } from './calculatorWoker';
+import { createConfig, YiJinJingQiXueVersion, YiJinJingSkillEnchant } from './calculatorWoker';
 import {
-  calculateSkillsPercent,
-  calculateSkillsTotal,
   deepClone,
   getYuanQiAttribute,
   increaseHuiXiao,
@@ -27,14 +24,40 @@ import {
 } from '@componet/utils';
 import { pipe } from '@componet/compose';
 
-export const YiJinJingVersions = createEnum(['Normal', 'Immortal']);
-export type YiJinJingVersions = keyof typeof YiJinJingVersions;
-
 export type CalculatorResult = {
   dps: number;
   total: number;
   seconds: number;
   skills: Skill[];
+};
+
+export const CALCULATOR_TIMES = 60 * 5;
+
+export const calculateSkillsTotal = (skills: Skill[]): number => {
+  let totalDamage = 0;
+
+  skills.forEach(skill => {
+    totalDamage += skill.subTotal;
+  });
+  return totalDamage;
+};
+
+export const calculateSkillsPercent = (totalDamage: number, skills: Skill[]) => {
+  const length = skills.length;
+  for (let i = 0; i < length; i++) {
+    const currentSkill = skills[i];
+    currentSkill.percent = currentSkill.subTotal / totalDamage;
+  }
+};
+
+export type CreateCalculatorOptions = {
+  qiXueVersion: YiJinJingQiXueVersion;
+  skillEnchant?: YiJinJingSkillEnchant;
+};
+
+const initCreateCalculatorOptions: CreateCalculatorOptions = {
+  qiXueVersion: YiJinJingQiXueVersion.XinZheng,
+  skillEnchant: YiJinJingSkillEnchant.YunShanJingYuJian,
 };
 
 /**
@@ -47,8 +70,10 @@ export type CalculatorResult = {
 export const createCalculator = (
   core: DpsCore,
   support: Support,
-  version: YiJinJingVersions
+  options: CreateCalculatorOptions = initCreateCalculatorOptions
 ): CalculatorResult => {
+  const { qiXueVersion } = options;
+
   const calculatorResult: CalculatorResult = {
     dps: 0,
     total: 0,
@@ -73,17 +98,17 @@ export const createCalculator = (
   );
   const baseCore = getBaseCore();
   // 生成计算器技能配置文件
-  const calculatorConfig = createConfig(baseCore, support, version);
+  const calculatorConfig = createConfig(baseCore, support, qiXueVersion);
   const { skills } = calculatorConfig;
 
   const totalDamage = calculateSkillsTotal(skills);
   calculateSkillsPercent(totalDamage, skills);
 
-  const dps = totalDamage / 300;
+  const dps = totalDamage / CALCULATOR_TIMES;
 
   calculatorResult.dps = dps;
   calculatorResult.total = totalDamage;
   calculatorResult.skills = skills;
-  calculatorResult.seconds = 300;
+  calculatorResult.seconds = CALCULATOR_TIMES;
   return calculatorResult;
 };

@@ -1,11 +1,4 @@
-const {
-  createDpsCore,
-  createCalculator,
-  Support,
-  CoreHelper,
-  Profit,
-  gainModule,
-} = require('../build');
+const { createDpsCore, createCalculator, Support, CoreHelper } = require('../bundle');
 
 async function newDemo() {
   function sort(skills) {
@@ -22,17 +15,7 @@ async function newDemo() {
     }
   }
 
-  const newCore = createDpsCore(
-    2880,
-    14470,
-    19.05,
-    175.77,
-    38.01,
-    4130,
-    54.06,
-    'YiDuanJiaSu',
-    1998
-  );
+  const newCore = createDpsCore(2897, 16912, 23.42, 180.8, 40.6, 3066, 52.05, 'YiDuanJiaSu', 1998);
 
   const support = new Support({
     mode: 'NeiGong',
@@ -46,7 +29,7 @@ async function newDemo() {
   support.use(CoreHelper.Enchants.EnChantHead);
   support.use(CoreHelper.TeamSkills.JinGangNuMu);
   support.use(CoreHelper.TeamSkills.QinLongJue);
-  support.use(CoreHelper.Weapons.CW);
+  // support.use(CoreHelper.Weapons.CW);
   support.use({
     name: 'UPDATE08-30',
     type: 'Costom',
@@ -58,24 +41,13 @@ async function newDemo() {
     data: [{ gainTarget: 'PoFangPercent', value: 0.15, coverage: 1 }],
   });
 
-  const calculatorResult = createCalculator(newCore, support, CoreHelper.CalculatorVersion.Normal);
+  const calculatorConfig = {
+    qiXueVersion: CoreHelper.YiJinJingQiXueVersion.TiHuGuanDing,
+    skillEnchant: '',
+  };
+  const calculatorResult = createCalculator(newCore, support, calculatorConfig);
   const { dps, total, skills } = calculatorResult;
-  const afterSkills = sort(skills);
-
-  const profit = new Profit({
-    core: newCore,
-    support,
-    version: CoreHelper.CalculatorVersion.Normal,
-  });
-  // const profitList = profit.calculatroProfit();
-  // console.log('profitList', profitList)
-  // return;
-
-  // console.log('total', total);
   console.log('dps', dps);
-  afterSkills.forEach(item => {
-    // console.log(`${item.skillTitle}:${item.subTotal}`);
-  });
-  // console.log('gainModule', gainModule);
+  console.log('skills', skills.length);
 }
 newDemo();

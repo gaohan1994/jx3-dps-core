@@ -9,7 +9,7 @@ import { BuffKeys } from '@types';
 import { deepClone } from '@componet/utils';
 import DpsCore from '@packages/core/core';
 import Support, { copySupport } from '@packages/support/support';
-import { CalculatorResult, createCalculator, YiJinJingVersions } from '@calculator/calculator';
+import { CalculatorResult, createCalculator } from '@calculator/calculator';
 import { Gain } from '@packages/gain/gain';
 
 /**
@@ -33,7 +33,6 @@ export type ProfitCore = {
 export type ProfitConstructorOptions = {
   core: DpsCore;
   support: Support;
-  version: YiJinJingVersions;
   baseResult?: CalculatorResult;
 };
 
@@ -49,19 +48,15 @@ class Profit {
   // 创建核心类的参数
   public core: DpsCore;
   public support: Support;
-  public version: YiJinJingVersions;
   public baseResult: CalculatorResult;
   public baseDps: number;
   public profitList: ProfitCore[] = [];
   constructor(profitOptions: ProfitConstructorOptions) {
-    const { core, support, version, baseResult } = profitOptions;
+    const { core, support, baseResult } = profitOptions;
     this.core = core;
     this.support = support;
-    this.version = version;
     // 如果传入了基础result就使用传入的 否则计算基础result
-    const calculatorResult = baseResult
-      ? deepClone(baseResult)
-      : createCalculator(core, support, version);
+    const calculatorResult = baseResult ? deepClone(baseResult) : createCalculator(core, support);
     this.baseResult = calculatorResult;
     this.baseDps = this.baseResult.dps;
 
@@ -202,7 +197,7 @@ class Profit {
     const currentProfitSupport = copySupport(this.support);
     currentProfitSupport.use(item.gain);
 
-    const result = createCalculator(this.core, currentProfitSupport, this.version);
+    const result = createCalculator(this.core, currentProfitSupport);
 
     // 计算单位收益
     const attrProfit = ((result.dps / this.baseDps - 1) * 100) / item.multiple;

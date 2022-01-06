@@ -9,7 +9,7 @@ import { addition, multiplication } from '@componet/index';
 import DpsCore, { JiaSuValue } from '@packages/core/core';
 import { createMiJi, IgnoreDefenceMiJi } from '@packages/core/miji';
 import Support from '@packages/support/support';
-import { YiJinJingVersions } from './calculator';
+import { createEnum } from '@types';
 
 // 技能名称
 export enum SkillNames {
@@ -25,9 +25,18 @@ export enum SkillNames {
   FoGuo = 'FoGuo',
   WeiTuoXianChu = 'WeiTuoXianChu',
   LiuHeGun = 'LiuHeGun',
+  XinZheng = 'XinZheng',
+  XinZhengGunWu = 'XinZhengGunWu',
   EnChantHand = 'EnChantHand',
   EnChantShoe = 'EnChantShoe',
 }
+
+export const YiJinJingQiXueVersion = createEnum([SkillNames.XinZheng, SkillNames.TiHuGuanDing]);
+export type YiJinJingQiXueVersion = keyof typeof YiJinJingQiXueVersion;
+
+export const YiJinJingSkillEnchant = createEnum(['YunShanJingCanJuan', 'YunShanJingYuJian']);
+export type YiJinJingSkillEnchant = keyof typeof YiJinJingSkillEnchant;
+
 type CalculatorConfig = {
   skills: Skill[];
 };
@@ -45,14 +54,16 @@ type SkillTimes = { [key in SkillNames]: number };
 
 // 普通版本技能数
 const normalSkillTimes: SkillTimesConfig<SkillBeforeCreated> = {
-  [SkillNames.PoZhao]: [30, 30, 0],
   [SkillNames.NaYunShi]: [26 * 1.5, 26 * 1.5 + 1.5, 0],
+  [SkillNames.PoZhao]: [30, 30, 0],
   [SkillNames.WeiTuoXianChu]: [38 - 26 * 0.5, 38 - 26 * 0.5 + 1.5, 2.5],
   [SkillNames.HengSaoLiuHe]: [32, 32, 0],
   [SkillNames.HengSaoLiuHeDot]: [155, 160, 0],
   [SkillNames.ShouQueShi]: [45, 45, 0.5],
   [SkillNames.PuDuSiFang]: [45, 49, -3],
   [SkillNames.TiHuGuanDing]: [22, 22, 0],
+  [SkillNames.XinZheng]: [11, 11, 0],
+  [SkillNames.XinZhengGunWu]: xinZhengGunWuSkillTimes,
   [SkillNames.LiuHeGun]: [172, 172, 0],
   [SkillNames.EnChantHand]: [30, 30, 0],
   [SkillNames.EnChantShoe]: [15, 15, 0],
@@ -61,22 +72,9 @@ const normalSkillTimes: SkillTimesConfig<SkillBeforeCreated> = {
   [SkillNames.XiangMo]: xiangmoSkillTimes,
 };
 
-const immortalSkillTimes: SkillTimesConfig<SkillBeforeCreated> = {
-  [SkillNames.PoZhao]: [30, 31, 0],
-  [SkillNames.NaYunShi]: [33 * 1.5, 33 * 1.5 + 1.5, 0],
-  [SkillNames.WeiTuoXianChu]: [39 - 33 * 0.5, 39 - 33 * 0.5 + 1.5, 2.5],
-  [SkillNames.HengSaoLiuHe]: [31, 31, 0],
-  [SkillNames.HengSaoLiuHeDot]: [155, 160, 0],
-  [SkillNames.ShouQueShi]: [45, 45, 0.5],
-  [SkillNames.PuDuSiFang]: [45, 49, -3],
-  [SkillNames.TiHuGuanDing]: [22, 22, 0],
-  [SkillNames.LiuHeGun]: [172, 172, 0],
-  [SkillNames.EnChantHand]: [30, 30, 0],
-  [SkillNames.EnChantShoe]: [15, 15, 0],
-  [SkillNames.SuoDi]: suodiSkillTimes,
-  [SkillNames.FoGuo]: fuoguoSkillTimes,
-  [SkillNames.XiangMo]: xiangmoSkillTimes,
-};
+function xinZhengGunWuSkillTimes({ XinZheng }: SkillTimes): number {
+  return XinZheng * 6;
+}
 
 // 缩地技能公式
 function suodiSkillTimes({ NaYunShi, WeiTuoXianChu }: SkillTimes): number {
@@ -115,12 +113,12 @@ function skillAttributeIsFunctionType(
  *
  * @param {YiJinJingValues} version
  */
-export const createConfig = function createSkillTimesConfig(
+export const createConfig = (
   core: DpsCore,
   support: Support,
   // 技能次数版本
-  version: YiJinJingVersions
-) {
+  skillQiXueVersion: YiJinJingQiXueVersion
+) => {
   const JiaSu = core.JiaSu;
   // 是否含有橙武
   const hasCw = support.hasCw();
@@ -146,15 +144,11 @@ export const createConfig = function createSkillTimesConfig(
     SuoDi: 0,
     FoGuo: 0,
     XiangMo: 0,
+    XinZheng: 0,
+    XinZhengGunWu: 0,
   };
 
-  let config: SkillTimesConfig;
-
-  if (version === YiJinJingVersions.Immortal) {
-    config = immortalSkillTimes as any;
-  } else {
-    config = normalSkillTimes as any;
-  }
+  const config: SkillTimesConfig = normalSkillTimes as any;
 
   // 根据加速段数和cw返回技能次数
   function calculatorSillTimesByNumberConfigWithJiaSuAndCw(skillName: SkillNames): void {
@@ -304,7 +298,7 @@ export const createConfig = function createSkillTimesConfig(
       huiXinHuiXiaoCoefficient:
         (core.HuiXin / 100 + 0.04 + 0.1) * (core.HuiXiao / 100 + 0.1) +
         1 -
-        (core.HuiXin / 100 + 0.1 + 0.04),
+        (core.HuiXin / 100 + 0.04 + 0.1),
       miJi: ignoreMiJi,
     });
 
@@ -348,6 +342,23 @@ export const createConfig = function createSkillTimesConfig(
       basicDamageCoefficient: 1.92185,
       damageBonuesCoefficient: BaseCoefficient + ErYeYiYuanCoefficient,
     });
+
+    const XinZheng = skillFactory({
+      skillName: SkillNames.XinZheng,
+      skillTitle: '心诤·扫击',
+      skillTimes: skillTimes[SkillNames.XinZheng],
+      basicDamageCoefficient: 3.53,
+      damageBonuesCoefficient: BaseCoefficient + ErYeYiYuanCoefficient,
+    });
+    const XinZhengGunWu = skillFactory({
+      skillName: SkillNames.XinZhengGunWu,
+      skillTitle: '心诤·棍舞',
+      skillTimes: skillTimes[SkillNames.XinZhengGunWu],
+      skillBasicNumber: 0,
+      basicDamageCoefficient: 0.2,
+      damageBonuesCoefficient: BaseCoefficient + ErYeYiYuanCoefficient,
+    });
+
     const FoGuo = skillFactory({
       skillName: SkillNames.FoGuo,
       skillTitle: '佛果',
@@ -401,11 +412,17 @@ export const createConfig = function createSkillTimesConfig(
       HengSaoLiuHeDot,
       PuDuSiFang,
       SuoDi,
-      TiHuGuanDing,
       EnChantHand,
       EnChantShoe,
       XiangMo,
     ];
+
+    if (skillQiXueVersion === YiJinJingQiXueVersion.TiHuGuanDing) {
+      skills.push(TiHuGuanDing);
+    } else if (skillQiXueVersion === YiJinJingQiXueVersion.XinZheng) {
+      skills.push(...[XinZheng, XinZhengGunWu]);
+    }
+
     calculatorConfig.skills = skills;
     return calculatorConfig;
   } catch (error) {
