@@ -1,4 +1,4 @@
-import Target from '@packages/support/target';
+import Target, { calculateDamageCoefficient } from '@packages/support/target';
 import Skill from './skill';
 
 // 秘籍的类型
@@ -68,8 +68,7 @@ export const combination = function combineSkillWithMiJi(skill: Skill, target: T
     // 剩余内防
     const remainingNeiDang = _target.neiFang * remainingDefenceCoefficient;
     // 承伤系数
-    const coefficient =
-      _target.defenseCoefficient / (_target.defenseCoefficient + remainingNeiDang);
+    const coefficient = calculateDamageCoefficient(_target.defenseCoefficient, remainingNeiDang);
 
     skill.targetDamageCoefficient = coefficient;
   }
