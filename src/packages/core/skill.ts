@@ -177,7 +177,6 @@ export function createSkillFactory(core: DpsCore, support: Support) {
   const _core = core;
   // 获得全局辅助数值
   const supportContext = support.getSupportAttributeSync();
-  // 辅助类
   const _target = support.target;
 
   function initAttribute(value?: number, initValue?: number) {

@@ -80,6 +80,9 @@ export const createCalculator = (
   };
 
   const supportContext = support.getSupportAttributeSync();
+  // 计算目标伤害系数
+  support.target.calculateDamageCoefficient(supportContext);
+
   const coreClone = deepClone(core);
   const increasedMainAttributesFromSupportContext = getYuanQiAttribute(supportContext);
 

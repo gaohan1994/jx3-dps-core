@@ -6,9 +6,13 @@
  * @Last Modified by: Harper.Gao
  * @Last Modified time: 2021-11-21 17:59:43
  */
-import { TargetListKeys, TargetParams } from '../../types';
+import { SupportContext, TargetListKeys, TargetParams } from '../../types';
 
 export type TargetOptions = string | TargetParams;
+
+const calculateDamageCoefficient = (defenseCoefficient: number, neiFang: number): number => {
+  return defenseCoefficient / (neiFang + defenseCoefficient);
+};
 
 class Target {
   static TargetList: { [name: string]: TargetParams } = {
@@ -72,10 +76,7 @@ class Target {
 
   constructor(options: TargetOptions) {
     this.options = options;
-
-    /**
-     * 设置当前目标如果没传入默认 111 木桩
-     */
+    // 设置当前目标如果没传入默认 113 木桩
     const currentTarget: TargetParams =
       options !== undefined
         ? typeof options === 'string'
@@ -88,10 +89,24 @@ class Target {
 
     this.defenseCoefficient = currentTarget.defenseCoefficient;
     this.neiFang = currentTarget.neiFang;
-
-    this.damageCoefficient =
-      currentTarget.defenseCoefficient / (currentTarget.neiFang + currentTarget.defenseCoefficient);
   }
+
+  /**
+   * 实际内防计算公式
+   * (内防 - 无视内防等级) * (1 - 无视内防系数)
+   *
+   * @time 09-01
+   * 修改内防计算公式
+   * 游戏里有两种类型的无视防御机制，称为A类和B类，其中同类无视防御相加，不同类无视防御相乘。
+   * https://www.jx3box.com/bps/7609
+   * 实际内防 = 内防 *（1 - 全局无视内防等级）* （1 - 无视内防等级）
+   * @param currentTargetNeiFang
+   */
+  calculateDamageCoefficient = (supportContext: SupportContext) => {
+    const { ignoreDefense, globalIgnoreDefense } = supportContext;
+    const ultimateNeiFang = this.neiFang * (1 - globalIgnoreDefense) * (1 - ignoreDefense);
+    this.damageCoefficient = calculateDamageCoefficient(this.defenseCoefficient, ultimateNeiFang);
+  };
 }
 
 export default Target;
