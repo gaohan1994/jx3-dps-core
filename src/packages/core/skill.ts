@@ -123,6 +123,7 @@ export default class Skill {
   }
 
   public calculator(): this {
+    this.debug && console.log('[Skill: ], ', this);
     calculatorSkill(this);
     return this;
   }
@@ -200,9 +201,6 @@ export function createSkillFactory(core: DpsCore, support: Support) {
     }: CreateSkillAttributes,
     debug = false
   ): Skill {
-    // 是否开启debug模式
-    const _debug = debug === undefined ? false : typeof debug === 'boolean' ? debug : false;
-
     // 设置属性 如果没有赋值属性则设置默认值
     const skill = new Skill({
       skillName: skillName,
@@ -230,8 +228,7 @@ export function createSkillFactory(core: DpsCore, support: Support) {
       targetDamageCoefficient: initAttribute(targetDamageCoefficient, _target.damageCoefficient),
       // 秘籍
       miJi: miJi || [],
-      // 是否开启debug
-      debug: _debug,
+      debug,
     });
 
     if (Array.isArray(skill.miJi) && skill.miJi.length > 0) {

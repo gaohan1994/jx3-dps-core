@@ -10,7 +10,7 @@ import { SupportContext, TargetListKeys, TargetParams } from '../../types';
 
 export type TargetOptions = string | TargetParams;
 
-const calculateDamageCoefficient = (defenseCoefficient: number, neiFang: number): number => {
+export const calculateDamageCoefficient = (defenseCoefficient: number, neiFang: number): number => {
   return defenseCoefficient / (neiFang + defenseCoefficient);
 };
 
@@ -105,6 +105,7 @@ class Target {
   calculateDamageCoefficient = (supportContext: SupportContext) => {
     const { ignoreDefense, globalIgnoreDefense } = supportContext;
     const ultimateNeiFang = this.neiFang * (1 - globalIgnoreDefense) * (1 - ignoreDefense);
+    this.neiFang = ultimateNeiFang;
     this.damageCoefficient = calculateDamageCoefficient(this.defenseCoefficient, ultimateNeiFang);
   };
 }
