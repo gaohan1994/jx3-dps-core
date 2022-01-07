@@ -10,6 +10,8 @@ import DpsCore, { JiaSuValue } from '@packages/core/core';
 import { createMiJi, IgnoreDefenceMiJi } from '@packages/core/miji';
 import Support from '@packages/support/support';
 import { createEnum } from '@types';
+import curry from '@componet/curry';
+import { CreateCalculatorOptions } from './calculator';
 
 // 技能名称
 export enum SkillNames {
@@ -43,7 +45,7 @@ type CalculatorConfig = {
 
 type SkillAttributeConfig<T = Array<number>> = T;
 interface SkillBeforeCreatedFunction {
-  (params: any): number;
+  (params: any, options?: CreateCalculatorOptions): number;
 }
 
 type SkillBeforeCreated = Array<number> | SkillBeforeCreatedFunction;
@@ -52,13 +54,19 @@ type SkillTimesConfig<T = Array<number>> = { [name: string]: SkillAttributeConfi
 
 type SkillTimes = { [key in SkillNames]: number };
 
+const NaYunBaseSkillTimes = 29;
+
 // 普通版本技能数
 const normalSkillTimes: SkillTimesConfig<SkillBeforeCreated> = {
-  [SkillNames.NaYunShi]: [26 * 1.5, 26 * 1.5 + 1.5, 0],
+  [SkillNames.NaYunShi]: [NaYunBaseSkillTimes * 1.5, NaYunBaseSkillTimes * 1.5 + 1.5, 0],
   [SkillNames.PoZhao]: [30, 30, 0],
-  [SkillNames.WeiTuoXianChu]: [38 - 26 * 0.5, 38 - 26 * 0.5 + 1.5, 2.5],
-  [SkillNames.HengSaoLiuHe]: [32, 32, 0],
-  [SkillNames.HengSaoLiuHeDot]: [155, 160, 0],
+  [SkillNames.WeiTuoXianChu]: [
+    35 - NaYunBaseSkillTimes * 0.5,
+    35 - NaYunBaseSkillTimes * 0.5 + 1.5,
+    2.5,
+  ],
+  [SkillNames.HengSaoLiuHe]: [44, 44, 0],
+  [SkillNames.HengSaoLiuHeDot]: [155, 155, 0],
   [SkillNames.ShouQueShi]: [45, 45, 0.5],
   [SkillNames.PuDuSiFang]: [45, 49, -3],
   [SkillNames.TiHuGuanDing]: [22, 22, 0],
@@ -78,23 +86,38 @@ function xinZhengGunWuSkillTimes({ XinZheng }: SkillTimes): number {
 
 // 缩地技能公式
 function suodiSkillTimes({ NaYunShi, WeiTuoXianChu }: SkillTimes): number {
-  return (addition(NaYunShi, WeiTuoXianChu) + 15) / 2;
+  return addition(NaYunShi, WeiTuoXianChu + 3 * 5) / 2;
 }
 
 // 佛果技能次数公式
-function fuoguoSkillTimes({
-  NaYunShi,
-  WeiTuoXianChu,
-  PuDuSiFang,
-  ShouQueShi,
-  HengSaoLiuHe,
-  TiHuGuanDing,
-}: SkillTimes): number {
-  return multiplication(
-    addition(NaYunShi, WeiTuoXianChu, PuDuSiFang, ShouQueShi, HengSaoLiuHe, TiHuGuanDing),
-    0.3,
-    0.9
-  );
+function fuoguoSkillTimes(
+  {
+    NaYunShi,
+    WeiTuoXianChu,
+    PuDuSiFang,
+    ShouQueShi,
+    HengSaoLiuHe,
+    TiHuGuanDing,
+    XinZheng,
+    XinZhengGunWu,
+  }: SkillTimes,
+  restOptions: CreateCalculatorOptions
+): number {
+  const { qiXueVersion } = restOptions;
+  const baseFuoGuoSkillTimes =
+    qiXueVersion === YiJinJingQiXueVersion.XinZheng
+      ? addition(
+          NaYunShi,
+          WeiTuoXianChu,
+          PuDuSiFang,
+          ShouQueShi,
+          HengSaoLiuHe,
+          XinZheng,
+          XinZhengGunWu
+        )
+      : addition(NaYunShi, WeiTuoXianChu, PuDuSiFang, ShouQueShi, HengSaoLiuHe, TiHuGuanDing);
+
+  return multiplication(baseFuoGuoSkillTimes, 0.35, 0.9);
 }
 
 // 降魔技能次数计算公式
@@ -113,12 +136,7 @@ function skillAttributeIsFunctionType(
  *
  * @param {YiJinJingValues} version
  */
-export const createConfig = (
-  core: DpsCore,
-  support: Support,
-  // 技能次数版本
-  skillQiXueVersion: YiJinJingQiXueVersion
-) => {
+export const createConfig = (core: DpsCore, support: Support, options: CreateCalculatorOptions) => {
   const JiaSu = core.JiaSu;
   // 是否含有橙武
   const hasCw = support.hasCw();
@@ -171,7 +189,8 @@ export const createConfig = (
   // 根据回调返回技能次数
   function calculatorSillTimesByCallback(skillName: SkillNames): void {
     const currentCallback: any = config[skillName];
-    skillTimes[skillName] = currentCallback(skillTimes);
+    const curryCalculatorSkillTimes = curry(currentCallback);
+    skillTimes[skillName] = curryCalculatorSkillTimes(skillTimes, options) as any;
   }
 
   // 首先拿到所有的keys
@@ -417,9 +436,10 @@ export const createConfig = (
       XiangMo,
     ];
 
-    if (skillQiXueVersion === YiJinJingQiXueVersion.TiHuGuanDing) {
+    const { qiXueVersion } = options;
+    if (qiXueVersion === YiJinJingQiXueVersion.TiHuGuanDing) {
       skills.push(TiHuGuanDing);
-    } else if (skillQiXueVersion === YiJinJingQiXueVersion.XinZheng) {
+    } else if (qiXueVersion === YiJinJingQiXueVersion.XinZheng) {
       skills.push(...[XinZheng, XinZhengGunWu]);
     }
 

@@ -20,6 +20,7 @@
       "@types": ["./src/types.ts"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["test/**/*"]
   // "compileOnSave": true
 }

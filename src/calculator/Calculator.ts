@@ -72,8 +72,6 @@ export const createCalculator = (
   support: Support,
   options: CreateCalculatorOptions = initCreateCalculatorOptions
 ): CalculatorResult => {
-  const { qiXueVersion } = options;
-
   const calculatorResult: CalculatorResult = {
     dps: 0,
     total: 0,
@@ -98,7 +96,7 @@ export const createCalculator = (
   );
   const baseCore = getBaseCore();
   // 生成计算器技能配置文件
-  const calculatorConfig = createConfig(baseCore, support, qiXueVersion);
+  const calculatorConfig = createConfig(baseCore, support, options);
   const { skills } = calculatorConfig;
 
   const totalDamage = calculateSkillsTotal(skills);

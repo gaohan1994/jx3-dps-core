@@ -15,7 +15,7 @@ module.exports = {
    * 入口文件
    * @param input
    */
-  input: getPath('../demo/index.js'),
+  input: getPath('../test/index.js'),
 
   /**
    * 输出文件
@@ -23,9 +23,9 @@ module.exports = {
    */
   output: [
     {
-      file: 'demo/demo.js',
+      file: 'test/demo.js',
       format: 'umd',
-      name: 'demo',
+      name: 'test',
     },
     // {
     //   file: 'build/bundle.cjs.js',
