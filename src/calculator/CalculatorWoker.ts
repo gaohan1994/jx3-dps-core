@@ -1,8 +1,8 @@
 /**
  * @Author: centerm.gaohan
  * @Date: 2021-10-01 00:37:06
- * @Last Modified by: centerm.gaohan
- * @Last Modified time: 2021-11-19 10:12:23
+ * @Last Modified by: harper.gao
+ * @Last Modified time: 2022-01-13 23:02:28
  */
 import Skill, { createSkillFactory } from '@packages/core/skill';
 import { addition, multiplication } from '@componet/index';
@@ -12,6 +12,7 @@ import Support from '@packages/support/support';
 import { createEnum } from '@types';
 import curry from '@componet/curry';
 import { CreateCalculatorOptions } from './calculator';
+import { increaseJiChuGongJi, makeZongGongJi } from '@componet/utils';
 
 // 技能名称
 export enum SkillNames {
@@ -107,14 +108,14 @@ function fuoguoSkillTimes(
   const baseFuoGuoSkillTimes =
     qiXueVersion === YiJinJingQiXueVersion.XinZheng
       ? addition(
-          NaYunShi,
-          WeiTuoXianChu,
-          PuDuSiFang,
-          ShouQueShi,
-          HengSaoLiuHe,
-          XinZheng,
-          XinZhengGunWu
-        )
+        NaYunShi,
+        WeiTuoXianChu,
+        PuDuSiFang,
+        ShouQueShi,
+        HengSaoLiuHe,
+        XinZheng,
+        XinZhengGunWu
+      )
       : addition(NaYunShi, WeiTuoXianChu, PuDuSiFang, ShouQueShi, HengSaoLiuHe, TiHuGuanDing);
 
   return multiplication(baseFuoGuoSkillTimes, 0.35, 0.9);
@@ -193,6 +194,13 @@ export const createConfig = (core: DpsCore, support: Support, options: CreateCal
     skillTimes[skillName] = curryCalculatorSkillTimes(skillTimes, options) as any;
   }
 
+  function createSanShengSkillCore(prevCore: DpsCore, qiDian: number): DpsCore {
+    // 每豆提升8%基础
+    const singleSanShengQiDianPercent = 0.08;
+    const nextCore = makeZongGongJi(increaseJiChuGongJi(prevCore, { JiChuGongJiPercent: qiDian * singleSanShengQiDianPercent }));
+    return nextCore;
+  }
+
   // 首先拿到所有的keys
   const keys = Object.keys(config) as SkillNames[];
 
@@ -200,7 +208,7 @@ export const createConfig = (core: DpsCore, support: Support, options: CreateCal
   const quene = [];
 
   // 第一遍遍历:遍历所有非函数类型的技能配置
-  for (let i = 0; i < keys.length; ) {
+  for (let i = 0; i < keys.length;) {
     const currentKey = keys.shift();
     if (skillAttributeIsFunctionType(config[currentKey])) {
       // 如果是技能类型的配置则插入到队列中去等待第二次遍历
@@ -256,7 +264,10 @@ export const createConfig = (core: DpsCore, support: Support, options: CreateCal
       poFangCoefficient: 1,
     });
 
-    const WeiTuoXianChu = skillFactory({
+    // 创建终结技能计算用的core
+    const terminationSkillCore = createSanShengSkillCore(core, 3);
+    const terminationSkillFactory = createSkillFactory(terminationSkillCore, support);
+    const WeiTuoXianChu = terminationSkillFactory({
       skillName: SkillNames.WeiTuoXianChu,
       skillTitle: '韦陀献杵',
       skillTimes: skillTimes[SkillNames.WeiTuoXianChu],
@@ -273,7 +284,7 @@ export const createConfig = (core: DpsCore, support: Support, options: CreateCal
       miJi: ignoreMiJi,
     });
 
-    const NaYunShi = skillFactory({
+    const NaYunShi = terminationSkillFactory({
       skillName: SkillNames.NaYunShi,
       skillTitle: '拿云式',
       skillTimes: skillTimes[SkillNames.NaYunShi],
@@ -298,8 +309,8 @@ export const createConfig = (core: DpsCore, support: Support, options: CreateCal
       basicDamageCoefficient: 0.58,
       damageBonuesCoefficient:
         (BaseCoefficient + ErYeYiYuanCoefficient + FoGuoCoefficient + 0.5) * 2 * MingFaCoefficient,
-      huiXinHuiXiaoCoefficient:
-        (core.HuiXin / 100 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1),
+      // huiXinHuiXiaoCoefficient:
+      //   (core.HuiXin / 100 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1),
     });
 
     const cwBuff = hasCw ? 0.0996 / 2 : 0;
@@ -329,8 +340,8 @@ export const createConfig = (core: DpsCore, support: Support, options: CreateCal
       basicDamageCoefficient: 0.083,
       damageBonuesCoefficient:
         (BaseCoefficient + FoGuoCoefficient + ErYeYiYuanCoefficient) * 2 * 3 * MingFaCoefficient,
-      huiXinHuiXiaoCoefficient:
-        (core.HuiXin / 100 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1),
+      // huiXinHuiXiaoCoefficient:
+      //   (core.HuiXin / 100 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1),
     });
 
     const PuDuSiFang = skillFactory({
