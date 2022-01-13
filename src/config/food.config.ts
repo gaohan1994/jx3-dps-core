@@ -31,73 +31,73 @@ export const BanquetConfig = [
 
 // 增强食品
 export enum FoodEnhanceList {
-  'SuanCaiYu' = '酸菜鱼',
-  'HongShaoPaiGu' = '红烧排骨',
-  'BaiRouXueChang' = '白肉血肠',
-  'GuanTangBao' = '灌汤包',
+  'SuanCaiYu' = '奉天·酸菜鱼',
+  'HongShaoPaiGu' = '奉天·红烧排骨',
+  'BaiRouXueChang' = '奉天·白肉血肠',
+  'GuanTangBao' = '奉天·灌汤包',
 }
 
 export const FoodEnchanceConfig = [
   {
     name: FoodEnhanceList.BaiRouXueChang,
-    data: [{ gainTarget: BuffKeys.PoZhao, value: 695, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.PoZhao, value: 771, coverage: 1 }],
   },
   {
     name: FoodEnhanceList.GuanTangBao,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 374, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 415, coverage: 1 }],
   },
   {
     name: FoodEnhanceList.HongShaoPaiGu,
-    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 695, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 771, coverage: 1 }],
   },
   {
     name: FoodEnhanceList.SuanCaiYu,
-    data: [{ gainTarget: BuffKeys.HuiXinLevel, value: 695, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.HuiXinLevel, value: 771, coverage: 1 }],
   },
 ];
 
 export enum FoodSupportList {
-  'YuPianShaGuoZhou' = '鱼片砂锅粥',
+  'YuPianShaGuoZhou' = '奉天·鱼片砂锅粥',
 }
 export const FoodSupportConfig = [
   {
     name: FoodSupportList.YuPianShaGuoZhou,
-    data: [{ gainTarget: BuffKeys.YuanQi, value: 156, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.YuanQi, value: 173, coverage: 1 }],
   },
 ];
 
 export enum DrugEnhanceList {
-  'ShangPinNingShenSan' = '上品凝神散',
-  'ShangPinPoHuiSan' = '上品破会散',
-  'ShangPinYuLiSan' = '上品玉离散',
-  'ShangPinZhanFengDan' = '上品斩凤丹',
+  'ShangPinNingShenSan' = '奉天·上品凝神散',
+  'ShangPinPoHuiSan' = '奉天·上品破会散',
+  'ShangPinYuLiSan' = '奉天·上品玉离散',
+  'ShangPinZhanFengDan' = '奉天·上品斩凤丹',
 }
 export const DrugEnhanceConfig = [
   {
     name: DrugEnhanceList.ShangPinNingShenSan,
-    data: [{ gainTarget: BuffKeys.PoZhao, value: 894, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.PoZhao, value: 991, coverage: 1 }],
   },
   {
     name: DrugEnhanceList.ShangPinPoHuiSan,
-    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 894, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 991, coverage: 1 }],
   },
   {
     name: DrugEnhanceList.ShangPinYuLiSan,
-    data: [{ gainTarget: BuffKeys.HuiXinLevel, value: 894, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.HuiXinLevel, value: 991, coverage: 1 }],
   },
   {
     name: DrugEnhanceList.ShangPinZhanFengDan,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 481, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 533, coverage: 1 }],
   },
 ];
 
 export enum DrugSupportList {
-  'ShangPinJuHunWan' = '上品聚魂丸',
+  'ShangPinJuHunWan' = '奉天·上品聚魂丸',
 }
 export const DrugSupportConfig = [
   {
     name: DrugSupportList.ShangPinJuHunWan,
-    data: [{ gainTarget: BuffKeys.YuanQi, value: 200, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.YuanQi, value: 222, coverage: 1 }],
   },
 ];
 
@@ -128,22 +128,22 @@ export const HomeFoodConfig = [
   },
   {
     name: HomeFoodList.DunDouFu,
-    data: [{ gainTarget: BuffKeys.WuShuang, value: 277, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.WuShuangLevel, value: 277, coverage: 1 }],
   },
 ];
 
 export enum WeaponEnchantList {
-  ZhuiXiaoRongDing = '坠霄熔锭',
-  ZhuiXiaoMoShi = '坠霄磨石',
+  ZhuiXiaoRongDing = '奉天·坠霄熔锭',
+  BingZhu = '奉天·兵·铸',
 }
 export const WeaponEnchantConfig = [
   {
     name: WeaponEnchantList.ZhuiXiaoRongDing,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 320, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 355, coverage: 1 }],
   },
   {
-    name: WeaponEnchantList.ZhuiXiaoMoShi,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 233, coverage: 1 }],
+    name: WeaponEnchantList.BingZhu,
+    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 237, coverage: 1 }],
   },
 ];
 
