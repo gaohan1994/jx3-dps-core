@@ -21,11 +21,7 @@ import { FormationList } from '@config/formation.config';
 import { TeamSkillList, GroupSkillList } from '@config/skill.config';
 import gainModule from '@packages/gain/index';
 import { GainGroupTypes } from '@packages/gain/group';
-import {
-  createConfig,
-  YiJinJingQiXueVersion,
-  YiJinJingSkillEnchant,
-} from '@calculator/calculatorWoker';
+import { YiJinJingQiXueVersion, YiJinJingSkillEnchant } from '@calculator/calculatorWoker';
 
 export {
   createGain,
@@ -99,13 +95,4 @@ const CoreHelper = {
   },
 };
 
-export {
-  createCalculator,
-  createConfig,
-  createDpsCore,
-  gainModule,
-  DpsCore,
-  Support,
-  CoreHelper,
-  Profit,
-};
+export { createCalculator, createDpsCore, gainModule, DpsCore, Support, CoreHelper, Profit };
