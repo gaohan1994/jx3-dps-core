@@ -90,26 +90,23 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   const weiTuoXianChuChain = new ChainComponent((payload: SkillChainPayload) => {
     const { core } = payload;
     const key = SkillNames.WeiTuoXianChu;
-    const skill = qiDian3CoreSkillFactory(
-      {
-        skillName: key,
-        skillTitle: SkillTitles[key],
-        skillTimes: skillTimes[key],
-        skillBasicNumber: 179,
-        basicDamageCoefficient: 1.66,
-        huiXinHuiXiaoCoefficient: shenYiBuff(core),
-        damageBonuesCoefficient:
-          (BaseCoefficient +
-            MiJiCoefficient +
-            ErYeYiYuanCoefficient +
-            skillSetBonuseCoefficient +
-            FoGuoCoefficient) *
-          ZhongChenCoefficient *
-          MingFaCoefficient,
-        miJi: ignoreMiJi,
-      },
-      true
-    );
+    const skill = qiDian3CoreSkillFactory({
+      skillName: key,
+      skillTitle: SkillTitles[key],
+      skillTimes: skillTimes[key],
+      skillBasicNumber: 179,
+      basicDamageCoefficient: 1.66,
+      huiXinHuiXiaoCoefficient: shenYiBuff(core),
+      damageBonuesCoefficient:
+        (BaseCoefficient +
+          MiJiCoefficient +
+          ErYeYiYuanCoefficient +
+          skillSetBonuseCoefficient +
+          FoGuoCoefficient) *
+        ZhongChenCoefficient *
+        MingFaCoefficient,
+      miJi: ignoreMiJi,
+    });
     skills.push(skill);
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
