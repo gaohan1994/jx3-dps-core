@@ -1,8 +1,27 @@
+import DpsCore from '@packages/core/core';
 import Skill, { createSkillFactory } from '@packages/core/skill';
 import { createMiJi, IgnoreDefenceMiJi } from '@packages/core/miji';
 import ChainComponent from '@componet/chain';
 import { SkillChainPayload, YiJinJingQiXueVersion } from './calculatorWoker';
 import { SkillNames, SkillTitles } from './skillTimesChain';
+import { increaseJiChuGongJi, makeZongGongJi } from '@componet/utils';
+
+const createSanShengSkillCore = (prevCore: DpsCore, qiDian: number): DpsCore => {
+  // 创建三生buff下的人物属性 每豆提升8%基础
+  const singleSanShengQiDianPercent = 0.08;
+  const nextCore = makeZongGongJi(
+    increaseJiChuGongJi(prevCore, { JiChuGongJiPercent: qiDian * singleSanShengQiDianPercent })
+  );
+  return nextCore;
+};
+
+const shenYiBuff = (currentCore: DpsCore) => {
+  return (
+    (currentCore.HuiXin / 100 + 0.05) * (currentCore.HuiXiao / 100 + 0.05) +
+    1 -
+    (currentCore.HuiXin / 100 + 0.05)
+  );
+};
 
 export const createSkillChains = (payload: SkillChainPayload) => {
   // 基本组件
@@ -24,13 +43,20 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   const ErYeYiYuanCoefficient = 0.0996;
   const skillSetBonuseCoefficient = hasSkillSetBonuese ? 0.0996 : 0;
   const ZhongChenCoefficient = 1.2;
-  const MingFaCoefficient = 1.11;
+  const MingFaCoefficient = 1.12;
   const MiJiCoefficient = 0.12;
-  const FoGuoCoefficient = 0.3 * 0.3;
+  const FoGuoCoefficient = 0.35 * 0.3;
   const ignoreMiJi = [createMiJi('', 0.6, IgnoreDefenceMiJi)];
   const cwBuff = hasCw ? 0.0996 / 2 : 0;
 
   const baseCoreSkillFactory = createSkillFactory(baseCore, support);
+  const qiDianAverageSkillFactory = createSkillFactory(
+    createSanShengSkillCore(baseCore, 1.5),
+    support
+  );
+  const qiDian1CoreSkillFactory = createSkillFactory(createSanShengSkillCore(baseCore, 1), support);
+  const qiDian2CoreSkillFactory = createSkillFactory(createSanShengSkillCore(baseCore, 2), support);
+  const qiDian3CoreSkillFactory = createSkillFactory(createSanShengSkillCore(baseCore, 3), support);
 
   const poZhaoChain = new ChainComponent((payload: SkillChainPayload) => {
     const { core } = payload;
@@ -46,7 +72,6 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     skills.push(skill);
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
-
   const liuHeGunChain = new ChainComponent((payload: SkillChainPayload) => {
     const { core } = payload;
     const key = SkillNames.LiuHeGun;
@@ -62,36 +87,43 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     skills.push(skill);
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
-
-  const weiTuoXianChuChain = new ChainComponent(() => {
+  const weiTuoXianChuChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { core } = payload;
     const key = SkillNames.WeiTuoXianChu;
-    const skill = baseCoreSkillFactory({
-      skillName: key,
-      skillTitle: SkillTitles[key],
-      skillTimes: skillTimes[key],
-      skillBasicNumber: 179,
-      basicDamageCoefficient: 1.66,
-      damageBonuesCoefficient:
-        (BaseCoefficient +
-          MiJiCoefficient +
-          ErYeYiYuanCoefficient +
-          skillSetBonuseCoefficient +
-          FoGuoCoefficient) *
-        ZhongChenCoefficient *
-        MingFaCoefficient,
-      miJi: ignoreMiJi,
-    });
+    const skill = qiDian3CoreSkillFactory(
+      {
+        skillName: key,
+        skillTitle: SkillTitles[key],
+        skillTimes: skillTimes[key],
+        skillBasicNumber: 179,
+        basicDamageCoefficient: 1.66,
+        huiXinHuiXiaoCoefficient: shenYiBuff(core),
+        damageBonuesCoefficient:
+          (BaseCoefficient +
+            MiJiCoefficient +
+            ErYeYiYuanCoefficient +
+            skillSetBonuseCoefficient +
+            FoGuoCoefficient) *
+          ZhongChenCoefficient *
+          MingFaCoefficient,
+        miJi: ignoreMiJi,
+      },
+      true
+    );
     skills.push(skill);
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
-  const naYunShiChain = new ChainComponent(() => {
+
+  const naYunShiChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { core } = payload;
     const key = SkillNames.NaYunShi;
-    const skill = baseCoreSkillFactory({
+    const skill = qiDian3CoreSkillFactory({
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
       skillBasicNumber: 258.5,
       basicDamageCoefficient: 2,
+      huiXinHuiXiaoCoefficient: shenYiBuff(core),
       damageBonuesCoefficient:
         (BaseCoefficient +
           MiJiCoefficient +
@@ -105,36 +137,31 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     skills.push(skill);
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
-  const hengSaoLiuHeChain = new ChainComponent((payload: SkillChainPayload) => {
-    const { core } = payload;
-    const key = SkillNames.HengSaoLiuHeDot;
-    const skill = baseCoreSkillFactory({
-      skillName: key,
-      skillTitle: SkillTitles[key],
-      skillTimes: skillTimes[key],
-      skillBasicNumber: 45,
-      basicDamageCoefficient: 0.083,
-      damageBonuesCoefficient:
-        (BaseCoefficient + FoGuoCoefficient + ErYeYiYuanCoefficient) * 2 * 3 * MingFaCoefficient,
-      huiXinHuiXiaoCoefficient:
-        (core.HuiXin / 100 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1),
-    });
-    skills.push(skill);
-    return ChainComponent.NEXT_CHAIN_SUCCESSOR;
-  });
-  const hengSaoLiuHeDotChain = new ChainComponent((payload: SkillChainPayload) => {
-    const { core } = payload;
+  const hengSaoLiuHeChain = new ChainComponent(() => {
     const key = SkillNames.HengSaoLiuHe;
-    const skill = baseCoreSkillFactory({
+    const skill = qiDianAverageSkillFactory({
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
       skillBasicNumber: 75,
       basicDamageCoefficient: 0.58,
       damageBonuesCoefficient:
-        (BaseCoefficient + ErYeYiYuanCoefficient + FoGuoCoefficient + 0.5) * 2 * MingFaCoefficient,
-      huiXinHuiXiaoCoefficient:
-        (core.HuiXin / 100 + 0.1) * (core.HuiXiao / 100 + 0.1) + 1 - (core.HuiXin / 100 + 0.1),
+        (BaseCoefficient + ErYeYiYuanCoefficient + FoGuoCoefficient + 0.5) * MingFaCoefficient,
+    });
+    skills.push(skill);
+    return ChainComponent.NEXT_CHAIN_SUCCESSOR;
+  });
+  const hengSaoLiuHeDotChain = new ChainComponent(() => {
+    const key = SkillNames.HengSaoLiuHeDot;
+    const skill = qiDianAverageSkillFactory({
+      skillName: key,
+      skillTitle: SkillTitles[key],
+      skillTimes: skillTimes[key],
+      skillBasicNumber: 45,
+      basicDamageCoefficient: 0.083,
+      damageBonuesCoefficient:
+        ((BaseCoefficient + FoGuoCoefficient + ErYeYiYuanCoefficient) * 2 * 3 * MingFaCoefficient) /
+        3,
     });
     skills.push(skill);
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
@@ -142,7 +169,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   const shouQueShiChain = new ChainComponent((payload: SkillChainPayload) => {
     const { core } = payload;
     const key = SkillNames.ShouQueShi;
-    const skill = baseCoreSkillFactory({
+    const skill = qiDian2CoreSkillFactory({
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -163,7 +190,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   });
   const puDuSiFangChain = new ChainComponent(() => {
     const key = SkillNames.PuDuSiFang;
-    const skill = baseCoreSkillFactory({
+    const skill = qiDian1CoreSkillFactory({
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -178,7 +205,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   });
   const suoDiChain = new ChainComponent(() => {
     const key = SkillNames.SuoDi;
-    const skill = baseCoreSkillFactory({
+    const skill = qiDian2CoreSkillFactory({
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -195,7 +222,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
       return ChainComponent.NEXT_CHAIN_SUCCESSOR;
     }
     const key = SkillNames.TiHuGuanDing;
-    const skill = baseCoreSkillFactory({
+    const skill = qiDian3CoreSkillFactory({
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -212,11 +239,12 @@ export const createSkillChains = (payload: SkillChainPayload) => {
       return ChainComponent.NEXT_CHAIN_SUCCESSOR;
     }
     const key = SkillNames.XinZheng;
-    const skill = baseCoreSkillFactory({
+    const skill = qiDian3CoreSkillFactory({
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
-      basicDamageCoefficient: 3.53,
+      // 少林削弱心诤减少 15%
+      basicDamageCoefficient: 3.53 * 0.85,
       damageBonuesCoefficient: BaseCoefficient + ErYeYiYuanCoefficient,
     });
     skills.push(skill);
@@ -228,12 +256,13 @@ export const createSkillChains = (payload: SkillChainPayload) => {
       return ChainComponent.NEXT_CHAIN_SUCCESSOR;
     }
     const key = SkillNames.XinZhengGunWu;
-    const skill = baseCoreSkillFactory({
+    const skill = qiDian3CoreSkillFactory({
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
       skillBasicNumber: 0,
-      basicDamageCoefficient: 0.2,
+      // 少林削弱棍舞增加 30%
+      basicDamageCoefficient: 0.2 * 1.3,
       damageBonuesCoefficient: BaseCoefficient + ErYeYiYuanCoefficient,
     });
     skills.push(skill);
@@ -241,7 +270,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   });
   const foGuoChain = new ChainComponent((payload: SkillChainPayload) => {
     const key = SkillNames.FoGuo;
-    const skill = baseCoreSkillFactory({
+    const skill = qiDianAverageSkillFactory({
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -254,7 +283,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   });
   const enChantHandChain = new ChainComponent(() => {
     const key = SkillNames.EnChantHand;
-    const skill = baseCoreSkillFactory({
+    const skill = qiDianAverageSkillFactory({
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -267,7 +296,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   });
   const enChantShoeChain = new ChainComponent((payload: SkillChainPayload) => {
     const key = SkillNames.EnChantShoe;
-    const skill = baseCoreSkillFactory({
+    const skill = qiDianAverageSkillFactory({
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
