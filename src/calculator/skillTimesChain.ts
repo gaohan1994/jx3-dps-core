@@ -114,7 +114,7 @@ export const createSkillTimesChain = (payload: SkillChainPayload): SkillTimes =>
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
 
-  const NaYunBaseSkillTimes = 29;
+  const NaYunBaseSkillTimes = 28;
   const naYunChain = new ChainComponent((payload: SkillChainPayload) => {
     const config = [NaYunBaseSkillTimes * 1.5, NaYunBaseSkillTimes * 1.5 + 1.5, 0];
     makeSkillTimesFromPipelineToConfig(
@@ -127,7 +127,7 @@ export const createSkillTimesChain = (payload: SkillChainPayload): SkillTimes =>
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
   const weiTuoXianChuChain = new ChainComponent((payload: SkillChainPayload) => {
-    const config = [35 - NaYunBaseSkillTimes * 0.5, 35 - NaYunBaseSkillTimes * 0.5 + 1.5, 2.5];
+    const config = [36 - NaYunBaseSkillTimes * 0.5, 36 - NaYunBaseSkillTimes * 0.5 + 1.5, 2.5];
     makeSkillTimesFromPipelineToConfig(
       getSkillTimesPipeline({
         ...payload,

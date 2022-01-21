@@ -116,6 +116,9 @@ export default class Skill {
     // 附加伤害
     this.extra = options.extra;
     try {
+      if (this.debug) {
+        this.debugSkillInfo();
+      }
       calculatorSkill(this);
     } catch (error) {
       console.log('error', error);
@@ -126,6 +129,18 @@ export default class Skill {
     this.debug && console.log('[Skill: ], ', this);
     calculatorSkill(this);
     return this;
+  }
+
+  private debugSkillInfo() {
+    console.log(`
+      ${this.skillTitle} 技能次数:${this.skillTimes}\n
+      技能基础伤害：${this.basicDamage}
+      技能系数：${this.basicDamageCoefficient}
+      破防系数:${this.poFangCoefficient}
+      无双系数：${this.wuShuangCoefficient}
+      双会系数：${this.huiXinHuiXiaoCoefficient}
+      目标系数：${this.targetDamageCoefficient}
+    `);
   }
 }
 
