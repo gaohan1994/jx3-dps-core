@@ -57,7 +57,6 @@ export type CreateCalculatorOptions = {
 
 const initCreateCalculatorOptions: CreateCalculatorOptions = {
   qiXueVersion: YiJinJingQiXueVersion.XinZheng,
-  skillEnchant: YiJinJingSkillEnchant.YunShanJingYuJian,
 };
 
 /**

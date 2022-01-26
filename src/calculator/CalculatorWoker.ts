@@ -15,7 +15,7 @@ import { createSkillChains } from './skillChain';
 export const YiJinJingQiXueVersion = createEnum([SkillNames.XinZheng, SkillNames.TiHuGuanDing]);
 export type YiJinJingQiXueVersion = keyof typeof YiJinJingQiXueVersion;
 
-export const YiJinJingSkillEnchant = createEnum(['YunShanJingCanJuan', 'YunShanJingYuJian']);
+export const YiJinJingSkillEnchant = createEnum(['JinGangRiLun']);
 export type YiJinJingSkillEnchant = keyof typeof YiJinJingSkillEnchant;
 
 export interface SkillChainPayload {
