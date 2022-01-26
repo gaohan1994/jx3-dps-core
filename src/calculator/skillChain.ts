@@ -2,7 +2,7 @@ import DpsCore from '@packages/core/core';
 import Skill, { createSkillFactory } from '@packages/core/skill';
 import { createMiJi, IgnoreDefenceMiJi } from '@packages/core/miji';
 import ChainComponent from '@componet/chain';
-import { SkillChainPayload, YiJinJingQiXueVersion } from './calculatorWoker';
+import { SkillChainPayload, YiJinJingQiXueVersion, YiJinJingSkillEnchant } from './calculatorWoker';
 import { SkillNames, SkillTitles } from './skillTimesChain';
 import { increaseJiChuGongJi, makeZongGongJi } from '@componet/utils';
 
@@ -325,6 +325,45 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
 
+  const qianJinZhuiChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { skillEnchant } = payload.options;
+    if (!skillEnchant && skillEnchant !== YiJinJingSkillEnchant.JinGangRiLun) {
+      return ChainComponent.NEXT_CHAIN_SUCCESSOR;
+    }
+    const key = SkillNames.QianJinZhui;
+    const skill = baseCoreSkillFactory({
+      skillName: key,
+      skillTitle: SkillTitles[key],
+      skillTimes: skillTimes[key],
+      wuShuangCoefficient: 1,
+      poFangCoefficient: 1,
+      huiXinHuiXiaoCoefficient: 1,
+      targetDamageCoefficient: 1,
+    });
+    skills.push(skill);
+    return ChainComponent.NEXT_CHAIN_SUCCESSOR;
+  });
+
+  const jinGangRiLunChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { skillEnchant } = payload.options;
+    if (!skillEnchant && skillEnchant !== YiJinJingSkillEnchant.JinGangRiLun) {
+      return ChainComponent.NEXT_CHAIN_SUCCESSOR;
+    }
+    const key = SkillNames.JinGangRiLun;
+    const skill = qiDian3CoreSkillFactory({
+      skillName: key,
+      skillTitle: SkillTitles[key],
+      skillTimes: skillTimes[key],
+      basicDamageCoefficient: 4.4,
+      damageBonuesCoefficient:
+        (BaseCoefficient + ErYeYiYuanCoefficient + FoGuoCoefficient) *
+        ZhongChenCoefficient *
+        MingFaCoefficient,
+    });
+    skills.push(skill);
+    return ChainComponent.NEXT_CHAIN_SUCCESSOR;
+  });
+
   poZhaoChain
     .setNextSuccessor(liuHeGunChain)
     .setNextSuccessor(weiTuoXianChuChain)
@@ -340,7 +379,9 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     .setNextSuccessor(foGuoChain)
     .setNextSuccessor(xiangMoChain)
     .setNextSuccessor(enChantHandChain)
-    .setNextSuccessor(enChantShoeChain);
+    .setNextSuccessor(enChantShoeChain)
+    .setNextSuccessor(qianJinZhuiChain)
+    .setNextSuccessor(jinGangRiLunChain);
 
   poZhaoChain.passRequest(payload);
   return skills;

@@ -1,6 +1,8 @@
 import { Gain } from '@packages/gain/gain';
 import DpsCore, { CoreEnum } from '@packages/core/core';
 import { pipe } from './compose';
+import { CreateCalculatorOptions } from '@calculator/calculator';
+import { YiJinJingSkillEnchant } from '@calculator/calculatorWoker';
 
 export function deepClone<T>(target: T): T {
   if (typeof target !== 'object') return;
@@ -179,4 +181,15 @@ export const makeZongGongJi = (core: DpsCore) => {
   const finalZongGongJi = ZongGongJi + nextCore.JiChuGongJi * nextCore.GongJiCoefficient;
   nextCore.ZongGongJi = finalZongGongJi;
   return nextCore;
+};
+
+export const isJinGangRiLunEnchat = (payload: CreateCalculatorOptions): boolean => {
+  if (
+    payload &&
+    payload.skillEnchant &&
+    payload.skillEnchant === YiJinJingSkillEnchant.JinGangRiLun
+  ) {
+    return true;
+  }
+  return false;
 };

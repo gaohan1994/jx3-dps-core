@@ -1,8 +1,9 @@
 import { addition, multiplication } from '@componet/index';
 import ChainComponent from '@componet/chain';
 import { pipe } from '@componet/compose';
-import { SkillChainPayload, YiJinJingQiXueVersion } from './calculatorWoker';
+import { SkillChainPayload, YiJinJingQiXueVersion, YiJinJingSkillEnchant } from './calculatorWoker';
 import { JiaSuValue } from '@packages/core/core';
+import { isJinGangRiLunEnchat } from '@componet/utils';
 
 export enum SkillNames {
   PoZhao = 'PoZhao',
@@ -21,6 +22,8 @@ export enum SkillNames {
   XinZhengGunWu = 'XinZhengGunWu',
   EnChantHand = 'EnChantHand',
   EnChantShoe = 'EnChantShoe',
+  QianJinZhui = 'QianJinZhui',
+  JinGangRiLun = 'JinGangRiLun',
 }
 // 技能名称
 export enum SkillTitles {
@@ -40,6 +43,8 @@ export enum SkillTitles {
   XinZhengGunWu = '心诤·棍舞',
   EnChantHand = '附魔手',
   EnChantShoe = '附魔脚',
+  QianJinZhui = '千斤坠',
+  JinGangRiLun = '金刚日轮',
 }
 
 interface SkillTimesChainPipelinePayload extends SkillChainPayload {
@@ -66,6 +71,8 @@ const normalSkillTimes: SkillTimes = {
   XinZheng: 0,
   XinZhengGunWu: 0,
   LiuHeGun: 172,
+  QianJinZhui: 0,
+  JinGangRiLun: 0,
 };
 
 // 根据加速段位选择技能数
@@ -172,11 +179,21 @@ export const createSkillTimesChain = (payload: SkillChainPayload): SkillTimes =>
   });
   const puDuSiFangChain = new ChainComponent((payload: SkillChainPayload) => {
     const config = [45, 49, -3];
+    const puDuSiFangPipelineConfig = getSkillTimesPipeline({
+      ...payload,
+      currentSkillConfig: config,
+    });
+    const hasJinGangRiLun = isJinGangRiLunEnchat(payload.options);
+    if (!hasJinGangRiLun) {
+      makeSkillTimesFromPipelineToConfig(puDuSiFangPipelineConfig, 'PuDuSiFang');
+      return ChainComponent.NEXT_CHAIN_SUCCESSOR;
+    }
+    // 使用金刚日轮普度次数-4
     makeSkillTimesFromPipelineToConfig(
-      getSkillTimesPipeline({
-        ...payload,
-        currentSkillConfig: config,
-      }),
+      {
+        ...puDuSiFangPipelineConfig,
+        currentSkillTimes: puDuSiFangPipelineConfig.currentSkillTimes - 4,
+      },
       'PuDuSiFang'
     );
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
@@ -269,6 +286,29 @@ export const createSkillTimesChain = (payload: SkillChainPayload): SkillTimes =>
   });
   const xiangMoChain = new ChainComponent(() => {
     normalSkillTimes.XiangMo = addition(normalSkillTimes.NaYunShi, normalSkillTimes.WeiTuoXianChu);
+    return ChainComponent.NEXT_CHAIN_SUCCESSOR;
+  });
+  const qianJinZhuiChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { skillEnchant } = payload.options;
+    if (!skillEnchant && skillEnchant !== YiJinJingSkillEnchant.JinGangRiLun) {
+      return ChainComponent.NEXT_CHAIN_SUCCESSOR;
+    }
+    const config = [11, 11, 0];
+    makeSkillTimesFromPipelineToConfig(
+      getSkillTimesPipeline({
+        ...payload,
+        currentSkillConfig: config,
+      }),
+      'QianJinZhui'
+    );
+    return ChainComponent.NEXT_CHAIN_SUCCESSOR;
+  });
+  const jinGangRiLunChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { skillEnchant } = payload.options;
+    if (!skillEnchant && skillEnchant !== YiJinJingSkillEnchant.JinGangRiLun) {
+      return null;
+    }
+    normalSkillTimes.JinGangRiLun = normalSkillTimes.QianJinZhui;
     return null;
   });
   poZhaoChain
@@ -285,7 +325,9 @@ export const createSkillTimesChain = (payload: SkillChainPayload): SkillTimes =>
     .setNextSuccessor(enChantShoeChain)
     .setNextSuccessor(suoDiChain)
     .setNextSuccessor(foGuoChain)
-    .setNextSuccessor(xiangMoChain);
+    .setNextSuccessor(xiangMoChain)
+    .setNextSuccessor(qianJinZhuiChain)
+    .setNextSuccessor(jinGangRiLunChain);
 
   poZhaoChain.passRequest(payload);
 
