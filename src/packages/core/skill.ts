@@ -166,7 +166,7 @@ export const calculatorSkill = function calculatorSkillSubtotal(skill: Skill): n
   return skill.subTotal;
 };
 
-interface CreateSkillAttributes {
+export interface CreateSkillAttributes {
   skillName: string;
   skillTitle: string;
   skillTimes: number;
@@ -181,6 +181,10 @@ interface CreateSkillAttributes {
   miJi?: MiJi[];
 }
 
+const initAttribute = (value?: number, initValue?: number) => {
+  return value !== undefined ? (typeof value === 'number' ? value : initValue) : initValue;
+};
+
 /**
  * 创建技能的工厂
  *
@@ -188,72 +192,67 @@ interface CreateSkillAttributes {
  * @param {*} support
  * @return {*}
  */
-export function createSkillFactory(core: DpsCore, support: Support) {
+export const createSkillFactory = (
+  core: DpsCore,
+  support: Support,
+  createSkillAttrs: CreateSkillAttributes,
+  debug?: boolean
+) => {
   // 获得核心类
   const _core = core;
   // 获得全局辅助数值
   const supportContext = support.getSupportAttributeSync();
   const _target = support.target;
 
-  function initAttribute(value?: number, initValue?: number) {
-    return value !== undefined ? (typeof value === 'number' ? value : initValue) : initValue;
-  }
+  const {
+    skillName,
+    skillTitle,
+    skillTimes,
+    basicDamage,
+    skillBasicNumber,
+    basicDamageCoefficient,
+    damageBonuesCoefficient,
+    poFangCoefficient,
+    wuShuangCoefficient,
+    huiXinHuiXiaoCoefficient,
+    targetDamageCoefficient,
+    miJi,
+  } = createSkillAttrs;
 
-  function createSkill(
-    {
-      skillName,
-      skillTitle,
-      skillTimes,
-      basicDamage,
-      skillBasicNumber,
-      basicDamageCoefficient,
-      damageBonuesCoefficient,
-      poFangCoefficient,
-      wuShuangCoefficient,
+  const skill = new Skill({
+    skillName: skillName,
+    skillTitle: skillTitle,
+    // 技能次数 默认1
+    skillTimes: skillTimes,
+    // 总攻击 默认为面板攻击
+    basicDamage: initAttribute(basicDamage, _core.ZongGongJi),
+    skillBasicNumber: initAttribute(skillBasicNumber, 0),
+    // 伤害系数 默认1
+    basicDamageCoefficient: initAttribute(basicDamageCoefficient, 1),
+    // 易伤 buff 基础+全局
+    damageBonuesCoefficient:
+      initAttribute(damageBonuesCoefficient, 1) * (1 + supportContext.damageBonus),
+    // 破防
+    poFangCoefficient: initAttribute(poFangCoefficient, 1 + _core.PoFang / 100),
+    // 无双
+    wuShuangCoefficient: initAttribute(wuShuangCoefficient, 1 + _core.WuShuang / 100),
+    // 双会
+    huiXinHuiXiaoCoefficient: initAttribute(
       huiXinHuiXiaoCoefficient,
-      targetDamageCoefficient,
-      miJi,
-    }: CreateSkillAttributes,
-    debug = false
-  ): Skill {
-    // 设置属性 如果没有赋值属性则设置默认值
-    const skill = new Skill({
-      skillName: skillName,
-      skillTitle: skillTitle,
-      // 技能次数 默认1
-      skillTimes: skillTimes,
-      // 总攻击 默认为面板攻击
-      basicDamage: initAttribute(basicDamage, _core.ZongGongJi),
-      skillBasicNumber: initAttribute(skillBasicNumber, 0),
-      // 伤害系数 默认1
-      basicDamageCoefficient: initAttribute(basicDamageCoefficient, 1),
-      // 易伤 buff 基础+全局
-      damageBonuesCoefficient:
-        initAttribute(damageBonuesCoefficient, 1) * (1 + supportContext.damageBonus),
-      // 破防
-      poFangCoefficient: initAttribute(poFangCoefficient, 1 + _core.PoFang / 100),
-      // 无双
-      wuShuangCoefficient: initAttribute(wuShuangCoefficient, 1 + _core.WuShuang / 100),
-      // 双会
-      huiXinHuiXiaoCoefficient: initAttribute(
-        huiXinHuiXiaoCoefficient,
-        (_core.HuiXin / 100) * (_core.HuiXiao / 100) + 1 - _core.HuiXin / 100
-      ),
-      // 承伤
-      targetDamageCoefficient: initAttribute(targetDamageCoefficient, _target.damageCoefficient),
-      // 秘籍
-      miJi: miJi || [],
-      debug,
-    });
+      (_core.HuiXin / 100) * (_core.HuiXiao / 100) + 1 - _core.HuiXin / 100
+    ),
+    // 承伤
+    targetDamageCoefficient: initAttribute(targetDamageCoefficient, _target.damageCoefficient),
+    // 秘籍
+    miJi: miJi || [],
+    debug,
+  });
 
-    if (Array.isArray(skill.miJi) && skill.miJi.length > 0) {
-      // 如果该技能含有秘籍则把秘籍的属性加成进技能中
-      combination(skill, _target);
-      skill.calculator();
-    }
-
-    return skill;
+  if (Array.isArray(skill.miJi) && skill.miJi.length > 0) {
+    // 如果该技能含有秘籍则把秘籍的属性加成进技能中
+    combination(skill, _target);
+    skill.calculator();
   }
 
-  return createSkill;
-}
+  return skill;
+};
