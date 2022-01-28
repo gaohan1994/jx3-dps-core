@@ -25,7 +25,7 @@ const shenYiBuff = (currentCore: DpsCore) => {
 
 export const createSkillChains = (payload: SkillChainPayload) => {
   // 基本组件
-  const { core: baseCore, support, skillTimes } = payload;
+  const { support, skillTimes } = payload;
   const skills: Skill[] = [];
 
   const hasSkillSetBonuese = support.hasSkillSetBonuese();
@@ -49,19 +49,10 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   const ignoreMiJi = [createMiJi('', 0.6, IgnoreDefenceMiJi)];
   const cwBuff = hasCw ? 0.0996 / 2 : 0;
 
-  const baseCoreSkillFactory = createSkillFactory(baseCore, support);
-  const qiDianAverageSkillFactory = createSkillFactory(
-    createSanShengSkillCore(baseCore, 1.5),
-    support
-  );
-  const qiDian1CoreSkillFactory = createSkillFactory(createSanShengSkillCore(baseCore, 1), support);
-  const qiDian2CoreSkillFactory = createSkillFactory(createSanShengSkillCore(baseCore, 2), support);
-  const qiDian3CoreSkillFactory = createSkillFactory(createSanShengSkillCore(baseCore, 3), support);
-
   const poZhaoChain = new ChainComponent((payload: SkillChainPayload) => {
     const { core } = payload;
     const key = SkillNames.PoZhao;
-    const skill = baseCoreSkillFactory({
+    const skill = createSkillFactory(core, support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -75,7 +66,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   const liuHeGunChain = new ChainComponent((payload: SkillChainPayload) => {
     const { core } = payload;
     const key = SkillNames.LiuHeGun;
-    const skill = baseCoreSkillFactory({
+    const skill = createSkillFactory(core, support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -90,7 +81,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   const weiTuoXianChuChain = new ChainComponent((payload: SkillChainPayload) => {
     const { core } = payload;
     const key = SkillNames.WeiTuoXianChu;
-    const skill = qiDian3CoreSkillFactory({
+    const skill = createSkillFactory(createSanShengSkillCore(core, 3), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -114,7 +105,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   const naYunShiChain = new ChainComponent((payload: SkillChainPayload) => {
     const { core } = payload;
     const key = SkillNames.NaYunShi;
-    const skill = qiDian3CoreSkillFactory({
+    const skill = createSkillFactory(createSanShengSkillCore(core, 3), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -134,9 +125,10 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     skills.push(skill);
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
-  const hengSaoLiuHeChain = new ChainComponent(() => {
+  const hengSaoLiuHeChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { core } = payload;
     const key = SkillNames.HengSaoLiuHe;
-    const skill = qiDianAverageSkillFactory({
+    const skill = createSkillFactory(createSanShengSkillCore(core, 1.5), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -148,9 +140,10 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     skills.push(skill);
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
-  const hengSaoLiuHeDotChain = new ChainComponent(() => {
+  const hengSaoLiuHeDotChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { core } = payload;
     const key = SkillNames.HengSaoLiuHeDot;
-    const skill = qiDianAverageSkillFactory({
+    const skill = createSkillFactory(createSanShengSkillCore(core, 1.5), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -166,7 +159,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   const shouQueShiChain = new ChainComponent((payload: SkillChainPayload) => {
     const { core } = payload;
     const key = SkillNames.ShouQueShi;
-    const skill = qiDian2CoreSkillFactory({
+    const skill = createSkillFactory(createSanShengSkillCore(core, 2), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -185,9 +178,10 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     skills.push(skill);
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
-  const puDuSiFangChain = new ChainComponent(() => {
+  const puDuSiFangChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { core } = payload;
     const key = SkillNames.PuDuSiFang;
-    const skill = qiDian1CoreSkillFactory({
+    const skill = createSkillFactory(createSanShengSkillCore(core, 1), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -200,9 +194,10 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     skills.push(skill);
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
-  const suoDiChain = new ChainComponent(() => {
+  const suoDiChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { core } = payload;
     const key = SkillNames.SuoDi;
-    const skill = qiDian2CoreSkillFactory({
+    const skill = createSkillFactory(createSanShengSkillCore(core, 2), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -214,12 +209,13 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
   const tiHuGuanDingChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { core } = payload;
     const { qiXueVersion } = payload.options;
     if (qiXueVersion !== YiJinJingQiXueVersion.TiHuGuanDing) {
       return ChainComponent.NEXT_CHAIN_SUCCESSOR;
     }
     const key = SkillNames.TiHuGuanDing;
-    const skill = qiDian3CoreSkillFactory({
+    const skill = createSkillFactory(createSanShengSkillCore(core, 3), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -231,12 +227,13 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
   const xinZhengChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { core } = payload;
     const { qiXueVersion } = payload.options;
     if (qiXueVersion !== YiJinJingQiXueVersion.XinZheng) {
       return ChainComponent.NEXT_CHAIN_SUCCESSOR;
     }
     const key = SkillNames.XinZheng;
-    const skill = qiDian3CoreSkillFactory({
+    const skill = createSkillFactory(createSanShengSkillCore(core, 3), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -248,12 +245,13 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
   const xinZhengGunWuChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { core } = payload;
     const { qiXueVersion } = payload.options;
     if (qiXueVersion !== YiJinJingQiXueVersion.XinZheng) {
       return ChainComponent.NEXT_CHAIN_SUCCESSOR;
     }
     const key = SkillNames.XinZhengGunWu;
-    const skill = qiDian3CoreSkillFactory({
+    const skill = createSkillFactory(createSanShengSkillCore(core, 3), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -266,8 +264,9 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
   const foGuoChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { core } = payload;
     const key = SkillNames.FoGuo;
-    const skill = qiDianAverageSkillFactory({
+    const skill = createSkillFactory(createSanShengSkillCore(core, 1.5), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -278,9 +277,10 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     skills.push(skill);
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
-  const enChantHandChain = new ChainComponent(() => {
+  const enChantHandChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { core } = payload;
     const key = SkillNames.EnChantHand;
-    const skill = qiDianAverageSkillFactory({
+    const skill = createSkillFactory(createSanShengSkillCore(core, 1.5), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -292,8 +292,9 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
   const enChantShoeChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { core } = payload;
     const key = SkillNames.EnChantShoe;
-    const skill = qiDianAverageSkillFactory({
+    const skill = createSkillFactory(createSanShengSkillCore(core, 1.5), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -305,12 +306,13 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
 
-  const xiangMoChain = new ChainComponent(() => {
+  const xiangMoChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { core } = payload;
     const weituo = skills.find(sk => sk.skillName === SkillNames.WeiTuoXianChu);
     const nayun = skills.find(sk => sk.skillName === SkillNames.NaYunShi);
 
     const key = SkillNames.XiangMo;
-    const skill = baseCoreSkillFactory({
+    const skill = createSkillFactory(core, support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -326,12 +328,13 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   });
 
   const qianJinZhuiChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { core } = payload;
     const { skillEnchant } = payload.options;
     if (!skillEnchant && skillEnchant !== YiJinJingSkillEnchant.JinGangRiLun) {
       return ChainComponent.NEXT_CHAIN_SUCCESSOR;
     }
     const key = SkillNames.QianJinZhui;
-    const skill = baseCoreSkillFactory({
+    const skill = createSkillFactory(core, support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -345,12 +348,13 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   });
 
   const jinGangRiLunChain = new ChainComponent((payload: SkillChainPayload) => {
+    const { core } = payload;
     const { skillEnchant } = payload.options;
     if (!skillEnchant && skillEnchant !== YiJinJingSkillEnchant.JinGangRiLun) {
       return ChainComponent.NEXT_CHAIN_SUCCESSOR;
     }
     const key = SkillNames.JinGangRiLun;
-    const skill = qiDian3CoreSkillFactory({
+    const skill = createSkillFactory(createSanShengSkillCore(core, 3), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
