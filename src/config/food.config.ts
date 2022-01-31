@@ -191,7 +191,7 @@ export enum FestivalFoodList {
 export const FestivalFoodConfig = [
   {
     name: FestivalFoodList.XiHuaGao,
-    data: [{ gainTarget: BuffKeys.HuiXin, value: 1073, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.HuiXinLevel, value: 1073, coverage: 1 }],
   },
   {
     name: FestivalFoodList.JinQianHuaGao,
