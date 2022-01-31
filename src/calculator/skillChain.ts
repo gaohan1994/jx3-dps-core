@@ -11,12 +11,18 @@ import {
   isXinZhengVersion,
   makeZongGongJi,
 } from '@componet/utils';
+import {
+  SANSHENG_QIDIAN_INCREASED_JICHUGONGJI_PERCENT,
+  SONGYAN_INCREASED_HUIXIN_PERCENT,
+  SONGYAN_INCREATED_JICHUGONGJI,
+} from '@config/constants';
 
 const createSanShengSkillCore = (prevCore: DpsCore, qiDian: number): DpsCore => {
   // 创建三生buff下的人物属性 每豆提升8%基础
-  const singleSanShengQiDianPercent = 0.08;
   const nextCore = makeZongGongJi(
-    increaseJiChuGongJi(prevCore, { JiChuGongJiPercent: qiDian * singleSanShengQiDianPercent })
+    increaseJiChuGongJi(prevCore, {
+      JiChuGongJiPercent: qiDian * SANSHENG_QIDIAN_INCREASED_JICHUGONGJI_PERCENT,
+    })
   );
   return nextCore;
 };
@@ -31,27 +37,25 @@ const shenYiBuff = (currentCore: DpsCore) => {
 
 /**
  * 颂言buff
- * 每层3%会心，4%内功 最多30层
+ * 每层3%会心，400内功（描述有误不是4%而是400不吃buff但是吃三生） 最多6层（单目标）
  * 心诤丶扫击，金刚日轮，横扫+横扫DOT可以吃到buff
  *
  * @param {DpsCore} currentCore
  * @param {number} [coverage=1]
+ * @param {number} qiDian
  * @return {*}
  */
 const songYanBuff = (payload: SkillChainPayload, coverage = 1): SkillChainPayload => {
-  const singleTouchHuiXinIncreasedPercent = 0.03;
-  const singleTouchJiChuGongJiIncreasedPercent = 0.04;
   const totalTouchs = 6;
-
   // 每层 3% 会心，一共挥击6次，共18%会心
-  const huiXinIncreasedPercent = singleTouchHuiXinIncreasedPercent * totalTouchs * coverage;
-  // 每层 4% 基础，一共挥击6次，共24%基础
-  const jiChuGongJiIncreasedPercent =
-    singleTouchJiChuGongJiIncreasedPercent * totalTouchs * coverage;
+  const huiXinIncreasedPercent = SONGYAN_INCREASED_HUIXIN_PERCENT * totalTouchs * coverage;
+
+  // 每层 400 面板攻击，一共挥击6次，共2400面板攻击
+  const jiChuGongJiIncreated = SONGYAN_INCREATED_JICHUGONGJI * totalTouchs * coverage;
 
   const nextCore = deepClone(payload.core);
   nextCore.HuiXin += huiXinIncreasedPercent;
-  nextCore.GongJiCoefficient += jiChuGongJiIncreasedPercent;
+  nextCore.JiChuGongJi += jiChuGongJiIncreated;
 
   payload.core = nextCore;
   return payload;
@@ -160,12 +164,13 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
   const hengSaoLiuHeChain = new ChainComponent((payload: SkillChainPayload) => {
+    const HengSaoLiuHeQiDian = 1.5;
     const currentPayload = isXinZhengVersion(payload.options)
       ? songYanBuff(deepClone(payload))
       : payload;
     const { core } = currentPayload;
     const key = SkillNames.HengSaoLiuHe;
-    const skill = createSkillFactory(createSanShengSkillCore(core, 1.5), support, {
+    const skill = createSkillFactory(createSanShengSkillCore(core, HengSaoLiuHeQiDian), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -178,12 +183,13 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
   const hengSaoLiuHeDotChain = new ChainComponent((payload: SkillChainPayload) => {
+    const HengSaoLiuHeQiDian = 1.5;
     const currentPayload = isXinZhengVersion(payload.options)
       ? songYanBuff(deepClone(payload))
       : payload;
     const { core } = currentPayload;
     const key = SkillNames.HengSaoLiuHeDot;
-    const skill = createSkillFactory(createSanShengSkillCore(core, 1.5), support, {
+    const skill = createSkillFactory(createSanShengSkillCore(core, HengSaoLiuHeQiDian), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -267,12 +273,13 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
   const xinZhengChain = new ChainComponent((payload: SkillChainPayload) => {
+    const XinZhengQiDian = 3;
     if (!isXinZhengVersion(payload.options)) {
       return ChainComponent.NEXT_CHAIN_SUCCESSOR;
     }
     const { core } = songYanBuff(deepClone(payload));
     const key = SkillNames.XinZheng;
-    const skill = createSkillFactory(createSanShengSkillCore(core, 3), support, {
+    const skill = createSkillFactory(createSanShengSkillCore(core, XinZhengQiDian), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
@@ -386,12 +393,13 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   });
 
   const jinGangRiLunChain = new ChainComponent((payload: SkillChainPayload) => {
+    const JinGangRiLunQiDian = 3;
     if (!isJinGangRiLunEnchat(payload.options)) {
       return ChainComponent.NEXT_CHAIN_SUCCESSOR;
     }
     const { core } = songYanBuff(deepClone(payload));
     const key = SkillNames.JinGangRiLun;
-    const skill = createSkillFactory(createSanShengSkillCore(core, 3), support, {
+    const skill = createSkillFactory(createSanShengSkillCore(core, JinGangRiLunQiDian), support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
