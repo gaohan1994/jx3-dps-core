@@ -14,7 +14,7 @@ import {
   getSpunkAttribute,
   increaseCriticalDamagePower,
   increaseSolarAttackPowerBase,
-  increaseMainAttribute,
+  increaseSpunk,
   increaseSolarOvercomePercent,
   increaseSurplusValue,
   increaseStrainPercent,
@@ -93,11 +93,11 @@ export const createCalculator = (
   support.target.calculateDamageCoefficient(supportContext);
 
   const coreClone = deepClone(core);
-  const increasedMainAttributesFromSupportContext = getSpunkAttribute(supportContext);
+  const increasedSpunkFromSupportContext = getSpunkAttribute(supportContext);
 
   // 生成核心计算类 baseCore
   const getBaseCore = pipe(
-    () => increaseMainAttribute(coreClone, increasedMainAttributesFromSupportContext),
+    () => increaseSpunk(coreClone, increasedSpunkFromSupportContext),
     (core: DpsCore) => increaseSolarCriticalStrike(core, supportContext),
     (core: DpsCore) => increaseCriticalDamagePower(core, supportContext),
     (core: DpsCore) => increaseSolarOvercomePercent(core, supportContext),

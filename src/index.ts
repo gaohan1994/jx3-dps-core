@@ -1,6 +1,5 @@
 import { TargetListKeys, YiJinJingSkillEnchant, YiJinJingQiXueVersion } from '@types';
-
-import Support, { SupportOptions } from '@packages/support/support';
+import Support from '@packages/support/support';
 import Profit from '@packages/profit/profit';
 
 import DpsCore, { createDpsCore, CreateDpsCoreOptions, HasteValue } from '@packages/core/core';
@@ -23,7 +22,7 @@ import {
 import { WeaponList, EnChantsList, EffectSpineList, SetBonuseList } from '@config/item.config';
 import { FormationList } from '@config/formation.config';
 import { TeamSkillList, GroupSkillList } from '@config/skill.config';
-import { GainModule } from '@packages/gain/index';
+import gainModule from '@packages/gain/index';
 import { GainGroupTypes } from '@packages/gain/group';
 
 export {
@@ -60,7 +59,7 @@ type Jx3DpsCoreOptions = CreateCalculatorOptions;
  *
  * @class Jx3DpsCore
  */
-class Jx3DpsCore {
+export default class Jx3DpsCore {
   /**
    * 增益群组类型
    *
@@ -167,14 +166,6 @@ class Jx3DpsCore {
   };
 
   /**
-   * 增益模块
-   *
-   * @type {GainModule}
-   * @memberof Jx3DpsCore
-   */
-  public gainModule: GainModule;
-
-  /**
    * 创建计算器的其他配置选项
    *
    * @private
@@ -201,12 +192,11 @@ class Jx3DpsCore {
 
   constructor(
     coreOptions: CreateDpsCoreOptions,
-    supportOptions: SupportOptions,
+    support: Support,
     jx3DpsCoreOptions: Jx3DpsCoreOptions
   ) {
     this.core = createDpsCore(coreOptions);
-    this.support = new Support(supportOptions);
-    this.gainModule = new GainModule();
+    this.support = support;
     this.jx3DpsCoreOptions = jx3DpsCoreOptions;
   }
 
@@ -229,4 +219,4 @@ class Jx3DpsCore {
     return pf.calculatroProfit();
   };
 }
-export default Jx3DpsCore;
+export { Support, gainModule };

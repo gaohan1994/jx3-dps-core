@@ -66,7 +66,7 @@ class DpsCore {
 }
 
 export type CreateDpsCoreOptions = {
-  mainAttribute: number;
+  Spunk: number;
   SolarAttackPowerBase: number;
   SolarCriticalStrikeRate: number;
   SolarCriticalDamagePowerPercent: number;
@@ -86,10 +86,9 @@ const YiJinJingMainCoeffiecient: MainCoeffiecient = (Spunk: number) => ({
 });
 
 export const createDpsCore = (createDpsCoreOptions: CreateDpsCoreOptions) => {
-  const { mainAttribute, ...restCreateCoreAttrs } = createDpsCoreOptions;
+  const { ...restCreateCoreAttrs } = createDpsCoreOptions;
   return new DpsCore({
     mainCoeffiecient: YiJinJingMainCoeffiecient,
-    Spunk: mainAttribute,
     SolarAttackPowerBasePercent: 1,
     ...restCreateCoreAttrs,
   });
