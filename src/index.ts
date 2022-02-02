@@ -22,7 +22,7 @@ import {
 import { WeaponList, EnChantsList, EffectSpineList, SetBonuseList } from '@config/item.config';
 import { FormationList } from '@config/formation.config';
 import { TeamSkillList, GroupSkillList } from '@config/skill.config';
-import { GainModule } from '@packages/gain/index';
+import gainModule from '@packages/gain/index';
 import { GainGroupTypes } from '@packages/gain/group';
 
 export {
@@ -166,14 +166,6 @@ export default class Jx3DpsCore {
   };
 
   /**
-   * 增益模块
-   *
-   * @type {GainModule}
-   * @memberof Jx3DpsCore
-   */
-  static gainModule: GainModule = new GainModule();
-
-  /**
    * 创建计算器的其他配置选项
    *
    * @private
@@ -227,4 +219,4 @@ export default class Jx3DpsCore {
     return pf.calculatroProfit();
   };
 }
-export { Support };
+export { Support, gainModule };
