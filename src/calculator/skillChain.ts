@@ -112,7 +112,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
       basicDamage: 0,
-      skillBasicNumber: core.WuQiShangHai,
+      skillBasicNumber: core.MeleeWeaponDamage,
       basicDamageCoefficient: 0,
       solarOvercomeCoefficient: 1,
     });

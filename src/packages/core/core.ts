@@ -26,7 +26,7 @@ class DpsCore {
   public SolarAttackPowerBase: number;
   public GongJiCoefficient: number;
   public ZongGongJi: number;
-  public WuQiShangHai: number;
+  public MeleeWeaponDamage: number;
   /**
    * @param SolarCriticalStrikeRate 阳性内功会心率
    *
@@ -58,7 +58,7 @@ class DpsCore {
     invariant(typeof options.mainCoeffiecient === 'function', '主属性设置不能为空');
     this.mainCoeffiecient = options.mainCoeffiecient;
 
-    this.WuQiShangHai = options.WuQiShangHai || 0;
+    this.MeleeWeaponDamage = options.MeleeWeaponDamage || 0;
     this.SolarCriticalStrikeRate = options.SolarCriticalStrikeRate || 0;
     this.SolarCriticalDamagePowerPercent = options.SolarCriticalDamagePowerPercent || 0;
     this.Spunk = options.Spunk;
@@ -74,7 +74,7 @@ export type CreateDpsCoreOptions = {
   SurplusValue: number;
   StrainPercent: number;
   Haste: HasteValue;
-  WuQiShangHai: number;
+  MeleeWeaponDamage: number;
 };
 
 // 易筋经主属性成长
