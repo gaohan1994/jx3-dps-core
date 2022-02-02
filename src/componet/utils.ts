@@ -1,8 +1,14 @@
 import { Gain } from '@packages/gain/gain';
-import DpsCore, { CoreEnum } from '@packages/core/core';
+import DpsCore from '@packages/core/core';
 import { pipe } from './compose';
 import { CreateCalculatorOptions } from '@calculator/calculator';
 import { YiJinJingQiXueVersion, YiJinJingSkillEnchant } from '@types';
+import {
+  CRITICALSTRIKEDAMAGEPOWER_TRANSFORM_COE,
+  CRITICALSTRIKE_TRANSFORM_COE,
+  SOLAROVERCOME_TRANSFORM_COE,
+  STRAIN_TRANSFORM_COE,
+} from '@config/constants';
 
 export function deepClone<T>(target: T): T {
   if (typeof target !== 'object') return;
@@ -67,8 +73,7 @@ export const getTargetAttribute = (attributes: any, target: string): number => {
   return attributes[target] ?? 0;
 };
 
-export const getYuanQiAttribute = (attributes: any) =>
-  getTargetAttribute(attributes, CoreEnum.YuanQi);
+export const getSpunkAttribute = (attributes: any) => getTargetAttribute(attributes, 'Spunk');
 
 type CombineAttribute = {
   target: string;
@@ -82,104 +87,110 @@ export const makeAttributeCombine = (prevAttributes: any, combineAttribute: Comb
   return nextAttributes;
 };
 
-export const makeYuanQiAttributeCombine = (prevAttributes: any, yuanQi: number) =>
-  makeAttributeCombine(prevAttributes, { target: CoreEnum.YuanQi, value: yuanQi });
+export const makeSpunkAttributeCombine = (prevAttributes: any, Spunk: number) =>
+  makeAttributeCombine(prevAttributes, { target: 'Spunk', value: Spunk });
 
 // 转换计算用的标准属性
-const HUIXIN_LEVEL_COE = 357.375;
-export const transferHuiXinLevelToHuiXin = (huiXinLevel: number): number =>
-  huiXinLevel / HUIXIN_LEVEL_COE;
+export const transferSolarCriticalStrikeToSolarCriticalStrikeRate = (
+  SolarCriticalStrike: number
+): number => SolarCriticalStrike / CRITICALSTRIKE_TRANSFORM_COE;
 
-const HUIXIAO_LEVEL_COE = 125.0625;
-export const transferHuiXiaoLevelToHuiXiao = (huiXiaoLevel: number): number =>
-  huiXiaoLevel / HUIXIAO_LEVEL_COE;
+export const transferSolarCriticalDamagePowerSolarCriticalDamagePowerPercent = (
+  SolarCriticalDamagePower: number
+): number => SolarCriticalDamagePower / CRITICALSTRIKEDAMAGEPOWER_TRANSFORM_COE;
 
-const POFANG_COE = 357.375;
-export const transferPoFangLevelToPoFang = (poFangLevel: number): number =>
-  poFangLevel / POFANG_COE;
+export const transferSolarOvercomeToSolarOvercomePercent = (SolarOvercome: number): number =>
+  SolarOvercome / SOLAROVERCOME_TRANSFORM_COE;
 
-const WUSHUANG_COE = 344.5875;
-export const transferWuShuangLevelToWuShuang = (wuShuangLevel: number): number =>
-  wuShuangLevel / WUSHUANG_COE;
+export const transferStrainToStrainPercent = (Strain: number): number =>
+  Strain / STRAIN_TRANSFORM_COE;
 
 // 计算增加的属性
-export const increaseHuiXin = (core: DpsCore, increasedAttributes: any) => {
-  const { HuiXin = 0, HuiXinLevel = 0 } = increasedAttributes;
-  const increasedHuiXin = HuiXin * 100;
-  const increasedHuiXinFromLevel = transferHuiXinLevelToHuiXin(HuiXinLevel);
+export const increaseSolarCriticalStrike = (core: DpsCore, increasedAttributes: any) => {
+  const { SolarCriticalStrike = 0, SolarCriticalStrikeRate = 0 } = increasedAttributes;
+  const increasedSolarCriticalStrikeRate = SolarCriticalStrikeRate * 100;
+  const increasedSolarCriticalStrikeRateFromSolarCriticalStrike =
+    transferSolarCriticalStrikeToSolarCriticalStrikeRate(SolarCriticalStrike);
 
   const nextCore = deepClone(core);
-  nextCore.HuiXin += increasedHuiXin + increasedHuiXinFromLevel;
+  nextCore.SolarCriticalStrikeRate +=
+    increasedSolarCriticalStrikeRate + increasedSolarCriticalStrikeRateFromSolarCriticalStrike;
   return nextCore;
 };
 
-export const increaseHuiXiao = (core: DpsCore, increasedAttributes: any) => {
-  const { HuiXiao = 0, HuiXiaoLevel = 0 } = increasedAttributes;
-  const increasedHuiXiao = HuiXiao * 100;
-  const increasedHuiXiaoFromLevel = transferHuiXiaoLevelToHuiXiao(HuiXiaoLevel);
+export const increaseCriticalDamagePower = (core: DpsCore, increasedAttributes: any) => {
+  const { SolarCriticalDamagePowerPercent = 0, SolarCriticalDamagePower = 0 } = increasedAttributes;
+  const increasedSolarCriticalDamagePowerPercent = SolarCriticalDamagePowerPercent * 100;
+  const increasedSolarCriticalDamagePowerPercentFromSolarCriticalDamagePower =
+    transferSolarCriticalDamagePowerSolarCriticalDamagePowerPercent(SolarCriticalDamagePower);
 
   const nextCore = deepClone(core);
-  nextCore.HuiXiao += increasedHuiXiao + increasedHuiXiaoFromLevel;
+  nextCore.SolarCriticalDamagePowerPercent +=
+    increasedSolarCriticalDamagePowerPercent +
+    increasedSolarCriticalDamagePowerPercentFromSolarCriticalDamagePower;
   return nextCore;
 };
 
-export const increasePoFang = (core: DpsCore, increasedAttributes: any) => {
-  const { PoFangLevel = 0, PoFangPercent = 0 } = increasedAttributes;
-  const increasedPoFangFromLevel = transferPoFangLevelToPoFang(PoFangLevel);
+export const increaseSolarOvercomePercent = (core: DpsCore, increasedAttributes: any) => {
+  const { SolarOvercome = 0, SolarOvercomePercent = 0 } = increasedAttributes;
+  const increasedSolarOvercomePercentFromSolarOvercome =
+    transferSolarOvercomeToSolarOvercomePercent(SolarOvercome);
 
   const nextCore = deepClone(core);
-  nextCore.PoFang += increasedPoFangFromLevel;
-  nextCore.PoFang = nextCore.PoFang * (1 + PoFangPercent);
+  nextCore.SolarOvercomePercent += increasedSolarOvercomePercentFromSolarOvercome;
+  nextCore.SolarOvercomePercent = nextCore.SolarOvercomePercent * (1 + SolarOvercomePercent);
   return nextCore;
 };
 
-export const increaseWuShuang = (core: DpsCore, increasedAttributes: any) => {
-  const { WuShuang = 0, WuShuangLevel = 0 } = increasedAttributes;
-  const increasedWuShuangFromLevel = transferWuShuangLevelToWuShuang(WuShuangLevel);
+export const increaseStrainPercent = (core: DpsCore, increasedAttributes: any) => {
+  const { StrainPercent = 0, Strain = 0 } = increasedAttributes;
+  const increasedStrainPercentFromStrain = transferStrainToStrainPercent(Strain);
 
   const nextCore = deepClone(core);
-  nextCore.WuShuang += WuShuang + increasedWuShuangFromLevel;
+  nextCore.StrainPercent += StrainPercent + increasedStrainPercentFromStrain;
   return nextCore;
 };
 
-export const increasePoZhao = (core: DpsCore, increasedAttributes: any) => {
-  const { PoZhao = 0 } = increasedAttributes;
+export const increaseSurplusValue = (core: DpsCore, increasedAttributes: any) => {
+  const { SurplusValue = 0 } = increasedAttributes;
   const nextCore = deepClone(core);
-  nextCore.PoZhao += PoZhao;
+  nextCore.SurplusValue += SurplusValue;
   return nextCore;
 };
 
-export const increaseJiChuGongJi = (core: DpsCore, increasedAttributes: any) => {
-  const { JiChuGongJi = 0, JiChuGongJiPercent = 0 } = increasedAttributes;
+export const increaseSolarAttackPowerBase = (core: DpsCore, increasedAttributes: any) => {
+  const { SolarAttackPowerBase = 0, SolarAttackPowerBasePercent = 0 } = increasedAttributes;
 
   const nextCore = deepClone(core);
-  nextCore.JiChuGongJi += JiChuGongJi;
-  nextCore.GongJiCoefficient += JiChuGongJiPercent;
+  nextCore.SolarAttackPowerBase += SolarAttackPowerBase;
+  nextCore.SolarAttackPowerBasePercent += SolarAttackPowerBasePercent;
   return nextCore;
 };
 
 export const increaseMainAttribute = (core: DpsCore, mainAttribute: number) => {
   const { mainCoeffiecient } = core;
-  const { JiChuGongJi, PoFangLevel, HuiXinLevel } = mainCoeffiecient(mainAttribute);
+  const { SolarAttackPowerBase, SolarOvercome, SolarCriticalStrike } =
+    mainCoeffiecient(mainAttribute);
 
   const getNextCore = pipe(
-    () => increaseJiChuGongJi(core, { JiChuGongJi }),
-    () => increasePoFang(core, { PoFangLevel }),
-    () => increaseHuiXin(core, { HuiXinLevel })
+    () => increaseSolarAttackPowerBase(core, { SolarAttackPowerBase }),
+    () => increaseSolarOvercomePercent(core, { SolarOvercome }),
+    () => increaseSolarCriticalStrike(core, { SolarCriticalStrike })
   );
   const nextCore = getNextCore();
   return nextCore;
 };
 
-export const makeZongGongJi = (core: DpsCore) => {
+export const makeSolarAttackPower = (core: DpsCore) => {
   const nextCore = deepClone(core);
   const { mainCoeffiecient } = nextCore;
 
-  const mainAttribute = getYuanQiAttribute(nextCore);
-  const { ZongGongJi } = mainCoeffiecient(mainAttribute);
+  const mainAttribute = getSpunkAttribute(nextCore);
+  const { SolarAttackPower } = mainCoeffiecient(mainAttribute);
 
-  const finalZongGongJi = ZongGongJi + nextCore.JiChuGongJi * nextCore.GongJiCoefficient;
-  nextCore.ZongGongJi = finalZongGongJi;
+  const finalSolarAttackPower =
+    SolarAttackPower + nextCore.SolarAttackPowerBase * nextCore.SolarAttackPowerBasePercent;
+  nextCore.SolarAttackPower = finalSolarAttackPower;
   return nextCore;
 };
 

@@ -15,11 +15,11 @@ export enum WeaponList {
 export const WeaponConfig = [
   {
     name: WeaponList.EffectWather,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 490, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 490, coverage: 1 }],
   },
   {
     name: WeaponList.CW,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 0, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 0, coverage: 1 }],
   },
 ];
 
@@ -37,19 +37,19 @@ export const EnChantConfig = [
   },
   {
     name: EnChantsList.EnChantBody,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 357, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 357, coverage: 1 }],
   },
   {
     name: EnChantsList.EnChantHand,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 0, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 0, coverage: 1 }],
   },
   {
     name: EnChantsList.EnChantHead,
-    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 496, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarOvercome, value: 496, coverage: 1 }],
   },
   {
     name: EnChantsList.EnChantShoe,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 0, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 0, coverage: 1 }],
   },
 ];
 
@@ -59,7 +59,7 @@ export enum EffectSpineList {
 export const EffectSpineConfig = [
   {
     name: EffectSpineList.CiWeiTong,
-    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 4165, coverage: 15 / 180 }],
+    data: [{ gainTarget: BuffKeys.SolarOvercome, value: 4165, coverage: 15 / 180 }],
   },
 ];
 
@@ -72,9 +72,9 @@ export const SetBonuseConfig = [
     name: SetBonuseList.ValueSetBonuse,
     data: [
       // 套装 4%会心 覆盖率 40%
-      { gainTarget: BuffKeys.HuiXin, value: 0.04, coverage: 0.4 },
+      { gainTarget: BuffKeys.SolarCriticalStrikeRate, value: 0.04, coverage: 0.4 },
       // 套装会心效果 4% 覆盖率40%
-      { gainTarget: BuffKeys.HuiXiao, value: 0.04, coverage: 0.4 },
+      { gainTarget: BuffKeys.SolarCriticalDamagePowerPercent, value: 0.04, coverage: 0.4 },
     ],
   },
   {

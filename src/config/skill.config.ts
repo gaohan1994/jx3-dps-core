@@ -17,27 +17,27 @@ export enum TeamSkillList {
 export const TeamSkillConfig = [
   {
     name: TeamSkillList.JinGangNuMu,
-    data: [{ gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.4, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBasePercent, value: 0.4, coverage: 1 }],
   },
   {
     // 擒龙诀 20%基础 25%覆盖
     name: TeamSkillList.QinLongJue,
-    data: [{ gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.2, coverage: 0.25 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBasePercent, value: 0.2, coverage: 0.25 }],
   },
   {
     name: TeamSkillList.PoCangQiong,
-    data: [{ gainTarget: BuffKeys.HuiXiao, value: 0.1, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarCriticalDamagePowerPercent, value: 0.1, coverage: 1 }],
   },
   {
     name: TeamSkillList.XiuQi,
     data: [
-      { gainTarget: BuffKeys.YuanQi, value: 111, coverage: 1 },
-      { gainTarget: BuffKeys.HuiXinLevel, value: 70, coverage: 1 },
+      { gainTarget: BuffKeys.Spunk, value: 111, coverage: 1 },
+      { gainTarget: BuffKeys.SolarCriticalStrike, value: 70, coverage: 1 },
     ],
   },
   {
     name: TeamSkillList.FenLan,
-    data: [{ gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.07, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBasePercent, value: 0.07, coverage: 1 }],
   },
 ];
 
@@ -67,7 +67,7 @@ export const GroupSkillConfig = [
   },
   {
     name: GroupSkillList.HanXiaoQianJun,
-    data: [{ gainTarget: BuffKeys.PoFangPercent, value: 0.1, coverage: 0.5 }],
+    data: [{ gainTarget: BuffKeys.SolarOvercomePercent, value: 0.1, coverage: 0.5 }],
   },
   /**
    * @todo 新增团队技能宏法，默认覆盖率10%
@@ -75,7 +75,7 @@ export const GroupSkillConfig = [
    */
   {
     name: GroupSkillList.HongFa,
-    data: [{ gainTarget: BuffKeys.JiChuGongJiPercent, value: 0.3, coverage: 0.1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBasePercent, value: 0.3, coverage: 0.1 }],
   },
   {
     name: GroupSkillList.MeiHuaDun,

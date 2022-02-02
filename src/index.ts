@@ -3,7 +3,7 @@ import { TargetListKeys, YiJinJingSkillEnchant, YiJinJingQiXueVersion } from '@t
 import Support, { SupportOptions } from '@packages/support/support';
 import Profit from '@packages/profit/profit';
 
-import DpsCore, { createDpsCore, CreateDpsCoreOptions, JiaSuValue } from '@packages/core/core';
+import DpsCore, { createDpsCore, CreateDpsCoreOptions, HasteValue } from '@packages/core/core';
 import {
   createCalculator,
   CalculatorResult,
@@ -85,7 +85,7 @@ class Jx3DpsCore {
    * @static
    * @memberof Jx3DpsCore
    */
-  static JiaSuList = JiaSuValue;
+  static HasteList = HasteValue;
   /**
    * 阵法列表
    *
@@ -189,7 +189,7 @@ class Jx3DpsCore {
    * @type {DpsCore}
    * @memberof Jx3DpsCore
    */
-  private core: DpsCore;
+  public core: DpsCore;
   /**
    * 计算器增益类support
    *

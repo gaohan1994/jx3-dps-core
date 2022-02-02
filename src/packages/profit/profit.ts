@@ -60,7 +60,7 @@ class Profit {
     this.baseResult = calculatorResult;
     this.baseDps = this.baseResult.dps;
 
-    const YuanQiProfit: ProfitCore = {
+    const SpunkProfit: ProfitCore = {
       title: '元气收益',
       multiple: 10,
       // 325破防 = 73元气
@@ -69,18 +69,18 @@ class Profit {
       pointProfit: 0,
       gain: {
         name: 'Profit-YuanQi',
-        data: [{ gainTarget: BuffKeys.YuanQi, value: 3 * 10, coverage: 1 }],
+        data: [{ gainTarget: BuffKeys.Spunk, value: 3 * 10, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),
     };
     // 设置五行石属性
-    YuanQiProfit.stone.set(6, 13);
-    YuanQiProfit.stone.set(7, 21);
-    YuanQiProfit.stone.set(8, 27);
-    this.profitList.push(YuanQiProfit);
+    SpunkProfit.stone.set(6, 13);
+    SpunkProfit.stone.set(7, 21);
+    SpunkProfit.stone.set(8, 27);
+    this.profitList.push(SpunkProfit);
 
-    const JiChuGongJiProfit: ProfitCore = {
+    const SolarAttackPowerBaseProfit: ProfitCore = {
       title: '基础攻击收益',
       multiple: 10,
       // 325破防 = 175基础攻击
@@ -88,108 +88,118 @@ class Profit {
       attrProfit: 0,
       pointProfit: 0,
       gain: {
-        name: 'Profit-JiChuGongJi',
-        data: [{ gainTarget: BuffKeys.JiChuGongJi, value: (175 / 73) * 3 * 10, coverage: 1 }],
+        name: 'Profit-SolarAttackPowerBase',
+        data: [
+          { gainTarget: BuffKeys.SolarAttackPowerBase, value: (175 / 73) * 3 * 10, coverage: 1 },
+        ],
       },
       stone: new Map(),
       profitWithStone: new Map(),
     };
     // 设置五行石属性
-    JiChuGongJiProfit.stone.set(6, 38);
-    JiChuGongJiProfit.stone.set(7, 51);
-    JiChuGongJiProfit.stone.set(8, 66);
-    this.profitList.push(JiChuGongJiProfit);
+    SolarAttackPowerBaseProfit.stone.set(6, 38);
+    SolarAttackPowerBaseProfit.stone.set(7, 51);
+    SolarAttackPowerBaseProfit.stone.set(8, 66);
+    this.profitList.push(SolarAttackPowerBaseProfit);
 
-    const PoFangProfit: ProfitCore = {
+    const SolarOvercomeProfit: ProfitCore = {
       title: '破防收益',
       multiple: 100,
       proportion: 1,
       attrProfit: 0,
       pointProfit: 0,
       gain: {
-        name: 'Profit-PoFang',
-        data: [{ gainTarget: BuffKeys.PoFangLevel, value: (325 * 3 * 100) / 73, coverage: 1 }],
+        name: 'Profit-SolarOvercomePercent',
+        data: [{ gainTarget: BuffKeys.SolarOvercome, value: (325 * 3 * 100) / 73, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),
     };
     // 设置五行石属性
-    PoFangProfit.stone.set(6, 72);
-    PoFangProfit.stone.set(7, 96);
-    PoFangProfit.stone.set(8, 124);
-    this.profitList.push(PoFangProfit);
+    SolarOvercomeProfit.stone.set(6, 72);
+    SolarOvercomeProfit.stone.set(7, 96);
+    SolarOvercomeProfit.stone.set(8, 124);
+    this.profitList.push(SolarOvercomeProfit);
 
-    const HuiXinProfit: ProfitCore = {
+    const CriticalStrikeProfit: ProfitCore = {
       title: '会心收益',
       multiple: 1000,
       proportion: 1,
       attrProfit: 0,
       pointProfit: 0,
       gain: {
-        name: 'Profit-HuiXin',
-        data: [{ gainTarget: BuffKeys.HuiXinLevel, value: (325 * 3 * 1000) / 73, coverage: 1 }],
+        name: 'Profit-CriticalStrike',
+        data: [
+          { gainTarget: BuffKeys.SolarCriticalStrike, value: (325 * 3 * 1000) / 73, coverage: 1 },
+        ],
       },
       stone: new Map(),
       profitWithStone: new Map(),
     };
-    HuiXinProfit.stone.set(6, 72);
-    HuiXinProfit.stone.set(7, 96);
-    HuiXinProfit.stone.set(8, 124);
-    this.profitList.push(HuiXinProfit);
+    CriticalStrikeProfit.stone.set(6, 72);
+    CriticalStrikeProfit.stone.set(7, 96);
+    CriticalStrikeProfit.stone.set(8, 124);
+    this.profitList.push(CriticalStrikeProfit);
 
-    const HuiXiaoProfit: ProfitCore = {
+    const CriticalDamageProfit: ProfitCore = {
       title: '会效收益',
       multiple: 10,
       proportion: 1,
       attrProfit: 0,
       pointProfit: 0,
       gain: {
-        name: 'Profit-HuiXiao',
-        data: [{ gainTarget: BuffKeys.HuiXiaoLevel, value: (325 * 3 * 10) / 73, coverage: 1 }],
+        name: 'Profit-SolarCriticalDamagePowerPercent',
+        data: [
+          {
+            gainTarget: BuffKeys.SolarCriticalDamagePower,
+            value: (325 * 3 * 10) / 73,
+            coverage: 1,
+          },
+        ],
       },
       stone: new Map(),
       profitWithStone: new Map(),
     };
-    HuiXiaoProfit.stone.set(6, 72);
-    HuiXiaoProfit.stone.set(7, 96);
-    HuiXiaoProfit.stone.set(8, 124);
-    this.profitList.push(HuiXiaoProfit);
+    CriticalDamageProfit.stone.set(6, 72);
+    CriticalDamageProfit.stone.set(7, 96);
+    CriticalDamageProfit.stone.set(8, 124);
+    this.profitList.push(CriticalDamageProfit);
 
-    const WuShuangProfit: ProfitCore = {
+    const StrainProfit: ProfitCore = {
       title: '无双收益',
       multiple: 10,
       proportion: 1,
       attrProfit: 0,
       pointProfit: 0,
       gain: {
-        name: 'Profit-WuShuang',
-        data: [{ gainTarget: BuffKeys.WuShuangLevel, value: (325 * 3 * 10) / 73, coverage: 1 }],
+        name: 'Profit-Strain',
+        data: [{ gainTarget: BuffKeys.Strain, value: (325 * 3 * 10) / 73, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),
     };
-    WuShuangProfit.stone.set(6, 72);
-    WuShuangProfit.stone.set(7, 96);
-    WuShuangProfit.stone.set(8, 124);
-    this.profitList.push(WuShuangProfit);
+    StrainProfit.stone.set(6, 72);
+    StrainProfit.stone.set(7, 96);
+    StrainProfit.stone.set(8, 124);
+    this.profitList.push(StrainProfit);
 
-    const PoZhaoProfit: ProfitCore = {
+    const SurplusValueProfit: ProfitCore = {
       title: '破招收益',
       multiple: 10,
       proportion: 1,
       attrProfit: 0,
       pointProfit: 0,
       gain: {
-        name: 'Profit-PoZhao',
-        data: [{ gainTarget: BuffKeys.PoZhao, value: (325 * 3 * 10) / 73, coverage: 1 }],
+        name: 'Profit-SurplusValue',
+        data: [{ gainTarget: BuffKeys.SurplusValue, value: (325 * 3 * 10) / 73, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),
     };
-    PoZhaoProfit.stone.set(6, 72);
-    PoZhaoProfit.stone.set(7, 96);
-    PoZhaoProfit.stone.set(8, 124);
-    this.profitList.push(PoZhaoProfit);
+    SurplusValueProfit.stone.set(6, 72);
+    SurplusValueProfit.stone.set(7, 96);
+    SurplusValueProfit.stone.set(8, 124);
+    this.profitList.push(SurplusValueProfit);
   }
 
   public calculatroProfitCore(item: ProfitCore): ProfitCore {

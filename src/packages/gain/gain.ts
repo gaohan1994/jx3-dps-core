@@ -71,7 +71,7 @@ export const selectGainById = (gains: Gain[], id: number): Gain => {
 export const gainDataAtrributeToString = (data: GainAttribute): string => {
   let value = '';
   switch (data.gainTarget) {
-    case BuffKeys.YuanQi:
+    case BuffKeys.Spunk:
       value += '元气';
       break;
     case BuffKeys.damageBonus:
@@ -83,43 +83,37 @@ export const gainDataAtrributeToString = (data: GainAttribute): string => {
     case BuffKeys.ignoreDefense:
       value += '无视防御';
       break;
-    case BuffKeys.PoFangPercent:
+    case BuffKeys.SolarOvercomePercent:
       value += '破防百分比';
       break;
-    case BuffKeys.PoFangLevel:
+    case BuffKeys.SolarOvercome:
       value += '破防等级';
       break;
-    case BuffKeys.JiChuGongJi:
+    case BuffKeys.SolarAttackPowerBase:
       value += '基础攻击';
       break;
-    case BuffKeys.JiChuGongJiPercent:
+    case BuffKeys.SolarAttackPowerBasePercent:
       value += '基础攻击百分比';
       break;
-    case BuffKeys.HuiXin:
+    case BuffKeys.SolarCriticalStrikeRate:
       value += '会心';
       break;
-    case BuffKeys.HuiXinLevel:
+    case BuffKeys.SolarCriticalStrike:
       value += '会心等级';
       break;
-    case BuffKeys.HuiXiao:
+    case BuffKeys.SolarCriticalDamagePowerPercent:
       value += '会效';
       break;
-    case BuffKeys.HuiXiaoLevel:
+    case BuffKeys.SolarCriticalDamagePower:
       value += '会效等级';
       break;
-    case BuffKeys.MingZhong:
-      value += '命中';
-      break;
-    case BuffKeys.MingZhongLevel:
-      value += '命中等级';
-      break;
-    case BuffKeys.WuShuang:
+    case BuffKeys.StrainPercent:
       value += '无双';
       break;
-    case BuffKeys.WuShuangLevel:
+    case BuffKeys.Strain:
       value += '无双等级';
       break;
-    case BuffKeys.PoZhao:
+    case BuffKeys.SurplusValue:
       value += '破招';
       break;
     default:

@@ -4,24 +4,24 @@ import { createMiJi, IgnoreDefenceMiJi } from '@packages/core/miji';
 import ChainComponent from '@componet/chain';
 import {
   deepClone,
-  increaseJiChuGongJi,
+  increaseSolarAttackPowerBase,
   isJinGangRiLunEnchat,
   isXinZhengVersion,
-  makeZongGongJi,
+  makeSolarAttackPower,
 } from '@componet/utils';
 import {
-  SANSHENG_QIDIAN_INCREASED_JICHUGONGJI_PERCENT,
-  SONGYAN_INCREASED_HUIXIN_PERCENT,
-  SONGYAN_INCREATED_JICHUGONGJI,
+  SONGYAN_INCREASED_SOLARCRITICALSTRIKERATE,
+  SONGYAN_INCREATED_SOLARATTACKPOWERBASE,
+  SANSHENG_QIDIAN_INCREASED_SOLARATTACKPOWERBASE_PERCENT,
 } from '@config/constants';
 import { YiJinJingSkillEnchant, YiJinJingQiXueVersion, SkillNames, SkillTitles } from '@types';
 import { SkillChainPayload } from './calculator';
 
 const createSanShengSkillCore = (prevCore: DpsCore, qiDian: number): DpsCore => {
   // 创建三生buff下的人物属性 每豆提升8%基础
-  const nextCore = makeZongGongJi(
-    increaseJiChuGongJi(prevCore, {
-      JiChuGongJiPercent: qiDian * SANSHENG_QIDIAN_INCREASED_JICHUGONGJI_PERCENT,
+  const nextCore = makeSolarAttackPower(
+    increaseSolarAttackPowerBase(prevCore, {
+      SolarAttackPowerBasePercent: qiDian * SANSHENG_QIDIAN_INCREASED_SOLARATTACKPOWERBASE_PERCENT,
     })
   );
   return nextCore;
@@ -29,9 +29,10 @@ const createSanShengSkillCore = (prevCore: DpsCore, qiDian: number): DpsCore => 
 
 const shenYiBuff = (currentCore: DpsCore) => {
   return (
-    (currentCore.HuiXin / 100 + 0.05) * (currentCore.HuiXiao / 100 + 0.05) +
+    (currentCore.SolarCriticalStrikeRate / 100 + 0.05) *
+      (currentCore.SolarCriticalDamagePowerPercent / 100 + 0.05) +
     1 -
-    (currentCore.HuiXin / 100 + 0.05)
+    (currentCore.SolarCriticalStrikeRate / 100 + 0.05)
   );
 };
 
@@ -48,14 +49,16 @@ const shenYiBuff = (currentCore: DpsCore) => {
 const songYanBuff = (payload: SkillChainPayload, coverage = 1): SkillChainPayload => {
   const totalTouchs = 6;
   // 每层 3% 会心，一共挥击6次，共18%会心
-  const huiXinIncreasedPercent = SONGYAN_INCREASED_HUIXIN_PERCENT * totalTouchs * coverage;
+  const increasedSolarCriticalStrikeRate =
+    SONGYAN_INCREASED_SOLARCRITICALSTRIKERATE * totalTouchs * coverage;
 
   // 每层 400 面板攻击，一共挥击6次，共2400面板攻击
-  const jiChuGongJiIncreated = SONGYAN_INCREATED_JICHUGONGJI * totalTouchs * coverage;
+  const solarAttackPowerBaseIncreated =
+    SONGYAN_INCREATED_SOLARATTACKPOWERBASE * totalTouchs * coverage;
 
   const nextCore = deepClone(payload.core);
-  nextCore.HuiXin += huiXinIncreasedPercent;
-  nextCore.JiChuGongJi += jiChuGongJiIncreated;
+  nextCore.SolarCriticalStrikeRate += increasedSolarCriticalStrikeRate;
+  nextCore.SolarAttackPowerBase += solarAttackPowerBaseIncreated;
 
   payload.core = nextCore;
   return payload;
@@ -87,14 +90,14 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   const ignoreMiJi = [createMiJi('', 0.6, IgnoreDefenceMiJi)];
   const cwBuff = hasCw ? 0.0996 / 2 : 0;
 
-  const poZhaoChain = new ChainComponent((payload: SkillChainPayload) => {
+  const surplusValueChain = new ChainComponent((payload: SkillChainPayload) => {
     const { core } = payload;
-    const key = SkillNames.PoZhao;
+    const key = SkillNames.SurplusValue;
     const skill = createSkillFactory(core, support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
-      basicDamage: core.PoZhao,
+      basicDamage: core.SurplusValue,
       basicDamageCoefficient: 15.2288,
       damageBonuesCoefficient: BaseCoefficient + ErYeYiYuanCoefficient,
     });
@@ -109,9 +112,9 @@ export const createSkillChains = (payload: SkillChainPayload) => {
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
       basicDamage: 0,
-      skillBasicNumber: core.WuQiShangHai,
+      skillBasicNumber: core.MeleeWeaponDamage,
       basicDamageCoefficient: 0,
-      poFangCoefficient: 1,
+      solarOvercomeCoefficient: 1,
     });
     skills.push(skill);
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
@@ -125,7 +128,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
       skillTimes: skillTimes[key],
       skillBasicNumber: 179,
       basicDamageCoefficient: 1.66,
-      huiXinHuiXiaoCoefficient: shenYiBuff(core),
+      criticalCoefficient: shenYiBuff(core),
       damageBonuesCoefficient:
         (BaseCoefficient +
           MiJiCoefficient +
@@ -149,7 +152,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
       skillTimes: skillTimes[key],
       skillBasicNumber: 258.5,
       basicDamageCoefficient: 2,
-      huiXinHuiXiaoCoefficient: shenYiBuff(core),
+      criticalCoefficient: shenYiBuff(core),
       damageBonuesCoefficient:
         (BaseCoefficient +
           MiJiCoefficient +
@@ -215,10 +218,11 @@ export const createSkillChains = (payload: SkillChainPayload) => {
         (BaseCoefficient + 0.12 + ErYeYiYuanCoefficient + cwBuff + FoGuoCoefficient) *
         ZhongChenCoefficient *
         MingFaCoefficient,
-      huiXinHuiXiaoCoefficient:
-        (core.HuiXin / 100 + 0.04 + 0.1) * (core.HuiXiao / 100 + 0.1) +
+      criticalCoefficient:
+        (core.SolarCriticalStrikeRate / 100 + 0.04 + 0.1) *
+          (core.SolarCriticalDamagePowerPercent / 100 + 0.1) +
         1 -
-        (core.HuiXin / 100 + 0.04 + 0.1),
+        (core.SolarCriticalStrikeRate / 100 + 0.04 + 0.1),
       miJi: ignoreMiJi,
     });
     skills.push(skill);
@@ -363,9 +367,9 @@ export const createSkillChains = (payload: SkillChainPayload) => {
       skillTimes: skillTimes[key],
       skillBasicNumber: 0,
       basicDamage: (weituo.subTotal + nayun.subTotal) / 4 / 1.2 / skillTimes[SkillNames.XiangMo],
-      poFangCoefficient: 1,
-      wuShuangCoefficient: 1,
-      huiXinHuiXiaoCoefficient: 1,
+      solarOvercomeCoefficient: 1,
+      strainCoefficient: 1,
+      criticalCoefficient: 1,
       targetDamageCoefficient: 1,
     });
     skills.push(skill);
@@ -383,9 +387,9 @@ export const createSkillChains = (payload: SkillChainPayload) => {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
-      wuShuangCoefficient: 1,
-      poFangCoefficient: 1,
-      huiXinHuiXiaoCoefficient: 1,
+      strainCoefficient: 1,
+      solarOvercomeCoefficient: 1,
+      criticalCoefficient: 1,
       targetDamageCoefficient: 1,
     });
     skills.push(skill);
@@ -413,7 +417,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
 
-  poZhaoChain
+  surplusValueChain
     .setNextSuccessor(liuHeGunChain)
     .setNextSuccessor(weiTuoXianChuChain)
     .setNextSuccessor(naYunShiChain)
@@ -432,6 +436,6 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     .setNextSuccessor(qianJinZhuiChain)
     .setNextSuccessor(jinGangRiLunChain);
 
-  poZhaoChain.passRequest(payload);
+  surplusValueChain.passRequest(payload);
   return skills;
 };

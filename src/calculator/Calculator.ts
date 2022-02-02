@@ -11,15 +11,15 @@ import Support from '@packages/support/support';
 import DpsCore from '@packages/core/core';
 import {
   deepClone,
-  getYuanQiAttribute,
-  increaseHuiXiao,
-  increaseHuiXin,
-  increaseJiChuGongJi,
+  getSpunkAttribute,
+  increaseCriticalDamagePower,
+  increaseSolarAttackPowerBase,
   increaseMainAttribute,
-  increasePoFang,
-  increasePoZhao,
-  increaseWuShuang,
-  makeZongGongJi,
+  increaseSolarOvercomePercent,
+  increaseSurplusValue,
+  increaseStrainPercent,
+  makeSolarAttackPower,
+  increaseSolarCriticalStrike,
 } from '@componet/utils';
 import { pipe } from '@componet/compose';
 import { YiJinJingQiXueVersion, YiJinJingSkillEnchant } from '@types';
@@ -93,18 +93,18 @@ export const createCalculator = (
   support.target.calculateDamageCoefficient(supportContext);
 
   const coreClone = deepClone(core);
-  const increasedMainAttributesFromSupportContext = getYuanQiAttribute(supportContext);
+  const increasedMainAttributesFromSupportContext = getSpunkAttribute(supportContext);
 
   // 生成核心计算类 baseCore
   const getBaseCore = pipe(
     () => increaseMainAttribute(coreClone, increasedMainAttributesFromSupportContext),
-    (core: DpsCore) => increaseHuiXin(core, supportContext),
-    (core: DpsCore) => increaseHuiXiao(core, supportContext),
-    (core: DpsCore) => increasePoFang(core, supportContext),
-    (core: DpsCore) => increaseWuShuang(core, supportContext),
-    (core: DpsCore) => increasePoZhao(core, supportContext),
-    (core: DpsCore) => increaseJiChuGongJi(core, supportContext),
-    (core: DpsCore) => makeZongGongJi(core)
+    (core: DpsCore) => increaseSolarCriticalStrike(core, supportContext),
+    (core: DpsCore) => increaseCriticalDamagePower(core, supportContext),
+    (core: DpsCore) => increaseSolarOvercomePercent(core, supportContext),
+    (core: DpsCore) => increaseStrainPercent(core, supportContext),
+    (core: DpsCore) => increaseSurplusValue(core, supportContext),
+    (core: DpsCore) => increaseSolarAttackPowerBase(core, supportContext),
+    (core: DpsCore) => makeSolarAttackPower(core)
   );
   const baseCore = getBaseCore();
   // 生成计算器技能配置文件

@@ -9,23 +9,23 @@ export enum BanquetList {
 export const BanquetConfig = [
   {
     name: BanquetList.ShuiZhuYu,
-    data: [{ gainTarget: BuffKeys.WuShuangLevel, value: 100, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Strain, value: 100, coverage: 1 }],
   },
   {
     name: BanquetList.ErShiSiQiaoMingYueYe,
     data: [
-      { gainTarget: BuffKeys.JiChuGongJi, value: 214, coverage: 1 },
-      { gainTarget: BuffKeys.HuiXinLevel, value: 397, coverage: 1 },
-      { gainTarget: BuffKeys.PoZhao, value: 397, coverage: 1 },
+      { gainTarget: BuffKeys.SolarAttackPowerBase, value: 214, coverage: 1 },
+      { gainTarget: BuffKeys.SolarCriticalStrike, value: 397, coverage: 1 },
+      { gainTarget: BuffKeys.SurplusValue, value: 397, coverage: 1 },
     ],
   },
   {
     name: BanquetList.TongZeYan,
-    data: [{ gainTarget: BuffKeys.WuShuangLevel, value: 130, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Strain, value: 130, coverage: 1 }],
   },
   {
     name: BanquetList.ZhengYuCaiPan,
-    data: [{ gainTarget: BuffKeys.WuShuangLevel, value: 517, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Strain, value: 517, coverage: 1 }],
   },
 ];
 
@@ -40,19 +40,19 @@ export enum FoodEnhanceList {
 export const FoodEnchanceConfig = [
   {
     name: FoodEnhanceList.BaiRouXueChang,
-    data: [{ gainTarget: BuffKeys.PoZhao, value: 771, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SurplusValue, value: 771, coverage: 1 }],
   },
   {
     name: FoodEnhanceList.GuanTangBao,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 415, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 415, coverage: 1 }],
   },
   {
     name: FoodEnhanceList.HongShaoPaiGu,
-    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 771, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarOvercome, value: 771, coverage: 1 }],
   },
   {
     name: FoodEnhanceList.SuanCaiYu,
-    data: [{ gainTarget: BuffKeys.HuiXinLevel, value: 771, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarCriticalStrike, value: 771, coverage: 1 }],
   },
 ];
 
@@ -62,7 +62,7 @@ export enum FoodSupportList {
 export const FoodSupportConfig = [
   {
     name: FoodSupportList.YuPianShaGuoZhou,
-    data: [{ gainTarget: BuffKeys.YuanQi, value: 173, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Spunk, value: 173, coverage: 1 }],
   },
 ];
 
@@ -75,19 +75,19 @@ export enum DrugEnhanceList {
 export const DrugEnhanceConfig = [
   {
     name: DrugEnhanceList.ShangPinNingShenSan,
-    data: [{ gainTarget: BuffKeys.PoZhao, value: 991, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SurplusValue, value: 991, coverage: 1 }],
   },
   {
     name: DrugEnhanceList.ShangPinPoHuiSan,
-    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 991, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarOvercome, value: 991, coverage: 1 }],
   },
   {
     name: DrugEnhanceList.ShangPinYuLiSan,
-    data: [{ gainTarget: BuffKeys.HuiXinLevel, value: 991, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarCriticalStrike, value: 991, coverage: 1 }],
   },
   {
     name: DrugEnhanceList.ShangPinZhanFengDan,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 533, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 533, coverage: 1 }],
   },
 ];
 
@@ -97,7 +97,7 @@ export enum DrugSupportList {
 export const DrugSupportConfig = [
   {
     name: DrugSupportList.ShangPinJuHunWan,
-    data: [{ gainTarget: BuffKeys.YuanQi, value: 222, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Spunk, value: 222, coverage: 1 }],
   },
 ];
 
@@ -112,23 +112,23 @@ export enum HomeFoodList {
 export const HomeFoodConfig = [
   {
     name: HomeFoodList.XiaoChaoQingCai,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 149, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 149, coverage: 1 }],
   },
   {
     name: HomeFoodList.ZhaYuGan,
-    data: [{ gainTarget: BuffKeys.HuiXinLevel, value: 277, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarCriticalStrike, value: 277, coverage: 1 }],
   },
   {
     name: HomeFoodList.QingZhengLuYu,
-    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 277, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarOvercome, value: 277, coverage: 1 }],
   },
   {
     name: HomeFoodList.JianDouFu,
-    data: [{ gainTarget: BuffKeys.PoZhao, value: 277, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SurplusValue, value: 277, coverage: 1 }],
   },
   {
     name: HomeFoodList.DunDouFu,
-    data: [{ gainTarget: BuffKeys.WuShuangLevel, value: 277, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Strain, value: 277, coverage: 1 }],
   },
 ];
 
@@ -139,11 +139,11 @@ export enum WeaponEnchantList {
 export const WeaponEnchantConfig = [
   {
     name: WeaponEnchantList.ZhuiXiaoRongDing,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 355, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 355, coverage: 1 }],
   },
   {
     name: WeaponEnchantList.BingZhu,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 237, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 237, coverage: 1 }],
   },
 ];
 
@@ -157,29 +157,17 @@ export enum HomeDrinkList {
 }
 
 export const HomeDrinkConfig = [
-  // {
-  //   name: HomeDrinkList.NvErHongJinZhaoZui,
-  //   data: [{ gainTarget: BuffKeys.JiaSu, value: 320, coverage: 1 }],
-  // },
-  // {
-  //   name: HomeDrinkList.NvErHongLiuRiZui,
-  //   data: [{ gainTarget: BuffKeys.JiaSu, value: 320, coverage: 1 }],
-  // },
-  // {
-  //   name: HomeDrinkList.NvErHongXunYouSan,
-  //   data: [{ gainTarget: BuffKeys.JiaSu, value: 320, coverage: 1 }],
-  // },
   {
     name: HomeDrinkList.ZhuangYuanHongJinZhaoZui,
-    data: [{ gainTarget: BuffKeys.YuanQi, value: 22, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Spunk, value: 22, coverage: 1 }],
   },
   {
     name: HomeDrinkList.ZhuangYuanHongLiuRiZui,
-    data: [{ gainTarget: BuffKeys.YuanQi, value: 48, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Spunk, value: 48, coverage: 1 }],
   },
   {
     name: HomeDrinkList.ZhuangYuanHongXunYouSan,
-    data: [{ gainTarget: BuffKeys.YuanQi, value: 96, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Spunk, value: 96, coverage: 1 }],
   },
 ];
 
@@ -191,10 +179,10 @@ export enum FestivalFoodList {
 export const FestivalFoodConfig = [
   {
     name: FestivalFoodList.XiHuaGao,
-    data: [{ gainTarget: BuffKeys.HuiXinLevel, value: 1073, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarCriticalStrike, value: 1073, coverage: 1 }],
   },
   {
     name: FestivalFoodList.JinQianHuaGao,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 577, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 577, coverage: 1 }],
   },
 ];
