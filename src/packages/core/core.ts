@@ -17,7 +17,7 @@ export interface MainCoeffiecient {
     SolarAttackPowerBase: number;
     ZongGongJi: number;
     SolarOvercome: number;
-    HuiXinLevel: number;
+    SolarCriticalStrike: number;
   };
 }
 
@@ -27,7 +27,13 @@ class DpsCore {
   public GongJiCoefficient: number;
   public ZongGongJi: number;
   public WuQiShangHai: number;
-  public HuiXin: number;
+  /**
+   * @param SolarCriticalStrikeRate 阳性内功会心率
+   *
+   * @type {number}
+   * @memberof DpsCore
+   */
+  public SolarCriticalStrikeRate: number;
   public HuiXiao: number;
   public SolarOvercomePercent: number;
   public PoZhao: number;
@@ -53,7 +59,7 @@ class DpsCore {
     this.mainCoeffiecient = options.mainCoeffiecient;
 
     this.WuQiShangHai = options.WuQiShangHai || 0;
-    this.HuiXin = options.HuiXin || 0;
+    this.SolarCriticalStrikeRate = options.SolarCriticalStrikeRate || 0;
     this.HuiXiao = options.HuiXiao || 0;
     this.Spunk = options.Spunk;
   }
@@ -62,7 +68,7 @@ class DpsCore {
 export type CreateDpsCoreOptions = {
   mainAttribute: number;
   SolarAttackPowerBase: number;
-  HuiXin: number;
+  SolarCriticalStrikeRate: number;
   HuiXiao: number;
   SolarOvercomePercent: number;
   PoZhao: number;
@@ -76,7 +82,7 @@ const YiJinJingMainCoeffiecient: MainCoeffiecient = (Spunk: number) => ({
   SolarAttackPowerBase: Spunk * 0.18,
   ZongGongJi: Spunk * 1.85,
   SolarOvercome: Spunk * 0.3,
-  HuiXinLevel: Spunk * 0.38,
+  SolarCriticalStrike: Spunk * 0.38,
 });
 
 export const createDpsCore = (createDpsCoreOptions: CreateDpsCoreOptions) => {

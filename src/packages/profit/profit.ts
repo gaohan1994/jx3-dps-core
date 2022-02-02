@@ -121,23 +121,25 @@ class Profit {
     SolarOvercomeProfit.stone.set(8, 124);
     this.profitList.push(SolarOvercomeProfit);
 
-    const HuiXinProfit: ProfitCore = {
+    const CriticalStrikeProfit: ProfitCore = {
       title: '会心收益',
       multiple: 1000,
       proportion: 1,
       attrProfit: 0,
       pointProfit: 0,
       gain: {
-        name: 'Profit-HuiXin',
-        data: [{ gainTarget: BuffKeys.HuiXinLevel, value: (325 * 3 * 1000) / 73, coverage: 1 }],
+        name: 'Profit-CriticalStrike',
+        data: [
+          { gainTarget: BuffKeys.SolarCriticalStrike, value: (325 * 3 * 1000) / 73, coverage: 1 },
+        ],
       },
       stone: new Map(),
       profitWithStone: new Map(),
     };
-    HuiXinProfit.stone.set(6, 72);
-    HuiXinProfit.stone.set(7, 96);
-    HuiXinProfit.stone.set(8, 124);
-    this.profitList.push(HuiXinProfit);
+    CriticalStrikeProfit.stone.set(6, 72);
+    CriticalStrikeProfit.stone.set(7, 96);
+    CriticalStrikeProfit.stone.set(8, 124);
+    this.profitList.push(CriticalStrikeProfit);
 
     const HuiXiaoProfit: ProfitCore = {
       title: '会效收益',

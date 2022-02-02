@@ -32,7 +32,7 @@ export const TeamSkillConfig = [
     name: TeamSkillList.XiuQi,
     data: [
       { gainTarget: BuffKeys.Spunk, value: 111, coverage: 1 },
-      { gainTarget: BuffKeys.HuiXinLevel, value: 70, coverage: 1 },
+      { gainTarget: BuffKeys.SolarCriticalStrike, value: 70, coverage: 1 },
     ],
   },
   {

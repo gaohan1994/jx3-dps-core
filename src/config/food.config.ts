@@ -15,7 +15,7 @@ export const BanquetConfig = [
     name: BanquetList.ErShiSiQiaoMingYueYe,
     data: [
       { gainTarget: BuffKeys.SolarAttackPowerBase, value: 214, coverage: 1 },
-      { gainTarget: BuffKeys.HuiXinLevel, value: 397, coverage: 1 },
+      { gainTarget: BuffKeys.SolarCriticalStrike, value: 397, coverage: 1 },
       { gainTarget: BuffKeys.PoZhao, value: 397, coverage: 1 },
     ],
   },
@@ -52,7 +52,7 @@ export const FoodEnchanceConfig = [
   },
   {
     name: FoodEnhanceList.SuanCaiYu,
-    data: [{ gainTarget: BuffKeys.HuiXinLevel, value: 771, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarCriticalStrike, value: 771, coverage: 1 }],
   },
 ];
 
@@ -83,7 +83,7 @@ export const DrugEnhanceConfig = [
   },
   {
     name: DrugEnhanceList.ShangPinYuLiSan,
-    data: [{ gainTarget: BuffKeys.HuiXinLevel, value: 991, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarCriticalStrike, value: 991, coverage: 1 }],
   },
   {
     name: DrugEnhanceList.ShangPinZhanFengDan,
@@ -116,7 +116,7 @@ export const HomeFoodConfig = [
   },
   {
     name: HomeFoodList.ZhaYuGan,
-    data: [{ gainTarget: BuffKeys.HuiXinLevel, value: 277, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarCriticalStrike, value: 277, coverage: 1 }],
   },
   {
     name: HomeFoodList.QingZhengLuYu,
@@ -191,7 +191,7 @@ export enum FestivalFoodList {
 export const FestivalFoodConfig = [
   {
     name: FestivalFoodList.XiHuaGao,
-    data: [{ gainTarget: BuffKeys.HuiXinLevel, value: 1073, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarCriticalStrike, value: 1073, coverage: 1 }],
   },
   {
     name: FestivalFoodList.JinQianHuaGao,

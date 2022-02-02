@@ -72,7 +72,7 @@ export const SetBonuseConfig = [
     name: SetBonuseList.ValueSetBonuse,
     data: [
       // 套装 4%会心 覆盖率 40%
-      { gainTarget: BuffKeys.HuiXin, value: 0.04, coverage: 0.4 },
+      { gainTarget: BuffKeys.SolarCriticalStrikeRate, value: 0.04, coverage: 0.4 },
       // 套装会心效果 4% 覆盖率40%
       { gainTarget: BuffKeys.HuiXiao, value: 0.04, coverage: 0.4 },
     ],

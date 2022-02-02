@@ -16,7 +16,7 @@ import { pipe } from '@componet/compose';
 const SkillMultiplicationInterfaceEnum = createEnum([
   'solarOvercomeCoefficient',
   'strainCoefficient',
-  'huiXinHuiXiaoCoefficient',
+  'criticalCoefficient',
   'targetDamageCoefficient',
   'damageBonuesCoefficient',
   'skillTimes',
@@ -59,8 +59,8 @@ const calculateSolarOvercome = createMultiplicationSkillEquation(
 const calculateStrain = createMultiplicationSkillEquation(
   SkillMultiplicationInterfaceEnum.strainCoefficient
 );
-const calculateHuiXinHuiXiao = createMultiplicationSkillEquation(
-  SkillMultiplicationInterfaceEnum.huiXinHuiXiaoCoefficient
+const calculateCritical = createMultiplicationSkillEquation(
+  SkillMultiplicationInterfaceEnum.criticalCoefficient
 );
 const calculateTargetDamage = createMultiplicationSkillEquation(
   SkillMultiplicationInterfaceEnum.targetDamageCoefficient
@@ -86,7 +86,7 @@ export default class Skill {
   public basicDamageCoefficient: number; // 基础攻击系数
   public solarOvercomeCoefficient: number; // 破防系数
   public strainCoefficient: number; // 无双系数
-  public huiXinHuiXiaoCoefficient: number; // 会心会笑计算系数
+  public criticalCoefficient: number; // 会心会笑计算系数
   public targetDamageCoefficient: number; // 目标伤害系数
   public damageBonuesCoefficient: number; // 易伤系数
   public miJi?: MiJi[]; // 技能秘籍 unstable
@@ -104,7 +104,7 @@ export default class Skill {
     this.basicDamageCoefficient = options.basicDamageCoefficient;
     this.solarOvercomeCoefficient = options.solarOvercomeCoefficient;
     this.strainCoefficient = options.strainCoefficient;
-    this.huiXinHuiXiaoCoefficient = options.huiXinHuiXiaoCoefficient;
+    this.criticalCoefficient = options.criticalCoefficient;
     this.targetDamageCoefficient = options.targetDamageCoefficient;
     this.miJi = options.miJi || [];
     /**
@@ -138,7 +138,7 @@ export default class Skill {
       技能系数：${this.basicDamageCoefficient}
       破防系数:${this.solarOvercomeCoefficient}
       无双系数：${this.strainCoefficient}
-      双会系数：${this.huiXinHuiXiaoCoefficient}
+      双会系数：${this.criticalCoefficient}
       目标系数：${this.targetDamageCoefficient}
     `);
   }
@@ -156,7 +156,7 @@ export const calculatorSkill = function calculatorSkillSubtotal(skill: Skill): n
     () => calculateBasicNumber(skill),
     () => calculateSolarOvercome(skill),
     () => calculateStrain(skill),
-    () => calculateHuiXinHuiXiao(skill),
+    () => calculateCritical(skill),
     () => calculateTargetDamage(skill),
     () => calculateDamageBonues(skill),
     () => calculateSkillTimes(skill),
@@ -175,7 +175,7 @@ export interface CreateSkillAttributes {
   basicDamageCoefficient?: number;
   solarOvercomeCoefficient?: number;
   strainCoefficient?: number;
-  huiXinHuiXiaoCoefficient?: number;
+  criticalCoefficient?: number;
   targetDamageCoefficient?: number;
   damageBonuesCoefficient?: number;
   miJi?: MiJi[];
@@ -214,7 +214,7 @@ export const createSkillFactory = (
     damageBonuesCoefficient,
     solarOvercomeCoefficient,
     strainCoefficient,
-    huiXinHuiXiaoCoefficient,
+    criticalCoefficient,
     targetDamageCoefficient,
     miJi,
   } = createSkillAttrs;
@@ -240,9 +240,11 @@ export const createSkillFactory = (
     // 无双
     strainCoefficient: initAttribute(strainCoefficient, 1 + _core.StrainPercent / 100),
     // 双会
-    huiXinHuiXiaoCoefficient: initAttribute(
-      huiXinHuiXiaoCoefficient,
-      (_core.HuiXin / 100) * (_core.HuiXiao / 100) + 1 - _core.HuiXin / 100
+    criticalCoefficient: initAttribute(
+      criticalCoefficient,
+      (_core.SolarCriticalStrikeRate / 100) * (_core.HuiXiao / 100) +
+        1 -
+        _core.SolarCriticalStrikeRate / 100
     ),
     // 承伤
     targetDamageCoefficient: initAttribute(targetDamageCoefficient, _target.damageCoefficient),

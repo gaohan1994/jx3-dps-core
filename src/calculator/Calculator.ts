@@ -13,13 +13,13 @@ import {
   deepClone,
   getSpunkAttribute,
   increaseHuiXiao,
-  increaseHuiXin,
   increaseSolarAttackPowerBase,
   increaseMainAttribute,
   increaseSolarOvercomePercent,
   increasePoZhao,
   increaseStrainPercent,
   makeZongGongJi,
+  increaseSolarCriticalStrike,
 } from '@componet/utils';
 import { pipe } from '@componet/compose';
 import { YiJinJingQiXueVersion, YiJinJingSkillEnchant } from '@types';
@@ -98,7 +98,7 @@ export const createCalculator = (
   // 生成核心计算类 baseCore
   const getBaseCore = pipe(
     () => increaseMainAttribute(coreClone, increasedMainAttributesFromSupportContext),
-    (core: DpsCore) => increaseHuiXin(core, supportContext),
+    (core: DpsCore) => increaseSolarCriticalStrike(core, supportContext),
     (core: DpsCore) => increaseHuiXiao(core, supportContext),
     (core: DpsCore) => increaseSolarOvercomePercent(core, supportContext),
     (core: DpsCore) => increaseStrainPercent(core, supportContext),

@@ -3,7 +3,11 @@ import DpsCore from '@packages/core/core';
 import { pipe } from './compose';
 import { CreateCalculatorOptions } from '@calculator/calculator';
 import { YiJinJingQiXueVersion, YiJinJingSkillEnchant } from '@types';
-import { SOLAROVERCOME_TRANSFORM_COE, STRAIN_TRANSFORM_COE } from '@config/constants';
+import {
+  CRITICALSTRIKE_TRANSFORM_COE,
+  SOLAROVERCOME_TRANSFORM_COE,
+  STRAIN_TRANSFORM_COE,
+} from '@config/constants';
 
 export function deepClone<T>(target: T): T {
   if (typeof target !== 'object') return;
@@ -86,9 +90,9 @@ export const makeSpunkAttributeCombine = (prevAttributes: any, Spunk: number) =>
   makeAttributeCombine(prevAttributes, { target: 'Spunk', value: Spunk });
 
 // 转换计算用的标准属性
-const HUIXIN_LEVEL_COE = 357.375;
-export const transferHuiXinLevelToHuiXin = (huiXinLevel: number): number =>
-  huiXinLevel / HUIXIN_LEVEL_COE;
+export const transferSolarCriticalStrikeToSolarCriticalStrikeRate = (
+  SolarCriticalStrike: number
+): number => SolarCriticalStrike / CRITICALSTRIKE_TRANSFORM_COE;
 
 const HUIXIAO_LEVEL_COE = 125.0625;
 export const transferHuiXiaoLevelToHuiXiao = (huiXiaoLevel: number): number =>
@@ -101,13 +105,15 @@ export const transferStrainToStrainPercent = (Strain: number): number =>
   Strain / STRAIN_TRANSFORM_COE;
 
 // 计算增加的属性
-export const increaseHuiXin = (core: DpsCore, increasedAttributes: any) => {
-  const { HuiXin = 0, HuiXinLevel = 0 } = increasedAttributes;
-  const increasedHuiXin = HuiXin * 100;
-  const increasedHuiXinFromLevel = transferHuiXinLevelToHuiXin(HuiXinLevel);
+export const increaseSolarCriticalStrike = (core: DpsCore, increasedAttributes: any) => {
+  const { SolarCriticalStrike = 0, SolarCriticalStrikeRate = 0 } = increasedAttributes;
+  const increasedSolarCriticalStrikeRate = SolarCriticalStrikeRate * 100;
+  const increasedSolarCriticalStrikeRateFromSolarCriticalStrike =
+    transferSolarCriticalStrikeToSolarCriticalStrikeRate(SolarCriticalStrike);
 
   const nextCore = deepClone(core);
-  nextCore.HuiXin += increasedHuiXin + increasedHuiXinFromLevel;
+  nextCore.SolarCriticalStrikeRate +=
+    increasedSolarCriticalStrikeRate + increasedSolarCriticalStrikeRateFromSolarCriticalStrike;
   return nextCore;
 };
 
@@ -159,12 +165,13 @@ export const increaseSolarAttackPowerBase = (core: DpsCore, increasedAttributes:
 
 export const increaseMainAttribute = (core: DpsCore, mainAttribute: number) => {
   const { mainCoeffiecient } = core;
-  const { SolarAttackPowerBase, SolarOvercome, HuiXinLevel } = mainCoeffiecient(mainAttribute);
+  const { SolarAttackPowerBase, SolarOvercome, SolarCriticalStrike } =
+    mainCoeffiecient(mainAttribute);
 
   const getNextCore = pipe(
     () => increaseSolarAttackPowerBase(core, { SolarAttackPowerBase }),
     () => increaseSolarOvercomePercent(core, { SolarOvercome }),
-    () => increaseHuiXin(core, { HuiXinLevel })
+    () => increaseSolarCriticalStrike(core, { SolarCriticalStrike })
   );
   const nextCore = getNextCore();
   return nextCore;

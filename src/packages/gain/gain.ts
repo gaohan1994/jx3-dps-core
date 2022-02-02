@@ -95,10 +95,10 @@ export const gainDataAtrributeToString = (data: GainAttribute): string => {
     case BuffKeys.SolarAttackPowerBasePercent:
       value += '基础攻击百分比';
       break;
-    case BuffKeys.HuiXin:
+    case BuffKeys.SolarCriticalStrikeRate:
       value += '会心';
       break;
-    case BuffKeys.HuiXinLevel:
+    case BuffKeys.SolarCriticalStrike:
       value += '会心等级';
       break;
     case BuffKeys.HuiXiao:
