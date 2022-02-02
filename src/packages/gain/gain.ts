@@ -107,12 +107,6 @@ export const gainDataAtrributeToString = (data: GainAttribute): string => {
     case BuffKeys.SolarCriticalDamagePower:
       value += '会效等级';
       break;
-    case BuffKeys.MingZhong:
-      value += '命中';
-      break;
-    case BuffKeys.MingZhongLevel:
-      value += '命中等级';
-      break;
     case BuffKeys.StrainPercent:
       value += '无双';
       break;

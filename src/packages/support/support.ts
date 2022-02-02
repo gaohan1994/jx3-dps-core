@@ -48,8 +48,6 @@ export default class Support extends SupportBase {
       SolarCriticalStrike: 0,
       SolarCriticalDamagePowerPercent: 0,
       SolarCriticalDamagePower: 0,
-      MingZhong: 0,
-      MingZhongLevel: 0,
       Strain: 0,
       StrainPercent: 0,
       SurplusValue: 0,

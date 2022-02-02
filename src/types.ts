@@ -19,8 +19,6 @@ export const BuffKeys = createEnum([
   'SolarCriticalStrike',
   'SolarCriticalDamagePowerPercent',
   'SolarCriticalDamagePower',
-  'MingZhong',
-  'MingZhongLevel',
   'Strain',
   'StrainPercent',
   'SurplusValue',
