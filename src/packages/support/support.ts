@@ -6,9 +6,7 @@
  * @Last Modified by: Harper.Gao
  * @Last Modified time: 2021-11-21 17:59:37
  */
-
-import invariant from 'invariant';
-import { createEnum, SupportContext } from '@types';
+import { SupportContext } from '@types';
 import CoreMiddleware from '@componet/middleware';
 import { deepClone } from '@componet/utils';
 import { Gain, GainTypes } from '@packages/gain/gain';
@@ -18,18 +16,12 @@ import SupportBase, { SupportBaseOptions } from './base';
 
 export const isCostomGain = (gain: Gain): boolean => gain && gain.type === GainTypes.Costom;
 
-export const SupportMode = createEnum(['WaiGong', 'NeiGong']);
-export type SupportMode = keyof typeof SupportMode;
-
 export interface SupportOptions extends SupportBaseOptions {
-  mode: SupportMode;
   target?: TargetOptions;
   CWTimes?: number;
 }
 
 export default class Support extends SupportBase {
-  static Mode = SupportMode;
-  public mode: SupportMode;
   public options: any;
   public target: Target = undefined;
 
@@ -39,9 +31,6 @@ export default class Support extends SupportBase {
   constructor(options: SupportOptions) {
     super(options);
     this.options = options;
-
-    invariant(!!options.mode, '辅助类类型不能为空');
-    this.mode = options.mode;
 
     this.target = new Target(options.target);
     this.CWTimes = options.CWTimes || 3;
