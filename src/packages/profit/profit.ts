@@ -157,23 +157,23 @@ class Profit {
     HuiXiaoProfit.stone.set(8, 124);
     this.profitList.push(HuiXiaoProfit);
 
-    const WuShuangProfit: ProfitCore = {
+    const StrainProfit: ProfitCore = {
       title: '无双收益',
       multiple: 10,
       proportion: 1,
       attrProfit: 0,
       pointProfit: 0,
       gain: {
-        name: 'Profit-WuShuang',
-        data: [{ gainTarget: BuffKeys.WuShuangLevel, value: (325 * 3 * 10) / 73, coverage: 1 }],
+        name: 'Profit-Strain',
+        data: [{ gainTarget: BuffKeys.Strain, value: (325 * 3 * 10) / 73, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),
     };
-    WuShuangProfit.stone.set(6, 72);
-    WuShuangProfit.stone.set(7, 96);
-    WuShuangProfit.stone.set(8, 124);
-    this.profitList.push(WuShuangProfit);
+    StrainProfit.stone.set(6, 72);
+    StrainProfit.stone.set(7, 96);
+    StrainProfit.stone.set(8, 124);
+    this.profitList.push(StrainProfit);
 
     const PoZhaoProfit: ProfitCore = {
       title: '破招收益',

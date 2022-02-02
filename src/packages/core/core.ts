@@ -32,7 +32,7 @@ class DpsCore {
   public SolarOvercomePercent: number;
   public PoZhao: number;
   public JiaSu: JiaSuValue;
-  public WuShuang: number;
+  public StrainPercent: number;
   public Spunk?: number;
   public options: any;
   public mainCoeffiecient: MainCoeffiecient;
@@ -47,7 +47,7 @@ class DpsCore {
 
     // 加速默认是一段加速修改为直接设置段数
     this.JiaSu = options.JiaSu || DpsCore.JiaSuList.YiDuanJiaSu;
-    this.WuShuang = options.WuShuang || 0;
+    this.StrainPercent = options.StrainPercent || 0;
 
     invariant(typeof options.mainCoeffiecient === 'function', '主属性设置不能为空');
     this.mainCoeffiecient = options.mainCoeffiecient;
@@ -66,7 +66,7 @@ export type CreateDpsCoreOptions = {
   HuiXiao: number;
   SolarOvercomePercent: number;
   PoZhao: number;
-  WuShuang: number;
+  StrainPercent: number;
   JiaSu: JiaSuValue;
   WuQiShangHai: number;
 };

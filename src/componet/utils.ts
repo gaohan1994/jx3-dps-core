@@ -3,7 +3,7 @@ import DpsCore from '@packages/core/core';
 import { pipe } from './compose';
 import { CreateCalculatorOptions } from '@calculator/calculator';
 import { YiJinJingQiXueVersion, YiJinJingSkillEnchant } from '@types';
-import { SOLAROVERCOME_TRANSFORM_COE } from '@config/constants';
+import { SOLAROVERCOME_TRANSFORM_COE, STRAIN_TRANSFORM_COE } from '@config/constants';
 
 export function deepClone<T>(target: T): T {
   if (typeof target !== 'object') return;
@@ -97,9 +97,8 @@ export const transferHuiXiaoLevelToHuiXiao = (huiXiaoLevel: number): number =>
 export const transferSolarOvercomeToSolarOvercomePercent = (SolarOvercome: number): number =>
   SolarOvercome / SOLAROVERCOME_TRANSFORM_COE;
 
-const WUSHUANG_COE = 344.5875;
-export const transferWuShuangLevelToWuShuang = (wuShuangLevel: number): number =>
-  wuShuangLevel / WUSHUANG_COE;
+export const transferStrainToStrainPercent = (Strain: number): number =>
+  Strain / STRAIN_TRANSFORM_COE;
 
 // 计算增加的属性
 export const increaseHuiXin = (core: DpsCore, increasedAttributes: any) => {
@@ -133,12 +132,12 @@ export const increaseSolarOvercomePercent = (core: DpsCore, increasedAttributes:
   return nextCore;
 };
 
-export const increaseWuShuang = (core: DpsCore, increasedAttributes: any) => {
-  const { WuShuang = 0, WuShuangLevel = 0 } = increasedAttributes;
-  const increasedWuShuangFromLevel = transferWuShuangLevelToWuShuang(WuShuangLevel);
+export const increaseStrainPercent = (core: DpsCore, increasedAttributes: any) => {
+  const { StrainPercent = 0, Strain = 0 } = increasedAttributes;
+  const increasedStrainPercentFromStrain = transferStrainToStrainPercent(Strain);
 
   const nextCore = deepClone(core);
-  nextCore.WuShuang += WuShuang + increasedWuShuangFromLevel;
+  nextCore.StrainPercent += StrainPercent + increasedStrainPercentFromStrain;
   return nextCore;
 };
 

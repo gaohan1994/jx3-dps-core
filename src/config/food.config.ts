@@ -9,7 +9,7 @@ export enum BanquetList {
 export const BanquetConfig = [
   {
     name: BanquetList.ShuiZhuYu,
-    data: [{ gainTarget: BuffKeys.WuShuangLevel, value: 100, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Strain, value: 100, coverage: 1 }],
   },
   {
     name: BanquetList.ErShiSiQiaoMingYueYe,
@@ -21,11 +21,11 @@ export const BanquetConfig = [
   },
   {
     name: BanquetList.TongZeYan,
-    data: [{ gainTarget: BuffKeys.WuShuangLevel, value: 130, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Strain, value: 130, coverage: 1 }],
   },
   {
     name: BanquetList.ZhengYuCaiPan,
-    data: [{ gainTarget: BuffKeys.WuShuangLevel, value: 517, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Strain, value: 517, coverage: 1 }],
   },
 ];
 
@@ -128,7 +128,7 @@ export const HomeFoodConfig = [
   },
   {
     name: HomeFoodList.DunDouFu,
-    data: [{ gainTarget: BuffKeys.WuShuangLevel, value: 277, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Strain, value: 277, coverage: 1 }],
   },
 ];
 

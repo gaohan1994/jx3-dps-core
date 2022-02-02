@@ -18,7 +18,7 @@ import {
   increaseMainAttribute,
   increaseSolarOvercomePercent,
   increasePoZhao,
-  increaseWuShuang,
+  increaseStrainPercent,
   makeZongGongJi,
 } from '@componet/utils';
 import { pipe } from '@componet/compose';
@@ -101,7 +101,7 @@ export const createCalculator = (
     (core: DpsCore) => increaseHuiXin(core, supportContext),
     (core: DpsCore) => increaseHuiXiao(core, supportContext),
     (core: DpsCore) => increaseSolarOvercomePercent(core, supportContext),
-    (core: DpsCore) => increaseWuShuang(core, supportContext),
+    (core: DpsCore) => increaseStrainPercent(core, supportContext),
     (core: DpsCore) => increasePoZhao(core, supportContext),
     (core: DpsCore) => increaseSolarAttackPowerBase(core, supportContext),
     (core: DpsCore) => makeZongGongJi(core)

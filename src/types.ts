@@ -21,8 +21,8 @@ export const BuffKeys = createEnum([
   'HuiXiaoLevel',
   'MingZhong',
   'MingZhongLevel',
-  'WuShuang',
-  'WuShuangLevel',
+  'Strain',
+  'StrainPercent',
   'PoZhao',
 ]);
 export type BuffKeys = keyof typeof BuffKeys;
