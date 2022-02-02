@@ -4,6 +4,7 @@ import { pipe } from './compose';
 import { CreateCalculatorOptions } from '@calculator/calculator';
 import { YiJinJingQiXueVersion, YiJinJingSkillEnchant } from '@types';
 import {
+  CRITICALSTRIKEDAMAGEPOWER_TRANSFORM_COE,
   CRITICALSTRIKE_TRANSFORM_COE,
   SOLAROVERCOME_TRANSFORM_COE,
   STRAIN_TRANSFORM_COE,
@@ -94,9 +95,9 @@ export const transferSolarCriticalStrikeToSolarCriticalStrikeRate = (
   SolarCriticalStrike: number
 ): number => SolarCriticalStrike / CRITICALSTRIKE_TRANSFORM_COE;
 
-const HUIXIAO_LEVEL_COE = 125.0625;
-export const transferHuiXiaoLevelToHuiXiao = (huiXiaoLevel: number): number =>
-  huiXiaoLevel / HUIXIAO_LEVEL_COE;
+export const transferSolarCriticalDamagePowerSolarCriticalDamagePowerPercent = (
+  SolarCriticalDamagePower: number
+): number => SolarCriticalDamagePower / CRITICALSTRIKEDAMAGEPOWER_TRANSFORM_COE;
 
 export const transferSolarOvercomeToSolarOvercomePercent = (SolarOvercome: number): number =>
   SolarOvercome / SOLAROVERCOME_TRANSFORM_COE;
@@ -117,13 +118,16 @@ export const increaseSolarCriticalStrike = (core: DpsCore, increasedAttributes: 
   return nextCore;
 };
 
-export const increaseHuiXiao = (core: DpsCore, increasedAttributes: any) => {
-  const { HuiXiao = 0, HuiXiaoLevel = 0 } = increasedAttributes;
-  const increasedHuiXiao = HuiXiao * 100;
-  const increasedHuiXiaoFromLevel = transferHuiXiaoLevelToHuiXiao(HuiXiaoLevel);
+export const increaseCriticalDamagePower = (core: DpsCore, increasedAttributes: any) => {
+  const { SolarCriticalDamagePowerPercent = 0, SolarCriticalDamagePower = 0 } = increasedAttributes;
+  const increasedSolarCriticalDamagePowerPercent = SolarCriticalDamagePowerPercent * 100;
+  const increasedSolarCriticalDamagePowerPercentFromSolarCriticalDamagePower =
+    transferSolarCriticalDamagePowerSolarCriticalDamagePowerPercent(SolarCriticalDamagePower);
 
   const nextCore = deepClone(core);
-  nextCore.HuiXiao += increasedHuiXiao + increasedHuiXiaoFromLevel;
+  nextCore.SolarCriticalDamagePowerPercent +=
+    increasedSolarCriticalDamagePowerPercent +
+    increasedSolarCriticalDamagePowerPercentFromSolarCriticalDamagePower;
   return nextCore;
 };
 

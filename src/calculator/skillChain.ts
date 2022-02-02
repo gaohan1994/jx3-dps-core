@@ -29,7 +29,8 @@ const createSanShengSkillCore = (prevCore: DpsCore, qiDian: number): DpsCore => 
 
 const shenYiBuff = (currentCore: DpsCore) => {
   return (
-    (currentCore.SolarCriticalStrikeRate / 100 + 0.05) * (currentCore.HuiXiao / 100 + 0.05) +
+    (currentCore.SolarCriticalStrikeRate / 100 + 0.05) *
+      (currentCore.SolarCriticalDamagePowerPercent / 100 + 0.05) +
     1 -
     (currentCore.SolarCriticalStrikeRate / 100 + 0.05)
   );
@@ -218,7 +219,8 @@ export const createSkillChains = (payload: SkillChainPayload) => {
         ZhongChenCoefficient *
         MingFaCoefficient,
       criticalCoefficient:
-        (core.SolarCriticalStrikeRate / 100 + 0.04 + 0.1) * (core.HuiXiao / 100 + 0.1) +
+        (core.SolarCriticalStrikeRate / 100 + 0.04 + 0.1) *
+          (core.SolarCriticalDamagePowerPercent / 100 + 0.1) +
         1 -
         (core.SolarCriticalStrikeRate / 100 + 0.04 + 0.1),
       miJi: ignoreMiJi,

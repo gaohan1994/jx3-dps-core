@@ -34,7 +34,7 @@ class DpsCore {
    * @memberof DpsCore
    */
   public SolarCriticalStrikeRate: number;
-  public HuiXiao: number;
+  public SolarCriticalDamagePowerPercent: number;
   public SolarOvercomePercent: number;
   public PoZhao: number;
   public JiaSu: JiaSuValue;
@@ -60,7 +60,7 @@ class DpsCore {
 
     this.WuQiShangHai = options.WuQiShangHai || 0;
     this.SolarCriticalStrikeRate = options.SolarCriticalStrikeRate || 0;
-    this.HuiXiao = options.HuiXiao || 0;
+    this.SolarCriticalDamagePowerPercent = options.SolarCriticalDamagePowerPercent || 0;
     this.Spunk = options.Spunk;
   }
 }
@@ -69,7 +69,7 @@ export type CreateDpsCoreOptions = {
   mainAttribute: number;
   SolarAttackPowerBase: number;
   SolarCriticalStrikeRate: number;
-  HuiXiao: number;
+  SolarCriticalDamagePowerPercent: number;
   SolarOvercomePercent: number;
   PoZhao: number;
   StrainPercent: number;

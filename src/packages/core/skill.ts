@@ -242,7 +242,7 @@ export const createSkillFactory = (
     // 双会
     criticalCoefficient: initAttribute(
       criticalCoefficient,
-      (_core.SolarCriticalStrikeRate / 100) * (_core.HuiXiao / 100) +
+      (_core.SolarCriticalStrikeRate / 100) * (_core.SolarCriticalDamagePowerPercent / 100) +
         1 -
         _core.SolarCriticalStrikeRate / 100
     ),

@@ -12,7 +12,7 @@ import DpsCore from '@packages/core/core';
 import {
   deepClone,
   getSpunkAttribute,
-  increaseHuiXiao,
+  increaseCriticalDamagePower,
   increaseSolarAttackPowerBase,
   increaseMainAttribute,
   increaseSolarOvercomePercent,
@@ -99,7 +99,7 @@ export const createCalculator = (
   const getBaseCore = pipe(
     () => increaseMainAttribute(coreClone, increasedMainAttributesFromSupportContext),
     (core: DpsCore) => increaseSolarCriticalStrike(core, supportContext),
-    (core: DpsCore) => increaseHuiXiao(core, supportContext),
+    (core: DpsCore) => increaseCriticalDamagePower(core, supportContext),
     (core: DpsCore) => increaseSolarOvercomePercent(core, supportContext),
     (core: DpsCore) => increaseStrainPercent(core, supportContext),
     (core: DpsCore) => increasePoZhao(core, supportContext),

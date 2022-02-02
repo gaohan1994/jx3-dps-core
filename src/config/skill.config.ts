@@ -26,7 +26,7 @@ export const TeamSkillConfig = [
   },
   {
     name: TeamSkillList.PoCangQiong,
-    data: [{ gainTarget: BuffKeys.HuiXiao, value: 0.1, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarCriticalDamagePowerPercent, value: 0.1, coverage: 1 }],
   },
   {
     name: TeamSkillList.XiuQi,

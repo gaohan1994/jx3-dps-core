@@ -29,7 +29,7 @@ export const FormationsConfig = [
     data: [
       { gainTarget: BuffKeys.SolarAttackPowerBasePercent, value: 0.05, coverage: 1 },
       { gainTarget: BuffKeys.SolarCriticalStrikeRate, value: 0.03, coverage: 1 },
-      { gainTarget: BuffKeys.HuiXiao, value: 0.1, coverage: 1 },
+      { gainTarget: BuffKeys.SolarCriticalDamagePowerPercent, value: 0.1, coverage: 1 },
       { gainTarget: BuffKeys.SolarOvercome, value: 0.05, coverage: 1 },
     ],
   },
@@ -38,7 +38,7 @@ export const FormationsConfig = [
     data: [
       { gainTarget: BuffKeys.SolarAttackPowerBasePercent, value: 0.05, coverage: 1 },
       { gainTarget: BuffKeys.SolarCriticalStrikeRate, value: 0.05, coverage: 1 },
-      { gainTarget: BuffKeys.HuiXiao, value: 0.15, coverage: 1 },
+      { gainTarget: BuffKeys.SolarCriticalDamagePowerPercent, value: 0.15, coverage: 1 },
       { gainTarget: BuffKeys.globalIgnoreDefense, value: 0.05, coverage: 1 },
     ],
   },
@@ -46,7 +46,7 @@ export const FormationsConfig = [
     name: FormationList.QiChunZhen,
     data: [
       { gainTarget: BuffKeys.SolarCriticalStrikeRate, value: 0.08, coverage: 1 },
-      { gainTarget: BuffKeys.HuiXiao, value: 0.15, coverage: 1 },
+      { gainTarget: BuffKeys.SolarCriticalDamagePowerPercent, value: 0.15, coverage: 1 },
       { gainTarget: BuffKeys.StrainPercent, value: 1.95, coverage: 1 },
     ],
   },

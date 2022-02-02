@@ -141,23 +141,29 @@ class Profit {
     CriticalStrikeProfit.stone.set(8, 124);
     this.profitList.push(CriticalStrikeProfit);
 
-    const HuiXiaoProfit: ProfitCore = {
+    const CriticalDamageProfit: ProfitCore = {
       title: '会效收益',
       multiple: 10,
       proportion: 1,
       attrProfit: 0,
       pointProfit: 0,
       gain: {
-        name: 'Profit-HuiXiao',
-        data: [{ gainTarget: BuffKeys.HuiXiaoLevel, value: (325 * 3 * 10) / 73, coverage: 1 }],
+        name: 'Profit-SolarCriticalDamagePowerPercent',
+        data: [
+          {
+            gainTarget: BuffKeys.SolarCriticalDamagePower,
+            value: (325 * 3 * 10) / 73,
+            coverage: 1,
+          },
+        ],
       },
       stone: new Map(),
       profitWithStone: new Map(),
     };
-    HuiXiaoProfit.stone.set(6, 72);
-    HuiXiaoProfit.stone.set(7, 96);
-    HuiXiaoProfit.stone.set(8, 124);
-    this.profitList.push(HuiXiaoProfit);
+    CriticalDamageProfit.stone.set(6, 72);
+    CriticalDamageProfit.stone.set(7, 96);
+    CriticalDamageProfit.stone.set(8, 124);
+    this.profitList.push(CriticalDamageProfit);
 
     const StrainProfit: ProfitCore = {
       title: '无双收益',
