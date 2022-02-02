@@ -11,7 +11,7 @@ import Support from '@packages/support/support';
 import DpsCore from '@packages/core/core';
 import {
   deepClone,
-  getYuanQiAttribute,
+  getSpunkAttribute,
   increaseHuiXiao,
   increaseHuiXin,
   increaseJiChuGongJi,
@@ -93,7 +93,7 @@ export const createCalculator = (
   support.target.calculateDamageCoefficient(supportContext);
 
   const coreClone = deepClone(core);
-  const increasedMainAttributesFromSupportContext = getYuanQiAttribute(supportContext);
+  const increasedMainAttributesFromSupportContext = getSpunkAttribute(supportContext);
 
   // 生成核心计算类 baseCore
   const getBaseCore = pipe(

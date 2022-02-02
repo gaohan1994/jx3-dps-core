@@ -60,7 +60,7 @@ class Profit {
     this.baseResult = calculatorResult;
     this.baseDps = this.baseResult.dps;
 
-    const YuanQiProfit: ProfitCore = {
+    const SpunkProfit: ProfitCore = {
       title: '元气收益',
       multiple: 10,
       // 325破防 = 73元气
@@ -69,16 +69,16 @@ class Profit {
       pointProfit: 0,
       gain: {
         name: 'Profit-YuanQi',
-        data: [{ gainTarget: BuffKeys.YuanQi, value: 3 * 10, coverage: 1 }],
+        data: [{ gainTarget: BuffKeys.Spunk, value: 3 * 10, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),
     };
     // 设置五行石属性
-    YuanQiProfit.stone.set(6, 13);
-    YuanQiProfit.stone.set(7, 21);
-    YuanQiProfit.stone.set(8, 27);
-    this.profitList.push(YuanQiProfit);
+    SpunkProfit.stone.set(6, 13);
+    SpunkProfit.stone.set(7, 21);
+    SpunkProfit.stone.set(8, 27);
+    this.profitList.push(SpunkProfit);
 
     const JiChuGongJiProfit: ProfitCore = {
       title: '基础攻击收益',

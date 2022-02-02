@@ -71,7 +71,7 @@ export const selectGainById = (gains: Gain[], id: number): Gain => {
 export const gainDataAtrributeToString = (data: GainAttribute): string => {
   let value = '';
   switch (data.gainTarget) {
-    case BuffKeys.YuanQi:
+    case BuffKeys.Spunk:
       value += '元气';
       break;
     case BuffKeys.damageBonus:

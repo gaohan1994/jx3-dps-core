@@ -38,10 +38,7 @@ export default class Support extends SupportBase {
 
   public getSupportAttributeSync(): SupportContext {
     const ctx: SupportContext = {
-      YuanQi: 0,
-      GenGu: 0,
-      LiDao: 0,
-      ShenFa: 0,
+      Spunk: 0,
       damageBonus: 0,
       JiChuGongJi: 0,
       JiChuGongJiPercent: 0,

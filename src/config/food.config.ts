@@ -62,7 +62,7 @@ export enum FoodSupportList {
 export const FoodSupportConfig = [
   {
     name: FoodSupportList.YuPianShaGuoZhou,
-    data: [{ gainTarget: BuffKeys.YuanQi, value: 173, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Spunk, value: 173, coverage: 1 }],
   },
 ];
 
@@ -97,7 +97,7 @@ export enum DrugSupportList {
 export const DrugSupportConfig = [
   {
     name: DrugSupportList.ShangPinJuHunWan,
-    data: [{ gainTarget: BuffKeys.YuanQi, value: 222, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Spunk, value: 222, coverage: 1 }],
   },
 ];
 
@@ -171,15 +171,15 @@ export const HomeDrinkConfig = [
   // },
   {
     name: HomeDrinkList.ZhuangYuanHongJinZhaoZui,
-    data: [{ gainTarget: BuffKeys.YuanQi, value: 22, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Spunk, value: 22, coverage: 1 }],
   },
   {
     name: HomeDrinkList.ZhuangYuanHongLiuRiZui,
-    data: [{ gainTarget: BuffKeys.YuanQi, value: 48, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Spunk, value: 48, coverage: 1 }],
   },
   {
     name: HomeDrinkList.ZhuangYuanHongXunYouSan,
-    data: [{ gainTarget: BuffKeys.YuanQi, value: 96, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.Spunk, value: 96, coverage: 1 }],
   },
 ];
 

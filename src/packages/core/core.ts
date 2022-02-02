@@ -9,15 +9,11 @@
 import invariant from 'invariant';
 import { createEnum } from '@types';
 
-// 创建 K: V
-export const CoreEnum = createEnum(['YuanQi', 'GenGu', 'LiDao', 'ShenFa']);
-export type CoreEnum = keyof typeof CoreEnum;
-
 export const JiaSuValue = createEnum(['YiDuanJiaSu', 'ErDuanJiaSu']);
 export type JiaSuValue = keyof typeof JiaSuValue;
 
 export interface MainCoeffiecient {
-  (yuanQi: number): {
+  (Spunk: number): {
     JiChuGongJi: number;
     ZongGongJi: number;
     PoFangLevel: number;
@@ -27,7 +23,6 @@ export interface MainCoeffiecient {
 
 class DpsCore {
   static JiaSuList = JiaSuValue;
-  public type: CoreEnum;
   public JiChuGongJi: number;
   public GongJiCoefficient: number;
   public ZongGongJi: number;
@@ -38,10 +33,7 @@ class DpsCore {
   public PoZhao: number;
   public JiaSu: JiaSuValue;
   public WuShuang: number;
-  public YuanQi?: number;
-  public GenGu?: number;
-  public LiDao?: number;
-  public ShenFa?: number;
+  public Spunk?: number;
   public options: any;
   public mainCoeffiecient: MainCoeffiecient;
   constructor(options: any) {
@@ -63,11 +55,7 @@ class DpsCore {
     this.WuQiShangHai = options.WuQiShangHai || 0;
     this.HuiXin = options.HuiXin || 0;
     this.HuiXiao = options.HuiXiao || 0;
-    this.YuanQi = options.YuanQi;
-    this.GenGu = options.GenGu;
-    this.LiDao = options.LiDao;
-    this.ShenFa = options.ShenFa;
-    this.type = options.type;
+    this.Spunk = options.Spunk;
   }
 }
 
@@ -84,19 +72,18 @@ export type CreateDpsCoreOptions = {
 };
 
 // 易筋经主属性成长
-const YiJinJingMainCoeffiecient: MainCoeffiecient = (YuanQi: number) => ({
-  JiChuGongJi: YuanQi * 0.18,
-  ZongGongJi: YuanQi * 1.85,
-  PoFangLevel: YuanQi * 0.3,
-  HuiXinLevel: YuanQi * 0.38,
+const YiJinJingMainCoeffiecient: MainCoeffiecient = (Spunk: number) => ({
+  JiChuGongJi: Spunk * 0.18,
+  ZongGongJi: Spunk * 1.85,
+  PoFangLevel: Spunk * 0.3,
+  HuiXinLevel: Spunk * 0.38,
 });
 
 export const createDpsCore = (createDpsCoreOptions: CreateDpsCoreOptions) => {
   const { mainAttribute, ...restCreateCoreAttrs } = createDpsCoreOptions;
   return new DpsCore({
     mainCoeffiecient: YiJinJingMainCoeffiecient,
-    type: CoreEnum.YuanQi,
-    [CoreEnum.YuanQi]: mainAttribute,
+    Spunk: mainAttribute,
     GongJiCoefficient: 1,
     ...restCreateCoreAttrs,
   });

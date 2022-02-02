@@ -1,5 +1,5 @@
 import { Gain } from '@packages/gain/gain';
-import DpsCore, { CoreEnum } from '@packages/core/core';
+import DpsCore from '@packages/core/core';
 import { pipe } from './compose';
 import { CreateCalculatorOptions } from '@calculator/calculator';
 import { YiJinJingQiXueVersion, YiJinJingSkillEnchant } from '@types';
@@ -67,8 +67,7 @@ export const getTargetAttribute = (attributes: any, target: string): number => {
   return attributes[target] ?? 0;
 };
 
-export const getYuanQiAttribute = (attributes: any) =>
-  getTargetAttribute(attributes, CoreEnum.YuanQi);
+export const getSpunkAttribute = (attributes: any) => getTargetAttribute(attributes, 'Spunk');
 
 type CombineAttribute = {
   target: string;
@@ -82,8 +81,8 @@ export const makeAttributeCombine = (prevAttributes: any, combineAttribute: Comb
   return nextAttributes;
 };
 
-export const makeYuanQiAttributeCombine = (prevAttributes: any, yuanQi: number) =>
-  makeAttributeCombine(prevAttributes, { target: CoreEnum.YuanQi, value: yuanQi });
+export const makeSpunkAttributeCombine = (prevAttributes: any, Spunk: number) =>
+  makeAttributeCombine(prevAttributes, { target: 'Spunk', value: Spunk });
 
 // 转换计算用的标准属性
 const HUIXIN_LEVEL_COE = 357.375;
@@ -175,7 +174,7 @@ export const makeZongGongJi = (core: DpsCore) => {
   const nextCore = deepClone(core);
   const { mainCoeffiecient } = nextCore;
 
-  const mainAttribute = getYuanQiAttribute(nextCore);
+  const mainAttribute = getSpunkAttribute(nextCore);
   const { ZongGongJi } = mainCoeffiecient(mainAttribute);
 
   const finalZongGongJi = ZongGongJi + nextCore.JiChuGongJi * nextCore.GongJiCoefficient;
