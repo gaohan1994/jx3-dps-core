@@ -157,18 +157,6 @@ export enum HomeDrinkList {
 }
 
 export const HomeDrinkConfig = [
-  // {
-  //   name: HomeDrinkList.NvErHongJinZhaoZui,
-  //   data: [{ gainTarget: BuffKeys.JiaSu, value: 320, coverage: 1 }],
-  // },
-  // {
-  //   name: HomeDrinkList.NvErHongLiuRiZui,
-  //   data: [{ gainTarget: BuffKeys.JiaSu, value: 320, coverage: 1 }],
-  // },
-  // {
-  //   name: HomeDrinkList.NvErHongXunYouSan,
-  //   data: [{ gainTarget: BuffKeys.JiaSu, value: 320, coverage: 1 }],
-  // },
   {
     name: HomeDrinkList.ZhuangYuanHongJinZhaoZui,
     data: [{ gainTarget: BuffKeys.Spunk, value: 22, coverage: 1 }],

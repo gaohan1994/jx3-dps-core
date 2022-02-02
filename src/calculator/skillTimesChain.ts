@@ -1,7 +1,7 @@
 import { addition, multiplication } from '@componet/index';
 import ChainComponent from '@componet/chain';
 import { pipe } from '@componet/compose';
-import { JiaSuValue } from '@packages/core/core';
+import { HasteValue } from '@packages/core/core';
 import { isJinGangRiLunEnchat } from '@componet/utils';
 import { SkillNames, YiJinJingSkillEnchant, YiJinJingQiXueVersion } from '@types';
 import { SkillChainPayload } from './calculator';
@@ -35,9 +35,9 @@ const normalSkillTimes: SkillTimes = {
 };
 
 // 根据加速段位选择技能数
-const calculateJiaSu = (payload: SkillTimesChainPipelinePayload) => {
+const calculateHaste = (payload: SkillTimesChainPipelinePayload) => {
   const { core, currentSkillConfig } = payload;
-  const token = core.JiaSu === JiaSuValue.YiDuanJiaSu ? 0 : 1;
+  const token = core.Haste === HasteValue.YiDuanJiaSu ? 0 : 1;
   const currentSkillTimes = currentSkillConfig[token];
   return { ...payload, currentSkillTimes };
 };
@@ -56,7 +56,7 @@ const calculateCWTimes = (payload: SkillTimesChainPipelinePayload) => {
 // 创建技能管道
 const getSkillTimesPipeline: (
   params: Partial<SkillTimesChainPipelinePayload>
-) => SkillTimesChainPipelinePayload = pipe(calculateJiaSu, calculateCWTimes);
+) => SkillTimesChainPipelinePayload = pipe(calculateHaste, calculateCWTimes);
 
 // 把管道生成的技能数量增加到配置文件里
 const makeSkillTimesFromPipelineToConfig = (

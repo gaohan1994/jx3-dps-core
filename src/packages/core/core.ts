@@ -9,8 +9,8 @@
 import invariant from 'invariant';
 import { createEnum } from '@types';
 
-export const JiaSuValue = createEnum(['YiDuanJiaSu', 'ErDuanJiaSu']);
-export type JiaSuValue = keyof typeof JiaSuValue;
+export const HasteValue = createEnum(['YiDuanJiaSu', 'ErDuanJiaSu']);
+export type HasteValue = keyof typeof HasteValue;
 
 export interface MainCoeffiecient {
   (Spunk: number): {
@@ -22,7 +22,7 @@ export interface MainCoeffiecient {
 }
 
 class DpsCore {
-  static JiaSuList = JiaSuValue;
+  static HasteList = HasteValue;
   public SolarAttackPowerBase: number;
   public GongJiCoefficient: number;
   public ZongGongJi: number;
@@ -37,7 +37,7 @@ class DpsCore {
   public SolarCriticalDamagePowerPercent: number;
   public SolarOvercomePercent: number;
   public SurplusValue: number;
-  public JiaSu: JiaSuValue;
+  public Haste: HasteValue;
   public StrainPercent: number;
   public Spunk?: number;
   public options: any;
@@ -52,7 +52,7 @@ class DpsCore {
     this.SurplusValue = options.SurplusValue || 0;
 
     // 加速默认是一段加速修改为直接设置段数
-    this.JiaSu = options.JiaSu || DpsCore.JiaSuList.YiDuanJiaSu;
+    this.Haste = options.Haste || DpsCore.HasteList.YiDuanJiaSu;
     this.StrainPercent = options.StrainPercent || 0;
 
     invariant(typeof options.mainCoeffiecient === 'function', '主属性设置不能为空');
@@ -73,7 +73,7 @@ export type CreateDpsCoreOptions = {
   SolarOvercomePercent: number;
   SurplusValue: number;
   StrainPercent: number;
-  JiaSu: JiaSuValue;
+  Haste: HasteValue;
   WuQiShangHai: number;
 };
 
