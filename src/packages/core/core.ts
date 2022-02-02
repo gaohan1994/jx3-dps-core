@@ -15,7 +15,7 @@ export type HasteValue = keyof typeof HasteValue;
 export interface MainCoeffiecient {
   (Spunk: number): {
     SolarAttackPowerBase: number;
-    ZongGongJi: number;
+    SolarAttackPower: number;
     SolarOvercome: number;
     SolarCriticalStrike: number;
   };
@@ -25,7 +25,7 @@ class DpsCore {
   static HasteList = HasteValue;
   public SolarAttackPowerBase: number;
   public SolarAttackPowerBasePercent: number;
-  public ZongGongJi: number;
+  public SolarAttackPower: number;
   public MeleeWeaponDamage: number;
   /**
    * @param SolarCriticalStrikeRate 阳性内功会心率
@@ -80,7 +80,7 @@ export type CreateDpsCoreOptions = {
 // 易筋经主属性成长
 const YiJinJingMainCoeffiecient: MainCoeffiecient = (Spunk: number) => ({
   SolarAttackPowerBase: Spunk * 0.18,
-  ZongGongJi: Spunk * 1.85,
+  SolarAttackPower: Spunk * 1.85,
   SolarOvercome: Spunk * 0.3,
   SolarCriticalStrike: Spunk * 0.38,
 });

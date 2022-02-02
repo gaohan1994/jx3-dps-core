@@ -181,16 +181,16 @@ export const increaseMainAttribute = (core: DpsCore, mainAttribute: number) => {
   return nextCore;
 };
 
-export const makeZongGongJi = (core: DpsCore) => {
+export const makeSolarAttackPower = (core: DpsCore) => {
   const nextCore = deepClone(core);
   const { mainCoeffiecient } = nextCore;
 
   const mainAttribute = getSpunkAttribute(nextCore);
-  const { ZongGongJi } = mainCoeffiecient(mainAttribute);
+  const { SolarAttackPower } = mainCoeffiecient(mainAttribute);
 
-  const finalZongGongJi =
-    ZongGongJi + nextCore.SolarAttackPowerBase * nextCore.SolarAttackPowerBasePercent;
-  nextCore.ZongGongJi = finalZongGongJi;
+  const finalSolarAttackPower =
+    SolarAttackPower + nextCore.SolarAttackPowerBase * nextCore.SolarAttackPowerBasePercent;
+  nextCore.SolarAttackPower = finalSolarAttackPower;
   return nextCore;
 };
 

@@ -18,7 +18,7 @@ import {
   increaseSolarOvercomePercent,
   increaseSurplusValue,
   increaseStrainPercent,
-  makeZongGongJi,
+  makeSolarAttackPower,
   increaseSolarCriticalStrike,
 } from '@componet/utils';
 import { pipe } from '@componet/compose';
@@ -104,7 +104,7 @@ export const createCalculator = (
     (core: DpsCore) => increaseStrainPercent(core, supportContext),
     (core: DpsCore) => increaseSurplusValue(core, supportContext),
     (core: DpsCore) => increaseSolarAttackPowerBase(core, supportContext),
-    (core: DpsCore) => makeZongGongJi(core)
+    (core: DpsCore) => makeSolarAttackPower(core)
   );
   const baseCore = getBaseCore();
   // 生成计算器技能配置文件

@@ -225,7 +225,7 @@ export const createSkillFactory = (
     // 技能次数 默认1
     skillTimes: skillTimes,
     // 总攻击 默认为面板攻击
-    basicDamage: initAttribute(basicDamage, _core.ZongGongJi),
+    basicDamage: initAttribute(basicDamage, _core.SolarAttackPower),
     skillBasicNumber: initAttribute(skillBasicNumber, 0),
     // 伤害系数 默认1
     basicDamageCoefficient: initAttribute(basicDamageCoefficient, 1),

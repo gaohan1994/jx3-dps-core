@@ -7,7 +7,7 @@ import {
   increaseSolarAttackPowerBase,
   isJinGangRiLunEnchat,
   isXinZhengVersion,
-  makeZongGongJi,
+  makeSolarAttackPower,
 } from '@componet/utils';
 import {
   SONGYAN_INCREASED_SOLARCRITICALSTRIKERATE,
@@ -19,7 +19,7 @@ import { SkillChainPayload } from './calculator';
 
 const createSanShengSkillCore = (prevCore: DpsCore, qiDian: number): DpsCore => {
   // 创建三生buff下的人物属性 每豆提升8%基础
-  const nextCore = makeZongGongJi(
+  const nextCore = makeSolarAttackPower(
     increaseSolarAttackPowerBase(prevCore, {
       SolarAttackPowerBasePercent: qiDian * SANSHENG_QIDIAN_INCREASED_SOLARATTACKPOWERBASE_PERCENT,
     })
