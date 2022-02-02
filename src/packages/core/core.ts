@@ -14,7 +14,7 @@ export type JiaSuValue = keyof typeof JiaSuValue;
 
 export interface MainCoeffiecient {
   (Spunk: number): {
-    JiChuGongJi: number;
+    SolarAttackPowerBase: number;
     ZongGongJi: number;
     PoFangLevel: number;
     HuiXinLevel: number;
@@ -23,7 +23,7 @@ export interface MainCoeffiecient {
 
 class DpsCore {
   static JiaSuList = JiaSuValue;
-  public JiChuGongJi: number;
+  public SolarAttackPowerBase: number;
   public GongJiCoefficient: number;
   public ZongGongJi: number;
   public WuQiShangHai: number;
@@ -38,7 +38,7 @@ class DpsCore {
   public mainCoeffiecient: MainCoeffiecient;
   constructor(options: any) {
     this.options = options;
-    this.JiChuGongJi = options.JiChuGongJi || 1;
+    this.SolarAttackPowerBase = options.SolarAttackPowerBase || 1;
 
     this.GongJiCoefficient = options.GongJiCoefficient;
 
@@ -61,7 +61,7 @@ class DpsCore {
 
 export type CreateDpsCoreOptions = {
   mainAttribute: number;
-  JiChuGongJi: number;
+  SolarAttackPowerBase: number;
   HuiXin: number;
   HuiXiao: number;
   PoFang: number;
@@ -73,7 +73,7 @@ export type CreateDpsCoreOptions = {
 
 // 易筋经主属性成长
 const YiJinJingMainCoeffiecient: MainCoeffiecient = (Spunk: number) => ({
-  JiChuGongJi: Spunk * 0.18,
+  SolarAttackPowerBase: Spunk * 0.18,
   ZongGongJi: Spunk * 1.85,
   PoFangLevel: Spunk * 0.3,
   HuiXinLevel: Spunk * 0.38,

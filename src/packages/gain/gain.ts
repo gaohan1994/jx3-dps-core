@@ -89,10 +89,10 @@ export const gainDataAtrributeToString = (data: GainAttribute): string => {
     case BuffKeys.PoFangLevel:
       value += '破防等级';
       break;
-    case BuffKeys.JiChuGongJi:
+    case BuffKeys.SolarAttackPowerBase:
       value += '基础攻击';
       break;
-    case BuffKeys.JiChuGongJiPercent:
+    case BuffKeys.SolarAttackPowerBasePercent:
       value += '基础攻击百分比';
       break;
     case BuffKeys.HuiXin:

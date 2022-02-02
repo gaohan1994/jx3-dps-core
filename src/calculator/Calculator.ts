@@ -14,7 +14,7 @@ import {
   getSpunkAttribute,
   increaseHuiXiao,
   increaseHuiXin,
-  increaseJiChuGongJi,
+  increaseSolarAttackPowerBase,
   increaseMainAttribute,
   increasePoFang,
   increasePoZhao,
@@ -103,7 +103,7 @@ export const createCalculator = (
     (core: DpsCore) => increasePoFang(core, supportContext),
     (core: DpsCore) => increaseWuShuang(core, supportContext),
     (core: DpsCore) => increasePoZhao(core, supportContext),
-    (core: DpsCore) => increaseJiChuGongJi(core, supportContext),
+    (core: DpsCore) => increaseSolarAttackPowerBase(core, supportContext),
     (core: DpsCore) => makeZongGongJi(core)
   );
   const baseCore = getBaseCore();

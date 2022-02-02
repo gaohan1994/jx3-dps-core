@@ -14,7 +14,7 @@ export const BanquetConfig = [
   {
     name: BanquetList.ErShiSiQiaoMingYueYe,
     data: [
-      { gainTarget: BuffKeys.JiChuGongJi, value: 214, coverage: 1 },
+      { gainTarget: BuffKeys.SolarAttackPowerBase, value: 214, coverage: 1 },
       { gainTarget: BuffKeys.HuiXinLevel, value: 397, coverage: 1 },
       { gainTarget: BuffKeys.PoZhao, value: 397, coverage: 1 },
     ],
@@ -44,7 +44,7 @@ export const FoodEnchanceConfig = [
   },
   {
     name: FoodEnhanceList.GuanTangBao,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 415, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 415, coverage: 1 }],
   },
   {
     name: FoodEnhanceList.HongShaoPaiGu,
@@ -87,7 +87,7 @@ export const DrugEnhanceConfig = [
   },
   {
     name: DrugEnhanceList.ShangPinZhanFengDan,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 533, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 533, coverage: 1 }],
   },
 ];
 
@@ -112,7 +112,7 @@ export enum HomeFoodList {
 export const HomeFoodConfig = [
   {
     name: HomeFoodList.XiaoChaoQingCai,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 149, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 149, coverage: 1 }],
   },
   {
     name: HomeFoodList.ZhaYuGan,
@@ -139,11 +139,11 @@ export enum WeaponEnchantList {
 export const WeaponEnchantConfig = [
   {
     name: WeaponEnchantList.ZhuiXiaoRongDing,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 355, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 355, coverage: 1 }],
   },
   {
     name: WeaponEnchantList.BingZhu,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 237, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 237, coverage: 1 }],
   },
 ];
 
@@ -195,6 +195,6 @@ export const FestivalFoodConfig = [
   },
   {
     name: FestivalFoodList.JinQianHuaGao,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 577, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 577, coverage: 1 }],
   },
 ];

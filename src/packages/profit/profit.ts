@@ -80,7 +80,7 @@ class Profit {
     SpunkProfit.stone.set(8, 27);
     this.profitList.push(SpunkProfit);
 
-    const JiChuGongJiProfit: ProfitCore = {
+    const SolarAttackPowerBaseProfit: ProfitCore = {
       title: '基础攻击收益',
       multiple: 10,
       // 325破防 = 175基础攻击
@@ -88,17 +88,19 @@ class Profit {
       attrProfit: 0,
       pointProfit: 0,
       gain: {
-        name: 'Profit-JiChuGongJi',
-        data: [{ gainTarget: BuffKeys.JiChuGongJi, value: (175 / 73) * 3 * 10, coverage: 1 }],
+        name: 'Profit-SolarAttackPowerBase',
+        data: [
+          { gainTarget: BuffKeys.SolarAttackPowerBase, value: (175 / 73) * 3 * 10, coverage: 1 },
+        ],
       },
       stone: new Map(),
       profitWithStone: new Map(),
     };
     // 设置五行石属性
-    JiChuGongJiProfit.stone.set(6, 38);
-    JiChuGongJiProfit.stone.set(7, 51);
-    JiChuGongJiProfit.stone.set(8, 66);
-    this.profitList.push(JiChuGongJiProfit);
+    SolarAttackPowerBaseProfit.stone.set(6, 38);
+    SolarAttackPowerBaseProfit.stone.set(7, 51);
+    SolarAttackPowerBaseProfit.stone.set(8, 66);
+    this.profitList.push(SolarAttackPowerBaseProfit);
 
     const PoFangProfit: ProfitCore = {
       title: '破防收益',

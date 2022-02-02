@@ -4,15 +4,15 @@ import { createMiJi, IgnoreDefenceMiJi } from '@packages/core/miji';
 import ChainComponent from '@componet/chain';
 import {
   deepClone,
-  increaseJiChuGongJi,
+  increaseSolarAttackPowerBase,
   isJinGangRiLunEnchat,
   isXinZhengVersion,
   makeZongGongJi,
 } from '@componet/utils';
 import {
-  SANSHENG_QIDIAN_INCREASED_JICHUGONGJI_PERCENT,
+  SONGYAN_INCREATED_SOLARATTACKPOWERBASE,
+  SANSHENG_QIDIAN_INCREASED_SOLARATTACKPOWERBASE_PERCENT,
   SONGYAN_INCREASED_HUIXIN_PERCENT,
-  SONGYAN_INCREATED_JICHUGONGJI,
 } from '@config/constants';
 import { YiJinJingSkillEnchant, YiJinJingQiXueVersion, SkillNames, SkillTitles } from '@types';
 import { SkillChainPayload } from './calculator';
@@ -20,8 +20,8 @@ import { SkillChainPayload } from './calculator';
 const createSanShengSkillCore = (prevCore: DpsCore, qiDian: number): DpsCore => {
   // 创建三生buff下的人物属性 每豆提升8%基础
   const nextCore = makeZongGongJi(
-    increaseJiChuGongJi(prevCore, {
-      JiChuGongJiPercent: qiDian * SANSHENG_QIDIAN_INCREASED_JICHUGONGJI_PERCENT,
+    increaseSolarAttackPowerBase(prevCore, {
+      SolarAttackPowerBasePercent: qiDian * SANSHENG_QIDIAN_INCREASED_SOLARATTACKPOWERBASE_PERCENT,
     })
   );
   return nextCore;
@@ -51,11 +51,12 @@ const songYanBuff = (payload: SkillChainPayload, coverage = 1): SkillChainPayloa
   const huiXinIncreasedPercent = SONGYAN_INCREASED_HUIXIN_PERCENT * totalTouchs * coverage;
 
   // 每层 400 面板攻击，一共挥击6次，共2400面板攻击
-  const jiChuGongJiIncreated = SONGYAN_INCREATED_JICHUGONGJI * totalTouchs * coverage;
+  const solarAttackPowerBaseIncreated =
+    SONGYAN_INCREATED_SOLARATTACKPOWERBASE * totalTouchs * coverage;
 
   const nextCore = deepClone(payload.core);
   nextCore.HuiXin += huiXinIncreasedPercent;
-  nextCore.JiChuGongJi += jiChuGongJiIncreated;
+  nextCore.SolarAttackPowerBase += solarAttackPowerBaseIncreated;
 
   payload.core = nextCore;
   return payload;

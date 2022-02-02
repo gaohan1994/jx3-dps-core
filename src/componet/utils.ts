@@ -148,21 +148,21 @@ export const increasePoZhao = (core: DpsCore, increasedAttributes: any) => {
   return nextCore;
 };
 
-export const increaseJiChuGongJi = (core: DpsCore, increasedAttributes: any) => {
-  const { JiChuGongJi = 0, JiChuGongJiPercent = 0 } = increasedAttributes;
+export const increaseSolarAttackPowerBase = (core: DpsCore, increasedAttributes: any) => {
+  const { SolarAttackPowerBase = 0, SolarAttackPowerBasePercent = 0 } = increasedAttributes;
 
   const nextCore = deepClone(core);
-  nextCore.JiChuGongJi += JiChuGongJi;
-  nextCore.GongJiCoefficient += JiChuGongJiPercent;
+  nextCore.SolarAttackPowerBase += SolarAttackPowerBase;
+  nextCore.GongJiCoefficient += SolarAttackPowerBasePercent;
   return nextCore;
 };
 
 export const increaseMainAttribute = (core: DpsCore, mainAttribute: number) => {
   const { mainCoeffiecient } = core;
-  const { JiChuGongJi, PoFangLevel, HuiXinLevel } = mainCoeffiecient(mainAttribute);
+  const { SolarAttackPowerBase, PoFangLevel, HuiXinLevel } = mainCoeffiecient(mainAttribute);
 
   const getNextCore = pipe(
-    () => increaseJiChuGongJi(core, { JiChuGongJi }),
+    () => increaseSolarAttackPowerBase(core, { SolarAttackPowerBase }),
     () => increasePoFang(core, { PoFangLevel }),
     () => increaseHuiXin(core, { HuiXinLevel })
   );
@@ -177,7 +177,7 @@ export const makeZongGongJi = (core: DpsCore) => {
   const mainAttribute = getSpunkAttribute(nextCore);
   const { ZongGongJi } = mainCoeffiecient(mainAttribute);
 
-  const finalZongGongJi = ZongGongJi + nextCore.JiChuGongJi * nextCore.GongJiCoefficient;
+  const finalZongGongJi = ZongGongJi + nextCore.SolarAttackPowerBase * nextCore.GongJiCoefficient;
   nextCore.ZongGongJi = finalZongGongJi;
   return nextCore;
 };

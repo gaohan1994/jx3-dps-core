@@ -15,11 +15,11 @@ export enum WeaponList {
 export const WeaponConfig = [
   {
     name: WeaponList.EffectWather,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 490, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 490, coverage: 1 }],
   },
   {
     name: WeaponList.CW,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 0, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 0, coverage: 1 }],
   },
 ];
 
@@ -37,11 +37,11 @@ export const EnChantConfig = [
   },
   {
     name: EnChantsList.EnChantBody,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 357, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 357, coverage: 1 }],
   },
   {
     name: EnChantsList.EnChantHand,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 0, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 0, coverage: 1 }],
   },
   {
     name: EnChantsList.EnChantHead,
@@ -49,7 +49,7 @@ export const EnChantConfig = [
   },
   {
     name: EnChantsList.EnChantShoe,
-    data: [{ gainTarget: BuffKeys.JiChuGongJi, value: 0, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 0, coverage: 1 }],
   },
 ];
 

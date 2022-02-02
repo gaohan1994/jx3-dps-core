@@ -13,8 +13,8 @@ export const BuffKeys = createEnum([
   'ignoreDefense', // 新增无视防御系数
   'PoFangPercent',
   'PoFangLevel',
-  'JiChuGongJi',
-  'JiChuGongJiPercent',
+  'SolarAttackPowerBase',
+  'SolarAttackPowerBasePercent',
   'HuiXin',
   'HuiXinLevel',
   'HuiXiao',

@@ -40,8 +40,8 @@ export default class Support extends SupportBase {
     const ctx: SupportContext = {
       Spunk: 0,
       damageBonus: 0,
-      JiChuGongJi: 0,
-      JiChuGongJiPercent: 0,
+      SolarAttackPowerBase: 0,
+      SolarAttackPowerBasePercent: 0,
       PoFangPercent: 0,
       PoFangLevel: 0,
       HuiXin: 0,
