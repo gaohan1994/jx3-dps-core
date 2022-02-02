@@ -167,10 +167,9 @@ export const increaseSolarAttackPowerBase = (core: DpsCore, increasedAttributes:
   return nextCore;
 };
 
-export const increaseMainAttribute = (core: DpsCore, mainAttribute: number) => {
+export const increaseSpunk = (core: DpsCore, spunk: number) => {
   const { mainCoeffiecient } = core;
-  const { SolarAttackPowerBase, SolarOvercome, SolarCriticalStrike } =
-    mainCoeffiecient(mainAttribute);
+  const { SolarAttackPowerBase, SolarOvercome, SolarCriticalStrike } = mainCoeffiecient(spunk);
 
   const getNextCore = pipe(
     () => increaseSolarAttackPowerBase(core, { SolarAttackPowerBase }),
@@ -185,8 +184,8 @@ export const makeSolarAttackPower = (core: DpsCore) => {
   const nextCore = deepClone(core);
   const { mainCoeffiecient } = nextCore;
 
-  const mainAttribute = getSpunkAttribute(nextCore);
-  const { SolarAttackPower } = mainCoeffiecient(mainAttribute);
+  const spunk = getSpunkAttribute(nextCore);
+  const { SolarAttackPower } = mainCoeffiecient(spunk);
 
   const finalSolarAttackPower =
     SolarAttackPower + nextCore.SolarAttackPowerBase * nextCore.SolarAttackPowerBasePercent;
