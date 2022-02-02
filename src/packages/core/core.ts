@@ -24,7 +24,7 @@ export interface MainCoeffiecient {
 class DpsCore {
   static HasteList = HasteValue;
   public SolarAttackPowerBase: number;
-  public GongJiCoefficient: number;
+  public SolarAttackPowerBasePercent: number;
   public ZongGongJi: number;
   public MeleeWeaponDamage: number;
   /**
@@ -46,7 +46,7 @@ class DpsCore {
     this.options = options;
     this.SolarAttackPowerBase = options.SolarAttackPowerBase || 1;
 
-    this.GongJiCoefficient = options.GongJiCoefficient;
+    this.SolarAttackPowerBasePercent = options.SolarAttackPowerBasePercent;
 
     this.SolarOvercomePercent = options.SolarOvercomePercent || 0;
     this.SurplusValue = options.SurplusValue || 0;
@@ -90,7 +90,7 @@ export const createDpsCore = (createDpsCoreOptions: CreateDpsCoreOptions) => {
   return new DpsCore({
     mainCoeffiecient: YiJinJingMainCoeffiecient,
     Spunk: mainAttribute,
-    GongJiCoefficient: 1,
+    SolarAttackPowerBasePercent: 1,
     ...restCreateCoreAttrs,
   });
 };
