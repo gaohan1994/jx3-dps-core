@@ -2,8 +2,6 @@ import DpsCore from '@packages/core/core';
 import Skill, { createSkillFactory } from '@packages/core/skill';
 import { createMiJi, IgnoreDefenceMiJi } from '@packages/core/miji';
 import ChainComponent from '@componet/chain';
-import { SkillChainPayload, YiJinJingQiXueVersion, YiJinJingSkillEnchant } from './calculatorWoker';
-import { SkillNames, SkillTitles } from './skillTimesChain';
 import {
   deepClone,
   increaseJiChuGongJi,
@@ -16,6 +14,8 @@ import {
   SONGYAN_INCREASED_HUIXIN_PERCENT,
   SONGYAN_INCREATED_JICHUGONGJI,
 } from '@config/constants';
+import { YiJinJingSkillEnchant, YiJinJingQiXueVersion, SkillNames, SkillTitles } from '@types';
+import { SkillChainPayload } from './calculator';
 
 const createSanShengSkillCore = (prevCore: DpsCore, qiDian: number): DpsCore => {
   // 创建三生buff下的人物属性 每豆提升8%基础

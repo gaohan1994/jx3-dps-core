@@ -50,7 +50,7 @@ const makeGainsUseConfig = (factory: any, gainConfig: any[]) => {
   return gains;
 };
 
-class GainModule {
+export class GainModule {
   // 全部Group
   public allGainGroupList: GainGroup[];
   // 全部Gain

@@ -71,39 +71,16 @@ class DpsCore {
   }
 }
 
-export const createDpsCoreFactory = (coreType: CoreEnum, mainCoeffiecient: MainCoeffiecient) => {
-  function createDpsCoreInstance(
-    mainAttribute: number,
-    JiChuGongJi: number,
-    HuiXin: number,
-    HuiXiao: number,
-    PoFang: number,
-    PoZhao: number,
-    WuShuang: number,
-    JiaSu: JiaSuValue,
-    WuQiShangHai?: number
-  ) {
-    return new DpsCore({
-      // 设置人物主属性
-      // 设置职业成长
-      type: coreType,
-      [coreType]: mainAttribute,
-      mainCoeffiecient,
-      // 设置基础属性
-      JiChuGongJi,
-      GongJiCoefficient: 1,
-      HuiXin,
-      HuiXiao,
-      PoFang,
-      PoZhao,
-      WuShuang,
-      // 设置加速和武器伤害
-      JiaSu,
-      WuQiShangHai,
-    });
-  }
-
-  return createDpsCoreInstance;
+export type CreateDpsCoreOptions = {
+  mainAttribute: number;
+  JiChuGongJi: number;
+  HuiXin: number;
+  HuiXiao: number;
+  PoFang: number;
+  PoZhao: number;
+  WuShuang: number;
+  JiaSu: JiaSuValue;
+  WuQiShangHai: number;
 };
 
 // 易筋经主属性成长
@@ -114,6 +91,15 @@ const YiJinJingMainCoeffiecient: MainCoeffiecient = (YuanQi: number) => ({
   HuiXinLevel: YuanQi * 0.38,
 });
 
-// 创建易筋经dpsCore
-export const createDpsCore = createDpsCoreFactory(CoreEnum.YuanQi, YiJinJingMainCoeffiecient);
+export const createDpsCore = (createDpsCoreOptions: CreateDpsCoreOptions) => {
+  const { mainAttribute, ...restCreateCoreAttrs } = createDpsCoreOptions;
+  return new DpsCore({
+    mainCoeffiecient: YiJinJingMainCoeffiecient,
+    type: CoreEnum.YuanQi,
+    [CoreEnum.YuanQi]: mainAttribute,
+    GongJiCoefficient: 1,
+    ...restCreateCoreAttrs,
+  });
+};
+
 export default DpsCore;

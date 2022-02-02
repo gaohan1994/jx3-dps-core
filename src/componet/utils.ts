@@ -2,7 +2,7 @@ import { Gain } from '@packages/gain/gain';
 import DpsCore, { CoreEnum } from '@packages/core/core';
 import { pipe } from './compose';
 import { CreateCalculatorOptions } from '@calculator/calculator';
-import { YiJinJingQiXueVersion, YiJinJingSkillEnchant } from '@calculator/calculatorWoker';
+import { YiJinJingQiXueVersion, YiJinJingSkillEnchant } from '@types';
 
 export function deepClone<T>(target: T): T {
   if (typeof target !== 'object') return;

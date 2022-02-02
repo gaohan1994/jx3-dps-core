@@ -16,31 +16,10 @@ class SupportBase {
   public gainList: Gain[] = [];
 
   constructor(options: SupportBaseOptions) {
-    this.gainList = options.gainList || [];
-  }
-
-  /**
-   * 计算所有增益中间件
-   *
-   * @param {SupportContext} ctx
-   * @param {*} next
-   * @return {*}
-   * @memberof SupportBase
-   */
-  public countCurrentSupportGain(ctx: SupportContext, next: any) {
-    if (!ctx) {
-      return next();
+    const gainList = options.gainList || [];
+    if (gainList.length > 0) {
+      gainList.forEach(gain => this.use(gain));
     }
-
-    if (this.gainList.length > 0) {
-      this.gainList.forEach(gain => {
-        gain.data.forEach(gainAttribute => {
-          ctx[gainAttribute.gainTarget] += gainAttribute.value * gainAttribute.coverage;
-        });
-      });
-    }
-
-    return next();
   }
 
   public countCurrentSupportGainSync(ctx: SupportContext) {

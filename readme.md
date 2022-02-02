@@ -6,7 +6,7 @@
 
 Jx3-dps-core 使用文档
 
-### CoreHelper
+### Jx3DpsCore
 
 核心工具预先设置好的所有增益包括
 
@@ -37,204 +37,228 @@ Jx3-dps-core 使用文档
 - 目标选择等
 
 
-```javascript
-const CoreHelper = {
-  GainGroupTypes: GainGroupTypes,
-  YiJinJingQiXueVersion: YiJinJingQiXueVersion,
-  YiJinJingSkillEnchant: YiJinJingSkillEnchant,
-  JiaSuList: {
-    ...JiaSuValue,
-  },
-  Formations: {
-    ...FormationList,
-  },
-  TeamSkills: {
-    ...TeamSkillList,
-  },
-  GroupSkills: {
-    ...GroupSkillList,
-  },
-  SetBonusesGain: {
-    ...SetBonuseList,
-  },
-  Weapons: {
-    ...WeaponList,
-  },
-  Enchants: {
-    ...EnChantsList,
-  },
-  EffectSpines: {
-    ...EffectSpineList,
-  },
-  Banquet: {
-    ...BanquetList,
-  },
-  Food: {
-    FoodEnhance: {
-      ...FoodEnhanceList,
-    },
-    DrugEnhance: {
-      ...DrugEnhanceList,
-    },
-    FoodSupport: {
-      ...FoodSupportList,
-    },
-    DrugSupport: {
-      ...DrugSupportList,
-    },
-    HomeFood: {
-      ...HomeFoodList,
-    },
-    WeaponEnchant: {
-      ...WeaponEnchantList,
-    },
-    HomeDrink: {
-      ...HomeDrinkList,
-    },
-    FestivalFood: {
-      ...FestivalFoodList,
-    },
-  },
-  Target: {
-    ...TargetListKeys,
-  },
+```typescript
+
+class Jx3DpsCore {
+  /**
+   * 增益群组类型
+   *
+   * @static
+   * @memberof Jx3DpsCore
+   */
+  static GainGroupTypes = GainGroupTypes;
+  /**
+   * @param YiJinJingQiXueVersion 奇穴
+   * @param YiJinJingSkillEnchant 大附魔
+   *
+   * @static
+   * @memberof Jx3DpsCore
+   */
+  static CalculatorVersions = {
+    YiJinJingQiXueVersion: YiJinJingQiXueVersion,
+    YiJinJingSkillEnchant: YiJinJingSkillEnchant,
+  };
+  /**
+   * 加速档位
+   *
+   * @static
+   * @memberof Jx3DpsCore
+   */
+  static JiaSuList = JiaSuValue;
+  /**
+   * 阵法列表
+   *
+   * @static
+   * @memberof Jx3DpsCore
+   */
+  static Formations = FormationList;
+  /**
+   * 小队技能增益列表
+   *
+   * @static
+   * @memberof Jx3DpsCore
+   */
+  static TeamSkills = TeamSkillList;
+  /**
+   * 团队技能增益列表
+   *
+   * @static
+   * @memberof Jx3DpsCore
+   */
+  static GroupSkills = GroupSkillList;
+  /**
+   * 套装增益列表
+   *
+   * @static
+   * @memberof Jx3DpsCore
+   */
+  static SetBonusesGain = SetBonuseList;
+  /**
+   * 武器列表
+   *
+   * @static
+   * @memberof Jx3DpsCore
+   */
+  static Weapons = WeaponList;
+  /**
+   * 装备附魔增益列表
+   *
+   * @static
+   * @memberof Jx3DpsCore
+   */
+  static Enchants = EnChantsList;
+  /**
+   * 特效腰椎
+   *
+   * @static
+   * @memberof Jx3DpsCore
+   */
+  static EffectSpines = EffectSpineList;
+  /**
+   * 宴席增益列表
+   *
+   * @static
+   * @memberof Jx3DpsCore
+   */
+  static Banquet = BanquetList;
+  /**
+   * 目标列表
+   *
+   * @static
+   * @memberof Jx3DpsCore
+   */
+  static Target = TargetListKeys;
+  /**
+   * 小吃小药列表
+   *
+   * @static
+   * @memberof Jx3DpsCore
+   */
+  static Food = {
+    FoodEnhance: FoodEnhanceList,
+    DrugEnhance: DrugEnhanceList,
+    FoodSupport: FoodSupportList,
+    DrugSupport: DrugSupportList,
+    HomeFood: HomeFoodList,
+    WeaponEnchant: WeaponEnchantList,
+    HomeDrink: HomeDrinkList,
+    FestivalFood: FestivalFoodList,
+  };
+
+  /**
+   * 增益模块
+   *
+   * @type {GainModule}
+   * @memberof Jx3DpsCore
+   */
+  public gainModule: GainModule;
+
+  /**
+   * 创建计算器的其他配置选项
+   *
+   * @private
+   * @type {Jx3DpsCoreOptions}
+   * @memberof Jx3DpsCore
+   */
+  public jx3DpsCoreOptions: Jx3DpsCoreOptions;
+  /**
+   * 计算器核心core
+   *
+   * @private
+   * @type {DpsCore}
+   * @memberof Jx3DpsCore
+   */
+  private core: DpsCore;
+  /**
+   * 计算器增益类support
+   *
+   * @private
+   * @type {Support}
+   * @memberof Jx3DpsCore
+   */
+  public support: Support;
+
+  constructor(
+    coreOptions: CreateDpsCoreOptions,
+    supportOptions: SupportOptions,
+    jx3DpsCoreOptions: Jx3DpsCoreOptions
+  ) {
+    this.core = createDpsCore(coreOptions);
+    this.support = new Support(supportOptions);
+    this.gainModule = new GainModule();
+    this.jx3DpsCoreOptions = jx3DpsCoreOptions;
+  }
+}
+```
+
+## Method calculate
+
+```typescript
+/**
+ * 计算dps结果
+ * @method calculate
+ * @memberof Jx3DpsCore
+ */
+public calculate = (): CalculatorResult => {
+  return createCalculator(this.core, this.support, this.jx3DpsCoreOptions);
 };
 ```
 
-### createDpsCore
-
-创建角色
-输入主属性、基础攻击、会心、会效、破防、破招、无双、加速（段位）、武器伤害返回DpsCore
-
-```typescript
-declare const createDpsCore: (
-  mainAttribute: number, 
-  JiChuGongJi: number, 
-  HuiXin: number, 
-  HuiXiao: number, 
-  PoFang: number, 
-  PoZhao: number, 
-  WuShuang: number, 
-  JiaSu: JiaSuValue, 
-  WuQiShangHai?: number
-) => DpsCore;
-
-const dpsCore = createDpsCore(
-  2904,
-  15984,
-  32.93,
-  189.28,
-  54.05,
-  4480,
-  45.74,
-  'YiDuanJiaSu',
-  1998
-);
-
-```
-
-### Support 
-
-创建辅助工具 ``support`` 最开始的设计为内外功都可以使用本库，后期会废除掉mode
-通过调用 ``support`` 类的 ``use`` 函数可以使用预先设置好的增益Buff
-
-```javascript
-const support = new Support({
-  mode: 'NeiGong',
-  target: CoreHelper.Target.MuZhuang113,
-});
-support.use(CoreHelper.TeamSkills.JinGangNuMu);
-```
-
-### createCalculator
-
-创建计算器
-传入 ``dpsCore`` 和 ``support`` 以及 ``options`` 获取计算器结果
-
-```typescript
-
-/**
- * 创建易筋经计算器
- *
- * @param {DpsCore} core 核心类
- * @param {Support} support 辅助类
- * @param {YiJinJingValues} version 计算器版本
- */
-export declare const createCalculator: (
-  core: DpsCore, 
-  support: Support, 
-  options?: CreateCalculatorOptions
-) => CalculatorResult;
-
-const calculatorResult = createCalculator(dpsCore, support, {
-  qiXueVersion: CoreHelper.YiJinJingQiXueVersion.XinZheng,
-  skillEnchant: CoreHelper.YiJinJingSkillEnchant.JinGangRiLun,
-});
-```
-
-### Profit
-
-计算属性收益模块
+## Method profit
 
 ```typescript
 /**
- * Usage =================================================================
- * ========================================================================
- *
- * const profit = new Profit(core, support, version, result);
- * const profitList = profit.calculatroProfit();
+ * 计算收益结果
+ * @method profit
+ * @memberof Jx3DpsCore
  */
-declare class Profit {
-    core: DpsCore;
-    support: Support;
-    baseResult: CalculatorResult;
-    baseDps: number;
-    profitList: ProfitCore[];
-    constructor(profitOptions: ProfitConstructorOptions);
-    calculatroProfitCore(item: ProfitCore): ProfitCore;
-    calculatroProfit(): ProfitCore[];
-}
+public profit = () => {
+  const pf = new Profit({ core: this.core, support: this.support });
+  return pf.calculatroProfit();
+};
 ```
 
 
 ## Usage
 
-```js
-import { CoreHelper, createCalculator, createDpsCore, Support } from 'jx3-dps-core';
+```javascript
+import Jx3DpsCore from 'jx3-dps-core';
 
-const newCore = createDpsCore(
-  2904,
-  15984,
-  32.93,
-  189.28,
-  54.05,
-  4480,
-  45.74,
-  'YiDuanJiaSu',
-  1998
+const jdc = new Jx3DpsCore(
+  {
+    mainAttribute: 2904,
+    JiChuGongJi: 15984,
+    HuiXin: 32.93,
+    HuiXiao: 189.28,
+    PoFang: 54.05,
+    PoZhao: 4480,
+    WuShuang: 45.74,
+    JiaSu: 'YiDuanJiaSu',
+    WuQiShangHai: 2000,
+  },
+  {
+    target: Jx3DpsCore.Target.MuZhuang113,
+    gainList: [
+      Jx3DpsCore.TeamSkills.JinGangNuMu,
+      Jx3DpsCore.TeamSkills.QinLongJue,
+      {
+        name: 'UPDATE08-30',
+        type: 'Costom',
+        data: [{ gainTarget: 'damageBonus', value: 0.03, coverage: 1 }],
+      },
+      {
+        name: '少林常驻破防加成',
+        type: 'Costom',
+        data: [{ gainTarget: 'PoFangPercent', value: 0.15, coverage: 1 }],
+      },
+    ],
+  },
+  {
+    qiXueVersion: Jx3DpsCore.CalculatorVersions.YiJinJingQiXueVersion.XinZheng,
+    skillEnchant: Jx3DpsCore.CalculatorVersions.YiJinJingSkillEnchant.JinGangRiLun,
+  }
 );
 
-const support = new Support({
-  mode: 'NeiGong',
-  target: CoreHelper.Target.MuZhuang113,
-});
+const { dps, total, skills } = jdc.calculate();
 
-support.use(CoreHelper.TeamSkills.JinGangNuMu);
-support.use(CoreHelper.TeamSkills.QinLongJue);
-support.use({
-  name: 'UPDATE08-30',
-  type: 'Costom',
-  data: [{ gainTarget: 'damageBonus', value: 0.03, coverage: 1 }],
-});
-support.use({
-  name: '少林常驻破防加成',
-  type: 'Costom',
-  data: [{ gainTarget: 'PoFangPercent', value: 0.15, coverage: 1 }],
-});
-const calculatorResult = createCalculator(newCore, support, {
-  qiXueVersion: CoreHelper.YiJinJingQiXueVersion.XinZheng,
-  skillEnchant: CoreHelper.YiJinJingSkillEnchant.JinGangRiLun,
-});
-const { dps, total, skills } = calculatorResult;
-console.log('dps: ', dps);
 ```

@@ -9,7 +9,6 @@
 import Skill from '@packages/core/skill';
 import Support from '@packages/support/support';
 import DpsCore from '@packages/core/core';
-import { createConfig, YiJinJingQiXueVersion, YiJinJingSkillEnchant } from './calculatorWoker';
 import {
   deepClone,
   getYuanQiAttribute,
@@ -23,6 +22,17 @@ import {
   makeZongGongJi,
 } from '@componet/utils';
 import { pipe } from '@componet/compose';
+import { YiJinJingQiXueVersion, YiJinJingSkillEnchant } from '@types';
+import { createSkillTimesChain, SkillTimes } from './skillTimesChain';
+import { createSkillChains } from './skillChain';
+
+export interface SkillChainPayload {
+  core: DpsCore;
+  support: Support;
+  options: CreateCalculatorOptions;
+  skillTimes: SkillTimes;
+  skills: Array<Skill>;
+}
 
 export type CalculatorResult = {
   dps: number;
@@ -98,8 +108,19 @@ export const createCalculator = (
   );
   const baseCore = getBaseCore();
   // 生成计算器技能配置文件
-  const calculatorConfig = createConfig(baseCore, support, options);
-  const { skills } = calculatorConfig;
+
+  const payload: SkillChainPayload = {
+    core: baseCore,
+    support,
+    options,
+    skillTimes: {} as any,
+    skills: [],
+  };
+  const skillTimes = createSkillTimesChain(payload);
+  payload.skillTimes = skillTimes;
+  payload.skills = createSkillChains(payload);
+
+  const { skills } = payload;
 
   const totalDamage = calculateSkillsTotal(skills);
   calculateSkillsPercent(totalDamage, skills);
