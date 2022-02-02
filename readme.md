@@ -2,6 +2,16 @@
 
 纯 Typescript 编写的计算器组件
 
+服务于剑网三少林易筋经心法
+
+初衷是希望把计算器的计算和公共部分抽离出来
+
+这样可以做到最大程度的复用和简洁化
+
+[剑网三少林易筋经计算器Web版](http://101.132.24.127:9090/#/calculator)
+
+[剑网三少林易筋经计算器前端代码](https://github.com/gaohan1994/jx3-dps-rank)
+
 ## Documents
 
 Jx3-dps-core 使用文档
