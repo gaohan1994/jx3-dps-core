@@ -105,33 +105,58 @@ export const createSkillTimesChain = (payload: SkillChainPayload): SkillTimes =>
   });
   const hengSaoLiuHeChain = new ChainComponent((payload: SkillChainPayload) => {
     const config = [44, 44, 0];
+    const configAfterPipeline = getSkillTimesPipeline({
+      ...payload,
+      currentSkillConfig: config,
+    });
+    const hasJinGangRiLun = isJinGangRiLunEnchat(payload.options);
+    if (!hasJinGangRiLun) {
+      makeSkillTimesFromPipelineToConfig(configAfterPipeline, 'HengSaoLiuHe');
+      return ChainComponent.NEXT_CHAIN_SUCCESSOR;
+    }
     makeSkillTimesFromPipelineToConfig(
-      getSkillTimesPipeline({
-        ...payload,
-        currentSkillConfig: config,
-      }),
+      { ...configAfterPipeline, currentSkillTimes: configAfterPipeline.currentSkillTimes - 4 },
       'HengSaoLiuHe'
     );
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
   const hengSaoLiuHeDOTChain = new ChainComponent((payload: SkillChainPayload) => {
     const config = [155, 155, 0];
+    const configAfterPipeline = getSkillTimesPipeline({
+      ...payload,
+      currentSkillConfig: config,
+    });
+    const hasJinGangRiLun = isJinGangRiLunEnchat(payload.options);
+    if (!hasJinGangRiLun) {
+      makeSkillTimesFromPipelineToConfig(configAfterPipeline, 'HengSaoLiuHeDot');
+      return ChainComponent.NEXT_CHAIN_SUCCESSOR;
+    }
     makeSkillTimesFromPipelineToConfig(
-      getSkillTimesPipeline({
-        ...payload,
-        currentSkillConfig: config,
-      }),
+      {
+        ...configAfterPipeline,
+        currentSkillTimes: configAfterPipeline.currentSkillTimes - 3.5 * 4,
+      },
       'HengSaoLiuHeDot'
     );
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
   const shouQueShiChain = new ChainComponent((payload: SkillChainPayload) => {
     const config = [45, 45, 0.5];
+
+    const configAfterPipeline = getSkillTimesPipeline({
+      ...payload,
+      currentSkillConfig: config,
+    });
+    const hasJinGangRiLun = isJinGangRiLunEnchat(payload.options);
+    if (!hasJinGangRiLun) {
+      makeSkillTimesFromPipelineToConfig(configAfterPipeline, 'ShouQueShi');
+      return ChainComponent.NEXT_CHAIN_SUCCESSOR;
+    }
     makeSkillTimesFromPipelineToConfig(
-      getSkillTimesPipeline({
-        ...payload,
-        currentSkillConfig: config,
-      }),
+      {
+        ...configAfterPipeline,
+        currentSkillTimes: configAfterPipeline.currentSkillTimes - 3,
+      },
       'ShouQueShi'
     );
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
