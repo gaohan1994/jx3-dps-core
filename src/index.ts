@@ -189,7 +189,7 @@ class Jx3DpsCore {
    * @type {DpsCore}
    * @memberof Jx3DpsCore
    */
-  private core: DpsCore;
+  public core: DpsCore;
   /**
    * 计算器增益类support
    *

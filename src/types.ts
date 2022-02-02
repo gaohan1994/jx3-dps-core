@@ -11,8 +11,8 @@ export const BuffKeys = createEnum([
   'damageBonus',
   'globalIgnoreDefense', // 新增全局无视防御系数 包含2个技能 梅花盾 和 田螺阵
   'ignoreDefense', // 新增无视防御系数
-  'PoFangPercent',
-  'PoFangLevel',
+  'SolarOvercomePercent',
+  'SolarOvercome',
   'SolarAttackPowerBase',
   'SolarAttackPowerBasePercent',
   'HuiXin',

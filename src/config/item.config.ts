@@ -45,7 +45,7 @@ export const EnChantConfig = [
   },
   {
     name: EnChantsList.EnChantHead,
-    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 496, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarOvercome, value: 496, coverage: 1 }],
   },
   {
     name: EnChantsList.EnChantShoe,
@@ -59,7 +59,7 @@ export enum EffectSpineList {
 export const EffectSpineConfig = [
   {
     name: EffectSpineList.CiWeiTong,
-    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 4165, coverage: 15 / 180 }],
+    data: [{ gainTarget: BuffKeys.SolarOvercome, value: 4165, coverage: 15 / 180 }],
   },
 ];
 

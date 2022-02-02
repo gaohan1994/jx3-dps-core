@@ -3,6 +3,7 @@ import DpsCore from '@packages/core/core';
 import { pipe } from './compose';
 import { CreateCalculatorOptions } from '@calculator/calculator';
 import { YiJinJingQiXueVersion, YiJinJingSkillEnchant } from '@types';
+import { SOLAROVERCOME_TRANSFORM_COE } from '@config/constants';
 
 export function deepClone<T>(target: T): T {
   if (typeof target !== 'object') return;
@@ -93,9 +94,8 @@ const HUIXIAO_LEVEL_COE = 125.0625;
 export const transferHuiXiaoLevelToHuiXiao = (huiXiaoLevel: number): number =>
   huiXiaoLevel / HUIXIAO_LEVEL_COE;
 
-const POFANG_COE = 357.375;
-export const transferPoFangLevelToPoFang = (poFangLevel: number): number =>
-  poFangLevel / POFANG_COE;
+export const transferSolarOvercomeToSolarOvercomePercent = (SolarOvercome: number): number =>
+  SolarOvercome / SOLAROVERCOME_TRANSFORM_COE;
 
 const WUSHUANG_COE = 344.5875;
 export const transferWuShuangLevelToWuShuang = (wuShuangLevel: number): number =>
@@ -122,13 +122,14 @@ export const increaseHuiXiao = (core: DpsCore, increasedAttributes: any) => {
   return nextCore;
 };
 
-export const increasePoFang = (core: DpsCore, increasedAttributes: any) => {
-  const { PoFangLevel = 0, PoFangPercent = 0 } = increasedAttributes;
-  const increasedPoFangFromLevel = transferPoFangLevelToPoFang(PoFangLevel);
+export const increaseSolarOvercomePercent = (core: DpsCore, increasedAttributes: any) => {
+  const { SolarOvercome = 0, SolarOvercomePercent = 0 } = increasedAttributes;
+  const increasedSolarOvercomePercentFromSolarOvercome =
+    transferSolarOvercomeToSolarOvercomePercent(SolarOvercome);
 
   const nextCore = deepClone(core);
-  nextCore.PoFang += increasedPoFangFromLevel;
-  nextCore.PoFang = nextCore.PoFang * (1 + PoFangPercent);
+  nextCore.SolarOvercomePercent += increasedSolarOvercomePercentFromSolarOvercome;
+  nextCore.SolarOvercomePercent = nextCore.SolarOvercomePercent * (1 + SolarOvercomePercent);
   return nextCore;
 };
 
@@ -159,11 +160,11 @@ export const increaseSolarAttackPowerBase = (core: DpsCore, increasedAttributes:
 
 export const increaseMainAttribute = (core: DpsCore, mainAttribute: number) => {
   const { mainCoeffiecient } = core;
-  const { SolarAttackPowerBase, PoFangLevel, HuiXinLevel } = mainCoeffiecient(mainAttribute);
+  const { SolarAttackPowerBase, SolarOvercome, HuiXinLevel } = mainCoeffiecient(mainAttribute);
 
   const getNextCore = pipe(
     () => increaseSolarAttackPowerBase(core, { SolarAttackPowerBase }),
-    () => increasePoFang(core, { PoFangLevel }),
+    () => increaseSolarOvercomePercent(core, { SolarOvercome }),
     () => increaseHuiXin(core, { HuiXinLevel })
   );
   const nextCore = getNextCore();

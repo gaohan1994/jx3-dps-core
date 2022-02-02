@@ -67,7 +67,7 @@ export const GroupSkillConfig = [
   },
   {
     name: GroupSkillList.HanXiaoQianJun,
-    data: [{ gainTarget: BuffKeys.PoFangPercent, value: 0.1, coverage: 0.5 }],
+    data: [{ gainTarget: BuffKeys.SolarOvercomePercent, value: 0.1, coverage: 0.5 }],
   },
   /**
    * @todo 新增团队技能宏法，默认覆盖率10%

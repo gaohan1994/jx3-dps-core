@@ -102,24 +102,24 @@ class Profit {
     SolarAttackPowerBaseProfit.stone.set(8, 66);
     this.profitList.push(SolarAttackPowerBaseProfit);
 
-    const PoFangProfit: ProfitCore = {
+    const SolarOvercomeProfit: ProfitCore = {
       title: '破防收益',
       multiple: 100,
       proportion: 1,
       attrProfit: 0,
       pointProfit: 0,
       gain: {
-        name: 'Profit-PoFang',
-        data: [{ gainTarget: BuffKeys.PoFangLevel, value: (325 * 3 * 100) / 73, coverage: 1 }],
+        name: 'Profit-SolarOvercomePercent',
+        data: [{ gainTarget: BuffKeys.SolarOvercome, value: (325 * 3 * 100) / 73, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),
     };
     // 设置五行石属性
-    PoFangProfit.stone.set(6, 72);
-    PoFangProfit.stone.set(7, 96);
-    PoFangProfit.stone.set(8, 124);
-    this.profitList.push(PoFangProfit);
+    SolarOvercomeProfit.stone.set(6, 72);
+    SolarOvercomeProfit.stone.set(7, 96);
+    SolarOvercomeProfit.stone.set(8, 124);
+    this.profitList.push(SolarOvercomeProfit);
 
     const HuiXinProfit: ProfitCore = {
       title: '会心收益',

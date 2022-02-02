@@ -16,7 +16,7 @@ export interface MainCoeffiecient {
   (Spunk: number): {
     SolarAttackPowerBase: number;
     ZongGongJi: number;
-    PoFangLevel: number;
+    SolarOvercome: number;
     HuiXinLevel: number;
   };
 }
@@ -29,7 +29,7 @@ class DpsCore {
   public WuQiShangHai: number;
   public HuiXin: number;
   public HuiXiao: number;
-  public PoFang: number;
+  public SolarOvercomePercent: number;
   public PoZhao: number;
   public JiaSu: JiaSuValue;
   public WuShuang: number;
@@ -42,7 +42,7 @@ class DpsCore {
 
     this.GongJiCoefficient = options.GongJiCoefficient;
 
-    this.PoFang = options.PoFang || 0;
+    this.SolarOvercomePercent = options.SolarOvercomePercent || 0;
     this.PoZhao = options.PoZhao || 0;
 
     // 加速默认是一段加速修改为直接设置段数
@@ -64,7 +64,7 @@ export type CreateDpsCoreOptions = {
   SolarAttackPowerBase: number;
   HuiXin: number;
   HuiXiao: number;
-  PoFang: number;
+  SolarOvercomePercent: number;
   PoZhao: number;
   WuShuang: number;
   JiaSu: JiaSuValue;
@@ -75,7 +75,7 @@ export type CreateDpsCoreOptions = {
 const YiJinJingMainCoeffiecient: MainCoeffiecient = (Spunk: number) => ({
   SolarAttackPowerBase: Spunk * 0.18,
   ZongGongJi: Spunk * 1.85,
-  PoFangLevel: Spunk * 0.3,
+  SolarOvercome: Spunk * 0.3,
   HuiXinLevel: Spunk * 0.38,
 });
 

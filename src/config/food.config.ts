@@ -48,7 +48,7 @@ export const FoodEnchanceConfig = [
   },
   {
     name: FoodEnhanceList.HongShaoPaiGu,
-    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 771, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarOvercome, value: 771, coverage: 1 }],
   },
   {
     name: FoodEnhanceList.SuanCaiYu,
@@ -79,7 +79,7 @@ export const DrugEnhanceConfig = [
   },
   {
     name: DrugEnhanceList.ShangPinPoHuiSan,
-    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 991, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarOvercome, value: 991, coverage: 1 }],
   },
   {
     name: DrugEnhanceList.ShangPinYuLiSan,
@@ -120,7 +120,7 @@ export const HomeFoodConfig = [
   },
   {
     name: HomeFoodList.QingZhengLuYu,
-    data: [{ gainTarget: BuffKeys.PoFangLevel, value: 277, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SolarOvercome, value: 277, coverage: 1 }],
   },
   {
     name: HomeFoodList.JianDouFu,

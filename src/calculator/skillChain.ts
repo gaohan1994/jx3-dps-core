@@ -112,7 +112,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
       basicDamage: 0,
       skillBasicNumber: core.WuQiShangHai,
       basicDamageCoefficient: 0,
-      poFangCoefficient: 1,
+      solarOvercomeCoefficient: 1,
     });
     skills.push(skill);
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
@@ -364,7 +364,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
       skillTimes: skillTimes[key],
       skillBasicNumber: 0,
       basicDamage: (weituo.subTotal + nayun.subTotal) / 4 / 1.2 / skillTimes[SkillNames.XiangMo],
-      poFangCoefficient: 1,
+      solarOvercomeCoefficient: 1,
       wuShuangCoefficient: 1,
       huiXinHuiXiaoCoefficient: 1,
       targetDamageCoefficient: 1,
@@ -385,7 +385,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
       wuShuangCoefficient: 1,
-      poFangCoefficient: 1,
+      solarOvercomeCoefficient: 1,
       huiXinHuiXiaoCoefficient: 1,
       targetDamageCoefficient: 1,
     });

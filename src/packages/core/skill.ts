@@ -14,7 +14,7 @@ import { createEnum } from '@types';
 import { pipe } from '@componet/compose';
 
 const SkillMultiplicationInterfaceEnum = createEnum([
-  'poFangCoefficient',
+  'solarOvercomeCoefficient',
   'wuShuangCoefficient',
   'huiXinHuiXiaoCoefficient',
   'targetDamageCoefficient',
@@ -53,8 +53,8 @@ const createMultiplicationSkillEquation =
     return skill;
   };
 
-const calculatePoFang = createMultiplicationSkillEquation(
-  SkillMultiplicationInterfaceEnum.poFangCoefficient
+const calculateSolarOvercome = createMultiplicationSkillEquation(
+  SkillMultiplicationInterfaceEnum.solarOvercomeCoefficient
 );
 const calculateWuShuang = createMultiplicationSkillEquation(
   SkillMultiplicationInterfaceEnum.wuShuangCoefficient
@@ -84,7 +84,7 @@ export default class Skill {
   public skillBasicNumber: number; // 技能基础数值很小的那个
   public basicDamage: number; // 基础伤害
   public basicDamageCoefficient: number; // 基础攻击系数
-  public poFangCoefficient: number; // 破防系数
+  public solarOvercomeCoefficient: number; // 破防系数
   public wuShuangCoefficient: number; // 无双系数
   public huiXinHuiXiaoCoefficient: number; // 会心会笑计算系数
   public targetDamageCoefficient: number; // 目标伤害系数
@@ -102,7 +102,7 @@ export default class Skill {
     this.skillTimes = options.skillTimes;
     this.basicDamage = options.basicDamage;
     this.basicDamageCoefficient = options.basicDamageCoefficient;
-    this.poFangCoefficient = options.poFangCoefficient;
+    this.solarOvercomeCoefficient = options.solarOvercomeCoefficient;
     this.wuShuangCoefficient = options.wuShuangCoefficient;
     this.huiXinHuiXiaoCoefficient = options.huiXinHuiXiaoCoefficient;
     this.targetDamageCoefficient = options.targetDamageCoefficient;
@@ -136,7 +136,7 @@ export default class Skill {
       ${this.skillTitle} 技能次数:${this.skillTimes}\n
       技能基础伤害：${this.basicDamage}
       技能系数：${this.basicDamageCoefficient}
-      破防系数:${this.poFangCoefficient}
+      破防系数:${this.solarOvercomeCoefficient}
       无双系数：${this.wuShuangCoefficient}
       双会系数：${this.huiXinHuiXiaoCoefficient}
       目标系数：${this.targetDamageCoefficient}
@@ -154,7 +154,7 @@ export default class Skill {
 export const calculatorSkill = function calculatorSkillSubtotal(skill: Skill): number {
   const calculateSkillSubtotalEquation = pipe(
     () => calculateBasicNumber(skill),
-    () => calculatePoFang(skill),
+    () => calculateSolarOvercome(skill),
     () => calculateWuShuang(skill),
     () => calculateHuiXinHuiXiao(skill),
     () => calculateTargetDamage(skill),
@@ -173,7 +173,7 @@ export interface CreateSkillAttributes {
   basicDamage?: number;
   skillBasicNumber?: number;
   basicDamageCoefficient?: number;
-  poFangCoefficient?: number;
+  solarOvercomeCoefficient?: number;
   wuShuangCoefficient?: number;
   huiXinHuiXiaoCoefficient?: number;
   targetDamageCoefficient?: number;
@@ -212,7 +212,7 @@ export const createSkillFactory = (
     skillBasicNumber,
     basicDamageCoefficient,
     damageBonuesCoefficient,
-    poFangCoefficient,
+    solarOvercomeCoefficient,
     wuShuangCoefficient,
     huiXinHuiXiaoCoefficient,
     targetDamageCoefficient,
@@ -233,7 +233,10 @@ export const createSkillFactory = (
     damageBonuesCoefficient:
       initAttribute(damageBonuesCoefficient, 1) * (1 + supportContext.damageBonus),
     // 破防
-    poFangCoefficient: initAttribute(poFangCoefficient, 1 + _core.PoFang / 100),
+    solarOvercomeCoefficient: initAttribute(
+      solarOvercomeCoefficient,
+      1 + _core.SolarOvercomePercent / 100
+    ),
     // 无双
     wuShuangCoefficient: initAttribute(wuShuangCoefficient, 1 + _core.WuShuang / 100),
     // 双会

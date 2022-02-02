@@ -83,10 +83,10 @@ export const gainDataAtrributeToString = (data: GainAttribute): string => {
     case BuffKeys.ignoreDefense:
       value += '无视防御';
       break;
-    case BuffKeys.PoFangPercent:
+    case BuffKeys.SolarOvercomePercent:
       value += '破防百分比';
       break;
-    case BuffKeys.PoFangLevel:
+    case BuffKeys.SolarOvercome:
       value += '破防等级';
       break;
     case BuffKeys.SolarAttackPowerBase:
