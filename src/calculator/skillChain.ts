@@ -90,14 +90,14 @@ export const createSkillChains = (payload: SkillChainPayload) => {
   const ignoreMiJi = [createMiJi('', 0.6, IgnoreDefenceMiJi)];
   const cwBuff = hasCw ? 0.0996 / 2 : 0;
 
-  const poZhaoChain = new ChainComponent((payload: SkillChainPayload) => {
+  const surplusValueChain = new ChainComponent((payload: SkillChainPayload) => {
     const { core } = payload;
-    const key = SkillNames.PoZhao;
+    const key = SkillNames.SurplusValue;
     const skill = createSkillFactory(core, support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
-      basicDamage: core.PoZhao,
+      basicDamage: core.SurplusValue,
       basicDamageCoefficient: 15.2288,
       damageBonuesCoefficient: BaseCoefficient + ErYeYiYuanCoefficient,
     });
@@ -417,7 +417,7 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
 
-  poZhaoChain
+  surplusValueChain
     .setNextSuccessor(liuHeGunChain)
     .setNextSuccessor(weiTuoXianChuChain)
     .setNextSuccessor(naYunShiChain)
@@ -436,6 +436,6 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     .setNextSuccessor(qianJinZhuiChain)
     .setNextSuccessor(jinGangRiLunChain);
 
-  poZhaoChain.passRequest(payload);
+  surplusValueChain.passRequest(payload);
   return skills;
 };

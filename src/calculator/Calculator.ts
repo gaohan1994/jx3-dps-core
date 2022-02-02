@@ -16,7 +16,7 @@ import {
   increaseSolarAttackPowerBase,
   increaseMainAttribute,
   increaseSolarOvercomePercent,
-  increasePoZhao,
+  increaseSurplusValue,
   increaseStrainPercent,
   makeZongGongJi,
   increaseSolarCriticalStrike,
@@ -102,7 +102,7 @@ export const createCalculator = (
     (core: DpsCore) => increaseCriticalDamagePower(core, supportContext),
     (core: DpsCore) => increaseSolarOvercomePercent(core, supportContext),
     (core: DpsCore) => increaseStrainPercent(core, supportContext),
-    (core: DpsCore) => increasePoZhao(core, supportContext),
+    (core: DpsCore) => increaseSurplusValue(core, supportContext),
     (core: DpsCore) => increaseSolarAttackPowerBase(core, supportContext),
     (core: DpsCore) => makeZongGongJi(core)
   );

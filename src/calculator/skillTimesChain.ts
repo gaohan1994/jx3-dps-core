@@ -14,7 +14,7 @@ interface SkillTimesChainPipelinePayload extends SkillChainPayload {
 type SkillNameKeys = keyof typeof SkillNames;
 export type SkillTimes = { [key in SkillNameKeys]: number };
 const normalSkillTimes: SkillTimes = {
-  PoZhao: 0,
+  SurplusValue: 0,
   ShouQueShi: 0,
   PuDuSiFang: 0,
   TiHuGuanDing: 0,
@@ -68,14 +68,14 @@ const makeSkillTimesFromPipelineToConfig = (
 };
 
 export const createSkillTimesChain = (payload: SkillChainPayload): SkillTimes => {
-  const poZhaoChain = new ChainComponent((payload: SkillChainPayload) => {
+  const surplusValueChain = new ChainComponent((payload: SkillChainPayload) => {
     const config = [30, 30, 0];
     makeSkillTimesFromPipelineToConfig(
       getSkillTimesPipeline({
         ...payload,
         currentSkillConfig: config,
       }),
-      'PoZhao'
+      'SurplusValue'
     );
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
@@ -270,7 +270,7 @@ export const createSkillTimesChain = (payload: SkillChainPayload): SkillTimes =>
     normalSkillTimes.JinGangRiLun = normalSkillTimes.QianJinZhui;
     return null;
   });
-  poZhaoChain
+  surplusValueChain
     .setNextSuccessor(xinZhengChain)
     .setNextSuccessor(xinZhengGunWuChain)
     .setNextSuccessor(naYunChain)
@@ -288,7 +288,7 @@ export const createSkillTimesChain = (payload: SkillChainPayload): SkillTimes =>
     .setNextSuccessor(qianJinZhuiChain)
     .setNextSuccessor(jinGangRiLunChain);
 
-  poZhaoChain.passRequest(payload);
+  surplusValueChain.passRequest(payload);
 
   return normalSkillTimes;
 };

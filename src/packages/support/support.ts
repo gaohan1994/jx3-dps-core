@@ -52,7 +52,7 @@ export default class Support extends SupportBase {
       MingZhongLevel: 0,
       Strain: 0,
       StrainPercent: 0,
-      PoZhao: 0,
+      SurplusValue: 0,
       ignoreDefense: 0,
       globalIgnoreDefense: 0,
     };

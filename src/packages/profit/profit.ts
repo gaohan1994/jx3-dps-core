@@ -183,23 +183,23 @@ class Profit {
     StrainProfit.stone.set(8, 124);
     this.profitList.push(StrainProfit);
 
-    const PoZhaoProfit: ProfitCore = {
+    const SurplusValueProfit: ProfitCore = {
       title: '破招收益',
       multiple: 10,
       proportion: 1,
       attrProfit: 0,
       pointProfit: 0,
       gain: {
-        name: 'Profit-PoZhao',
-        data: [{ gainTarget: BuffKeys.PoZhao, value: (325 * 3 * 10) / 73, coverage: 1 }],
+        name: 'Profit-SurplusValue',
+        data: [{ gainTarget: BuffKeys.SurplusValue, value: (325 * 3 * 10) / 73, coverage: 1 }],
       },
       stone: new Map(),
       profitWithStone: new Map(),
     };
-    PoZhaoProfit.stone.set(6, 72);
-    PoZhaoProfit.stone.set(7, 96);
-    PoZhaoProfit.stone.set(8, 124);
-    this.profitList.push(PoZhaoProfit);
+    SurplusValueProfit.stone.set(6, 72);
+    SurplusValueProfit.stone.set(7, 96);
+    SurplusValueProfit.stone.set(8, 124);
+    this.profitList.push(SurplusValueProfit);
   }
 
   public calculatroProfitCore(item: ProfitCore): ProfitCore {

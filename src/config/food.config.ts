@@ -16,7 +16,7 @@ export const BanquetConfig = [
     data: [
       { gainTarget: BuffKeys.SolarAttackPowerBase, value: 214, coverage: 1 },
       { gainTarget: BuffKeys.SolarCriticalStrike, value: 397, coverage: 1 },
-      { gainTarget: BuffKeys.PoZhao, value: 397, coverage: 1 },
+      { gainTarget: BuffKeys.SurplusValue, value: 397, coverage: 1 },
     ],
   },
   {
@@ -40,7 +40,7 @@ export enum FoodEnhanceList {
 export const FoodEnchanceConfig = [
   {
     name: FoodEnhanceList.BaiRouXueChang,
-    data: [{ gainTarget: BuffKeys.PoZhao, value: 771, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SurplusValue, value: 771, coverage: 1 }],
   },
   {
     name: FoodEnhanceList.GuanTangBao,
@@ -75,7 +75,7 @@ export enum DrugEnhanceList {
 export const DrugEnhanceConfig = [
   {
     name: DrugEnhanceList.ShangPinNingShenSan,
-    data: [{ gainTarget: BuffKeys.PoZhao, value: 991, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SurplusValue, value: 991, coverage: 1 }],
   },
   {
     name: DrugEnhanceList.ShangPinPoHuiSan,
@@ -124,7 +124,7 @@ export const HomeFoodConfig = [
   },
   {
     name: HomeFoodList.JianDouFu,
-    data: [{ gainTarget: BuffKeys.PoZhao, value: 277, coverage: 1 }],
+    data: [{ gainTarget: BuffKeys.SurplusValue, value: 277, coverage: 1 }],
   },
   {
     name: HomeFoodList.DunDouFu,

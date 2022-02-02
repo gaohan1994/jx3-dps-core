@@ -23,12 +23,12 @@ export const BuffKeys = createEnum([
   'MingZhongLevel',
   'Strain',
   'StrainPercent',
-  'PoZhao',
+  'SurplusValue',
 ]);
 export type BuffKeys = keyof typeof BuffKeys;
 
 export enum SkillNames {
-  PoZhao = 'PoZhao',
+  SurplusValue = 'SurplusValue',
   NaYunShi = 'NaYunShi',
   HengSaoLiuHe = 'HengSaoLiuHe',
   HengSaoLiuHeDot = 'HengSaoLiuHeDot',
@@ -49,7 +49,7 @@ export enum SkillNames {
 }
 // 技能名称
 export enum SkillTitles {
-  PoZhao = '破招',
+  SurplusValue = '破招',
   NaYunShi = '拿云式',
   HengSaoLiuHe = '横扫六合',
   HengSaoLiuHeDot = '横扫六合DOT',

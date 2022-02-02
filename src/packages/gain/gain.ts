@@ -119,7 +119,7 @@ export const gainDataAtrributeToString = (data: GainAttribute): string => {
     case BuffKeys.Strain:
       value += '无双等级';
       break;
-    case BuffKeys.PoZhao:
+    case BuffKeys.SurplusValue:
       value += '破招';
       break;
     default:

@@ -151,10 +151,10 @@ export const increaseStrainPercent = (core: DpsCore, increasedAttributes: any) =
   return nextCore;
 };
 
-export const increasePoZhao = (core: DpsCore, increasedAttributes: any) => {
-  const { PoZhao = 0 } = increasedAttributes;
+export const increaseSurplusValue = (core: DpsCore, increasedAttributes: any) => {
+  const { SurplusValue = 0 } = increasedAttributes;
   const nextCore = deepClone(core);
-  nextCore.PoZhao += PoZhao;
+  nextCore.SurplusValue += SurplusValue;
   return nextCore;
 };
 

@@ -36,7 +36,7 @@ class DpsCore {
   public SolarCriticalStrikeRate: number;
   public SolarCriticalDamagePowerPercent: number;
   public SolarOvercomePercent: number;
-  public PoZhao: number;
+  public SurplusValue: number;
   public JiaSu: JiaSuValue;
   public StrainPercent: number;
   public Spunk?: number;
@@ -49,7 +49,7 @@ class DpsCore {
     this.GongJiCoefficient = options.GongJiCoefficient;
 
     this.SolarOvercomePercent = options.SolarOvercomePercent || 0;
-    this.PoZhao = options.PoZhao || 0;
+    this.SurplusValue = options.SurplusValue || 0;
 
     // 加速默认是一段加速修改为直接设置段数
     this.JiaSu = options.JiaSu || DpsCore.JiaSuList.YiDuanJiaSu;
@@ -71,7 +71,7 @@ export type CreateDpsCoreOptions = {
   SolarCriticalStrikeRate: number;
   SolarCriticalDamagePowerPercent: number;
   SolarOvercomePercent: number;
-  PoZhao: number;
+  SurplusValue: number;
   StrainPercent: number;
   JiaSu: JiaSuValue;
   WuQiShangHai: number;
