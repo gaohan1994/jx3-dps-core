@@ -407,11 +407,9 @@ export const createSkillChains = (payload: SkillChainPayload) => {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
-      basicDamageCoefficient: 4.4,
+      basicDamageCoefficient: 6.6,
       damageBonuesCoefficient:
-        (BaseCoefficient + ErYeYiYuanCoefficient + FoGuoCoefficient) *
-        ZhongChenCoefficient *
-        MingFaCoefficient,
+        (BaseCoefficient + ErYeYiYuanCoefficient + FoGuoCoefficient) * MingFaCoefficient,
     });
     skills.push(skill);
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
