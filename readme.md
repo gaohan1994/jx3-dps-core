@@ -232,7 +232,24 @@ public profit = () => {
 ## Usage
 
 ```javascript
-import Jx3DpsCore from 'jx3-dps-core';
+import Jx3DpsCore, { Support } from 'jx3-dps-core';
+
+const jdcSupport = new Support({
+    target: Jx3DpsCore.Target.MuZhuang113,
+    CWTimes: 3,
+  });
+  jdcSupport.use(Jx3DpsCore.TeamSkills.JinGangNuMu);
+  jdcSupport.use(Jx3DpsCore.TeamSkills.QinLongJue);
+  jdcSupport.use({
+    name: 'UPDATE08-30',
+    type: 'Costom',
+    data: [{ gainTarget: 'damageBonus', value: 0.03, coverage: 1 }],
+  });
+  jdcSupport.use({
+    name: '少林常驻破防加成',
+    type: 'Costom',
+    data: [{ gainTarget: 'SolarOvercomePercent', value: 0.15, coverage: 1 }],
+  });
 
 const jdc = new Jx3DpsCore(
   {
@@ -246,23 +263,7 @@ const jdc = new Jx3DpsCore(
     JiaSu: 'YiDuanJiaSu',
     WuQiShangHai: 2000,
   },
-  {
-    target: Jx3DpsCore.Target.MuZhuang113,
-    gainList: [
-      Jx3DpsCore.TeamSkills.JinGangNuMu,
-      Jx3DpsCore.TeamSkills.QinLongJue,
-      {
-        name: 'UPDATE08-30',
-        type: 'Costom',
-        data: [{ gainTarget: 'damageBonus', value: 0.03, coverage: 1 }],
-      },
-      {
-        name: '少林常驻破防加成',
-        type: 'Costom',
-        data: [{ gainTarget: 'PoFangPercent', value: 0.15, coverage: 1 }],
-      },
-    ],
-  },
+  jdcSupport,
   {
     qiXueVersion: Jx3DpsCore.CalculatorVersions.YiJinJingQiXueVersion.XinZheng,
     skillEnchant: Jx3DpsCore.CalculatorVersions.YiJinJingSkillEnchant.JinGangRiLun,
