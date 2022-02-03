@@ -70,6 +70,11 @@ export default class Support extends SupportBase {
     return this.gainList.some(g => g.name === '橙武');
   }
 
+  // 判断是否有小橙武
+  public hasSmallCw() {
+    return this.gainList.some(g => g.name === '小橙武');
+  }
+
   // 是否有属性套装
   public hasValueSetBonuese() {
     return this.gainList.some(g => g.name === SetBonuseList.ValueSetBonuse);
