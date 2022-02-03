@@ -10,6 +10,7 @@ import { BuffKeys } from '@types';
 export enum WeaponList {
   Normal = '普通武器',
   CW = '橙武',
+  SCW = '小橙武',
   EffectWather = '水特效武器',
 }
 export const WeaponConfig = [
@@ -19,6 +20,10 @@ export const WeaponConfig = [
   },
   {
     name: WeaponList.CW,
+    data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 0, coverage: 1 }],
+  },
+  {
+    name: WeaponList.SCW,
     data: [{ gainTarget: BuffKeys.SolarAttackPowerBase, value: 0, coverage: 1 }],
   },
 ];

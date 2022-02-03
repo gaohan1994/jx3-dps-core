@@ -5,6 +5,7 @@ import ChainComponent from '@componet/chain';
 import {
   deepClone,
   increaseSolarAttackPowerBase,
+  increaseSolarCriticalStrike,
   isJinGangRiLunEnchat,
   isXinZhengVersion,
   makeSolarAttackPower,
@@ -16,6 +17,7 @@ import {
 } from '@config/constants';
 import { YiJinJingSkillEnchant, YiJinJingQiXueVersion, SkillNames, SkillTitles } from '@types';
 import { SkillChainPayload } from './calculator';
+import { pipe } from '@componet/compose';
 
 const createSanShengSkillCore = (prevCore: DpsCore, qiDian: number): DpsCore => {
   // 创建三生buff下的人物属性 每豆提升8%基础
@@ -77,9 +79,11 @@ export const createSkillChains = (payload: SkillChainPayload) => {
    * @param ZhongChenCoefficient 众嗔系数（乘法）
    * @param MingFaCoefficient 明发
    * @param FoGuoCoefficient 佛果
+   * @param hasCw 是否含有橙武
+   * @param hasSmallCw 是否有小橙武
    */
-  // 是否含有橙武
   const hasCw = support.hasCw();
+  const hasSmallCw = support.hasSmallCw();
   const BaseCoefficient = 1;
   const ErYeYiYuanCoefficient = 0.0996;
   const skillSetBonuseCoefficient = hasSkillSetBonuese ? 0.0996 : 0;
@@ -120,9 +124,18 @@ export const createSkillChains = (payload: SkillChainPayload) => {
     return ChainComponent.NEXT_CHAIN_SUCCESSOR;
   });
   const weiTuoXianChuChain = new ChainComponent((payload: SkillChainPayload) => {
-    const { core } = payload;
     const key = SkillNames.WeiTuoXianChu;
-    const skill = createSkillFactory(createSanShengSkillCore(core, 3), support, {
+    const createSmallCwCore = (core: DpsCore, token: boolean): DpsCore => {
+      if (!token) {
+        return core;
+      }
+      return increaseSolarCriticalStrike(deepClone(core), { SolarCriticalStrikeRate: 0.05 });
+    };
+    const getCurrentCore = pipe(createSmallCwCore, (currentCore: DpsCore) =>
+      createSanShengSkillCore(currentCore, 3)
+    );
+    const core = getCurrentCore(payload.core, hasSmallCw);
+    const skill = createSkillFactory(core, support, {
       skillName: key,
       skillTitle: SkillTitles[key],
       skillTimes: skillTimes[key],
