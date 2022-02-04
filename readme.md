@@ -231,8 +231,19 @@ public profit = () => {
 
 ## Usage
 
-```javascript
+```typescript
 import Jx3DpsCore, { Support } from 'jx3-dps-core';
+
+type CalculatorResult = {
+  dps: number;
+  total: number;
+  seconds: number;
+  skills: Skill[];
+};
+
+interface Jx3DpsCoreCalculateResult extends CalculatorResult {
+  profit: ProfitCore[];
+}
 
 const jdcSupport = new Support({
     target: Jx3DpsCore.Target.MuZhuang113,
@@ -270,6 +281,6 @@ const jdc = new Jx3DpsCore(
   }
 );
 
-const { dps, total, skills } = jdc.calculate();
+const { dps, total, skills, profit } = jdc.calculate();
 
 ```

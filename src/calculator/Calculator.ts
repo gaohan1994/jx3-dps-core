@@ -97,16 +97,16 @@ export const createCalculator = (
 
   // 生成核心计算类 baseCore
   const getBaseCore = pipe(
-    () => increaseSpunk(coreClone, increasedSpunkFromSupportContext),
-    (core: DpsCore) => increaseSolarCriticalStrike(core, supportContext),
-    (core: DpsCore) => increaseCriticalDamagePower(core, supportContext),
-    (core: DpsCore) => increaseSolarOvercomePercent(core, supportContext),
-    (core: DpsCore) => increaseStrainPercent(core, supportContext),
-    (core: DpsCore) => increaseSurplusValue(core, supportContext),
-    (core: DpsCore) => increaseSolarAttackPowerBase(core, supportContext),
-    (core: DpsCore) => makeSolarAttackPower(core)
+    (pipeCore: DpsCore) => increaseSpunk(pipeCore, increasedSpunkFromSupportContext),
+    (pipeCore: DpsCore) => increaseSolarCriticalStrike(pipeCore, supportContext),
+    (pipeCore: DpsCore) => increaseCriticalDamagePower(pipeCore, supportContext),
+    (pipeCore: DpsCore) => increaseSolarOvercomePercent(pipeCore, supportContext),
+    (pipeCore: DpsCore) => increaseStrainPercent(pipeCore, supportContext),
+    (pipeCore: DpsCore) => increaseSurplusValue(pipeCore, supportContext),
+    (pipeCore: DpsCore) => increaseSolarAttackPowerBase(pipeCore, supportContext),
+    (pipeCore: DpsCore) => makeSolarAttackPower(pipeCore)
   );
-  const baseCore = getBaseCore();
+  const baseCore = getBaseCore(coreClone);
   // 生成计算器技能配置文件
 
   const payload: SkillChainPayload = {

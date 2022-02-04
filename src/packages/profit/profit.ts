@@ -5,12 +5,25 @@
  * @Last Modified by: Harper.Gao
  * @Last Modified time: 2021-11-21 17:59:07
  */
-import { BuffKeys } from '@types';
-import { deepClone } from '@componet/utils';
+import { BuffKeys, SupportContext } from '@types';
+import {
+  deepClone,
+  increaseCriticalDamagePower,
+  increaseSolarAttackPowerBase,
+  increaseSolarCriticalStrike,
+  increaseSolarOvercomePercent,
+  increaseStrainPercent,
+  increaseSurplusValue,
+  makeSolarAttackPower,
+} from '@componet/utils';
 import DpsCore from '@packages/core/core';
-import Support, { copySupport } from '@packages/support/support';
-import { CalculatorResult, createCalculator } from '@calculator/calculator';
-import { Gain } from '@packages/gain/gain';
+import Support from '@packages/support/support';
+import {
+  CalculatorResult,
+  createCalculator,
+  CreateCalculatorOptions,
+} from '@calculator/calculator';
+import { pipe } from '@componet/compose';
 
 /**
  * Constants ==============================================================
@@ -19,7 +32,6 @@ import { Gain } from '@packages/gain/gain';
 
 export type ProfitCore = {
   title: string; // 描述该模块收益
-  gain: Gain; // 该属性具体的增益
   multiple: number; // 放大倍数
   proportion: number; // 比例
   attrProfit: number; // 该属性单位收益
@@ -28,20 +40,21 @@ export type ProfitCore = {
   profitDps?: number; // 增益之后的dps
   stone: Map<number, number>; // 五行石对应的数值如  6级 16点元气
   profitWithStone: Map<number, number>; // 单孔收益
+  increaseData: Partial<SupportContext>;
 };
 
 export type ProfitConstructorOptions = {
   core: DpsCore;
   support: Support;
-  baseResult?: CalculatorResult;
+  jx3DpsCoreOptions: CreateCalculatorOptions;
 };
 
 /**
  * Usage =================================================================
  * ========================================================================
  *
- * const profit = new Profit(core, support, version, result);
- * const profitList = profit.calculatroProfit();
+ * const pf = new Profit({core, support});
+ * const result = pf.calculateProfit();
  */
 
 class Profit {
@@ -51,31 +64,30 @@ class Profit {
   public baseResult: CalculatorResult;
   public baseDps: number;
   public profitList: ProfitCore[] = [];
+  public jx3DpsCoreOptions: CreateCalculatorOptions;
   constructor(profitOptions: ProfitConstructorOptions) {
-    const { core, support, baseResult } = profitOptions;
+    const { core, support, jx3DpsCoreOptions } = profitOptions;
     this.core = core;
     this.support = support;
+    this.jx3DpsCoreOptions = jx3DpsCoreOptions;
     // 如果传入了基础result就使用传入的 否则计算基础result
-    const calculatorResult = baseResult ? deepClone(baseResult) : createCalculator(core, support);
+    const calculatorResult = createCalculator(core, support, jx3DpsCoreOptions);
     this.baseResult = calculatorResult;
     this.baseDps = this.baseResult.dps;
 
     const SpunkProfit: ProfitCore = {
       title: '元气收益',
-      multiple: 10,
+      multiple: 1000,
       // 325破防 = 73元气
       proportion: 325 / 73,
       attrProfit: 0,
       pointProfit: 0,
-      gain: {
-        name: 'Profit-YuanQi',
-        data: [{ gainTarget: BuffKeys.Spunk, value: 3 * 10, coverage: 1 }],
-      },
+      increaseData: { [BuffKeys.Spunk]: 3 * 1000 },
       stone: new Map(),
       profitWithStone: new Map(),
     };
     // 设置五行石属性
-    SpunkProfit.stone.set(6, 13);
+    SpunkProfit.stone.set(6, 16);
     SpunkProfit.stone.set(7, 21);
     SpunkProfit.stone.set(8, 27);
     this.profitList.push(SpunkProfit);
@@ -87,12 +99,7 @@ class Profit {
       proportion: 325 / 175,
       attrProfit: 0,
       pointProfit: 0,
-      gain: {
-        name: 'Profit-SolarAttackPowerBase',
-        data: [
-          { gainTarget: BuffKeys.SolarAttackPowerBase, value: (175 / 73) * 3 * 10, coverage: 1 },
-        ],
-      },
+      increaseData: { [BuffKeys.SolarAttackPowerBase]: (175 / 73) * 3 * 10 },
       stone: new Map(),
       profitWithStone: new Map(),
     };
@@ -108,10 +115,7 @@ class Profit {
       proportion: 1,
       attrProfit: 0,
       pointProfit: 0,
-      gain: {
-        name: 'Profit-SolarOvercomePercent',
-        data: [{ gainTarget: BuffKeys.SolarOvercome, value: (325 * 3 * 100) / 73, coverage: 1 }],
-      },
+      increaseData: { [BuffKeys.SolarOvercome]: (325 * 3 * 100) / 73 },
       stone: new Map(),
       profitWithStone: new Map(),
     };
@@ -127,12 +131,7 @@ class Profit {
       proportion: 1,
       attrProfit: 0,
       pointProfit: 0,
-      gain: {
-        name: 'Profit-CriticalStrike',
-        data: [
-          { gainTarget: BuffKeys.SolarCriticalStrike, value: (325 * 3 * 1000) / 73, coverage: 1 },
-        ],
-      },
+      increaseData: { [BuffKeys.SolarCriticalStrike]: (325 * 3 * 1000) / 73 },
       stone: new Map(),
       profitWithStone: new Map(),
     };
@@ -147,16 +146,7 @@ class Profit {
       proportion: 1,
       attrProfit: 0,
       pointProfit: 0,
-      gain: {
-        name: 'Profit-SolarCriticalDamagePowerPercent',
-        data: [
-          {
-            gainTarget: BuffKeys.SolarCriticalDamagePower,
-            value: (325 * 3 * 10) / 73,
-            coverage: 1,
-          },
-        ],
-      },
+      increaseData: { [BuffKeys.SolarCriticalDamagePower]: (325 * 3 * 10) / 73 },
       stone: new Map(),
       profitWithStone: new Map(),
     };
@@ -171,10 +161,7 @@ class Profit {
       proportion: 1,
       attrProfit: 0,
       pointProfit: 0,
-      gain: {
-        name: 'Profit-Strain',
-        data: [{ gainTarget: BuffKeys.Strain, value: (325 * 3 * 10) / 73, coverage: 1 }],
-      },
+      increaseData: { [BuffKeys.Strain]: (325 * 3 * 10) / 73 },
       stone: new Map(),
       profitWithStone: new Map(),
     };
@@ -189,10 +176,7 @@ class Profit {
       proportion: 1,
       attrProfit: 0,
       pointProfit: 0,
-      gain: {
-        name: 'Profit-SurplusValue',
-        data: [{ gainTarget: BuffKeys.SurplusValue, value: (325 * 3 * 10) / 73, coverage: 1 }],
-      },
+      increaseData: { [BuffKeys.SurplusValue]: (325 * 3 * 10) / 73 },
       stone: new Map(),
       profitWithStone: new Map(),
     };
@@ -203,12 +187,33 @@ class Profit {
   }
 
   public calculatroProfitCore(item: ProfitCore): ProfitCore {
-    // 增加计算收益的属性
-    const currentProfitSupport = copySupport(this.support);
-    currentProfitSupport.use(item.gain);
-
-    const result = createCalculator(this.core, currentProfitSupport);
-
+    /**
+     * @todo 创建管道获取增加属性之后的core
+     * @method increaseSolarCriticalStrike
+     * @method increaseCriticalDamagePower
+     * @method increaseSolarOvercomePercent
+     * @method increaseStrainPercent
+     * @method increaseSurplusValue
+     * @method increaseSolarAttackPowerBase
+     * @method makeSolarAttackPower
+     */
+    const getIncreasedCore = pipe(
+      (pipeCore: DpsCore) => {
+        if (item.increaseData.Spunk) {
+          pipeCore.Spunk += item.increaseData.Spunk;
+        }
+        return pipeCore;
+      },
+      (pipeCore: DpsCore) => increaseSolarCriticalStrike(pipeCore, item.increaseData),
+      (pipeCore: DpsCore) => increaseCriticalDamagePower(pipeCore, item.increaseData),
+      (pipeCore: DpsCore) => increaseSolarOvercomePercent(pipeCore, item.increaseData),
+      (pipeCore: DpsCore) => increaseStrainPercent(pipeCore, item.increaseData),
+      (pipeCore: DpsCore) => increaseSurplusValue(pipeCore, item.increaseData),
+      (pipeCore: DpsCore) => increaseSolarAttackPowerBase(pipeCore, item.increaseData),
+      (pipeCore: DpsCore) => makeSolarAttackPower(pipeCore)
+    );
+    const increasedCore = getIncreasedCore(deepClone(this.core));
+    const result = createCalculator(increasedCore, this.support, this.jx3DpsCoreOptions);
     // 计算单位收益
     const attrProfit = ((result.dps / this.baseDps - 1) * 100) / item.multiple;
     // 计算单分收益
@@ -222,7 +227,10 @@ class Profit {
       profitDps: result.dps,
     };
 
-    // 设置石头收益
+    /**
+     * @todo 设置石头收益
+     * 石头收益 = 单分收益 x 石头对应属性点
+     */
     currentProfitCore.stone.forEach((value, key) => {
       currentProfitCore.profitWithStone.set(key, currentProfitCore.pointProfit * value);
     });
