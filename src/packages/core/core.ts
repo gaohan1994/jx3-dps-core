@@ -40,10 +40,8 @@ class DpsCore {
   public Haste: HasteValue;
   public StrainPercent: number;
   public Spunk?: number;
-  public options: any;
   public mainCoeffiecient: MainCoeffiecient;
   constructor(options: any) {
-    this.options = options;
     this.SolarAttackPowerBase = options.SolarAttackPowerBase || 1;
 
     this.SolarAttackPowerBasePercent = options.SolarAttackPowerBasePercent;

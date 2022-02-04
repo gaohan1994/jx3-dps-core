@@ -1,6 +1,6 @@
 import { TargetListKeys, YiJinJingSkillEnchant, YiJinJingQiXueVersion } from '@types';
 import Support from '@packages/support/support';
-import Profit from '@packages/profit/profit';
+import Profit, { ProfitCore } from '@packages/profit/profit';
 
 import DpsCore, { createDpsCore, CreateDpsCoreOptions, HasteValue } from '@packages/core/core';
 import {
@@ -37,6 +37,10 @@ export { createGainGroup, selectGainGroupByName, selectGainGroupById } from '@pa
 
 type Jx3DpsCoreOptions = CreateCalculatorOptions;
 
+interface Jx3DpsCoreCalculateResult extends CalculatorResult {
+  profit: ProfitCore[];
+}
+
 /**
  * https://github.com/gaohan1994/jx3-dps-core/issues/19
  * execpt export only one major class to user
@@ -52,9 +56,6 @@ type Jx3DpsCoreOptions = CreateCalculatorOptions;
  *
  * // 计算dps
  * const result = jdc.calcuate();
- *
- * // 计算收益
- * const result = jdc.profit();
  * ```
  *
  * @class Jx3DpsCore
@@ -205,18 +206,26 @@ export default class Jx3DpsCore {
    * @method calculate
    * @memberof Jx3DpsCore
    */
-  public calculate = (): CalculatorResult => {
-    return createCalculator(this.core, this.support, this.jx3DpsCoreOptions);
-  };
-
-  /**
-   * 计算收益结果
-   * @method profit
-   * @memberof Jx3DpsCore
-   */
-  public profit = () => {
-    const pf = new Profit({ core: this.core, support: this.support });
-    return pf.calculatroProfit();
+  public calculate = (): Jx3DpsCoreCalculateResult => {
+    /**
+     * @method createCalculator
+     * 创建计算器，并返回计算结果
+     */
+    const calculateResult = createCalculator(this.core, this.support, this.jx3DpsCoreOptions);
+    /**
+     * @param Profit
+     * @method calculatroProfit
+     * 创建收益模块，并返回收益计算结果
+     */
+    const pf = new Profit({
+      core: this.core,
+      support: this.support,
+      jx3DpsCoreOptions: this.jx3DpsCoreOptions,
+    });
+    return {
+      ...calculateResult,
+      profit: pf.calculatroProfit(),
+    };
   };
 }
 export { Support, gainModule };

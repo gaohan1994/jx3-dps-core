@@ -80,21 +80,3 @@ export default class Support extends SupportBase {
     return this.gainList.some(g => g.name === SetBonuseList.ValueSetBonuse);
   }
 }
-
-export const copySupport = (support: Support): Support => {
-  const { options, gainList = [] } = support;
-  const nextOptions = deepClone(options);
-  const nextGainList = deepClone(gainList);
-  const nextSupport = new Support(nextOptions);
-
-  for (let i = 0; i < nextGainList.length; i++) {
-    const currentGain = nextGainList[i];
-
-    if (isCostomGain(currentGain)) {
-      nextSupport.use(currentGain);
-      continue;
-    }
-    nextSupport.use(currentGain.name);
-  }
-  return nextSupport;
-};

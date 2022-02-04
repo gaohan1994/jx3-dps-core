@@ -170,13 +170,12 @@ export const increaseSolarAttackPowerBase = (core: DpsCore, increasedAttributes:
 export const increaseSpunk = (core: DpsCore, spunk: number) => {
   const { mainCoeffiecient } = core;
   const { SolarAttackPowerBase, SolarOvercome, SolarCriticalStrike } = mainCoeffiecient(spunk);
-
   const getNextCore = pipe(
-    () => increaseSolarAttackPowerBase(core, { SolarAttackPowerBase }),
-    () => increaseSolarOvercomePercent(core, { SolarOvercome }),
-    () => increaseSolarCriticalStrike(core, { SolarCriticalStrike })
+    (pipeCore: DpsCore) => increaseSolarAttackPowerBase(pipeCore, { SolarAttackPowerBase }),
+    (pipeCore: DpsCore) => increaseSolarOvercomePercent(pipeCore, { SolarOvercome }),
+    (pipeCore: DpsCore) => increaseSolarCriticalStrike(pipeCore, { SolarCriticalStrike })
   );
-  const nextCore = getNextCore();
+  const nextCore = getNextCore(core);
   return nextCore;
 };
 
