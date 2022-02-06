@@ -209,3 +209,11 @@ export const isXinZhengVersion = (payload: CreateCalculatorOptions): boolean => 
   }
   return false;
 };
+
+/**
+ * 目前只用三生所以直接返回 true
+ * @returns boolean
+ */
+export const isSanShengVersion = (payload: CreateCalculatorOptions): boolean => {
+  return true;
+};

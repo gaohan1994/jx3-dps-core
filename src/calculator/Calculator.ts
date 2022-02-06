@@ -118,7 +118,7 @@ export const createCalculator = (
   };
   const skillTimes = createSkillTimesChain(payload);
   payload.skillTimes = skillTimes;
-  payload.skills = createSkillChains(payload);
+  createSkillChains(payload);
 
   const { skills } = payload;
 
