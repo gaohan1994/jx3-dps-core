@@ -22,7 +22,7 @@ import {
   CalculatorResult,
   createCalculator,
   CreateCalculatorOptions,
-} from '@calculator/calculator';
+} from '@calculator/main-calculator';
 import { pipe } from '@componet/compose';
 
 /**

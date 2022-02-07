@@ -4,7 +4,7 @@ import { pipe } from '@componet/compose';
 import { HasteValue } from '@packages/core/core';
 import { isJinGangRiLunEnchat } from '@componet/utils';
 import { SkillNames, YiJinJingSkillEnchant, YiJinJingQiXueVersion } from '@types';
-import { SkillChainPayload } from './calculator';
+import { SkillChainPayload } from './main-calculator';
 
 interface SkillTimesChainPipelinePayload extends SkillChainPayload {
   currentSkillConfig: number[];

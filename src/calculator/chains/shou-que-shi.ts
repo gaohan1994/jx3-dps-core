@@ -1,4 +1,4 @@
-import { SkillChainPayload } from '@calculator/calculator';
+import { SkillChainPayload } from '@calculator/main-calculator';
 import {
   getDamageCoefficientParams,
   ignoreMiJi,

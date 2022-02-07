@@ -1,7 +1,7 @@
 import { Gain } from '@packages/gain/gain';
 import DpsCore from '@packages/core/core';
 import { pipe } from './compose';
-import { CreateCalculatorOptions } from '@calculator/calculator';
+import { CreateCalculatorOptions } from '@calculator/main-calculator';
 import { YiJinJingQiXueVersion, YiJinJingSkillEnchant } from '@types';
 import {
   CRITICALSTRIKEDAMAGEPOWER_TRANSFORM_COE,
