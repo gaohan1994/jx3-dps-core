@@ -16,7 +16,7 @@ import {
   SANSHENG_QIDIAN_INCREASED_SOLARATTACKPOWERBASE_PERCENT,
 } from '@config/constants';
 import { SkillNames, SkillTitles } from '@types';
-import { SkillChainPayload } from './calculator';
+import { SkillChainPayload } from './main-calculator';
 import { pipe } from '@componet/compose';
 import {
   createHengSaoLiuHeChain,

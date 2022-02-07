@@ -7,7 +7,7 @@ import {
   createCalculator,
   CalculatorResult,
   CreateCalculatorOptions,
-} from '@calculator/calculator';
+} from '@calculator/main-calculator';
 import {
   BanquetList,
   FoodSupportList,
