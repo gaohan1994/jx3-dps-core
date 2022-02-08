@@ -1,5 +1,5 @@
 import { SkillChainPayload } from '@calculator/main-calculator';
-import { insertPayloadSkills, makeSkillBaseInformation } from '@calculator/skillChain';
+import { insertPayloadSkills, makeSkillBaseInformation } from '@calculator/skill-chains';
 import ChainComponent from '@componet/chain';
 import { createSkillFactory } from '@packages/core/skill';
 import { SkillNames } from '@types';

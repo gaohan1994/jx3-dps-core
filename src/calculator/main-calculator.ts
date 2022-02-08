@@ -23,8 +23,8 @@ import {
 } from '@componet/utils';
 import { pipe } from '@componet/compose';
 import { YiJinJingQiXueVersion, YiJinJingSkillEnchant } from '@types';
-import { createSkillTimesChain, SkillTimes } from './skillTimesChain';
-import { createSkillChains } from './skillChain';
+import { createSkillTimesChain, SkillTimes } from './skill-time-chains';
+import { createSkillChains } from './skill-chains';
 
 export interface SkillChainPayload {
   core: DpsCore;

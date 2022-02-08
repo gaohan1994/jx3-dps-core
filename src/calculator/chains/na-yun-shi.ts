@@ -6,7 +6,7 @@ import {
   increasedShenYi,
   insertPayloadSkills,
   makeSkillBaseInformation,
-} from '@calculator/skillChain';
+} from '@calculator/skill-chains';
 import ChainComponent from '@componet/chain';
 import { pipe } from '@componet/compose';
 import { createSkillFactory } from '@packages/core/skill';
