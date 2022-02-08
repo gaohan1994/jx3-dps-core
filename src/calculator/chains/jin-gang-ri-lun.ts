@@ -5,7 +5,7 @@ import {
   increasedSongYan,
   insertPayloadSkills,
   makeSkillBaseInformation,
-} from '@calculator/skillChain';
+} from '@calculator/skill-chains';
 import ChainComponent from '@componet/chain';
 import { pipe } from '@componet/compose';
 import { isJinGangRiLunEnchat } from '@componet/utils';
