@@ -4,3 +4,5 @@ demo/*
 build/*
 bundle/*
 test/*
+vite.config.ts
+dist/

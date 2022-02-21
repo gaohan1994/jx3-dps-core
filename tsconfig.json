@@ -1,17 +1,25 @@
 {
   "compilerOptions": {
-    "module": "ES2015",
-    "lib": ["es6"],
-    "target": "ES5",
+    "module": "esnext",
+    "useDefineForClassFields": true,
+    "emitDeclarationOnly": true,
+    "lib": ["es6", "DOM"],
+    "target": "es6",
     "allowJs": false,
     "noImplicitAny": true,
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
+    "experimentalDecorators": true,
     "declaration": true,
     "outDir": "dist",
     "baseUrl": ".",
-    // "rootDir": ".",
+    "jsx": "react",
+    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
     "paths": {
       "@calculator/*": ["src/calculator/*"],
       "@componet/*": ["src/componet/*"],
@@ -21,6 +29,7 @@
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["test/**/*"]
+  "exclude": ["test/**/*", "src/main.tsx"],
+  "references": [{ "path": "./tsconfig.node.json" }]
   // "compileOnSave": true
 }

@@ -33,3 +33,5 @@ client/
 
 /bundle
 /test
+
+yarn.lock
