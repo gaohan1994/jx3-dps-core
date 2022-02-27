@@ -12,6 +12,10 @@
 
 [剑网三少林易筋经计算器前端代码](https://github.com/gaohan1994/jx3-dps-rank)
 
+## Feature
+
+支持实时计算
+
 ## Documents
 
 Jx3-dps-core 使用文档
